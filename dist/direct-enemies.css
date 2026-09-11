@@ -1,0 +1,41 @@
+.direct-enemy {
+  background-repeat: no-repeat !important;
+  background-position: center !important;
+  background-size: contain !important;
+  mix-blend-mode: normal !important;
+}
+
+.face-left { --face: -1; }
+.face-front { --face: 1; }
+
+.arena .unit.boss-unit {
+  width: min(47%, 390px);
+  max-width: 390px;
+}
+
+#enemySprite.boss-enemy {
+  width: 100%;
+  min-width: 250px;
+  height: clamp(175px, 25vh, 270px);
+  margin-inline: auto;
+  background-size: contain !important;
+  filter: saturate(1.08) contrast(1.06) drop-shadow(0 20px 18px #000) drop-shadow(0 0 18px #4bcbd033);
+}
+
+@media (max-width: 600px) {
+  .arena .unit.boss-unit {
+    width: 54%;
+    max-width: none;
+  }
+
+  #enemySprite.direct-enemy {
+    background-position: 50% 50% !important;
+    background-size: contain !important;
+  }
+
+  #enemySprite.boss-enemy {
+    width: 100%;
+    min-width: 175px;
+    height: clamp(145px, 21vh, 210px);
+  }
+}

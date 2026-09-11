@@ -1,0 +1,130 @@
+body.scene-title #ocean {
+  background-image: linear-gradient(180deg,#00101a22 0%,#01050b66 54%,#010309cc 100%),url('assets/title-abyss-v2.webp');
+  background-size: cover;
+  background-position: center;
+  filter: saturate(1.08) contrast(1.08);
+}
+body.scene-title #ocean::before { opacity:.18; mix-blend-mode:screen; }
+body.scene-title .hud { opacity:0; pointer-events:none; transform:translateY(-100%); }
+body.scene-title #title { inset:0; overflow:hidden; isolation:isolate; }
+body.scene-title #title::before {
+  content:"";
+  position:absolute;
+  inset:0;
+  z-index:-1;
+  background:radial-gradient(ellipse at center,#02060a11 0 24%,#01040a88 70%,#000 120%);
+  box-shadow:inset 0 0 120px #000c;
+}
+.titlebox {
+  position:relative;
+  z-index:3;
+  width:min(92vw,720px);
+  padding:46px 48px 42px;
+  border:1px solid #d9ba6544;
+  border-radius:3px;
+  background:radial-gradient(ellipse at center,#06131bcf 0%,#02070db8 68%,#01030755 100%);
+  box-shadow:0 34px 90px #000c,inset 0 0 55px #45e4e815,0 0 0 6px #02070d88;
+  backdrop-filter:blur(3px);
+}
+.titlebox::before,.titlebox::after {
+  content:"◆  ─────  ✦  ─────  ◆";
+  position:absolute;
+  left:50%;
+  transform:translateX(-50%);
+  width:max-content;
+  color:#e6c76e;
+  font:600 13px Cinzel,serif;
+  letter-spacing:.24em;
+  text-shadow:0 0 12px #f0c85c88;
+}
+.titlebox::before { top:13px; }
+.titlebox::after { bottom:12px; transform:translateX(-50%) rotate(180deg); }
+body.scene-title .titlebox::before,body.scene-title .titlebox::after,body.scene-title .equipped-title{display:none!important}
+.sigil {
+  width:82px;
+  height:82px;
+  margin:0 auto 3px;
+  display:grid;
+  place-items:center;
+  border:1px solid #e5c469;
+  border-radius:50%;
+  background:radial-gradient(circle,#45e5dc33 0 36%,#071219 38% 58%,#c69d3d 60% 62%,transparent 64%);
+  color:#f3da88;
+  font:700 52px Georgia,serif;
+  filter:drop-shadow(0 0 18px #44ddd399);
+  animation:titleSigil 4s ease-in-out infinite;
+}
+body.scene-title h1 {
+  margin:0;
+  color:#e8ffff;
+  background:linear-gradient(180deg,#fff 4%,#b9f1ed 38%,#e2be66 72%,#8a5f1d 100%);
+  -webkit-background-clip:text;
+  background-clip:text;
+  -webkit-text-fill-color:transparent;
+  filter:drop-shadow(0 3px 1px #000) drop-shadow(0 0 22px #1bc8cf77);
+}
+body.scene-title h1 em {
+  color:#edd27e;
+  -webkit-text-fill-color:#edd27e;
+  text-shadow:0 2px #231600,0 0 14px #e2bb5355;
+}
+.subtitle { color:#b9dddc; text-shadow:0 2px 4px #000; }
+.start {
+  position:relative;
+  min-width:250px;
+  border:1px solid #fff0ac;
+  border-radius:2px;
+  background:linear-gradient(180deg,#ffe7a0,#c99132 46%,#845216 52%,#c58b2b);
+  box-shadow:0 0 0 3px #4b310dcc,0 0 28px #edbf4f66,0 8px 20px #000b,inset 0 1px #fff8ce;
+  color:#171006;
+  letter-spacing:.1em;
+  text-shadow:0 1px #fff2b7;
+  animation:startGlow 2.2s ease-in-out infinite;
+  overflow:hidden;
+}
+.start::after{content:"";position:absolute;inset:-50% auto -50% -28%;width:18%;background:linear-gradient(90deg,transparent,#fff9cfdd,transparent);transform:skewX(-24deg);animation:startSweep 3.1s ease-in-out infinite;pointer-events:none}
+.title-fauna{animation:faunaSceneIn 1.45s ease-out both}
+body.scene-title .titlebox{animation:titleArrival 1s cubic-bezier(.18,.86,.22,1.06) both}
+body.scene-title h1{animation:titlePulse 4s ease-in-out 1s infinite}
+.title-hint { margin-top:16px; color:#85aaa9; font-size:12px; letter-spacing:.08em; }
+.title-fauna { position:absolute; inset:0; z-index:1; pointer-events:none; }
+.tf { position:absolute; display:block; background-repeat:no-repeat; background-size:contain; background-position:center; filter:drop-shadow(0 22px 22px #000d); opacity:.84; }
+.tf-squid { left:-4vw; top:5%; width:34vw; height:44vh; background-image:url('assets/enemies/giant-squid.webp'); animation:faunaFloat 6s ease-in-out infinite; }
+.tf-angler { right:1vw; bottom:3%; width:25vw; height:30vh; background-image:url('assets/enemies/anglerfish.webp'); transform:scaleX(-1); animation:faunaFloatRight 5.2s ease-in-out infinite; }
+.tf-shark { right:-5vw; top:5%; width:34vw; height:38vh; background-image:url('assets/enemies/goblin-shark.webp'); transform:scaleX(-1); animation:faunaFloatRight 7s ease-in-out -2s infinite; }
+.tf-oarfish { left:4vw; bottom:-3%; width:25vw; height:42vh; background-image:url('assets/enemies/oarfish.webp'); animation:faunaFloat 6.5s ease-in-out -1s infinite; }
+@keyframes titleSigil { 50% { transform:translateY(-7px) rotate(3deg); filter:drop-shadow(0 0 28px #62fff2cc); } }
+@keyframes startGlow { 50% { filter:brightness(1.12); box-shadow:0 0 0 3px #4b310dcc,0 0 42px #f2c85b99,0 8px 20px #000b,inset 0 1px #fff8ce; } }
+@keyframes faunaFloat { 50% { transform:translateY(-12px) rotate(-2deg); } }
+@keyframes faunaFloatRight { 50% { transform:scaleX(-1) translateY(-12px) rotate(-2deg); } }
+@keyframes faunaSceneIn{from{opacity:0;transform:scale(1.08);filter:blur(8px)}to{opacity:1;transform:none;filter:none}}
+@keyframes titleArrival{0%{opacity:0;transform:translateY(38px) scale(.92);filter:blur(8px)}65%{opacity:1;transform:translateY(-4px) scale(1.01);filter:none}100%{transform:none}}
+@keyframes titlePulse{50%{filter:drop-shadow(0 3px 1px #000) drop-shadow(0 0 34px #56fff099);letter-spacing:.075em}}
+@keyframes startSweep{0%,54%{left:-28%;opacity:0}64%{opacity:1}82%,100%{left:118%;opacity:0}}
+@media(max-width:700px) {
+  body.scene-title #ocean { background-position:center; }
+  body.scene-title #title { padding:16px; }
+  .titlebox { width:min(82vw,390px); padding:32px 14px 30px; }
+  .sigil { width:62px; height:62px; font-size:40px; }
+  body.scene-title h1 { font-size:clamp(34px,12vw,54px); letter-spacing:.055em; }
+  body.scene-title h1 em { font-size:.25em; letter-spacing:.2em; }
+  .subtitle { margin:12px 0 22px; font-size:9px; }
+  .start { min-width:220px; font-size:15px; }
+  .title-hint { font-size:10px; }
+  .tf-squid { left:-7vw; top:1%; width:49vw; height:32vh; opacity:.86; background-position:left center; }
+  .tf-shark { right:-7vw; top:9%; width:47vw; height:27vh; opacity:.84; background-position:right center; }
+  .tf-angler { right:-5vw; bottom:1%; width:43vw; height:25vh; opacity:.78; background-position:right center; }
+  .tf-oarfish { left:-4vw; bottom:-1%; width:40vw; height:31vh; opacity:.76; background-position:left center; }
+  .version { z-index:4; bottom:10px; color:#87a3a5; }
+}
+@media(prefers-reduced-motion:reduce) { .sigil,.start,.tf,.title-fauna,body.scene-title .titlebox,body.scene-title h1,.start::after { animation:none!important; } }
+
+/* Keep the title dramatic while letting the surrounding animals read on phones. */
+body.scene-title #ocean{background-image:linear-gradient(180deg,#052c3a08 0%,#010b1230 58%,#01030977 100%),url('assets/title-abyss-v2.webp');filter:brightness(1.34) saturate(1.2) contrast(1.04)}
+body.scene-title #title::before{background:radial-gradient(ellipse at center,#02060a08 0 24%,#01040a46 72%,#0008 120%);box-shadow:inset 0 0 80px #0007}
+.tf{opacity:.98;filter:brightness(1.25) saturate(1.14) drop-shadow(0 14px 12px #0009) drop-shadow(0 0 10px #80e8ee38)}
+@media(max-width:700px){body.scene-title #ocean{filter:brightness(1.42) saturate(1.25);background-position:center}.tf-squid{left:-3vw;width:55vw;opacity:1}.tf-shark{right:-3vw;width:53vw;opacity:1}.tf-angler{right:-1vw;width:48vw;opacity:.98}.tf-oarfish{left:0;width:45vw;opacity:.96}}
+
+/* Title archive and settings hubs */
+#titleLegacyActions[hidden],body.scene-title #soundBtn{display:none!important}.title-hub-button{min-width:138px!important;min-height:46px!important;padding:10px 18px!important;border-color:#5a7e86!important;background:linear-gradient(180deg,#102831e8,#07141be8)!important;color:#d8efed!important;font-size:14px!important}.title-hub-button:active{border-color:#dfbd68!important}.title-hub-modal{z-index:58}.title-hub-panel{width:min(92vw,540px)!important;padding:0!important;overflow:hidden!important;text-align:left!important}.title-hub-panel>.modal-shell-head{padding:18px 19px 13px}.title-hub-panel>.modal-shell-head small{display:block;color:#6ecfc8;font:700 11px Cinzel;letter-spacing:.15em}.title-hub-panel>.modal-shell-head h2{margin:3px 0 0}.title-hub-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px;padding:14px!important}.title-hub-grid>button{display:flex;align-items:center;gap:11px;min-height:72px;padding:10px 12px;border:1px solid #45656d;border-radius:9px;background:linear-gradient(145deg,#10242c,#08141a);color:#dcebea;text-align:left;cursor:pointer}.title-hub-grid>button:active{transform:translateY(1px);filter:brightness(1.25)}.title-hub-grid>button>i{display:grid;place-items:center;flex:0 0 40px;width:40px;height:40px;border-radius:50%;background:#173740;color:#91eee7;font-style:normal;font-size:21px}.title-hub-grid>button span{min-width:0}.title-hub-grid>button b,.title-hub-grid>button small{display:block}.title-hub-grid>button b{color:#f0d696;font-size:15px}.title-hub-grid>button small{margin-top:3px;color:#8eadb0;font-size:12px;line-height:1.3}.title-hub-grid>button:disabled{cursor:not-allowed;filter:grayscale(.8);opacity:.42}.settings-hub-panel{width:min(92vw,430px)!important}.settings-hub-grid{grid-template-columns:1fr}.settings-hub-grid>button.danger{border-color:#7b4652;background:linear-gradient(145deg,#29131a,#120a0e)}.settings-hub-grid>button.danger b{color:#f0bbc3}.settings-hub-grid>button.active{border-color:#64dcd4;box-shadow:inset 0 0 0 1px #64dcd433}.title-hub-panel>.modal-shell-foot{padding:0 14px 14px}.title-hub-panel>.modal-shell-foot .btn{width:100%;min-height:46px}@media(max-width:560px){.title-hub-button{min-width:128px!important;min-height:48px!important}.title-hub-grid{gap:7px;padding:10px!important}.title-hub-grid>button{min-height:76px;padding:9px 8px;gap:7px}.title-hub-grid>button>i{flex-basis:34px;width:34px;height:34px;font-size:18px}.title-hub-grid>button b{font-size:14px}.title-hub-grid>button small{font-size:12px}}
+.title-library-grid{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr));width:min(340px,calc(100vw - 44px));max-width:340px!important;gap:7px!important}.title-library-grid .title-tool{width:100%;min-height:44px;padding:8px 9px;font-size:12px}.title-library-grid .title-tool.locked{opacity:.45;filter:grayscale(.85);cursor:not-allowed}.title-library-grid #titleSettingsMenu{border-color:#71664d;color:#ead9a8;background:#17150fd9}@media(max-width:560px){.title-library-grid{width:min(310px,calc(100vw - 34px));max-width:310px!important}.title-library-grid .title-tool{min-height:43px;font-size:11px}}

@@ -1,0 +1,2 @@
+button,.card,.node,.choice{-webkit-tap-highlight-color:transparent;touch-action:manipulation}.safari-save-note{font-size:11px;color:#8fb0b4}.titlebox{pointer-events:auto}#title:before{pointer-events:none}
+@supports(-webkit-touch-callout:none){button{cursor:pointer;-webkit-user-select:none}.modal.on{transform:translateZ(0)}.panel{-webkit-overflow-scrolling:touch}.quick-nav{transform:translateZ(2px)}}

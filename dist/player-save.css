@@ -1,0 +1,19 @@
+#playerSprite.creature.player {
+  min-width:190px;
+  background-image:url('assets/player-armored-tuna.webp')!important;
+  background-size:contain!important;
+  background-position:center!important;
+  background-repeat:no-repeat!important;
+}
+.title-actions { display:flex; flex-direction:column; align-items:center; gap:11px; }
+.titlebox,.title-actions,#newGame,#continueGame { pointer-events:auto!important; }
+#newGame,#continueGame { -webkit-user-select:none; user-select:none; cursor:pointer; }
+.title-actions .start { min-width:250px; }
+.title-utility{display:flex;flex-wrap:wrap;justify-content:center;gap:8px;margin-top:2px;max-width:520px}.title-tool{min-height:40px;padding:8px 11px;border-color:#486974;background:#06141dcc;color:#bfe3e0;font-size:11px;letter-spacing:.02em}.title-tool.danger{border-color:#78505c;color:#dcaeb7;background:#160b11d9}.title-tool:active{transform:scale(.97)}#resetDataModal{z-index:52}.reset-panel{width:min(90vw,430px);border-color:#805363}.reset-warning{margin:14px 0;padding:12px;border:1px solid #734754;border-radius:8px;background:#170b11;color:#efbcc6!important;font-weight:800}.reset-actions{display:flex;justify-content:center;gap:9px}.reset-confirm{border-color:#bd6b78;background:linear-gradient(#9d4252,#5e1e2c);color:white}
+.start-new { min-width:210px; padding:8px 14px; border-color:#668087; background:#07131bd9; color:#b9d2d3; }
+#continueGame[hidden] { display:none!important; }
+@media(max-width:700px){#playerSprite.creature.player{min-width:135px}.titlebox{padding-top:20px;padding-bottom:20px;backdrop-filter:none}.title-actions .start{min-width:220px;min-height:50px}.start-new{min-width:210px;min-height:46px}.title-utility{gap:6px;max-width:300px}.title-tool{padding:7px 8px;font-size:10px;flex:1 1 42%}#newGame,#continueGame,#titleBestiary,#titleCardCodex,#titleBgmGallery,#resetAllData{position:relative;z-index:20;touch-action:manipulation}}
+.suspend-run{position:fixed;z-index:45;left:10px;top:104px;min-width:76px;min-height:38px;padding:7px 10px;border:1px solid #66858b;border-radius:999px;background:#07151deb;color:#c8e8e6;font-size:12px;font-weight:900;box-shadow:0 5px 16px #0009;cursor:pointer;touch-action:manipulation}.suspend-run:active{transform:scale(.97)}body.scene-title .suspend-run{display:none}@media(min-width:701px){.suspend-run{top:72px;left:16px}}@media(max-width:370px){.suspend-run{min-width:64px;padding-inline:7px;font-size:11px}}
+.suspend-run{z-index:19}
+.quick-nav .suspend-run{position:static;z-index:auto;min-width:0;min-height:38px;padding:5px 7px;border-radius:7px;box-shadow:none;font-size:10px;white-space:nowrap}
+#musicCredit{position:absolute;left:50%;bottom:max(10px,env(safe-area-inset-bottom));transform:translateX(-50%);z-index:4;color:#9ccbd0;font-size:11px;line-height:1.3;text-decoration:none;opacity:.72;white-space:nowrap}#musicCredit:focus-visible,#musicCredit:hover{opacity:1;text-decoration:underline}@media(max-width:480px){#musicCredit{font-size:10px;max-width:92vw;overflow:hidden;text-overflow:ellipsis}}

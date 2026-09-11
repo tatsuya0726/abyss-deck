@@ -1,0 +1,37 @@
+.creature.enemy-art.enemyHit{animation:hit .28s ease,enemyIdle 3.2s ease-in-out .3s infinite!important}
+.creature.player.playerHit{animation:phit .34s ease,swim 3s ease-in-out .36s infinite!important}
+.sheet-boss{background-image:url('assets/enemies-boss-cutout.webp')!important;mix-blend-mode:normal!important}
+.card-use-ghost{animation:cardUseGhost .46s cubic-bezier(.2,.75,.25,1) forwards!important;transform-origin:center!important}@keyframes cardUseGhost{45%{transform:translateY(-90px) scale(.9) rotate(3deg);opacity:1;filter:brightness(1.6) drop-shadow(0 0 22px #63fff0)}100%{transform:translateY(-210px) scale(.38) rotate(9deg);opacity:0}}
+@media(prefers-reduced-motion:reduce){.creature.enemy-art,.creature.player{animation:none!important}.enemy-attack{animation:none!important}}
+
+/* Deeper motion language: short, transform-led effects that remain smooth on mobile Safari. */
+.screen.on{animation:screenDiveIn .42s cubic-bezier(.2,.75,.25,1) both}
+.modal.on{animation:veilIn .24s ease-out both}
+.modal.on .panel{animation:panelRise .46s cubic-bezier(.18,.86,.24,1.08) both}
+.modal.on .bigicon{animation:iconAwaken .75s cubic-bezier(.2,.8,.2,1) both}
+.modal.on .choice{position:relative;overflow:hidden;animation:choiceRise .4s cubic-bezier(.2,.78,.24,1) both}
+.modal.on .choice:nth-child(2){animation-delay:.07s}.modal.on .choice:nth-child(3){animation-delay:.14s}.modal.on .choice:nth-child(4){animation-delay:.21s}
+.choice::after{content:"";position:absolute;inset:-40% auto -40% -35%;width:22%;background:linear-gradient(90deg,transparent,#aafff366,transparent);transform:skewX(-20deg);opacity:0;pointer-events:none}
+.choice:hover::after,.choice:focus-visible::after{animation:choiceGleam .65s ease-out}.choice:active{transform:scale(.975);border-color:#b8fff8!important;box-shadow:0 0 22px #55e8db55,inset 0 0 20px #4ce1d522}
+.rewardCard{animation:rewardReveal .48s cubic-bezier(.2,.82,.2,1) both}.rewardCard:nth-child(2){animation-delay:.08s}.rewardCard:nth-child(3){animation-delay:.16s}
+.node.available:not(.anomaly):not(.current){animation:nodeBreathe 2.3s ease-in-out infinite}.node:active{filter:brightness(1.65);transform:translate(-50%,-50%) scale(.86)!important}
+.creature.player:not(.playerHit){filter:drop-shadow(0 16px 12px #000)!important}
+.creature.player.playerHit{animation:playerHitLux .42s cubic-bezier(.2,.65,.25,1),swim 3s ease-in-out .44s infinite!important}
+.creature.enemy-art.enemyHit{animation:enemyHitLux .34s cubic-bezier(.2,.7,.25,1),enemyIdle 3.2s ease-in-out .36s infinite!important}
+.impact-ring{position:absolute;left:50%;top:50%;z-index:9;width:28px;height:28px;border:4px solid #eaffff;border-radius:50%;pointer-events:none;animation:impactRing .58s ease-out forwards;box-shadow:0 0 22px #64fff5, inset 0 0 12px #fff}.player-impact{border-color:#ffb2b9;box-shadow:0 0 24px #ff4055,inset 0 0 12px #fff}
+.impact-bubble{position:absolute;left:50%;top:50%;z-index:8;width:7px;height:7px;border:1px solid #dfffff;border-radius:50%;background:#7df9ee88;pointer-events:none;animation:impactBubble .62s ease-out forwards}
+.multi-damage{display:flex!important;flex-direction:column;align-items:center;gap:0}.multi-damage strong{font:inherit}.multi-damage small{font:900 11px sans-serif;color:#9ffff5;letter-spacing:.08em;text-shadow:0 1px 3px #001}.hit-counter{position:absolute;z-index:12;left:50%;top:20%;transform:translateX(-50%);padding:4px 9px;border:1px solid #8afff4;border-radius:999px;background:#052126e8;color:#dffffb;font:900 10px sans-serif;white-space:nowrap;pointer-events:none;box-shadow:0 0 16px #3ffff599;animation:hitCounter .5s ease-out forwards}
+@keyframes screenDiveIn{from{opacity:0;transform:scale(1.018) translateY(-8px);filter:brightness(.55)}to{opacity:1;transform:none;filter:none}}
+@keyframes veilIn{from{opacity:0}to{opacity:1}}
+@keyframes panelRise{from{opacity:0;transform:translateY(26px) scale(.95);filter:brightness(.65)}to{opacity:1;transform:none;filter:none}}
+@keyframes iconAwaken{0%{opacity:0;transform:scale(.45) rotate(-12deg);filter:brightness(3) drop-shadow(0 0 30px #7ff)}60%{opacity:1;transform:scale(1.12) rotate(3deg)}100%{transform:none}}
+@keyframes choiceRise{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
+@keyframes choiceGleam{0%{left:-35%;opacity:0}25%{opacity:1}100%{left:115%;opacity:0}}
+@keyframes rewardReveal{from{opacity:0;transform:translateY(34px) rotate(-2deg) scale(.88);filter:brightness(2)}to{opacity:1;transform:none;filter:none}}
+@keyframes nodeBreathe{50%{filter:brightness(1.25);box-shadow:0 0 18px #65e8dd55,0 0 0 5px #061016}}
+@keyframes playerHitLux{0%,100%{transform:translateX(0);filter:drop-shadow(0 16px 12px #000)}24%{transform:translateX(-24px) rotate(-4deg);filter:brightness(3) saturate(1.7) drop-shadow(0 0 28px #ff334d)}52%{transform:translateX(12px) rotate(2deg);filter:brightness(.7) saturate(1.2) drop-shadow(0 0 18px #a50019)}76%{transform:translateX(-5px);filter:brightness(1.25) drop-shadow(0 12px 12px #000)}}
+@keyframes enemyHitLux{0%,100%{transform:translateX(0) scaleX(var(--face));filter:drop-shadow(0 16px 12px #000)}35%{transform:translateX(28px) rotate(7deg) scaleX(var(--face));filter:brightness(3) drop-shadow(0 0 28px #fff)}70%{transform:translateX(-12px) scaleX(var(--face));filter:brightness(.85) drop-shadow(0 0 18px #4ff)}}
+@keyframes impactRing{0%{opacity:1;transform:translate(-50%,-50%) scale(.25)}100%{opacity:0;transform:translate(-50%,-50%) scale(4.2)}}
+@keyframes impactBubble{0%{opacity:1;transform:translate(-50%,-50%) rotate(var(--burst-angle)) translateX(5px) scale(.5)}100%{opacity:0;transform:translate(-50%,-50%) rotate(var(--burst-angle)) translateX(76px) scale(1.45)}}
+@keyframes hitCounter{0%{opacity:0;transform:translate(-50%,8px) scale(.8)}28%{opacity:1;transform:translate(-50%,0) scale(1.08)}100%{opacity:0;transform:translate(-50%,-20px) scale(1)}}
+@media(prefers-reduced-motion:reduce){.screen.on,.modal.on,.modal.on .panel,.modal.on .bigicon,.modal.on .choice,.rewardCard,.node.available{animation:none!important}.impact-ring,.impact-bubble{display:none}}
