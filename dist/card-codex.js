@@ -24,7 +24,12 @@ const PHOTO_ART={
   lantern:'assets/cards/plush-lantern.webp',
   bite:'assets/cards/plush-bite.webp',
   toxicarmor:'assets/cards/plush-toxicarmor.webp',
-  shellgrowth:'assets/cards/plush-shellgrowth.webp'
+  shellgrowth:'assets/cards/plush-shellgrowth.webp',
+  venomfang:'assets/cards/plush-venomfang.webp',
+  shell:'assets/cards/plush-shell.webp',
+  ray:'assets/cards/plush-ray.webp',
+  mimic:'assets/cards/plush-mimic.webp',
+  reefstance:'assets/cards/plush-reefstance.webp'
 };
 function photoOf(k){return PHOTO_ART[keyOf(k)]||''}
 function keyOf(k){return String(k||'').replace(/[+*]+$/,'')}
