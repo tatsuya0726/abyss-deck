@@ -30,7 +30,6 @@ const PHOTO_ART={
   ray:'assets/cards/plush-ray.webp',
   mimic:'assets/cards/plush-mimic.webp',
   reefstance:'assets/cards/plush-reefstance.webp',
-  scale:'assets/cards/plush-scale.webp',
   curseward:'assets/cards/plush-curseward.webp',
   treasuremap:'assets/cards/plush-treasuremap.webp',
   current:'assets/cards/plush-current.webp',
