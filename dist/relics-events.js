@@ -1,33 +1,33 @@
 (()=>{'use strict';
 const RELICS={
- '漂流者の糸':['🧵','各ターン、カード効果で初めてカードを捨てた時、1枚引く。ターン終了時は発動しない。'],
- '供物の真珠':['⚫','各ターン、手札から初めてカードを廃棄した時、4ブロック。'],
- '蓄潮石':['💎','ターン終了時の余ったエナジー1につき、次のターン開始時に3ブロック（最大6・他の予約と合計上限12）。'],
- '呪紋の貝殻':['🐚','戦闘開始時、戦闘中の呪い1枚につき2ブロック（最大6）。'],
+ '漂流者の糸':['🧵','戦闘開始時、敵に脱力1を付与する。'],
+ '供物の真珠':['⚫','戦闘開始時、敵に弱体1を付与する。'],
+ 'サイドパック':['💎','戦闘開始時、カードを追加で2枚引く。'],
+ '呪紋の外殻':['🐚','戦闘開始時、棘＋3を得る（この戦闘中ずっと）。'],
  '深海の鍵':['🔱','第一海域のボスを倒した証。第二海域への道を開く。'],
  '深淵の紋章':['🌑','第二層のボスを倒した証。第三層への道を開き、最大HPを5増やす。'],
  '航海羅針盤':['🧭','戦闘に勝つたび、もらえるゴールドが8増える。'],
  '黄金炉':['🔥','戦闘の最初のターンだけ、エナジーが1増える。'],
  '潮流の牙':['🦷','すべての攻撃カードのダメージが1増える。'],
  '珊瑚の護符':['🪸','カードで回復するHPが2増える。'],
- '古代の甲殻':['🛡️','戦闘開始時に4ブロックを得る。'],
+ '古代の甲殻':['🛡️','戦闘開始時に10ブロックを得る。'],
  '深海時計':['⏱️','戦闘の最初のターンに、カードを追加で1枚引く。'],
  '黒潮の鱗':['🌊','3の倍数のターンに、エナジーが1増える。'],
  '捕食者の眼':['👁️','毒を受けている敵への攻撃ダメージが2増える。'],
  '毒腺の指輪':['💍','カードで敵に与える毒が1増える。'],
  '深海金貨':['🔮','各戦闘で初めてレアまたは深淵カードを使うと、ゴールドを4得る。'],
  'オウムガイの護殻':['🐚','まもりカードを使うたび、得られるブロックが1増える。'],
- '皇帝の骨片':['🦴','入手時に最大HPとHPが2増える。'],
- '商人アンコウの提灯':['🏮','ショップのすべての価格が20%安くなる。']
+ '皇帝の骨片':['🦴','入手時に最大HPとHPが7増える。'],
+ '防毒ジャケット':['🦺','敵の毒針の追加ダメージをブロックできるようになる。']
 };
 const BOSS_RELICS={
- '呪海の炉':['🕯️','毎ターンのエナジー＋1。ただし、毎戦闘の開始時に捨て札へ呪いを1枚追加する。'],
- '六眼の王冠':['👁️','毎ターンのエナジー＋1。ただし、手札の上限が6枚になる。'],
- '深淵炉心':['🔥','毎ターンのエナジーが1増える。ただし、1ターンに使えるカードは3枚まで。'],
- '捕食王の冠':['👑','攻撃カードのダメージが3増える。ただし、カードの回復量が2減る。'],
+ '呪海の炉':['🕯️','毎ターンのエナジー＋1。ただし、戦闘開始時に手札へ呪いを1枚追加する。'],
+ '四皇の王冠':['👁️','毎ターンのエナジー＋1。ただし、毎ターンのドロー枚数が4枚固定になる（カード効果では増やせる）。'],
+ '深淵炉心':['🔥','毎ターンのエナジーが1増える。ただし、1ターンに使えるカードは4枚まで。'],
+ '捕食王の冠':['👑','攻撃カードのダメージが3増える。ただし、カードのブロック量が2減る。'],
  '巨鯨の心臓':['🫀','入手時に最大HPとHPが18増える。ただし、戦闘開始時にHPを4失う。'],
  '反転鱗':['🔃','まもりカードのブロックが3増える。ただし、攻撃カードのダメージが2減る。'],
- '沈鐘':['🔔','最初のターンにカードを2枚追加で引く。ただし、そのターンのエナジーが1減る。'],
+ 'VIPカード':['🏮','ショップのすべての価格が30%安くなる。'],
  '黄金王座':['🫧','戦闘勝利でもらえるゴールドが10増える。ただし、入手時に最大HPが8減る。']
 };
 const NORMAL_RELICS=Object.keys(RELICS);
@@ -35,7 +35,7 @@ const REWARD_BLOCKED=new Set(['深海の鍵','深淵の紋章']);
 Object.assign(RELICS,BOSS_RELICS);
 window.ABYSS_RELICS=RELICS;
 function game(){return window.getAbyssGame?.()}
-function addRelic(name,announce=true){let g=game(),r=RELICS[name];if(!g||!r||g.relic.some(x=>x[1]===name))return false;g.relic.push([r[0],name]);if(name==='皇帝の骨片'){g.max+=2;g.hp+=2}if(announce)window.showRelicAcquired?.(name);return true}window.acquireAbyssRelic=addRelic;
+function addRelic(name,announce=true){let g=game(),r=RELICS[name];if(!g||!r||g.relic.some(x=>x[1]===name))return false;g.relic.push([r[0],name]);if(name==='皇帝の骨片'){g.max+=7;g.hp+=7}if(announce)window.showRelicAcquired?.(name);return true}window.acquireAbyssRelic=addRelic;
 function addCard(pool,title='イベントで獲得'){pool=window.extendAbyssCardPool(pool,pool===rare?'rare':'abyss');let g=game();if(g){let k=pool[Math.random()*pool.length|0];g.deck.push(k);window.showCardAcquired?.(k,title)}}
 function showRelics(){let g=game(),owned=new Set((g?.relic||[]).map(r=>r[1])),titleOpen=document.getElementById('title')?.classList.contains('on'),ownedOnly=!titleOpen,entries=Object.entries(RELICS).filter(([name])=>!ownedOnly||owned.has(name)),modal=document.getElementById('collectionModal'),grid=document.getElementById('collectionGrid');document.getElementById('collectionTitle').textContent=ownedOnly?'所持レリック':'レリック図鑑・深淵の記憶';document.getElementById('collectionSub').textContent=ownedOnly?`現在の潜航で入手したレリック ${owned.size}個`:`レリックの効果を確認できます。入手 ${owned.size}/${Object.keys(RELICS).length}`;grid.className='modal-shell-body relic-grid';grid.innerHTML=entries.length?'<h3 class="collection-section">🔱 レリック</h3>'+entries.map(([name,[icon,effect]])=>`<article class="relic-card owned ${BOSS_RELICS[name]?'boss-relic-card':''}"><div class="relic-icon">${icon}</div><div><div class="relic-name">${name}${BOSS_RELICS[name]?'<span class="boss-relic-mark">👑 ボスレリック</span>':''}</div><div class="relic-effect">${effect}</div><div class="relic-lock">入手済み</div></div></article>`).join('')+(ownedOnly?'':window.getAbyssMemoryMarkup?.()||''):`<p class="empty-relic-list">まだレリックを入手していません。</p>`;modal.classList.add('on');window.applyFuri?.(modal)}window.openAbyssRelicCollection=showRelics;
 let relicReveal=document.createElement('div');relicReveal.className='modal';relicReveal.id='relicRevealModal';relicReveal.innerHTML='<div class="panel relic-reveal"><div class="bigicon" id="relicRevealIcon"></div><h2 id="relicRevealName"></h2><p id="relicRevealEffect"></p><button class="btn gold" id="relicRevealClose">効果を確認</button></div>';document.body.appendChild(relicReveal);window.showRelicAcquired=name=>{let r=RELICS[name];if(!r)return;document.getElementById('relicRevealIcon').textContent=r[0];document.getElementById('relicRevealName').textContent=`レリック「${name}」を獲得`;document.getElementById('relicRevealEffect').textContent=r[1];relicReveal.classList.add('on');window.applyFuri?.(relicReveal)};function closeRelicReveal(){relicReveal.classList.remove('on');setTimeout(()=>window.playPendingAbyssLayerIntro?.(),120)}document.getElementById('relicRevealClose').onclick=closeRelicReveal;relicReveal.onclick=e=>{if(e.target===relicReveal)closeRelicReveal()};
