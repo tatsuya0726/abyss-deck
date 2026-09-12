@@ -16,7 +16,7 @@ lantern:{c:1,en:0,dr:1,hu:0,futureEnergy:1,generateCurse:1,upgrade:{generateCurs
 voidjaw:{c:1,d:0,mp:0,choice:'curseHand',upgrade:{c:-1},t:'手札のカード1枚を選び、この戦闘中だけ呪いカードに変換する。'},
 shadoweel:{c:2,p:0,b:0,spendPoison:0,curseScale:6,upgrade:{curseScale:2},t:'戦闘中の呪い1枚につき6ダメージと6ブロック。',upgradeText:'戦闘中の呪い1枚につき8ダメージと8ブロック。'},
 coelacanth:{c:3,s:0,he:0,doubleFirstPower:1,retain:0,exhaust:1,upgrade:{retain:1},t:'この戦闘中、次のターンから各ターン最初に使う別のカードが、1回分のコストで2回発動する。使い切り。',upgradeText:'この戦闘中、次のターンから各ターン最初に使う別のカードが、1回分のコストで2回発動する。保留。使い切り。'},
-cthulhu:{c:2,d:0,s:0,graveSize:0,turnDrawPower:1,upgrade:{c:-1},t:'この戦闘中、毎ターン開始時にカードを追加で1枚引く。'},
+cthulhu:{c:2,d:0,s:0,graveSize:0,turnDrawPower:1,exhaust:1,upgrade:{c:-1},t:'この戦闘中、毎ターン開始時にカードを追加で1枚引く。使い切り。'},
 venombloom:{c:1,b:4,doublePoison:0,poisonBloom:8,upgrade:{b:3},t:'4ブロック。現在の毒の半分（切り上げ・最大8）を追加で与える。'},
 moltscale:{c:0,b:3,exhaust:0,retain:1,upgrade:{b:2},t:'3ブロック。使わずにターンを終えると、このカードは手札に残る。'}
 };
