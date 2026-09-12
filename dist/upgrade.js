@@ -33,7 +33,7 @@ const BEASTS=[
  {n:'深淵の守護者・クトゥル＝アビス',file:'abyss-guardian-cthulhu-v2.webp',face:0,gen:1,desc:'沈没都市を甲殻として背負う巨大な深海邪神。六つの儀式で潮圧、毒喰い、反応攻撃を重ね、虚無を抱く胸から深海崩壊を放つ。'},
  {n:'鎖顎鮫・グラウド',file:'elite-chain-shark-graud.webp',face:0,gen:1,desc:'朽ちた鎖を全身に巻きつけたサメ。噛みつくたびに鎖が軋み、こちらの守りごと引きちぎる。'},
  {n:'閃光蝦・ライジェル',file:'elite-mantis-shrimp-raizeru.webp',face:0,gen:1,desc:'発光する一対の巨大な鋏を持つ深海のシャコ。拳を重ねるほど衝撃が育ち、大きな一撃が飛んでくる。'},
- {n:'鋼骸鮫・ゾルグ',file:'elite-steel-shark-zorugu.webp',face:0,gen:1,desc:'鋼の装甲と青い雷紋をまとうサメ。装甲が帯びる余波が、こちらのエナジーを乱す。'},
+ {n:'鋼骸鮫・ゾルグ',file:'elite-steel-shark-zorugu.webp',face:0,gen:1,desc:'鋼の装甲と青い雷紋をまとうサメ。装甲が帯びる余波が、こちらのエナジーを乱す。装甲の棘に攻撃を当てると反撃を受ける。'},
  {n:'白霜大蟹・スノウクロウ',file:'elite-snow-crab-snowclaw.webp',face:0,gen:1,desc:'白い体毛と巨大な鋏を持つ大蟹。凍てつく鋏の一撃は、力そのものを凍らせる。'},
  {n:'電紋鮟鱇・ヴォルティア',file:'elite-volt-anglerfish-voltia.webp',face:0,gen:1,desc:'雷紋の光を放つ王冠状のヒレを持つ深海魚。放電の灯りが毒すら喰らい、殻へと変える。'},
  {n:'古骸主・ノーティラム',file:'elite-nautilus-lord-nautilam.webp',face:0,gen:1,desc:'古い甲殻に触腕を宿すアンモナイトの主。分厚い殻に受けた衝撃を、そのまま撃ち返してくる。'},
