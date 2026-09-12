@@ -12,7 +12,7 @@ tidewall:{c:2,b:10,futureBlock:6,upgrade:{b:4},t:'10ブロック。次のター�
 reefstance:{c:1,def:0,b:4,bankBlock:8,upgrade:{b:3},t:'4ブロック。敵の行動後に残ったブロックを最大8、次のターンへ持ち越す（蓄積不可）。'},
 mimic:{c:1,s:0,dr:0,choice:'dredge',upgrade:{c:-1},t:'山札の上3枚から1枚を選んで手札へ。残りは捨て札へ。'},
 tsunami:{c:2,d:10,b:8,alternate:6,dr:0,upgrade:{d:3,b:2},t:'10ダメージ。8ブロック。直前が防御ならダメージ＋6、攻撃ならブロック＋6。'},
-lantern:{c:1,en:0,dr:2,hu:0,futureEnergy:2,generateCurse:1,upgrade:{generateCurse:1},t:'捨て札に呪いを1枚生成。カードを2枚引く。次のターンのエナジー＋2。',upgradeText:'捨て札に呪いを2枚生成。カードを2枚引く。次のターンのエナジー＋2。'},
+lantern:{c:1,en:0,dr:1,hu:0,futureEnergy:2,generateCurse:1,upgrade:{generateCurse:1},t:'捨て札に呪いを1枚生成。カードを1枚引く。次のターンのエナジー＋2。',upgradeText:'捨て札に呪いを2枚生成。カードを1枚引く。次のターンのエナジー＋2。'},
 voidjaw:{c:1,d:0,mp:0,choice:'curseHand',upgrade:{c:-1},t:'手札のカード1枚を選び、この戦闘中だけ呪いカードに変換する。'},
 shadoweel:{c:2,p:0,b:0,spendPoison:0,curseScale:6,upgrade:{curseScale:2},t:'戦闘中の呪い1枚につき6ダメージと6ブロック。',upgradeText:'戦闘中の呪い1枚につき8ダメージと8ブロック。'},
 coelacanth:{c:3,s:0,he:0,doubleFirstPower:1,retain:0,exhaust:1,upgrade:{retain:1},t:'この戦闘中、次のターンから各ターン最初に使う別のカードが、1回分のコストで2回発動する。使い切り。',upgradeText:'この戦闘中、次のターンから各ターン最初に使う別のカードが、1回分のコストで2回発動する。保留。使い切り。'},

@@ -3,7 +3,7 @@ const $=s=>document.querySelector(s);
 const COMMON=['bite','dartfish','shell','cleaner','ray'];
 const UNCOMMON=['school','ink','puffer','current','heal','electric','octoguard','remora','sharkrush','jelly','tidewall','reefstance','shellgrowth','shoalguard','followbite','moltscale','venombloom','shoalstep','razorcurrent','venomfang','toxicarmor','weakambush','scalecharge','hunterfocus'];
 const RARE=['marlin','whale','mimic','tsunami','manta','leviathan','abyssarmor'];
-const ABYSS=['lantern','voidjaw','coelacanth','shadoweel','cthulhu','abyssdance'];
+const ABYSS=['lantern','voidjaw','coelacanth','shadoweel','cthulhu','abyssdance','curseward'];
 const BOSS_RELICS=new Set(['呪海の炉','六眼の王冠','深淵炉心','捕食王の冠','巨鯨の心臓','反転鱗','沈鐘','黄金王座','深海の鍵','深淵の紋章']);
 const RELIC_PRICES={'漂流者の糸':100,'供物の真珠':95,'蓄潮石':100,'呪紋の貝殻':85,'航海羅針盤':95,'黄金炉':115,'潮流の牙':110,'珊瑚の護符':90,'古代の甲殻':85,'深海時計':105,'黒潮の鱗':100,'捕食者の眼':105,'毒腺の指輪':105,'深海金貨':80,'オウムガイの護殻':75,'皇帝の骨片':65,'商人アンコウの提灯':120};
 let advanceAfterClose=false,shopRemovedThisVisit=false,stock=null;
