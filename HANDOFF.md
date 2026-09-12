@@ -68,3 +68,7 @@ Claude単体では、このChatGPT Sitesプロジェクトへ直接公開でき�
 - アセンション解放カードを共通カード表示へ統一
 - 深淵イベントの獲得結果カードを中央配置
 
+## 動作確認記録
+
+- 2026-09-12：Claude側でファイル読み取り・編集・`node tools/verify-project.cjs`・`node tools/local-server.cjs` によるローカル起動・`git push` を実施し、いずれも動作することを確認しました。
+
