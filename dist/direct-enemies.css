@@ -22,9 +22,27 @@
   filter: saturate(1.08) contrast(1.06) drop-shadow(0 20px 18px #000) drop-shadow(0 0 18px #4bcbd033);
 }
 
+.arena .unit.elite-unit {
+  width: min(42%, 340px);
+  max-width: 340px;
+}
+
+#enemySprite.elite-enemy {
+  width: 100%;
+  min-width: 220px;
+  height: clamp(155px, 23vh, 230px);
+  margin-inline: auto;
+  background-size: contain !important;
+}
+
 @media (max-width: 600px) {
   .arena .unit.boss-unit {
     width: 54%;
+    max-width: none;
+  }
+
+  .arena .unit.elite-unit {
+    width: 49%;
     max-width: none;
   }
 
@@ -37,5 +55,11 @@
     width: 100%;
     min-width: 175px;
     height: clamp(145px, 21vh, 210px);
+  }
+
+  #enemySprite.elite-enemy {
+    width: 100%;
+    min-width: 160px;
+    height: clamp(150px, 19vh, 185px);
   }
 }
