@@ -1,7 +1,7 @@
 (()=>{'use strict';
 const $=s=>document.querySelector(s);
-const COMMON=['bite','dartfish','shell','cleaner','ray'];
-const UNCOMMON=['school','ink','puffer','current','heal','electric','octoguard','remora','sharkrush','jelly','tidewall','reefstance','shellgrowth','shoalguard','followbite','moltscale','venombloom','shoalstep','razorcurrent','venomfang','toxicarmor','weakambush','scalecharge','hunterfocus'];
+const COMMON=['bite','dartfish','shell','cleaner','ray','puffer'];
+const UNCOMMON=['school','ink','current','heal','electric','octoguard','remora','jelly','tidewall','reefstance','shellgrowth','shoalguard','followbite','moltscale','venombloom','shoalstep','venomfang','toxicarmor','weakambush','scalecharge','hunterfocus'];
 const RARE=['marlin','whale','mimic','tsunami','manta','leviathan','abyssarmor'];
 const ABYSS=['lantern','voidjaw','coelacanth','shadoweel','cthulhu','abyssdance','curseward'];
 const BOSS_RELICS=new Set(['呪海の炉','六眼の王冠','深淵炉心','捕食王の冠','巨鯨の心臓','反転鱗','沈鐘','黄金王座','深海の鍵','深淵の紋章']);

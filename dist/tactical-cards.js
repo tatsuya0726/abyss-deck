@@ -4,14 +4,11 @@ cleaner:{c:1,he:3,dr:0,fullHealBlock:8,upgrade:{he:2},t:'HP3回復。使用前�
 ray:{c:1,d:4,b:4,readAttackBlock:5,upgrade:{d:2,b:2},t:'4ダメージ。4ブロック。敵が攻撃を予定していれば追加5ブロック。'},
 ink:{c:1,b:6,w:1,quietDraw:2,upgrade:{b:3},t:'6ブロック。脱力1。敵が攻撃を予定していなければ2枚引く。'},
 electric:{c:1,d:7,surge:7,upgrade:{d:3},t:'7ダメージ。残りエナジーを最大2消費し、1につき追加7ダメージ。'},
-octoguard:{c:1,b:6,dr:0,primeAttack:4,upgrade:{b:3},t:'6ブロック。このターンの次の攻撃カードの各攻撃に追加4ダメージ（蓄積上限8・鱗盾チャージ対象外）。'},
 remora:{c:1,s:1,futureEnergy:1,upgrade:{c:-1},t:'攻撃力＋1。次のターンのエナジー＋1（予約上限2）。'},
-sharkrush:{c:2,d:4,h:3,graveAttack:1,upgrade:{d:1},t:'4ダメージを3回。捨て札の攻撃カード1枚につき各攻撃＋1（最大＋3）。'},
 jelly:{c:1,p:2,w:1,quietPoison:4,upgrade:{p:2},t:'毒2。脱力1。敵が攻撃を予定していなければ追加で毒4。'},
 tidewall:{c:2,b:10,futureBlock:6,upgrade:{b:4},t:'10ブロック。次のターン開始時に6ブロック（予約上限12）。'},
 reefstance:{c:1,def:0,b:4,bankBlock:8,upgrade:{b:3},t:'4ブロック。敵の行動後に残ったブロックを最大8、次のターンへ持ち越す（蓄積不可）。'},
 mimic:{c:1,s:0,dr:0,choice:'dredge',upgrade:{c:-1},t:'山札の上3枚から1枚を選んで手札へ。残りは捨て札へ。'},
-tsunami:{c:2,d:10,b:8,alternate:6,dr:0,upgrade:{d:3,b:2},t:'10ダメージ。8ブロック。直前が防御ならダメージ＋6、攻撃ならブロック＋6。'},
 lantern:{c:1,en:0,dr:1,hu:0,futureEnergy:1,generateCurse:1,upgrade:{generateCurse:1},t:'捨て札に呪いを1枚生成。カードを1枚引く。次のターンのエナジー＋1。',upgradeText:'捨て札に呪いを2枚生成。カードを1枚引く。次のターンのエナジー＋1。'},
 voidjaw:{c:1,d:0,mp:0,choice:'curseHand',upgrade:{c:-1},t:'手札のカード1枚を選び、この戦闘中だけ呪いカードに変換する。'},
 shadoweel:{c:2,p:0,b:0,spendPoison:0,curseScale:6,upgrade:{curseScale:2},t:'戦闘中の呪い1枚につき6ダメージと6ブロック。',upgradeText:'戦闘中の呪い1枚につき8ダメージと8ブロック。'},
@@ -42,6 +39,7 @@ window.prepareAbyssTactics=(c,g,draw)=>{
  if(c.bankBlock)g.bankBlock=Math.max(g.bankBlock||0,c.bankBlock);
  if(c.doubleFirstPower){g.doubleFirstCard=true;g.doubleFirstStartsTurn=(g.turn||1)+1;g.firstCardEchoReady=false}
  if(c.turnDrawPower)g.extraTurnDraw=true;
+ if(c.turnStrGain)g.turnStrGain=(g.turnStrGain||0)+c.turnStrGain;
  if(c.curseInvert)g.curseInversion=true;
 };
 window.resetAbyssTactics=g=>{g.primedAttack=0;g.futureEnergy=0;g.bankBlock=0;g.doubleFirstCard=false;g.doubleFirstStartsTurn=0;g.firstCardEchoReady=false;g.extraTurnDraw=false;g.curseInversion=false;g.tacticalDiscardUsed=false;g.tacticalExhaustUsed=false;if(has(g,'呪海の炉'))g.discard.push('abysscurse')};

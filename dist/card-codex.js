@@ -1,12 +1,11 @@
 (()=>{'use strict';
 const $=s=>document.querySelector(s);
-const KEYS=['fin','scale','bite','dartfish','shell','cleaner','ray','school','ink','puffer','current','heal','electric','octoguard','remora','sharkrush','jelly','tidewall','reefstance','shellgrowth','shoalguard','followbite','moltscale','venombloom','shoalstep','razorcurrent','venomfang','toxicarmor','weakambush','scalecharge','hunterfocus','marlin','whale','mimic','tsunami','manta','leviathan','abyssarmor','abyssdance','lantern','voidjaw','coelacanth','shadoweel','cthulhu','curseward','seaurchin','pufferguard','glowthorns','treasuremap','rustkey'];
+const KEYS=['fin','scale','bite','dartfish','shell','cleaner','ray','school','ink','puffer','current','heal','electric','octoguard','remora','jelly','tidewall','reefstance','shellgrowth','shoalguard','followbite','moltscale','venombloom','shoalstep','venomfang','toxicarmor','weakambush','scalecharge','hunterfocus','marlin','whale','mimic','tsunami','manta','leviathan','abyssarmor','abyssdance','lantern','voidjaw','coelacanth','shadoweel','cthulhu','curseward','seaurchin','pufferguard','treasuremap','rustkey'];
 KEYS.push(...Object.keys(window.ABYSS_ASCENSION_CARDS||{}));
 const PHOTO_ART={
   ink:'assets/cards/plush-ink.webp',
   puffer:'assets/cards/plush-puffer.webp',
   octoguard:'assets/cards/plush-octoguard.webp',
-  sharkrush:'assets/cards/plush-sharkrush.webp',
   jelly:'assets/cards/plush-jelly.webp',
   whale:'assets/cards/card-whale-roar.webp',
   voidjaw:'assets/cards/card-voidjaw.webp',
@@ -34,7 +33,6 @@ const PHOTO_ART={
   treasuremap:'assets/cards/plush-treasuremap.webp',
   current:'assets/cards/plush-current.webp',
   abyssarmor:'assets/cards/plush-abyssarmor.webp',
-  razorcurrent:'assets/cards/plush-razorcurrent.webp',
   hunterfocus:'assets/cards/plush-hunterfocus.webp',
   moltscale:'assets/cards/plush-moltscale.webp',
   rustkey:'assets/cards/plush-rustkey.webp',

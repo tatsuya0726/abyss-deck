@@ -1,15 +1,13 @@
 (()=>{'use strict';
 const CARDS={
 armoredshrimp:{n:'呪鱗の守り',i:'🛡️',c:1,b:5,curseBlock:2,curseCap:3,unlock:1,upgrade:{b:2},t:'5ブロック。戦闘中の呪い1枚につき追加2ブロック（最大＋6）。',g:'呪い・防御'},
-remorafollow:{n:'漂流物の引き揚げ',i:'🪝',c:1,b:3,choice:'recoverSmall',u:1,unlock:1,upgrade:{b:2},t:'3ブロック。捨て札のコスト1以下のカード1枚を選び、手札に戻す。回収カードは対象外。',g:'捨て札回収'},
 sunfishcalm:{n:'供物の選別',i:'🐚',c:1,b:7,choice:'offering',r:1,unlock:3,upgrade:{b:2},t:'7ブロック。手札1枚を選んで廃棄。呪いなら追加6ブロック、それ以外なら1枚引く。',g:'廃棄・呪い'},
 lanternpact:{n:'深淵との共生',i:'🏮',c:2,p:0,seedCurse:0,choice:'playDiscarded',a:1,unlock:3,upgrade:{c:-1},t:'手札を1枚選んで捨て、そのカードの効果をコストなしで発動する。',g:'捨て札・共生'},
 gobysweep:{n:'呪牙の一刺し',i:'🦈',c:1,d:6,curseDamage:2,curseCap:3,unlock:5,upgrade:{d:3},t:'6ダメージ。戦闘中の呪い1枚につき追加2ダメージ（最大＋6）。',g:'呪い・攻撃'},
 cleanerflow:{n:'脱皮する海流',i:'🌊',c:1,b:4,choice:'cycle',u:1,unlock:5,upgrade:{b:2},t:'4ブロック。手札1枚を選んで捨て、2枚引く。',g:'手札交換'},
 nautilusreturn:{n:'沈没船の回収網',i:'⚓',c:1,b:6,choice:'recoverAny',r:1,unlock:7,upgrade:{b:3},t:'6ブロック。捨て札からカード1枚を選び、手札に戻す。回収カードは対象外。',g:'捨て札回収'},
 voidtribute:{n:'反転術式',i:'🌀',c:2,d:0,curseDamage:0,curseCap:0,handCursePoison:0,curseInvert:1,exhaust:1,a:1,unlock:7,upgrade:{c:-1},t:'この戦闘中、ターン終了時の呪いダメージを同じ値のHP回復に反転する。使い切り。',g:'呪い・反転'},
-flyingbreath:{n:'重荷を流す',i:'🐟',c:2,b:5,choice:'shed',unlock:9,upgrade:{c:-1},t:'5ブロック。手札1枚を選んで廃棄。呪いを廃棄したらエナジー1回復（各ターン1回まで）。',g:'廃棄・エナジー'},
-deepmolt:{n:'呪潮の循環',i:'🦐',c:1,b:5,choice:'recoverCurse',u:1,unlock:9,upgrade:{b:2},t:'5ブロック。捨て札の呪い1枚を選んで手札に戻し、2枚引く。',g:'呪い・手札補充'}
+flyingbreath:{n:'重荷を流す',i:'🐟',c:2,b:5,choice:'shed',unlock:9,upgrade:{c:-1},t:'5ブロック。手札1枚を選んで廃棄。呪いを廃棄したらエナジー1回復（各ターン1回まで）。',g:'廃棄・エナジー'}
 };
 window.ABYSS_ASCENSION_CARDS=CARDS;
 const base=k=>String(k||'').replace(/[+*]+$/,'');
