@@ -30,16 +30,25 @@ const BEASTS=[
  {n:'終焉竜ヒュドラ・アビス',file:'boss-hydra-transparent-v86.webp',face:1,gen:1,desc:'三つの頭を持つ奈落の海竜。三連撃、二連撃、防御破砕を休みなく切り替える。'},
  {n:'深海皇リヴァイアサン',file:'abyss-emperor-leviathan-clean.webp',face:0,gen:1,desc:'奈落海を支配する最後の皇帝。古代の鎧、猛毒、巨大な牙を持つ最強の深海怪物。'},
  {n:'深淵の監視者・フグ店長',file:'abyss-watcher-puffer-v2.webp',face:0,gen:1,desc:'黒い操り糸に侵食されたフグ店長。制服を突き破る棘と虚海の亀裂をまとい、残った意識で必死に抵抗している。'},
- {n:'深淵の守護者・クトゥル＝アビス',file:'abyss-guardian-cthulhu-v2.webp',face:0,gen:1,desc:'沈没都市を甲殻として背負う巨大な深海邪神。六つの儀式で潮圧、毒喰い、反応攻撃を重ね、虚無を抱く胸から深海崩壊を放つ。'}
+ {n:'深淵の守護者・クトゥル＝アビス',file:'abyss-guardian-cthulhu-v2.webp',face:0,gen:1,desc:'沈没都市を甲殻として背負う巨大な深海邪神。六つの儀式で潮圧、毒喰い、反応攻撃を重ね、虚無を抱く胸から深海崩壊を放つ。'},
+ {n:'鎖顎鮫・グラウド',file:'elite-chain-shark-graud.webp',face:0,gen:1,desc:'朽ちた鎖を全身に巻きつけたサメ。噛みつくたびに鎖が軋み、こちらの守りごと引きちぎる。'},
+ {n:'閃光蝦・ライジェル',file:'elite-mantis-shrimp-raizeru.webp',face:0,gen:1,desc:'発光する一対の巨大な鋏を持つ深海のシャコ。拳を重ねるほど衝撃が育ち、大きな一撃が飛んでくる。'},
+ {n:'鋼骸鮫・ゾルグ',file:'elite-steel-shark-zorugu.webp',face:0,gen:1,desc:'鋼の装甲と青い雷紋をまとうサメ。装甲が帯びる余波が、こちらのエナジーを乱す。'},
+ {n:'白霜大蟹・スノウクロウ',file:'elite-snow-crab-snowclaw.webp',face:0,gen:1,desc:'白い体毛と巨大な鋏を持つ大蟹。凍てつく鋏の一撃は、力そのものを凍らせる。'},
+ {n:'電紋鮟鱇・ヴォルティア',file:'elite-volt-anglerfish-voltia.webp',face:0,gen:1,desc:'雷紋の光を放つ王冠状のヒレを持つ深海魚。放電の灯りが毒すら喰らい、殻へと変える。'},
+ {n:'古骸主・ノーティラム',file:'elite-nautilus-lord-nautilam.webp',face:0,gen:1,desc:'古い甲殻に触腕を宿すアンモナイトの主。分厚い殻に受けた衝撃を、そのまま撃ち返してくる。'},
+ {n:'灯呪蛇王・ルミナグ',file:'elite-lantern-serpent-luminagu.webp',face:0,gen:1,desc:'灯りの飾りを纏う大蛇の王。噛みつくたびに古い呪いの毒を注ぎ込んでくる。'},
+ {n:'深紅女王・ヴェスパルナ',file:'elite-crimson-queen-vesparna.webp',face:0,gen:1,desc:'紅い瞳と王冠を戴くコウモリ状の魔物。羽ばたいて守るたび、紅い力が際限なく膨れ上がる。'},
+ {n:'燭海主・ルクスメドゥーサ',file:'elite-chandelier-jelly-luxmedusa.webp',face:0,gen:1,desc:'燭台のような傘を持つ巨大クラゲの主。無数の触手が連撃を放ち、命中のたび生命を吸い上げる。'}
 ];
 // Only warm explicitly requested enemies; the title no longer downloads every boss.
 const warmedEnemies=new Set();
 window.preloadEnemyAssets=(names=[])=>BEASTS.filter(b=>names.includes(b.n)).forEach(b=>{if(warmedEnemies.has(b.file))return;warmedEnemies.add(b.file);const img=new Image();img.decoding='async';img.fetchPriority='low';img.src=`assets/enemies/${b.file}?v=79`});
 const normalizeBeastName=n=>String(n||'').replace(/^(精鋭|深淵強化)・/,'').replace('深淵の守護者・アトラク＝ナクア','深淵の守護者・クトゥル＝アビス').trim();
 const findBeast=n=>{n=normalizeBeastName(n);return BEASTS.find(x=>x.n===n)};
-const LAYER_1=new Set(['飢えたウツボ','甲冑ガニ','毒針ミノカサゴ','銀牙バラクーダ','墓守オオグソクムシ','奈落のチョウチンアンコウ']);
-const LAYER_2=new Set(['青光ホウライエソ','紅腕ダイオウイカ','深海ミツクリザメ','古代魚シーラカンス','竜宮の使者','UMA・海坊主']);
-const LAYER_3=new Set(['奈落牙オニキンメ','大口フクロウナギ','透頭デメニギス','夢耳メンダコ','古代鮫ラブカ','暴食ボウエンギョ','三脚ミツマタヤリウオ']);
+const LAYER_1=new Set(['飢えたウツボ','甲冑ガニ','毒針ミノカサゴ','銀牙バラクーダ','墓守オオグソクムシ','奈落のチョウチンアンコウ','鎖顎鮫・グラウド','閃光蝦・ライジェル','鋼骸鮫・ゾルグ']);
+const LAYER_2=new Set(['青光ホウライエソ','紅腕ダイオウイカ','深海ミツクリザメ','古代魚シーラカンス','竜宮の使者','UMA・海坊主','白霜大蟹・スノウクロウ','電紋鮟鱇・ヴォルティア','古骸主・ノーティラム']);
+const LAYER_3=new Set(['奈落牙オニキンメ','大口フクロウナギ','透頭デメニギス','夢耳メンダコ','古代鮫ラブカ','暴食ボウエンギョ','三脚ミツマタヤリウオ','灯呪蛇王・ルミナグ','深紅女王・ヴェスパルナ','燭海主・ルクスメドゥーサ']);
 const BOSS_PLACES={'白骨鮫・モルディガン':'第1層・1680m（ボス）','灯喰いアンコウ・ネブラ':'第1層・1680m（ボス）','鎧王ダイオウグソクムシ':'第1層・1680m（ボス）','深淵王クラーケン':'第2層・3600m（ボス）','夢喰いダイオウイカ・ノクス':'第2層・3600m（ボス）','沈没艦ザメ・アビサル':'第2層・3600m（ボス）','深海皇リヴァイアサン':'第3層・5520m（ボス）','星喰らいクトゥルム':'第3層・5520m（ボス）','終焉竜ヒュドラ・アビス':'第3層・5520m（ボス）','深淵の監視者・フグ店長':'深淵領域（ボス）','深淵の守護者・クトゥル＝アビス':'深淵領域（ボス）'};
 const BEAST_GROUPS=[
  ['第1層','薄明の沈降海',[...LAYER_1,'白骨鮫・モルディガン','灯喰いアンコウ・ネブラ','鎧王ダイオウグソクムシ']],
