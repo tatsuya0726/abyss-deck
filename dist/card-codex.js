@@ -38,7 +38,10 @@ const PHOTO_ART={
   razorcurrent:'assets/cards/plush-razorcurrent.webp',
   hunterfocus:'assets/cards/plush-hunterfocus.webp',
   moltscale:'assets/cards/plush-moltscale.webp',
-  rustkey:'assets/cards/plush-rustkey.webp'
+  rustkey:'assets/cards/plush-rustkey.webp',
+  followbite:'assets/cards/plush-followbite.webp',
+  scalecharge:'assets/cards/plush-scalecharge.webp',
+  shoalguard:'assets/cards/plush-shoalguard.webp'
 };
 function photoOf(k){return PHOTO_ART[keyOf(k)]||''}
 function keyOf(k){return String(k||'').replace(/[+*]+$/,'')}
