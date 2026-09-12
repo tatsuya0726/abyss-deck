@@ -19,7 +19,12 @@ const PHOTO_ART={
   tsunami:'assets/cards/card-tsunami-whale.webp',
   manta:'assets/cards/card-manta-dance.webp',
   leviathan:'assets/cards/card-leviathan-dragon.webp',
-  abyssdance:'assets/cards/card-abyssdance.webp'
+  abyssdance:'assets/cards/card-abyssdance.webp',
+  heal:'assets/cards/plush-heal.webp',
+  lantern:'assets/cards/plush-lantern.webp',
+  bite:'assets/cards/plush-bite.webp',
+  toxicarmor:'assets/cards/plush-toxicarmor.webp',
+  shellgrowth:'assets/cards/plush-shellgrowth.webp'
 };
 function photoOf(k){return PHOTO_ART[keyOf(k)]||''}
 function keyOf(k){return String(k||'').replace(/[+*]+$/,'')}
