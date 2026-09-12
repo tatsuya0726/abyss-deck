@@ -1,9 +1,9 @@
 (()=>{'use strict';
 const game=()=>window.getAbyssGame?.();
 Object.assign(window.ABYSS_RELICS||{}, {
- '群泳の旗':['🐟','多段攻撃の1発ごとのダメージが1増える。'],
- '逆鱗':['🐉','強化した攻撃カードのダメージが3増える。'],
- '生命臨界':['💢','HPが50%以下の間、攻撃カードのダメージが3増える。']
+ '群泳の旗':['🐟','多段攻撃の1発ごとのダメージが1増える。','rare'],
+ '逆鱗':['🐉','強化した攻撃カードのダメージが3増える。','rare'],
+ '生命臨界':['💢','HPが50%以下の間、攻撃カードのダメージが3増える。','rare']
 });
 function style(g=game()){const cards=(g?.deck||[]).map(k=>window.getAbyssCardData?.(k)||{}),score={連撃:0,毒:0,鉄壁:0,深淵:0};cards.forEach(c=>{if((c.h||0)>1||c.repeatIfAttack||c.perPlayed)score.連撃++;if(c.p||c.doublePoison||c.perPoison||c.blockPerPoison)score.毒++;if(c.b||c.def||c.perBlock)score.鉄壁++;if(c.a||c.hu)score.深淵++});const top=Object.entries(score).sort((a,b)=>b[1]-a[1])[0];return top&&top[1]>=2?top[0]:'均衡'}
 window.getAbyssDeckStyle=style;
