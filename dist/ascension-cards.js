@@ -15,7 +15,7 @@ const rarity=c=>c.a?'abyss':c.r?'rare':c.u?'uncommon':'common';
 window.isAbyssCardUnlocked=k=>!CARDS[base(k)]||(window.getAbyssAscensionMeta?.().clears||[]).includes(CARDS[base(k)].unlock);
 window.getAbyssUnlockCards=rank=>Object.keys(CARDS).filter(k=>CARDS[k].unlock===rank);
 window.extendAbyssCardPool=(pool,tier)=>[...new Set([...pool,...Object.keys(CARDS).filter(k=>window.isAbyssCardUnlocked(k)&&(tier==='standard'?['common','uncommon'].includes(rarity(CARDS[k])):rarity(CARDS[k])===tier))])];
-window.getAbyssCardUnlockMarkup=keys=>keys?.length?'<div class="card-unlock-reward"><b>新しいカードが解放されました</b><p>次の潜航から報酬・ショップなどに登場します。</p><div class="card-unlock-list unified-card-grid">'+keys.map(k=>window.renderAbyssCardView?.(k)||'').join('')+'</div></div>':'';
+window.getAbyssCardUnlockMarkup=keys=>keys?.length?'<div class="card-unlock-reward"><b>新しいカードが解放されました</b><p>次の潜航から報酬・ショップなどに登場します。</p><div class="card-unlock-list unified-card-grid">'+keys.map(k=>window.renderAbyssCardView?.(k,{hideTag:true})||'').join('')+'</div></div>':'';
 const isCurse=k=>window.getAbyssCardData?.(k)?.g==='呪い';
 window.countAbyssCurses=g=>[...(g.draw||[]),...(g.hand||[]),...(g.discard||[])].filter(isCurse).length;
 window.prepareAbyssUnlockCard=(c,g)=>{
