@@ -2,16 +2,16 @@
 const KEY='abyssAscensionMeta',BACKUP='abyssAscensionMetaBackup';
 const RANKS=[
  ['静かな入口','変化なし。深淵への最初の挑戦。','◌','水面の光が、まだ届いていた。'],
+ ['薄れる恩恵','ボスを倒した時の回復量が最大HPの80%になる。','恵','満ちるはずの光が、静かに削られていく。'],
  ['精鋭の甲殻','エリートのHPが5%増える。','◆','強者の殻には、古い傷が刻まれている。'],
- ['群れの生命','通常の敵のHPが4%増える。','◇','闇の魚群は、一つの巨大な命として脈打つ。'],
- ['研がれた牙','敵の攻撃が1増える。','牙','深海の牙は、光ではなく恐怖を噛む。'],
+ ['飢えた深み','通常の敵のHPが4%増え、敵と宝箱から得られるゴールドが25%減る。','飢','満ちるはずの財も、闇に呑まれていく。'],
  ['浅い呼吸','最大HPが5少ない状態で始まる。','泡','吐いた泡の一つ一つに、記憶が宿った。'],
- ['沈む相場','ショップのすべての価格が15%増える。','貨','海が深くなるほど、光も品物も高くなる。'],
- ['王の巨体','ボスのHPが15%増える。','冠','海の王は、自らの名を忘れてなお肥大する。'],
- ['癒えない傷','カードによる回復量が1減る。','傷','ここでは傷さえ、生き延びようとしている。'],
+ ['増える脅威','エリートの出現率が上がる。','脅','深く進むほど、影はいっそう色濃くなる。'],
+ ['色褪せる恵み','レアカードや強化済みカードが出現しにくくなる。','褪','貴重な煌めきは、深淵の中でますます見えづらくなる。'],
+ ['研がれた牙','敵の攻撃が1増える。','牙','深海の牙は、光ではなく恐怖を噛む。'],
+ ['王の巨体','ボスのHPが10%増える。','冠','海の王は、自らの名を忘れてなお肥大する。'],
  ['耳元の声','初期デッキに呪いが1枚入る。','眼','声は外からではなく、胸の奥から聞こえた。'],
- ['奪われるエナジー','最初のターンのエナジーが1減る。','渦','海は力ではなく、意志から先に奪っていく。'],
- ['測定不能','すべての敵のHPがさらに5%、攻撃がさらに1増える。','◉','底だと思った場所が、ゆっくりと瞼を開いた。']
+ ['双生の王','第3層の最後に戦うボスが2体になる。','双','一つの玉座に、二つの影が並んで座っていた。']
 ];
 function fresh(){return{unlocked:0,selected:0,clears:[]}}
 function valid(x){return x&&Number.isInteger(x.unlocked)&&Array.isArray(x.clears)}
@@ -21,8 +21,8 @@ let meta=read();
 const rank=()=>meta.selected;
 window.getSelectedAbyssRank=rank;
 window.getAbyssAscensionMeta=()=>({...meta,clears:[...meta.clears]});
-window.applyAbyssAscension=(enemy,{boss,elite,game})=>{let a=game?.ascension??rank();if(a>=1&&elite)enemy.hp=Math.round(enemy.hp*1.05);if(a>=2&&!elite&&!boss)enemy.hp=Math.round(enemy.hp*1.04);if(a>=3)enemy.m=enemy.m.map(m=>({...m,a:m.a?m.a+1:m.a}));if(a>=6&&boss)enemy.hp=Math.round(enemy.hp*1.15);if(a>=10){enemy.hp=Math.round(enemy.hp*1.05);enemy.m=enemy.m.map(m=>({...m,a:m.a?m.a+1:m.a}))}return enemy};
-window.getAbyssShopPriceMultiplier=game=>(game?.ascension??rank())>=5?1.15:1;
+window.applyAbyssAscension=(enemy,{boss,elite,game})=>{let a=game?.ascension??rank();if(a>=2&&elite)enemy.hp=Math.round(enemy.hp*1.05);if(a>=3&&!elite&&!boss)enemy.hp=Math.round(enemy.hp*1.04);if(a>=7)enemy.m=enemy.m.map(m=>({...m,a:m.a?m.a+1:m.a}));if(a>=8&&boss)enemy.hp=Math.round(enemy.hp*1.10);return enemy};
+window.getAbyssGoldPenalty=game=>(game?.ascension??rank())>=3?.75:1;
 window.recordAbyssClear=a=>{a=Math.min(10,Math.max(0,a||0));let first=!meta.clears.includes(a);if(first)meta.clears.push(a);if(first&&a===0)try{localStorage.setItem('abyssShardGuidePending','1')}catch(e){}let old=meta.unlocked;if(a===meta.unlocked&&a<10)meta.unlocked=a+1;if(meta.unlocked>old)meta.selected=meta.unlocked;write(meta);render();return{first,cards:first?(window.getAbyssUnlockCards?.(a)||[]):[],newRank:meta.unlocked>old?meta.unlocked:null,memory:RANKS[a][3]}};
 window.getAbyssMemoryMarkup=()=>'<h3 class="collection-section memory-heading">◉ 深淵の記憶</h3>'+RANKS.map((r,i)=>{let clear=meta.clears.includes(i),open=i<=meta.unlocked;return `<article class="memory-card ${clear?'cleared':''} ${open?'':'sealed'}"><div class="memory-rank">A${i}</div><div><b>${open?r[0]:'封印された記憶'}</b><p>${open?r[1]:'前の深淵階級をクリアすると解放。'}</p>${clear?`<p class="memory-flavor">${r[3]}</p>`:''}<small>${clear?'討伐済み':open?'挑戦可能':'未解放'}</small>${window.getAbyssUnlockCards?.(i).length?`<p>カード解放：${window.getAbyssUnlockCards(i).map(k=>window.ABYSS_ASCENSION_CARDS[k].n).join('・')} ${clear?'（解放済み）':'（クリアで解放）'}</p>`:''}</div></article>`}).join('');
 function render(){let n=document.getElementById('ascensionNumber'),name=document.getElementById('ascensionName'),rule=document.getElementById('ascensionRule'),prev=document.getElementById('ascensionPrev'),next=document.getElementById('ascensionNext'),progress=document.getElementById('memoryProgress');if(!n)return;let r=RANKS[meta.selected];n.textContent=meta.selected;name.textContent=r[0];rule.textContent=r[1];prev.disabled=meta.selected<=0;next.disabled=meta.selected>=meta.unlocked;progress.textContent=`深淵の記憶 ${meta.clears.length}/${RANKS.length}`;window.applyFuri?.(document.getElementById('ascensionPanel'))}
