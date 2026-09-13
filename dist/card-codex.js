@@ -41,7 +41,7 @@ const PHOTO_ART={
   shoalguard:'assets/cards/plush-shoalguard.webp'
 };
 function photoOf(k){return PHOTO_ART[keyOf(k)]||''}
-function keyOf(k){return String(k||'').replace(/[+*]+$/,'')}
+function keyOf(k){return String(k||'').replace(/~\d+$/,'').replace(/[+*]+$/,'')}
 function data(k,up=false){let getter=window.getAbyssIntrinsicCardStats||window.getAbyssCardStats;return getter?.(keyOf(k)+(up?'+':''))||window.getAbyssCardData?.(keyOf(k))||{n:k,i:'❔',c:0,t:'効果情報なし'} }
 function typeOf(k){let c=window.getAbyssCardData?.(keyOf(k))||{};return c.p?'poison':c.b&&c.d?'counter':c.b?'block':c.he?'heal':c.dr||c.en?'flow':c.s||c.def?'power':'attack'}
 function art(k,cl='codex-art'){let key=keyOf(k),c=data(key),photo=photoOf(key);return `<div class="${cl}${photo?' plush-photo-art':''}" data-card-art="${key}" data-art-type="${typeOf(key)}"${photo?` style="--card-photo:url('${photo}')"`:''}>${photo?'':`<span>${c.i||'🐟'}</span>`}</div>`}

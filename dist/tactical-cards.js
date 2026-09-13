@@ -42,9 +42,9 @@ window.prepareAbyssTactics=(c,g,draw)=>{
  if(c.turnStrGain)g.turnStrGain=(g.turnStrGain||0)+c.turnStrGain;
  if(c.curseInvert)g.curseInversion=true;
 };
-window.resetAbyssTactics=g=>{g.primedAttack=0;g.futureEnergy=0;g.bankBlock=0;g.doubleFirstCard=false;g.doubleFirstStartsTurn=0;g.firstCardEchoReady=false;g.extraTurnDraw=false;g.curseInversion=false;g.tacticalDiscardUsed=false;g.tacticalExhaustUsed=false;if(has(g,'呪海の炉'))g.hand.push('abysscurse');if(has(g,'サイドパック'))window.drawAbyssCards?.(2);if(has(g,'呪紋の外殻'))g.thorns=(g.thorns||0)+3;if(has(g,'供物の真珠')&&g.enemy)g.enemy.vulnerable=(g.enemy.vulnerable||0)+1;if(has(g,'漂流者の糸')&&g.enemy)g.enemy.weak=(g.enemy.weak||0)+1;if(has(g,'巨獣の顎'))g.str=(g.str||0)+1};
+window.resetAbyssTactics=g=>{g.primedAttack=0;g.futureEnergy=0;g.bankBlock=0;g.doubleFirstCard=false;g.doubleFirstStartsTurn=0;g.firstCardEchoReady=false;g.extraTurnDraw=false;g.curseInversion=false;g.tacticalDiscardUsed=false;g.tacticalExhaustUsed=false;if(has(g,'呪海の炉'))g.hand.push('abysscurse');if(has(g,'サイドパック'))window.drawAbyssCards?.(2);if(has(g,'呪紋の外殻'))g.thorns=(g.thorns||0)+3;if(has(g,'供物の真珠')&&g.enemy)g.enemy.vulnerable=(g.enemy.vulnerable||0)+1;if(has(g,'漂流者の糸')&&g.enemy)g.enemy.weak=(g.enemy.weak||0)+1;if(has(g,'巨獣の顎'))g.str=(g.str||0)+1;if(has(g,'オウムガイの護殻'))g.guard=(g.guard||0)+1};
 window.beginAbyssTactics=g=>{g.primedAttack=0;g.firstCardEchoReady=!!g.doubleFirstCard&&(g.turn||1)>=(g.doubleFirstStartsTurn||1);g.tacticalDiscardUsed=false;g.tacticalExhaustUsed=false;g.energy+=(g.futureEnergy||0)+(has(g,'呪海の炉')?1:0)+(has(g,'四皇の王冠')?1:0);g.futureEnergy=0};
-window.shouldEchoAbyssCard=(g,c,k)=>{if(!g.doubleFirstCard||!g.firstCardEchoReady||String(k).replace(/[+*]+$/,'')==='coelacanth')return false;g.firstCardEchoReady=false;return true};
+window.shouldEchoAbyssCard=(g,c,k)=>{if(!g.doubleFirstCard||!g.firstCardEchoReady||String(k).replace(/~\d+$/,'').replace(/[+*]+$/,'')==='coelacanth')return false;g.firstCardEchoReady=false;return true};
 window.showAbyssCardEcho=(c)=>new Promise(done=>{
  const old=document.querySelector('.memory-echo');if(old)old.remove();
  const fx=document.createElement('div');fx.className='memory-echo';fx.setAttribute('role','status');fx.setAttribute('aria-live','assertive');
