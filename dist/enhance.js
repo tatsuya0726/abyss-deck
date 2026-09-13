@@ -99,4 +99,4 @@ let musicGallery=document.createElement('div');musicGallery.className='modal';mu
 let syncQueued=false;function scheduleSync(){if(syncQueued)return;syncQueued=true;requestAnimationFrame(()=>{syncQueued=false;sync()})}
 const obs=new MutationObserver(ms=>{let hit=false;for(const m of ms){if(m.type==='attributes'&&(m.target.classList.contains('enemyHit')||m.target.classList.contains('playerHit')))hit=true}if(hit&&!window.abyssImpact)sfx(true);scheduleSync()});obs.observe(document.body,{subtree:true,childList:true,characterData:true,attributes:true,attributeFilter:['class']});furi();
 })();
-(()=>{let l=document.createElement('link');l.rel='stylesheet';l.href='ascension.css?v=51';document.head.appendChild(l);let s=document.createElement('script');s.src='ascension.js?v=113';s.async=false;document.body.appendChild(s)})();
+(()=>{let l=document.createElement('link');l.rel='stylesheet';l.href='ascension.css?v=52';document.head.appendChild(l);let s=document.createElement('script');s.src='ascension.js?v=114';s.async=false;document.body.appendChild(s)})();
