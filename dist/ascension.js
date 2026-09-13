@@ -4,7 +4,7 @@ const RANKS=[
  ['静かな入口','変化なし。深淵への最初の挑戦。','◌','水面の光が、まだ届いていた。'],
  ['薄れる恩恵','ボスを倒した時の回復量が最大HPの80%になる。','恵','満ちるはずの光が、静かに削られていく。'],
  ['精鋭の甲殻','エリートのHPが5%増える。','◆','強者の殻には、古い傷が刻まれている。'],
- ['飢えた深み','通常の敵のHPが4%増え、敵と宝箱から得られるゴールドが25%減る。','飢','満ちるはずの財も、闇に呑まれていく。'],
+ ['飢えた深み','敵と宝箱から得られるゴールドが25%減る。','飢','満ちるはずの財も、闇に呑まれていく。'],
  ['浅い呼吸','最大HPが5少ない状態で始まる。','泡','吐いた泡の一つ一つに、記憶が宿った。'],
  ['増える脅威','エリートの出現率が上がる。','脅','深く進むほど、影はいっそう色濃くなる。'],
  ['色褪せる恵み','レアカードや強化済みカードが出現しにくくなる。','褪','貴重な煌めきは、深淵の中でますます見えづらくなる。'],
@@ -21,7 +21,7 @@ let meta=read();
 const rank=()=>meta.selected;
 window.getSelectedAbyssRank=rank;
 window.getAbyssAscensionMeta=()=>({...meta,clears:[...meta.clears]});
-window.applyAbyssAscension=(enemy,{boss,elite,game})=>{let a=game?.ascension??rank();if(a>=2&&elite)enemy.hp=Math.round(enemy.hp*1.05);if(a>=3&&!elite&&!boss)enemy.hp=Math.round(enemy.hp*1.04);if(a>=7)enemy.m=enemy.m.map(m=>({...m,a:m.a?m.a+1:m.a}));if(a>=8&&boss)enemy.hp=Math.round(enemy.hp*1.10);return enemy};
+window.applyAbyssAscension=(enemy,{boss,elite,game})=>{let a=game?.ascension??rank();if(a>=2&&elite)enemy.hp=Math.round(enemy.hp*1.05);if(a>=7)enemy.m=enemy.m.map(m=>({...m,a:m.a?m.a+1:m.a}));if(a>=8&&boss)enemy.hp=Math.round(enemy.hp*1.10);return enemy};
 window.getAbyssGoldPenalty=game=>(game?.ascension??rank())>=3?.75:1;
 window.recordAbyssClear=a=>{a=Math.min(10,Math.max(0,a||0));let first=!meta.clears.includes(a);if(first)meta.clears.push(a);if(first&&a===0)try{localStorage.setItem('abyssShardGuidePending','1')}catch(e){}let old=meta.unlocked;if(a===meta.unlocked&&a<10)meta.unlocked=a+1;if(meta.unlocked>old)meta.selected=meta.unlocked;write(meta);render();return{first,cards:first?(window.getAbyssUnlockCards?.(a)||[]):[],newRank:meta.unlocked>old?meta.unlocked:null,memory:RANKS[a][3]}};
 window.getAbyssMemoryMarkup=()=>'<h3 class="collection-section memory-heading">◉ 深淵の記憶</h3>'+RANKS.map((r,i)=>{let clear=meta.clears.includes(i),open=i<=meta.unlocked;return `<article class="memory-card ${clear?'cleared':''} ${open?'':'sealed'}"><div class="memory-rank">A${i}</div><div><b>${open?r[0]:'封印された記憶'}</b><p>${open?r[1]:'前の深淵階級をクリアすると解放。'}</p>${clear?`<p class="memory-flavor">${r[3]}</p>`:''}<small>${clear?'討伐済み':open?'挑戦可能':'未解放'}</small>${window.getAbyssUnlockCards?.(i).length?`<p>カード解放：${window.getAbyssUnlockCards(i).map(k=>window.ABYSS_ASCENSION_CARDS[k].n).join('・')} ${clear?'（解放済み）':'（クリアで解放）'}</p>`:''}</div></article>`}).join('');
