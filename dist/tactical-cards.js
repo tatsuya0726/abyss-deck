@@ -7,7 +7,7 @@ electric:{c:1,d:7,surge:7,upgrade:{d:3},t:'7ダメージ。残りエナジーを
 remora:{c:1,s:1,futureEnergy:1,upgrade:{c:-1},t:'攻撃力＋1。次のターンのエナジー＋1（予約上限2）。'},
 jelly:{c:1,p:2,w:1,quietPoison:4,upgrade:{p:2},t:'毒2。脱力1。敵が攻撃を予定していなければ追加で毒4。'},
 tidewall:{c:2,b:10,futureBlock:6,upgrade:{b:4},t:'10ブロック。次のターン開始時に6ブロック（予約上限12）。'},
-reefstance:{c:1,def:0,b:4,bankBlock:8,upgrade:{b:3},t:'4ブロック。敵の行動後に残ったブロックを最大8、次のターンへ持ち越す（蓄積不可）。'},
+reefstance:{c:1,def:0,b:5,bankBlock:Infinity,upgrade:{b:4},t:'5ブロック。敵の行動後に残ったブロックを次のターンへ持ち越す（上限なし）。'},
 mimic:{c:1,s:0,dr:0,choice:'dredge',upgrade:{c:-1},t:'山札の上3枚から1枚を選んで手札へ。残りは捨て札へ。'},
 lantern:{c:1,en:0,dr:1,hu:0,futureEnergy:1,generateCurse:1,upgrade:{generateCurse:1},t:'捨て札に呪いを1枚生成。カードを1枚引く。次のターンのエナジー＋1。',upgradeText:'捨て札に呪いを2枚生成。カードを1枚引く。次のターンのエナジー＋1。'},
 voidjaw:{c:1,d:0,mp:0,choice:'curseHand',upgrade:{c:-1},t:'手札のカード1枚を選び、この戦闘中だけ呪いカードに変換する。'},
