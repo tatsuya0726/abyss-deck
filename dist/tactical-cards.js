@@ -4,16 +4,16 @@ cleaner:{c:1,he:3,dr:0,fullHealBlock:8,upgrade:{he:2},t:'HP3回復。使用前�
 ray:{c:1,d:4,b:4,readAttackBlock:5,upgrade:{d:2,b:2},t:'4ダメージ。4ブロック。敵が攻撃を予定していれば追加5ブロック。'},
 ink:{c:1,b:6,w:1,quietDraw:2,upgrade:{b:2,w:1},t:'6ブロック。脱力1。敵が攻撃を予定していなければ2枚引く。',upgradeText:'8ブロック。脱力2。敵が攻撃を予定していなければ2枚引く。'},
 electric:{c:1,d:7,surge:7,upgrade:{d:3},t:'7ダメージ。残りエナジーを最大2消費し、1につき追加7ダメージ。'},
-remora:{c:1,s:1,futureEnergy:1,upgrade:{c:-1},t:'攻撃力＋1。次のターンのエナジー＋1（予約上限2）。'},
-tidewall:{c:2,b:10,futureBlock:6,upgrade:{b:4},t:'10ブロック。次のターン開始時に6ブロック（予約上限12）。'},
-reefstance:{c:1,def:0,b:5,bankBlock:Infinity,upgrade:{b:4},t:'5ブロック。敵の行動後に残ったブロックを次のターンへ持ち越す（上限なし）。'},
+remora:{c:1,s:1,futureEnergy:1,upgrade:{c:-1},t:'攻撃力＋1。次のターンのエナジー＋1。'},
+tidewall:{c:2,b:10,futureBlock:6,upgrade:{b:4},t:'10ブロック。次のターン開始時に6ブロック。'},
+reefstance:{c:1,def:0,b:5,bankBlock:Infinity,upgrade:{b:4},t:'5ブロック。敵の行動後に残ったブロックを次のターンへ持ち越す。'},
 mimic:{c:1,s:0,dr:0,choice:'dredge',upgrade:{c:-1},t:'山札の上3枚から1枚を選んで手札へ。残りは捨て札へ。'},
 lantern:{c:1,en:0,dr:1,hu:0,futureEnergy:1,generateCurse:1,upgrade:{generateCurse:1},t:'捨て札に呪いを1枚生成。カードを1枚引く。次のターンのエナジー＋1。',upgradeText:'捨て札に呪いを2枚生成。カードを1枚引く。次のターンのエナジー＋1。'},
 voidjaw:{c:1,d:0,mp:0,choice:'curseHand',upgrade:{c:-1},t:'手札のカード1枚を選び、この戦闘中だけ呪いカードに変換する。'},
 shadoweel:{c:2,p:0,b:0,spendPoison:0,curseScale:6,upgrade:{curseScale:2},t:'戦闘中の呪い1枚につき6ダメージと6ブロック。',upgradeText:'戦闘中の呪い1枚につき8ダメージと8ブロック。'},
 coelacanth:{c:3,s:0,he:0,doubleFirstPower:1,retain:0,exhaust:1,upgrade:{retain:1},t:'この戦闘中、次のターンから各ターン最初に使う別のカードが、1回分のコストで2回発動する。使い切り。',upgradeText:'この戦闘中、次のターンから各ターン最初に使う別のカードが、1回分のコストで2回発動する。保留。使い切り。'},
 cthulhu:{c:2,d:0,s:0,graveSize:0,turnDrawPower:1,exhaust:1,upgrade:{c:-1},t:'この戦闘中、毎ターン開始時にカードを追加で1枚引く。使い切り。'},
-venombloom:{c:1,b:4,doublePoison:0,poisonBloom:8,upgrade:{b:3},t:'4ブロック。現在の毒の半分（切り上げ・最大8）を追加で与える。'},
+venombloom:{c:1,b:4,doublePoison:0,poisonBloom:8,upgrade:{b:3},t:'4ブロック。現在の毒の半分を追加で与える。'},
 moltscale:{c:0,b:3,exhaust:0,retain:1,upgrade:{b:2},t:'3ブロック。使わずにターンを終えると、このカードは手札に残る。'}
 };
 const has=(g,n)=>g.relic?.some(r=>r[1]===n),data=k=>window.getAbyssCardData?.(k)||{},attack=c=>!!(c.d||c.perBlock),block=(g,n)=>{g.block+=n;if(g.runStats)g.runStats.blockGained+=n};
