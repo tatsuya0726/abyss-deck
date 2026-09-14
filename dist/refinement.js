@@ -7,9 +7,9 @@ apply();const g=window.getAbyssGame?.();grid.querySelectorAll('.market-item').fo
 const g=()=>window.getAbyssGame?.(),result=(ok,t,s)=>window.showAbyssOutcome?.(ok,t,s),gain=k=>{g().deck.push(k);window.showCardAcquired?.(k,'補給カードを獲得')};
 const events=[
 ['','漂流する補給庫','防御を整えるか、連撃を狙うか。次の戦いに必要な一枚だけ持ち出せる。',[
- ['守りを補給','大潮の城壁を1枚得る。15ブロック。',()=>gain('tidewall')],['連撃を補給','魚群連撃を1枚得る。3ダメージを3回。',()=>gain('school')],['物資を換金','カードを増やさず、35ゴールドを得る。',()=>{g().pearl+=35;result(true,'物資の売却','35ゴールドを得た。')}]]],
+ ['守りを補給','大潮の城壁を1枚得る。15ブロック。',()=>gain('tidewall')],['連撃を補給','魚群連撃を1枚得る。3ダメージを3回。',()=>gain('school')],['物資を換金','カードを増やさず、39ゴールドを得る。',()=>{g().pearl+=39;result(true,'物資の売却','39ゴールドを得た。')}]]],
 ['','沈没船の回収装置','宝を引き上げるほど船体がきしむ。安全な小箱か、危険な金庫か。',[
- ['小箱を回収','確実に25ゴールドを得る。',()=>{g().pearl+=25;result(true,'小箱を回収','25ゴールドを得た。')}],['金庫を回収','50%で100ゴールド。失敗するとHPを最大12失う（HP1は残る）。',()=>{if(Math.random()<.5){g().pearl+=100;result(true,'金庫が開いた','100ゴールドを得た！')}else{const loss=Math.min(12,g().hp-1);g().hp-=loss;result(false,'船体が崩れた',`HPを${loss}失った。`)}}],['救命物資を回収','HPを10回復する。',()=>{const n=Math.min(10,g().max-g().hp);g().hp+=n;result(true,'救命物資を回収',`HPを${n}回復した。`)}]]],
+ ['小箱を回収','確実に28ゴールドを得る。',()=>{g().pearl+=28;result(true,'小箱を回収','28ゴールドを得た。')}],['金庫を回収','50%で110ゴールド。失敗するとHPを最大12失う（HP1は残る）。',()=>{if(Math.random()<.5){g().pearl+=110;result(true,'金庫が開いた','110ゴールドを得た！')}else{const loss=Math.min(12,g().hp-1);g().hp-=loss;result(false,'船体が崩れた',`HPを${loss}失った。`)}}],['救命物資を回収','HPを10回復する。',()=>{const n=Math.min(10,g().max-g().hp);g().hp+=n;result(true,'救命物資を回収',`HPを${n}回復した。`)}]]],
 ['','記憶を映す潮だまり','水面には手持ちのカードが映っている。お気に入りを増やすか、別の一枚に賭けるか。',[
  ['同じ一枚を写す','指定したカードを複製。HPを最大10失う（HP1は残る）。',()=>window.openAbyssDuplicate?.()],['違う一枚に変える','指定したカードをランダムに変化。HPを最大6失う（HP1は残る）。',()=>window.openAbyssTransform?.()],['水面を静める','カードを変えず、HPを6回復する。',()=>{const n=Math.min(6,g().max-g().hp);g().hp+=n;result(true,'静かな水面',`HPを${n}回復した。`)}]]]
 ];
