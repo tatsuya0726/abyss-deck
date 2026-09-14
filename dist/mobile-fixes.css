@@ -40,7 +40,7 @@
     white-space: nowrap;
   }
   .screen { inset: 98px 0 0; }
-  #battle > .arena { height: auto; flex: 1 1 auto; min-height: 0; align-items: flex-end; padding: 64px 2vw 12px; }
+  #battle > .arena { height: auto; flex: 1 1 auto; min-height: 0; align-items: flex-start; padding: 64px 2vw 12px; }
   .hpbar { height:19px; }
   #battle > .handArea { height: 250px; flex: 0 0 250px; padding-top: 4px; }
   .battlelog {
