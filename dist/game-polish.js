@@ -63,7 +63,7 @@ window.ABYSS_EVENTS?.push(
 let witch=window.ABYSS_EVENTS?.find(e=>e[1]==='深海の魔女');if(witch)witch[3][0]=['契約する','指定したカード1枚をランダムなカードへ変化。HPを6失う',()=>window.openAbyssTransform?.('深海の魔女との契約')];
 const STORY_EVENTS=[
  ['🗺️','沈没船の宝の地図','朽ちた船長室で、第二層の黄金墓標を示す地図を見つけた。持ち歩けばデッキの邪魔になる。',[['地図を持っていく','お荷物カード「濡れた宝の地図」を1枚得る',()=>{let g=game();g.storyMap=true;if(!g.deck.includes('treasuremap'))g.deck.push('treasuremap');window.showCardAcquired?.('treasuremap','物語アイテムを入手')}],['置いていく','何も得ずに先へ進む',()=>{game().storyMapDeclined=true}]]],
- ['⚱️','地図が示す黄金墓標','濡れた地図の印と同じ墓標がある。石棺の底には、航海王の財宝が眠っていた。',[['地図を広げる','地図を失い、330ゴールドを得る',()=>{let g=game(),i=g.deck.indexOf('treasuremap');if(i>=0)g.deck.splice(i,1);g.pearl+=330;g.storyTreasure=true;window.showAbyssOutcome?.(true,'宝の地図が本物だった','黄金墓標から330ゴールドを発見した。')}],['今は調べない','地図を持ったまま先へ進む',()=>{}]]],
+ ['⚱️','地図が示す黄金墓標','濡れた地図の印と同じ墓標がある。石棺の底には、航海王の財宝が眠っていた。',[['地図を広げる','地図を失い、300ゴールドを得る',()=>{let g=game(),i=g.deck.indexOf('treasuremap');if(i>=0)g.deck.splice(i,1);g.pearl+=300;g.storyTreasure=true;window.showAbyssOutcome?.(true,'宝の地図が本物だった','黄金墓標から300ゴールドを発見した。')}],['今は調べない','地図を持ったまま先へ進む',()=>{}]]],
  ['🧪','封鎖された研究区画','漂着した研究記録が、深海の封鎖区画を示している。番人を倒せば、さらに下層の牢を開く鍵が手に入る。',[['番人と戦う','イベント戦闘に勝つと、お荷物カード「錆びた研究区画の鍵」を得る',()=>{window.__abyssEventDeferred=true;window.startAbyssStoryBattle?.()}],['準備して戻る','今回は戦わず先へ進む',()=>{game().storyKeyDeclined=true}]]],
  ['🤿','幽閉された深海研究者','錆びた鍵で牢を開けると、研究者があなたの鰭と甲殻を改造してくれた。',[['研究者を救う','鍵を失う。最大HP＋8。すべての攻撃とブロックが永久に＋1',()=>{let g=game(),i=g.deck.indexOf('rustkey');if(i>=0)g.deck.splice(i,1);g.storyRescued=true;g.researchBoost=1;g.max+=8;g.hp+=8;window.showAbyssOutcome?.(true,'研究者の深海改造','最大HPが8増え、カードの攻撃とブロックが1ずつ強化された。')}],['牢を閉じる','鍵を持ったまま先へ進む',()=>{}]]]
 ];
