@@ -5,7 +5,6 @@ ray:{c:1,d:4,b:4,readAttackBlock:5,upgrade:{d:2,b:2},t:'4ダメージ。4ブロ�
 ink:{c:1,b:6,w:1,quietDraw:2,upgrade:{b:2,w:1},t:'6ブロック。脱力1。敵が攻撃を予定していなければ2枚引く。',upgradeText:'8ブロック。脱力2。敵が攻撃を予定していなければ2枚引く。'},
 electric:{c:1,d:7,surge:7,upgrade:{d:3},t:'7ダメージ。残りエナジーを最大2消費し、1につき追加7ダメージ。'},
 remora:{c:1,s:1,futureEnergy:1,upgrade:{c:-1},t:'攻撃力＋1。次のターンのエナジー＋1（予約上限2）。'},
-jelly:{c:1,p:2,w:1,quietPoison:4,upgrade:{p:2},t:'毒2。脱力1。敵が攻撃を予定していなければ追加で毒4。'},
 tidewall:{c:2,b:10,futureBlock:6,upgrade:{b:4},t:'10ブロック。次のターン開始時に6ブロック（予約上限12）。'},
 reefstance:{c:1,def:0,b:5,bankBlock:Infinity,upgrade:{b:4},t:'5ブロック。敵の行動後に残ったブロックを次のターンへ持ち越す（上限なし）。'},
 mimic:{c:1,s:0,dr:0,choice:'dredge',upgrade:{c:-1},t:'山札の上3枚から1枚を選んで手札へ。残りは捨て札へ。'},
@@ -23,7 +22,6 @@ window.prepareAbyssTactics=(c,g,draw)=>{
  if(c.fullHealBlock&&g.hp>=g.max){c.he=0;c.b=c.fullHealBlock}
  if(c.readAttackBlock&&attacking)c.b+=c.readAttackBlock;
  if(c.quietDraw&&!attacking)draw(c.quietDraw);
- if(c.quietPoison&&!attacking)c.p+=c.quietPoison;
  if(c.surge){const used=Math.min(2,g.energy);g.energy-=used;c.d+=used*c.surge}
  if(c.graveAttack)c.d+=Math.min(3,g.discard.filter(k=>attack(data(k))).length)*c.graveAttack;
  if(c.graveSize)c.d+=Math.min(6,g.discard.length)*c.graveSize;
