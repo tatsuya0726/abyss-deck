@@ -95,4 +95,8 @@
   #battle .card{height:146px}
   .handArea .energy,.handArea .endTurn{bottom:200px}
   .handArea .deckInfo{bottom:213px}
+  #battle>.arena{padding-top:106px}
+  .creature{height:71px;min-width:71px;margin-top:33px}
+  .hpbar{height:13px}
+  .statusRow{min-height:14px!important;padding:1px 2px 2px!important}
 }
