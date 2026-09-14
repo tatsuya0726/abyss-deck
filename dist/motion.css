@@ -28,7 +28,7 @@
 @keyframes choiceRise{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
 @keyframes choiceGleam{0%{left:-35%;opacity:0}25%{opacity:1}100%{left:115%;opacity:0}}
 @keyframes rewardReveal{from{opacity:0;transform:translateY(34px) rotate(-2deg) scale(.88);filter:brightness(2)}to{opacity:1;transform:none;filter:none}}
-@keyframes nodeBreathe{50%{filter:brightness(1.25);box-shadow:0 0 18px #65e8dd55,0 0 0 5px #061016}}
+@keyframes nodeBreathe{50%{box-shadow:0 0 18px #65e8dd55,0 0 0 5px #061016}}
 @keyframes playerHitLux{0%,100%{transform:translateX(0);filter:drop-shadow(0 16px 12px #000)}24%{transform:translateX(-24px) rotate(-4deg);filter:brightness(3) saturate(1.7) drop-shadow(0 0 28px #ff334d)}52%{transform:translateX(12px) rotate(2deg);filter:brightness(.7) saturate(1.2) drop-shadow(0 0 18px #a50019)}76%{transform:translateX(-5px);filter:brightness(1.25) drop-shadow(0 12px 12px #000)}}
 @keyframes enemyHitLux{0%,100%{transform:translateX(0) scaleX(var(--face));filter:drop-shadow(0 16px 12px #000)}35%{transform:translateX(28px) rotate(7deg) scaleX(var(--face));filter:brightness(3) drop-shadow(0 0 28px #fff)}70%{transform:translateX(-12px) scaleX(var(--face));filter:brightness(.85) drop-shadow(0 0 18px #4ff)}}
 @keyframes impactRing{0%{opacity:1;transform:translate(-50%,-50%) scale(.25)}100%{opacity:0;transform:translate(-50%,-50%) scale(4.2)}}
