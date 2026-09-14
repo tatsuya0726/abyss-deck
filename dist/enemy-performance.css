@@ -6,26 +6,26 @@
   animation: guardian-glide 3.6s ease-in-out infinite !important;
 }
 @keyframes guardian-glide {
-  0%,100% { transform:translate3d(0,2px,0) scaleX(var(--face,1)); }
-  50% { transform:translate3d(0,-7px,0) scaleX(var(--face,1)); }
+  0%,100% { transform:translate3d(0,2px,0) scaleX(var(--face,1)) scale(var(--enemy-scale,1)); }
+  50% { transform:translate3d(0,-7px,0) scaleX(var(--face,1)) scale(var(--enemy-scale,1)); }
 }
 #enemySprite.secret-guardian.enemyHit { animation:guardian-recoil .34s ease-out,guardian-glide 3.6s ease-in-out .34s infinite!important; }
 @keyframes guardian-recoil {
-  0%,100% { transform:translate3d(0,0,0) scaleX(var(--face,1)); }
-  35% { transform:translate3d(18px,0,0) scaleX(var(--face,1)); }
-  70% { transform:translate3d(-6px,0,0) scaleX(var(--face,1)); }
+  0%,100% { transform:translate3d(0,0,0) scaleX(var(--face,1)) scale(var(--enemy-scale,1)); }
+  35% { transform:translate3d(18px,0,0) scaleX(var(--face,1)) scale(var(--enemy-scale,1)); }
+  70% { transform:translate3d(-6px,0,0) scaleX(var(--face,1)) scale(var(--enemy-scale,1)); }
 }
 #enemySprite.secret-guardian.enemy-attack { animation:guardian-lunge .5s ease-in-out!important; }
 @keyframes guardian-lunge {
-  0%,100% { transform:translate3d(0,0,0) scaleX(var(--face,1)); }
-  40% { transform:translate3d(-28px,0,0) scaleX(var(--face,1)); }
+  0%,100% { transform:translate3d(0,0,0) scaleX(var(--face,1)) scale(var(--enemy-scale,1)); }
+  40% { transform:translate3d(-28px,0,0) scaleX(var(--face,1)) scale(var(--enemy-scale,1)); }
 }
 #enemySprite.direct-enemy.enemy-finishing { animation:enemy-fade-facing .65s ease-out both!important; }
 @keyframes enemy-fade-facing {
-  from { opacity:1; transform:translate3d(0,0,0) scaleX(var(--face,1)); }
-  to { opacity:0; transform:translate3d(0,14px,0) scaleX(var(--face,1)) scale(.94); }
+  from { opacity:1; transform:translate3d(0,0,0) scaleX(var(--face,1)) scale(var(--enemy-scale,1)); }
+  to { opacity:0; transform:translate3d(0,14px,0) scaleX(var(--face,1)) scale(calc(var(--enemy-scale,1) * .94)); }
 }
 @media(prefers-reduced-motion:reduce) {
-  #enemySprite.secret-guardian.direct-enemy { animation:none!important; transform:scaleX(var(--face,1));will-change:auto; }
+  #enemySprite.secret-guardian.direct-enemy { animation:none!important; transform:scaleX(var(--face,1)) scale(var(--enemy-scale,1));will-change:auto; }
   #enemySprite.direct-enemy.enemy-finishing { animation:none!important;opacity:.4; }
 }
