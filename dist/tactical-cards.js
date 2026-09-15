@@ -1,7 +1,6 @@
 (()=>{'use strict';
 window.ABYSS_TACTICAL_CARDS={
 cleaner:{c:1,he:3,dr:0,fullHealBlock:8,upgrade:{he:2},t:'HP3回復。使用前からHP満タンなら、代わりに8ブロック。'},
-ray:{c:1,d:4,b:4,readAttackBlock:3,upgrade:{d:2,b:2},t:'4ダメージ。4ブロック。敵が攻撃を予定していれば追加3ブロック。'},
 ink:{c:1,b:6,w:1,quietDraw:2,upgrade:{b:2,w:1},t:'6ブロック。脱力1。敵が攻撃を予定していなければ2枚引く。',upgradeText:'8ブロック。脱力2。敵が攻撃を予定していなければ2枚引く。'},
 electric:{c:1,d:7,surge:7,upgrade:{d:3},t:'7ダメージ。残りエナジーを最大2消費し、1につき追加7ダメージ。'},
 remora:{c:1,s:1,futureEnergy:1,upgrade:{c:-1},t:'攻撃力＋1。次のターンのエナジー＋1。'},
