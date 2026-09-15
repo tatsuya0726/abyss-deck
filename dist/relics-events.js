@@ -57,7 +57,7 @@ const chooseRewardRelics=window.openAbyssRewardRelics;window.openAbyssRewardReli
 window.openAbyssBossRelics=next=>window.openAbyssRewardRelics('boss',()=>next?.());
 let relicViewButton=document.getElementById('relicView');if(relicViewButton){relicViewButton.disabled=false;relicViewButton.onclick=showRelics}
 document.getElementById('deckView')?.addEventListener('click',()=>{document.getElementById('collectionGrid').className='modal-shell-body collection-grid'});
-const rare=['marlin','whale','mimic','tsunami','manta','leviathan','abyssarmor'],abyss=['lantern','voidjaw','coelacanth','shadoweel','cthulhu','curseward'];
+const rare=['marlin','whale','mimic','tsunami','manta','leviathan','abyssarmor'],abyss=['lantern','voidjaw','coelacanth','shadoweel','cthulhu','curseward','abyssflame'];
 window.ABYSS_EVENTS?.push(
  ['🦴','鯨骨の墓場','巨大な鯨の骨が海底に横たわり、その内側で古い力が脈打っている。',[['骨の中へ入る','HPを10失い、遺物「古代の盾」を得る',()=>{let g=game();g.hp=Math.max(1,g.hp-10);addRelic('古代の盾')}],['ゴールドだけ拾う','ゴールドを61得る',()=>game().pearl+=61],['静かに祈る','HPを10回復',()=>{let g=game();g.hp=Math.min(g.max,g.hp+10)}]]],
  ['🪼','月光クラゲの群れ','青白いクラゲたちが、傷を癒す光の輪を作っている。',[['光に包まれる','遺物「珊瑚の護符」を得る',()=>addRelic('珊瑚の護符')],['群れと泳ぐ','HPを16回復',()=>{let g=game();g.hp=Math.min(g.max,g.hp+16)}],['光を結晶化する','ゴールド35を払い、レアカードを得る',()=>{let g=game();if(g.pearl>=35){g.pearl-=35;addCard(rare)}}]]],
