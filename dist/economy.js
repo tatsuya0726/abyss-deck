@@ -1,8 +1,8 @@
 (()=>{'use strict';
 const $=s=>document.querySelector(s);
 const COMMON=['bite','dartfish','shell','cleaner','ray','puffer','octoguard'];
-const UNCOMMON=['school','ink','current','heal','electric','remora','jelly','tidewall','reefstance','shellgrowth','shoalguard','followbite','moltscale','venombloom','shoalstep','venomfang','toxicarmor','weakambush','scalecharge','hunterfocus','marlin','harpoon','crackshell','weakpoint'];
-const RARE=['whale','mimic','tsunami','manta','leviathan','abyssarmor','seamiracle','kabutowari'];
+const UNCOMMON=['school','ink','current','heal','electric','remora','jelly','tidewall','reefstance','shellgrowth','shoalguard','followbite','moltscale','venombloom','shoalstep','venomfang','toxicarmor','weakambush','scalecharge','hunterfocus','marlin','harpoon','crackshell','weakpoint','kabutowari'];
+const RARE=['whale','mimic','tsunami','manta','leviathan','abyssarmor','seamiracle'];
 const ABYSS=['lantern','voidjaw','coelacanth','shadoweel','cthulhu','abyssdance','curseward'];
 const BOSS_RELICS=new Set(['呪海の炉','四皇の王冠','深淵炉心','次元圧縮','巨鯨の心臓','水圧変異','黄金王座','深海の鍵','深淵の紋章','深淵の瞳']);
 const RELIC_PRICES={'漂流者の糸':85,'供物の真珠':88,'サイドパック':95,'呪紋の外殻':90,'航海羅針盤':75,'黄金炉':80,'珊瑚の護符':60,'古代の盾':98,'深海時計':70,'黒潮の鱗':96,'捕食者の眼':82,'毒腺の指輪':84,'スラッシュブースト':63,'オウムガイの護殻':80,'皇帝の骨片':105,'防毒ジャケット':68,'深海の血脈':65,'分厚い甲殻':92,'警鐘の巻貝':85,'深海の呼吸':120,'巨獣の顎':100,'VIPカード':110};
@@ -18,7 +18,7 @@ function flash(text){let e=$('#shopMessage');if(!e)return;e.textContent=text;e.c
 function cardData(k){let getter=window.getAbyssIntrinsicCardStats||window.getAbyssCardStats;return getter?.(k)||window.getAbyssCardData?.(k)||{n:k,t:'効果情報なし',c:0}}
 function cardName(k){return cardData(k).n}
 function cardEffect(k){return String(cardData(k).t||'').replace(/^強化済み：/,'')}
-function rarity(c){return c.a?'深淵':c.r?'レア':c.u?'アンコモン':'コモン'}
+function rarity(c){return c.special?'特殊':c.a?'深淵':c.r?'レア':c.u?'アンコモン':'コモン'}
 function price(base,g=game()){let mult=window.getAbyssShopPriceMultiplier?.(g)||1;if(g?.relic?.some(r=>r[1]==='VIPカード'))mult*=.7;return Math.max(5,Math.ceil(base*mult/5)*5)}
 function cardPrice(k){let c=cardData(k),base=c.a?90:c.r?76:c.u?48:34,power=(c.d||0)*(c.h||1)+(c.b||0)+(c.p||0)*2+(c.he||0)*2+(c.dr||0)*7+(c.s||0)*10+(c.def||0)*10;return price(base+Math.min(20,Math.floor(power/8)*3))}
 function removalBase(g=game()){return 40+Math.max(0,g?.removeCount||0)*20}

@@ -73,7 +73,8 @@
 @media (max-width: 370px) {
   .quick-nav { gap: 4px; }
   .quick-nav button { padding-inline: 7px; font-size: 10px; }
-  .deckInfo { right: 116px; font-size: 10px; }
+  .deckInfo { right: 116px; font-size: 9px; gap: 2px; }
+  .deckInfo .pileBtn { padding: 2px 4px; }
   .endTurn { width: 104px; font-size: 13px; }
 }
 
