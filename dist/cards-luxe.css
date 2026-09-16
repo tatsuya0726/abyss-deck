@@ -74,7 +74,7 @@
 }
 .plush-photo-art{
   background-image:linear-gradient(180deg,transparent 58%,#01070d99 100%),var(--card-photo)!important;
-  background-size:cover!important;background-position:center!important;background-repeat:no-repeat!important;
+  background-size:cover,88%!important;background-position:center!important;background-repeat:no-repeat!important;
   box-shadow:inset 0 0 22px #0008,0 0 12px #72fff244;
 }
 .plush-photo-art>span{display:none!important}
