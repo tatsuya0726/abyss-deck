@@ -10,7 +10,7 @@
 .card:hover { background-position: 230px 0, 0 0; transition: transform .2s, background-position .65s; }
 .card.marked{outline:2px solid #75fff0;outline-offset:-5px;box-shadow:0 0 28px #42e9d788,0 12px 26px #000c}.card.marked::after{content:"✦ 刻印";color:#8ffff3;font-size:10px;letter-spacing:.08em;text-shadow:0 0 9px #55fff0}
 .card::after {
-  content: "◆";
+  content: none;
   position: absolute;
   right: 9px;
   bottom: 8px;
@@ -36,7 +36,7 @@
 }
 .uncommon .cardInner { border-color: #85eee4; background: linear-gradient(#08272d,#061317); }
 .uncommon .art { background: radial-gradient(circle,#187c80,#03161c 72%); }
-.uncommon::after { content: "✧"; color: #9afff2; }
+.uncommon::after { content: none; color: #9afff2; }
 .card.rare {
   border: 2px solid #fff0a4;
   background: linear-gradient(115deg,transparent 15%,#fffbd8cc 27%,transparent 39%) -200px 0/180px 100% no-repeat, conic-gradient(from 35deg,#6e4305,#ffe88b,#8f5b0d,#fff4b0,#593300,#d9a62d,#6e4305);
@@ -46,7 +46,7 @@
 .card.rare:hover { background-position: 240px 0, 0 0; }
 .rare .cardInner { border: 1px solid #ffe99a; box-shadow: inset 0 0 28px #e5ad2138, 0 0 0 2px #593b08; }
 .rare .art { background: radial-gradient(circle at 50% 45%,#a97b25,#211304 72%); text-shadow: 0 0 22px #ffe076; }
-.rare::after { content: "✦ ✦"; color: #fff1a1; font-size: 11px; }
+.rare::after { content: none; color: #fff1a1; font-size: 11px; }
 .card.abyss {
   border: 2px solid #a9fffb;
   background: conic-gradient(from var(--abyss-turn,0deg),#55fff0,#3f258d,#070519,#d05ce6,#67e9ff,#241058,#55fff0);
@@ -55,7 +55,7 @@
 }
 .abyss .cardInner { border-color:#c1fffb; background:linear-gradient(165deg,#160d38,#050311 68%); box-shadow:inset 0 0 32px #7b3fbe66,0 0 0 2px #1d0c45; }
 .abyss .art { background:radial-gradient(circle,#693295,#09051e 70%); text-shadow:0 0 25px #87fff7,0 0 12px #e471ff; }
-.abyss::after { content:"☾ ✦"; color:#a9fffb; font-size:12px; }
+.abyss::after { content:none; color:#a9fffb; font-size:12px; }
 .rare .cost { background:radial-gradient(#fffbd1,#e6b938 58%,#654100 62%); box-shadow:0 0 12px #ffe56e; }
 .abyss .cost { background:radial-gradient(#d7fffc,#7b6ee9 48%,#26134f 66%); color:#fff; box-shadow:0 0 13px #79fff4; }
 .card .cost{z-index:20;width:30px;height:30px;font-size:15px;pointer-events:none}
@@ -109,7 +109,7 @@
 @keyframes cardArtZap{50%{transform:translate(2px,-3px) scale(1.08)}}
 @keyframes artCurrent{to{transform:translateX(28px)}}@keyframes artPulse{50%{transform:scale(1.18);opacity:.35}}@keyframes artRise{to{transform:translateY(-55px);opacity:0}}
 @media(prefers-reduced-motion:reduce){.card-art>span,.codex-art>span,.reveal-art>span,.card-art::after,.codex-art::after{animation:none!important}}
-.card-codex-panel{width:min(96vw,980px);max-height:92vh;text-align:left}.card-codex-head{position:sticky;top:-22px;z-index:4;display:flex;align-items:center;justify-content:space-between;gap:12px;margin:-12px -8px 8px;padding:12px;background:#07121bf2;border-bottom:1px solid #41636c}.card-codex-head h2{margin:0;text-align:left}.card-codex-head p{margin:3px 0!important;font-size:11px;line-height:1.4!important}.card-codex-head small{color:#77aaa9;letter-spacing:.15em}.codex-filters{position:sticky;top:80px;z-index:4;display:flex;gap:5px;padding:7px 0;background:#07121bf2;overflow:auto}.codex-filters button{border:1px solid #41616a;border-radius:999px;background:#081820;color:#a9c3c5;padding:6px 11px;white-space:nowrap;cursor:pointer}.codex-filters button.on{border-color:#e1bd65;background:#3e3013;color:#ffe7a2}.card-codex-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;padding:5px 0}.codex-card{position:relative;overflow:hidden;padding:0;border:1px solid #648087;border-radius:10px;background:#07151c;color:#dcebed;text-align:left;cursor:pointer;box-shadow:0 8px 20px #0008}.codex-card.uncommon{border-color:#2fe6d4;box-shadow:0 0 14px #2fe6d466,0 8px 20px #0008}.codex-card.rare{border-color:#e7c560;box-shadow:0 0 15px #d6a73944,0 8px 20px #0008}.codex-card.abyss{border-color:#b27cec;box-shadow:0 0 18px #a348d755,0 8px 20px #0008}.codex-card.special{border-color:#7a8a90;box-shadow:0 0 10px #4a575c55,0 8px 20px #0008}.codex-card.uncommon::after,.codex-card.rare::after,.codex-card.abyss::after{content:none!important}.codex-card-body{position:relative;padding:10px 10px 14px;-webkit-text-size-adjust:100%;text-size-adjust:100%}.codex-card-body>b{display:block;padding-left:30px;color:#f0d58c;font-size:13px;min-height:22px}.codex-card-body .card-unlock-status{height:14px;overflow:hidden;margin:1px 0!important;font-size:11px;line-height:14px}.codex-card-body>p{height:92px;display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:4;line-clamp:4;overflow:hidden;margin:3px 0 0!important;color:#bdd0d2!important;font-size:11px;line-height:1.5!important;-webkit-text-size-adjust:100%;text-size-adjust:100%}.codex-cost{position:absolute;top:7px;left:8px;width:25px;height:25px;border-radius:50%;display:grid;place-items:center;background:#54dfd2;color:#02110f;font:900 13px Cinzel}.codex-card.show-upgrade{outline:2px solid #f0cb6d;outline-offset:-3px}
-.codex-upgraded-mark{position:absolute;left:50%;bottom:6px;transform:translateX(-50%);padding:2px 8px;border:1px solid #d8ad45;border-radius:999px;background:#3b2b0dee;color:#ffe08a;font-style:normal;font-size:10px;letter-spacing:.04em;white-space:nowrap;z-index:2}.codex-card.show-upgrade .codex-cost{background:#f0cb6d}.codex-card.show-upgrade .codex-card-body>b{color:#fff0a9}
-@media(max-width:760px){.card-codex-panel{padding:13px 8px}.card-codex-head{top:-13px;margin:-5px 0 5px}.card-codex-head p{display:none}.card-codex-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:7px}.codex-art{height:104px}.codex-art>span{font-size:48px}.codex-card-body{padding:8px 8px 12px}.codex-card-body>b{font-size:11px}.codex-card-body>p{font-size:10px;height:84px}.codex-filters{top:61px}}
+.card-codex-panel{width:min(96vw,980px);max-height:92vh;text-align:left}.card-codex-head{position:sticky;top:-22px;z-index:4;display:flex;align-items:center;justify-content:space-between;gap:12px;margin:-12px -8px 8px;padding:12px;background:#07121bf2;border-bottom:1px solid #41636c}.card-codex-head h2{margin:0;text-align:left}.card-codex-head p{margin:3px 0!important;font-size:11px;line-height:1.4!important}.card-codex-head small{color:#77aaa9;letter-spacing:.15em}.codex-filters{position:sticky;top:80px;z-index:4;display:flex;gap:5px;padding:7px 0;background:#07121bf2;overflow:auto}.codex-filters button{border:1px solid #41616a;border-radius:999px;background:#081820;color:#a9c3c5;padding:6px 11px;white-space:nowrap;cursor:pointer}.codex-filters button.on{border-color:#e1bd65;background:#3e3013;color:#ffe7a2}.card-codex-grid{padding:5px 0}.codex-card-wrap{position:relative;display:block;width:fit-content;margin:0 auto;background:none;border:none;padding:0;cursor:pointer;text-align:center;color:inherit;font:inherit}.codex-card-wrap.show-upgrade .unified-card{outline:2px solid #f0cb6d;outline-offset:3px}.codex-unlock-label{display:block;margin-top:5px;font-size:11px;color:#9fd0cf;text-align:center}
+.codex-upgraded-mark{position:absolute;left:50%;bottom:6px;transform:translateX(-50%);padding:2px 8px;border:1px solid #d8ad45;border-radius:999px;background:#3b2b0dee;color:#ffe08a;font-style:normal;font-size:10px;letter-spacing:.04em;white-space:nowrap;z-index:20}
+@media(max-width:760px){.card-codex-panel{padding:13px 8px}.card-codex-head{top:-13px;margin:-5px 0 5px}.card-codex-head p{display:none}.codex-filters{top:61px}}
 .mini-card-art{--art1:#17617c;--art2:#03121c;--glow:#87efff;position:relative;isolation:isolate;height:72px;margin:-10px -10px 8px;display:grid;place-items:center;overflow:hidden;border-bottom:1px solid #52747c;background:radial-gradient(circle at 70% 20%,var(--glow) 0 2%,transparent 20%),linear-gradient(155deg,var(--art1),var(--art2) 68%)}.mini-card-art>span{font-size:38px;filter:drop-shadow(0 6px 5px #000a) drop-shadow(0 0 10px var(--glow))}.mini-card-art[data-art-type="attack"]{--art1:#7d2634;--art2:#10070b;--glow:#ffb178}.mini-card-art[data-art-type="poison"]{--art1:#6d267e;--art2:#13051d;--glow:#ef91ff}.mini-card-art[data-art-type="heal"]{--art1:#226b5a;--art2:#041713;--glow:#95ffd6}.mini-card-art[data-art-type="power"]{--art1:#785b1b;--art2:#171005;--glow:#ffe66c}
