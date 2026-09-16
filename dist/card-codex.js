@@ -84,8 +84,14 @@ let modal=document.createElement('div');modal.className='modal';modal.id='cardCo
 function rarity(c){return c.special?'special':c.a?'abyss':c.r?'rare':c.u?'uncommon':'normal'}
 function cardFace(k,upgraded=false){let base=data(k),view=window.renderAbyssCardView?.(upgraded?k+'+':k)||'',unlock=window.ABYSS_ASCENSION_CARDS?.[k]?(window.isAbyssCardUnlocked(k)?'解放済み':`A${base.unlock}クリアで解放`):'';return `${view}${unlock?`<span class="codex-unlock-label">${unlock}</span>`:''}${upgraded?'<em class="codex-upgraded-mark">強化後</em>':''}`}
 function render(filter='all'){let grid=$('#cardCodexGrid');grid.innerHTML=KEYS.map(k=>{let r=rarity(data(k));if(filter!=='all'&&filter!==r)return'';return `<button type="button" class="codex-card-wrap" data-codex-card="${k}" aria-pressed="false">${cardFace(k)}</button>`}).join('');grid.querySelectorAll('.codex-card-wrap').forEach(card=>card.onclick=()=>{let upgraded=card.classList.toggle('show-upgrade');card.setAttribute('aria-pressed',String(upgraded));card.innerHTML=cardFace(card.dataset.codexCard,upgraded);window.applyFuri?.(card)});window.applyFuri?.(modal)}
-button.onclick=()=>{render();modal.classList.add('on');window.applyFuri?.(modal)};
+const FILTER_ORDER=['all','normal','uncommon','rare','abyss','special'];
+let currentFilter='all';
+function setFilter(filter){currentFilter=filter;modal.querySelectorAll('[data-filter]').forEach(x=>x.classList.toggle('on',x.dataset.filter===filter));render(filter);modal.querySelector(`[data-filter="${filter}"]`)?.scrollIntoView({block:'nearest',inline:'center',behavior:'smooth'})}
+button.onclick=()=>{setFilter('all');modal.classList.add('on');window.applyFuri?.(modal)};
 $('#cardCodexClose').onclick=()=>modal.classList.remove('on');modal.onclick=e=>{if(e.target===modal)modal.classList.remove('on')};
-modal.querySelectorAll('[data-filter]').forEach(b=>b.onclick=()=>{modal.querySelectorAll('[data-filter]').forEach(x=>x.classList.toggle('on',x===b));render(b.dataset.filter)});
+modal.querySelectorAll('[data-filter]').forEach(b=>b.onclick=()=>setFilter(b.dataset.filter));
+let swipeX=0,swipeY=0,swiping=false;const codexBody=modal.querySelector('.card-codex-body');
+codexBody.addEventListener('touchstart',e=>{if(e.touches.length!==1)return;swipeX=e.touches[0].clientX;swipeY=e.touches[0].clientY;swiping=true},{passive:true});
+codexBody.addEventListener('touchend',e=>{if(!swiping)return;swiping=false;let t=e.changedTouches[0];if(!t)return;let dx=t.clientX-swipeX,dy=t.clientY-swipeY;if(Math.abs(dx)<50||Math.abs(dx)<Math.abs(dy)*1.3)return;let idx=Math.max(0,FILTER_ORDER.indexOf(currentFilter));idx=dx<0?Math.min(FILTER_ORDER.length-1,idx+1):Math.max(0,idx-1);setFilter(FILTER_ORDER[idx])},{passive:true});
 let decorateQueued=false;const observer=new MutationObserver(()=>{if(decorateQueued)return;decorateQueued=true;requestAnimationFrame(()=>{decorateQueued=false;decorate(document)})});observer.observe(document.body,{subtree:true,childList:true});decorate(document);window.applyFuri?.($('#title'));
 })();
