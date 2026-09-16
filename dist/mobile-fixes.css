@@ -39,7 +39,7 @@
     padding: 5px 8px;
     white-space: nowrap;
   }
-  .screen { inset: 98px 0 0; }
+  .screen { inset: 98px 0 50px; }
   #battle > .arena { height: auto; flex: 1 1 auto; min-height: 0; align-items: flex-start; padding: 110px 2vw 12px; }
   .hpbar { height:19px; }
   #battle > .handArea { height: 292px; flex: 0 0 292px; padding-top: 22px; }
@@ -87,15 +87,15 @@
   #battle>.battlelog{top:6px;left:88px;right:136px;width:auto;max-width:none;transform:none;font-size:10px;line-height:1.35;text-align:center;white-space:normal;overflow:visible;text-overflow:clip}
   body.scene-battle .suspend-run{top:104px;left:8px}
   #battle>.arena{padding-top:110px}
-  .handArea .energy{top:auto;bottom:226px;left:8px}
-  .handArea .deckInfo{top:auto;bottom:239px;left:58px;right:126px}
-  .handArea .endTurn{top:auto;bottom:226px;right:8px}
+  .handArea .energy{top:auto;bottom:214px;left:8px}
+  .handArea .deckInfo{top:auto;bottom:227px;left:58px;right:126px}
+  .handArea .endTurn{top:auto;bottom:214px;right:8px}
 }
 @media (max-width:700px) and (max-height:680px){
   #battle>.handArea{height:262px;flex-basis:262px}
   #battle .card{height:146px}
-  .handArea .energy,.handArea .endTurn{bottom:200px}
-  .handArea .deckInfo{bottom:213px}
+  .handArea .energy,.handArea .endTurn{bottom:188px}
+  .handArea .deckInfo{bottom:201px}
   #battle>.arena{padding-top:106px}
   .creature{height:71px;min-width:71px;margin-top:33px}
   .hpbar{height:13px}
