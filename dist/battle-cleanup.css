@@ -11,7 +11,11 @@ body:has(#battle.on) .quick-nav button {
   font-size: 14px; line-height: 1.35; white-space: normal;
 }
 @media (max-width: 700px) {
-  body:has(#battle.on) .quick-nav { top: 53px; left: 8px; width: calc(45% - 12px); }
+  body:has(#battle.on) .quick-nav {
+    top: 53px; left: 8px; width: calc(52% - 12px);
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+  body:has(#battle.on) .quick-nav button { min-height: 40px; padding: 5px 1px; font-size: 9.5px; }
 }
 @media (max-height: 600px) and (orientation: landscape) {
   body:has(#battle.on) .quick-nav { top: 55px; grid-template-columns: repeat(3,minmax(0,1fr)); }
