@@ -91,13 +91,13 @@
   .handArea .deckInfo{top:auto;bottom:227px;left:58px;right:126px}
   .handArea .endTurn{top:auto;bottom:214px;right:8px}
 }
-@media (max-width:700px) and (max-height:680px){
+@media (max-width:700px) and (max-height:820px){
   #battle>.handArea{height:230px;flex-basis:230px;margin-bottom:32px}
   #battle .card{height:146px}
   .handArea .energy,.handArea .endTurn{bottom:188px}
   .handArea .deckInfo{bottom:201px}
-  #battle>.arena{padding-top:106px}
-  .creature{height:71px;min-width:71px;margin-top:33px}
+  #battle>.arena{padding-top:64px}
+  .creature{height:71px;min-width:71px;margin-top:12px}
   .hpbar{height:13px}
   .statusRow{min-height:14px!important;padding:1px 2px 2px!important}
 }

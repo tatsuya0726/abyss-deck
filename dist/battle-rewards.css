@@ -2,4 +2,4 @@
 @media(max-width:600px){.reward-panel{padding:17px 12px}.reward-gold{grid-template-columns:42px 1fr auto auto;padding:11px}.reward-gold i{font-size:30px}.reward-gold strong{font-size:24px}.reward-row{grid-template-columns:38px 1fr auto;padding:10px}.reward-row>i{font-size:25px}.reward-panel .rewards{justify-content:flex-start}.reward-back{margin:8px 0 0}}
 .reward-panel .rewardCard{width:clamp(108px,15vw,160px);height:clamp(160px,25vh,230px);min-width:0;max-width:160px;flex:0 0 clamp(108px,15vw,160px)}
 @media(max-width:700px){.reward-panel .rewardCard{width:116px;height:168px;min-width:116px;max-width:116px;flex-basis:116px}}
-@media(max-width:700px) and (max-height:680px){.reward-panel .rewardCard{height:146px}}
+@media(max-width:700px) and (max-height:820px){.reward-panel .rewardCard{height:146px}}
