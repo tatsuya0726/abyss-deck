@@ -87,6 +87,7 @@
   #battle>.battlelog{top:6px;left:88px;right:136px;width:auto;max-width:none;transform:none;font-size:10px;line-height:1.35;text-align:center;white-space:normal;overflow:visible;text-overflow:clip}
   body.scene-battle .suspend-run{top:104px;left:8px}
   #battle>.arena{padding-top:110px}
+  .creature{height:110px;min-width:110px;margin-top:12px}
   .handArea .energy{top:auto;bottom:226px;left:8px}
   .handArea .deckInfo{top:auto;bottom:239px;left:58px;right:126px}
   .handArea .endTurn{top:auto;bottom:226px;right:8px}
