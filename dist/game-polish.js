@@ -78,15 +78,14 @@ let rewardGold=document.querySelector('.reward-gold');if(rewardGold&&rewardGold.
 
 const BLESSING_UNCOMMON_POOL=['school','ink','current','electric','remora','jelly','tidewall','reefstance','shellgrowth','shoalguard','followbite','moltscale','venombloom','shoalstep','venomfang','toxicarmor','weakambush','scalecharge','hunterfocus','marlin','harpoon','crackshell','kabutowari'];
 const BLESSING_RARE_POOL=['whale','mimic','tsunami','manta','leviathan','abyssarmor','seamiracle','predation'];
-const BLESSING_SAFE_BOSS_RELICS=['呪海の炉','四皇の王冠','深淵炉心','水圧変異','黄金王座','深淵の瞳'];
 function pickCardPool(pool,tier){let extended=window.extendAbyssCardPool?window.extendAbyssCardPool(pool,tier):pool;return extended[Math.random()*extended.length|0]}
 function pickRelicName(pred){let names=Object.keys(window.ABYSS_RELICS||{}).filter(n=>!['深海の鍵','深淵の紋章'].includes(n)&&pred(window.ABYSS_RELICS[n]));return names[Math.random()*names.length|0]}
 // Tiered like Slay the Spire's Neow's Blessing: a safe small boon, a safe bigger boon,
-// a boon with a real cost, and a high-risk/high-reward final option. One first-ever
-// death in the game's lifetime, so this is a one-time welcome, not a per-run choice.
+// and a boon with a real cost. One first-ever death in the game's lifetime, so this
+// is a one-time welcome, not a per-run choice.
 const FIRST_BONUS_TIERS=[
  [ // tier 1: safe, small
-  {key:'t1_hp',icon:'🫀',name:'深淵の血脈',text:'次の潜航は最大HPが10増えた状態で始まる。',apply:g=>{g.max+=10;g.hp=g.max}},
+  {key:'t1_hp',icon:'🫀',name:'深淵の血脈',text:'次の潜航は最大HPが5増えた状態で始まる。',apply:g=>{g.max+=5;g.hp=g.max}},
   {key:'t1_gold',icon:'🪙',name:'漂着の宝',text:'次の潜航はゴールドを80持った状態で始まる。',apply:g=>{g.pearl+=80}},
   {key:'t1_thin',icon:'✂️',name:'身軽な一歩',text:'次の潜航は初期デッキの基本カードが1枚少ない状態で始まる。',apply:g=>{let i=g.deck.findIndex(k=>k==='fin'||k==='scale');if(i>=0)g.deck.splice(i,1)}}
  ],
@@ -98,11 +97,10 @@ const FIRST_BONUS_TIERS=[
  [ // tier 3: real cost for a bigger boon
   {key:'t3_rare',icon:'🔥',name:'深淵との契約',text:'次の潜航はレアカードを1枚得るが、代わりに呪いを1枚受け取る。',apply:g=>{let k=pickCardPool(BLESSING_RARE_POOL,'rare');if(k)g.deck.push(k);g.deck.push('abysscurse')}},
   {key:'t3_relic',icon:'🪨',name:'代償の欠片',text:'次の潜航はランダムなレリックを1つ持った状態で始まるが、所持ゴールドを失う。',apply:g=>{let name=pickRelicName(r=>r[2]!=='boss');if(name)g.relic.push([window.ABYSS_RELICS[name][0],name]);g.pearl=0}},
-  {key:'t3_hpcurse',icon:'🩸',name:'深淵の刻印',text:'次の潜航は最大HPが20増えるが、代わりに呪いを1枚受け取る。',apply:g=>{g.max+=20;g.hp=g.max;g.deck.push('abysscurse')}}
+  {key:'t3_hpcurse',icon:'🩸',name:'深淵の刻印',text:'次の潜航は最大HPが10増えるが、代わりに呪いを1枚受け取る。',apply:g=>{g.max+=10;g.hp=g.max;g.deck.push('abysscurse')}}
  ]
 ];
-function firstBonusTier4(){return {key:'t4_boss',icon:'👑',name:'深淵王の遺物',text:'次の潜航は強力なボスレリックを1つ持った状態で始まるが、最大HPを10失う。',apply:g=>{let pool=BLESSING_SAFE_BOSS_RELICS.filter(n=>window.ABYSS_RELICS?.[n]),name=pool[Math.random()*pool.length|0];if(name)g.relic.push([window.ABYSS_RELICS[name][0],name]);g.max=Math.max(20,g.max-10);g.hp=Math.min(g.hp,g.max)}}}
-function rollFirstBonusChoices(){return[...FIRST_BONUS_TIERS.map(tier=>tier[Math.random()*tier.length|0]),firstBonusTier4()]}
+function rollFirstBonusChoices(){return FIRST_BONUS_TIERS.map(tier=>tier[Math.random()*tier.length|0])}
 const FIRST_BONUSES={};FIRST_BONUS_TIERS.flat().forEach(b=>FIRST_BONUSES[b.key]=b);
 window.ABYSS_FIRST_BONUSES=FIRST_BONUSES;
 let blessingModal=document.createElement('div');blessingModal.className='modal';blessingModal.id='firstBlessingModal';blessingModal.innerHTML='<div class="panel"><div class="bigicon">🌊</div><h2>深淵からの贈り物</h2><p>初めての潜航、お疲れさま。深淵はあなたの挑戦を覚えている。次の潜航への贈り物を一つ選ぼう。</p><div class="choices" id="firstBlessingChoices"></div></div>';document.body.appendChild(blessingModal);
