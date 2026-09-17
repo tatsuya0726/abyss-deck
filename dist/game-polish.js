@@ -85,19 +85,19 @@ function pickRelicName(pred){let names=Object.keys(window.ABYSS_RELICS||{}).filt
 // is a one-time welcome, not a per-run choice.
 const FIRST_BONUS_TIERS=[
  [ // tier 1: safe, small
-  {key:'t1_hp',icon:'🫀',name:'深淵の血脈',text:'次の潜航は最大HPが5増えた状態で始まる。',apply:g=>{g.max+=5;g.hp=g.max}},
-  {key:'t1_gold',icon:'🪙',name:'漂着の宝',text:'次の潜航はゴールドを80持った状態で始まる。',apply:g=>{g.pearl+=80}},
-  {key:'t1_thin',icon:'✂️',name:'身軽な一歩',text:'次の潜航は初期デッキの基本カードが1枚少ない状態で始まる。',apply:g=>{let i=g.deck.findIndex(k=>k==='fin'||k==='scale');if(i>=0)g.deck.splice(i,1)}}
+  {key:'t1_hp',icon:'🫀',name:'深淵の血脈',text:'最大HPが5増えた状態で始まる。',apply:g=>{g.max+=5;g.hp=g.max}},
+  {key:'t1_gold',icon:'🪙',name:'漂着の宝',text:'ゴールドを80持った状態で始まる。',apply:g=>{g.pearl+=80}},
+  {key:'t1_thin',icon:'✂️',name:'身軽な一歩',text:'初期デッキの基本カードが1枚少ない状態で始まる。',apply:g=>{let i=g.deck.findIndex(k=>k==='fin'||k==='scale');if(i>=0)g.deck.splice(i,1)}}
  ],
  [ // tier 2: safe, medium
-  {key:'t2_upgrade',icon:'🔨',name:'最初の記憶',text:'次の潜航は初期デッキの1枚が強化された状態で始まる。',apply:g=>{let i=g.deck.findIndex(k=>k==='fin'||k==='scale');if(i>=0)g.deck[i]+='+'}},
-  {key:'t2_uncommon',icon:'🐚',name:'眠っていた技術',text:'次の潜航はランダムなアンコモンカードを1枚持った状態で始まる。',apply:g=>{let k=pickCardPool(BLESSING_UNCOMMON_POOL,'standard');if(k)g.deck.push(k)}},
-  {key:'t2_energy',icon:'🌊',name:'満ちる流れ',text:'次の潜航は、最初の3戦だけエナジーが1多い状態で戦える。',apply:g=>{g.bonusEnergyBattles=3}}
+  {key:'t2_upgrade',icon:'🔨',name:'最初の記憶',text:'初期デッキの1枚が強化された状態で始まる。',apply:g=>{let i=g.deck.findIndex(k=>k==='fin'||k==='scale');if(i>=0)g.deck[i]+='+'}},
+  {key:'t2_uncommon',icon:'🐚',name:'眠っていた技術',text:'ランダムなアンコモンカードを1枚持った状態で始まる。',apply:g=>{let k=pickCardPool(BLESSING_UNCOMMON_POOL,'standard');if(k)g.deck.push(k)}},
+  {key:'t2_energy',icon:'🌊',name:'満ちる流れ',text:'最初の3戦だけエナジーが1多い状態で戦える。',apply:g=>{g.bonusEnergyBattles=3}}
  ],
  [ // tier 3: real cost for a bigger boon
-  {key:'t3_rare',icon:'🔥',name:'深淵との契約',text:'次の潜航はレアカードを1枚得るが、代わりに呪いを1枚受け取る。',apply:g=>{let k=pickCardPool(BLESSING_RARE_POOL,'rare');if(k)g.deck.push(k);g.deck.push('abysscurse')}},
-  {key:'t3_relic',icon:'🪨',name:'代償の欠片',text:'次の潜航はランダムなレリックを1つ持った状態で始まるが、所持ゴールドを失う。',apply:g=>{let name=pickRelicName(r=>r[2]!=='boss');if(name)g.relic.push([window.ABYSS_RELICS[name][0],name]);g.pearl=0}},
-  {key:'t3_hpcurse',icon:'🩸',name:'深淵の刻印',text:'次の潜航は最大HPが10増えるが、代わりに呪いを1枚受け取る。',apply:g=>{g.max+=10;g.hp=g.max;g.deck.push('abysscurse')}}
+  {key:'t3_rare',icon:'🔥',name:'深淵との契約',text:'レアカードを1枚得るが、代わりに呪いを1枚受け取る。',apply:g=>{let k=pickCardPool(BLESSING_RARE_POOL,'rare');if(k)g.deck.push(k);g.deck.push('abysscurse')}},
+  {key:'t3_relic',icon:'🪨',name:'代償の欠片',text:'ランダムなレリックを1つ持った状態で始まるが、所持ゴールドを失う。',apply:g=>{let name=pickRelicName(r=>r[2]!=='boss');if(name)g.relic.push([window.ABYSS_RELICS[name][0],name]);g.pearl=0}},
+  {key:'t3_hpcurse',icon:'🩸',name:'深淵の刻印',text:'最大HPが10増えるが、代わりに呪いを1枚受け取る。',apply:g=>{g.max+=10;g.hp=g.max;g.deck.push('abysscurse')}}
  ]
 ];
 function rollFirstBonusChoices(){return FIRST_BONUS_TIERS.map(tier=>tier[Math.random()*tier.length|0])}
@@ -111,6 +111,6 @@ function renderBlessingChoices(onProceed){let offered=rollFirstBonusChoices();of
 window.markAbyssFirstDeath=()=>{try{localStorage.setItem('abyssFirstDeathHappened','1')}catch(e){}};
 function blessingPending(){let happened=false;try{happened=localStorage.getItem('abyssFirstDeathHappened')==='1'}catch(e){}return happened}
 window.isAbyssFirstBlessingPending=blessingPending;
-window.maybeOfferAbyssFirstBlessing=onProceed=>{if(!blessingPending())return false;const open=()=>{renderBlessingChoices(onProceed);blessingModal.classList.add('on');window.applyFuri?.(blessingModal)};let introSeen=true;try{introSeen=localStorage.getItem('abyssFirstBlessingIntroSeen')==='1'}catch(e){}if(!introSeen&&window.abyssStory){try{localStorage.setItem('abyssFirstBlessingIntroSeen','1')}catch(e){}window.abyssStory([['ABYSS SPEAKS','深淵の声','深き者たちは、あなたが潜るたびに小さな贈り物を差し出すようになった。']],open,'first-blessing-reveal')}else open();return true};
+window.maybeOfferAbyssFirstBlessing=onProceed=>{let ascension=window.getSelectedAbyssRank?.()||0;if(!blessingPending()&&ascension<1)return false;const open=()=>{renderBlessingChoices(onProceed);blessingModal.classList.add('on');window.applyFuri?.(blessingModal)};let introSeen=true;try{introSeen=localStorage.getItem('abyssFirstBlessingIntroSeen')==='1'}catch(e){}if(!introSeen&&window.abyssStory){try{localStorage.setItem('abyssFirstBlessingIntroSeen','1')}catch(e){}window.abyssStory([['ABYSS SPEAKS','深淵の声','深き者たちは、あなたが潜るたびに小さな贈り物を差し出すようになった。']],open,'first-blessing-reveal')}else open();return true};
 window.applyAbyssFirstBonusIfPending=g=>{let key=null;try{key=localStorage.getItem('abyssPendingFirstBonus')}catch(e){}if(!key||!FIRST_BONUSES[key])return;FIRST_BONUSES[key].apply(g);try{localStorage.removeItem('abyssPendingFirstBonus')}catch(e){}};
 })();
