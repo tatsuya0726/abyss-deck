@@ -108,6 +108,8 @@ function renderBlessingChoices(onProceed){let offered=rollFirstBonusChoices();of
 // Death unlocks the offer (marked silently, no popup at the moment of death); the
 // actual choice is presented the next time a new dive is started, not right after dying.
 window.markAbyssFirstDeath=()=>{try{if(localStorage.getItem('abyssFirstDeathBonusSeen')==='1')return;localStorage.setItem('abyssFirstDeathHappened','1')}catch(e){}};
-window.maybeOfferAbyssFirstBlessing=onProceed=>{let happened=false,seen=true;try{happened=localStorage.getItem('abyssFirstDeathHappened')==='1';seen=localStorage.getItem('abyssFirstDeathBonusSeen')==='1'}catch(e){}if(!happened||seen)return false;const open=()=>{renderBlessingChoices(onProceed);blessingModal.classList.add('on');window.applyFuri?.(blessingModal)};if(window.abyssStory)window.abyssStory([['ABYSS SPEAKS','深淵の声','前回の潜航を越え、深き者たちがあなたに小さな贈り物を差し出している。']],open,'first-blessing-reveal');else open();return true};
+function blessingPending(){let happened=false,seen=true;try{happened=localStorage.getItem('abyssFirstDeathHappened')==='1';seen=localStorage.getItem('abyssFirstDeathBonusSeen')==='1'}catch(e){}return happened&&!seen}
+window.isAbyssFirstBlessingPending=blessingPending;
+window.maybeOfferAbyssFirstBlessing=onProceed=>{if(!blessingPending())return false;const open=()=>{renderBlessingChoices(onProceed);blessingModal.classList.add('on');window.applyFuri?.(blessingModal)};if(window.abyssStory)window.abyssStory([['ABYSS SPEAKS','深淵の声','前回の潜航を越え、深き者たちがあなたに小さな贈り物を差し出している。']],open,'first-blessing-reveal');else open();return true};
 window.applyAbyssFirstBonusIfPending=g=>{let key=null;try{key=localStorage.getItem('abyssPendingFirstBonus')}catch(e){}if(!key||!FIRST_BONUSES[key])return;FIRST_BONUSES[key].apply(g);try{localStorage.removeItem('abyssPendingFirstBonus')}catch(e){}};
 })();
