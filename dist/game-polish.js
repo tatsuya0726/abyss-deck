@@ -18,8 +18,6 @@ const ABYSS_WHISPERS=[
  '昔はもっと静かな深海だったんだけどなぁ。何かが変わってから、ずっとこうなんだ。',
  '深く潜るほど、呼ばれている気がするんだよねぇ……気のせいかな。'
 ];
-let whisperEl=document.createElement('div');whisperEl.id='abyssWhisper';whisperEl.innerHTML='<span class="abyss-whisper-icon">🐡</span><p></p>';document.body.appendChild(whisperEl);
-window.maybeShowAbyssStartWhisper=()=>{if(Math.random()>=.35)return;const line=ABYSS_WHISPERS[Math.random()*ABYSS_WHISPERS.length|0];whisperEl.querySelector('p').textContent=line;whisperEl.classList.add('on');window.applyFuri?.(whisperEl);clearTimeout(whisperEl._hideTimer);whisperEl._hideTimer=setTimeout(()=>whisperEl.classList.remove('on'),4200)};
 function intrinsicStats(k){let getter=window.getAbyssIntrinsicCardStats||window.getAbyssCardStats;return getter?.(k)||window.getAbyssCardData?.(k)}
 function cleanCardText(t){return String(t||'効果情報なし').replace(/^強化済み：/,'')}
 window.renderAbyssCardView=(k,options={})=>{const c=options.live?(window.getAbyssCardStats?.(k)||intrinsicStats(k)):intrinsicStats(k);if(!c)return'';const cl=c.a?'abyss':c.r?'rare':c.u?'uncommon':'',art=window.getAbyssCardArtHtml?.(k,'card-art')||`<div class="card-art"><span>${c.i||'🎴'}</span></div>`,quantity=options.quantity>1?`<em class="unified-card-quantity">×${options.quantity}</em>`:'',footer=options.footer?`<div class="unified-card-footer">${options.footer}</div>`:'',sold=options.sold?'<strong class="unified-card-sold">売り切れ</strong>':'';return `<article class="card unified-card ${cl} ${options.className||''}" data-k="${k}"><div class="cost">${c.c??'？'}</div><div class="cardInner">${art}<div class="cname">${c.n||k}</div><div class="ctext">${cleanCardText(c.t)}</div></div>${quantity}${footer}${sold}</article>`};
