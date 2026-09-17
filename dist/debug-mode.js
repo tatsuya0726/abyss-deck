@@ -25,6 +25,7 @@ modal.innerHTML=`<div class="panel debug-panel">
       <button data-action="heal">♥ HP全回復</button><button data-action="gold">● 500ゴールド</button>
       <button data-action="energy">⚡ エナジー9</button><button data-action="shards">◆ 欠片を全入手</button>
       <button class="danger" data-action="kill">⚔ 敵を即時撃破</button><button data-action="restore">↺ スナップショット復元</button>
+      <button data-action="dmg50">🗡 敵に50ダメージ</button><button data-action="dmg100">🗡 敵に100ダメージ</button>
     </div></section>
     <section><h3>戦闘を開始</h3><div class="debug-grid combat">
       <button data-battle="normal">⚔ 通常戦</button><button data-battle="elite">☠ エリート戦</button><button data-battle="boss">♛ 現在層のボス</button>
@@ -63,6 +64,8 @@ function handlePanel(e){const b=e.target.closest('button');if(!b||!modal.contain
     if(action==='energy'){g.energy=9;window.debugAbyssRefresh?.();toast('エナジーを9にしました')}
     if(action==='shards'){['red','blue','yellow','purple'].forEach(k=>{(g.abyssShards||(g.abyssShards={}))[k]=true});window.debugAbyssRefresh?.();toast('4色の欠片を入手しました')}
     if(action==='kill'){if(!g.enemy)return toast('戦闘中に使用してください');modal.classList.remove('on');g.enemy.hp=0;window.debugAbyssWin?.()}
+    if(action==='dmg50'){if(!g.enemy)return toast('戦闘中に使用してください');window.debugAbyssDealDamage?.(50);toast('敵に50ダメージを与えました')}
+    if(action==='dmg100'){if(!g.enemy)return toast('戦闘中に使用してください');window.debugAbyssDealDamage?.(100);toast('敵に100ダメージを与えました')}
     if(action==='restore'){let raw=sessionStorage.getItem(SNAP);if(!raw)return toast('復元データがありません');try{let old=JSON.parse(raw);Object.keys(g).forEach(k=>delete g[k]);Object.assign(g,old);window.abyssSave?.();sessionStorage.removeItem(SNAP);location.reload()}catch(err){toast('復元に失敗しました')}}
     refresh();window.abyssSave?.();return
   }
