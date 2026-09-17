@@ -20,6 +20,13 @@
   0%,100% { transform:translate3d(0,0,0) scaleX(var(--face,1)) scale(var(--enemy-scale,1)); }
   40% { transform:translate3d(-28px,0,0) scaleX(var(--face,1)) scale(var(--enemy-scale,1)); }
 }
+#enemySprite.secret-guardian.guardian-phase2-tremor { animation:guardian-phase2-tremor 2.2s ease-in-out infinite!important; }
+@keyframes guardian-phase2-tremor {
+  0%,100% { filter:saturate(1.12) contrast(1.1) drop-shadow(0 0 30px #6bdcf1); transform:translate3d(0,0,0) scaleX(var(--face,1)) scale(var(--enemy-scale,1)); }
+  45% { filter:saturate(1.12) contrast(1.1) drop-shadow(0 0 30px #6bdcf1); transform:translate3d(-2px,0,0) scaleX(var(--face,1)) scale(var(--enemy-scale,1)); }
+  50% { filter:brightness(1.35) saturate(1.3) contrast(1.18) drop-shadow(0 0 42px #ff4d4d); transform:translate3d(3px,0,0) scaleX(var(--face,1)) scale(var(--enemy-scale,1)); }
+  55% { transform:translate3d(-2px,0,0) scaleX(var(--face,1)) scale(var(--enemy-scale,1)); }
+}
 #enemySprite.secret-guardian.guardian-phase2-burst { animation:guardian-phase2-shake .9s cubic-bezier(.36,.07,.19,.97) both!important; }
 @keyframes guardian-phase2-shake {
   0% { filter:saturate(1.12) contrast(1.1) drop-shadow(0 0 30px #6bdcf1); transform:translate3d(0,0,0) scaleX(var(--face,1)) scale(var(--enemy-scale,1)); }
@@ -39,4 +46,5 @@
   #enemySprite.secret-guardian.direct-enemy { animation:none!important; transform:scaleX(var(--face,1)) scale(var(--enemy-scale,1));will-change:auto; }
   #enemySprite.direct-enemy.enemy-finishing { animation:none!important;opacity:.4; }
   #enemySprite.secret-guardian.guardian-phase2-burst { animation:none!important; }
+  #enemySprite.secret-guardian.guardian-phase2-tremor { animation:none!important; }
 }

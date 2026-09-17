@@ -66,7 +66,36 @@ const GUARDIAN={n:'深淵の守護者・クトゥル＝アビス',hp:576,trait:'
 GUARDIAN.m2=[{b:34,pressure:2,counter:3},{a:9,h:5,p:12},{b:26,devour:28,feed:14},{a:24,h:2,counter:4},{a:16,h:3,p:14,counter:3},{a:52,pressure:2}];
 const GUARDIAN_TRUE={n:'深淵の守護者・クトゥル＝アビス（真の姿）',hp:GUARDIAN.hp,trait:'殻を脱ぎ捨てた守護者は、儀式の型を崩し、より速く重い一撃で押し切ろうとする。',m:GUARDIAN.m2};
 window.ABYSS_SPECIAL_ENEMIES={[WATCHER.n]:WATCHER,[GUARDIAN.n]:GUARDIAN,[GUARDIAN_TRUE.n]:GUARDIAN_TRUE};
-window.abyssGuardianPhase2=()=>{const sp=document.getElementById('enemySprite');if(sp){sp.classList.remove('guardian-phase2-burst');void sp.offsetWidth;sp.classList.add('guardian-phase2-burst')}const flash=document.createElement('div');flash.className='guardian-phase2-flash';document.body.appendChild(flash);setTimeout(()=>flash.remove(),1200);const log=document.getElementById('battlelog');if(log)log.textContent='深淵の守護者が殻を脱ぎ捨て、真の姿を現し始めた……！'};
+window.abyssGuardianPhase2Cutscene=(onReveal,onDone)=>{
+ const wait=ms=>new Promise(r=>setTimeout(r,ms));
+ const sp=document.getElementById('enemySprite'),log=document.getElementById('battlelog');
+ const overlay=document.createElement('div');overlay.className='guardian-phase2-cutscene';overlay.innerHTML='<div class="phase2-vignette"></div><div class="phase2-line" id="phase2Line"></div>';document.body.appendChild(overlay);
+ requestAnimationFrame(()=>overlay.classList.add('on'));
+ if(sp)sp.classList.add('guardian-phase2-tremor');
+ if(log)log.textContent='深淵の守護者の様子がおかしい……！';
+ const lineEl=overlay.querySelector('#phase2Line');
+ const showLine=async(text,holdMs)=>{lineEl.textContent=text;window.applyFuri?.(lineEl);lineEl.classList.add('show');await wait(holdMs);lineEl.classList.remove('show');await wait(400)};
+ (async()=>{
+  try{
+   await wait(800);
+   await showLine('……まだだ。まだ終わらぬ。',2600);
+   await showLine('この程度で、私を止められると思ったか。',2600);
+   lineEl.textContent='殻が砕け、内より真の姿が溢れ出す――';window.applyFuri?.(lineEl);lineEl.classList.add('show');
+   if(sp){sp.classList.remove('guardian-phase2-tremor');sp.classList.remove('guardian-phase2-burst');void sp.offsetWidth;sp.classList.add('guardian-phase2-burst')}
+   await wait(500);
+   try{onReveal?.()}catch(err){console.error('guardian phase2 reveal error',err)}
+   const flash=document.createElement('div');flash.className='guardian-phase2-flash';document.body.appendChild(flash);setTimeout(()=>flash.remove(),1200);
+   if(log)log.textContent='深淵の守護者が殻を脱ぎ捨て、真の姿を現した……！';
+   await wait(2200);
+   lineEl.classList.remove('show');
+   overlay.classList.remove('on');
+   await wait(500);
+  }catch(err){console.error('guardian phase2 cutscene error',err)}
+  overlay.remove();
+  if(sp){sp.classList.remove('guardian-phase2-tremor');sp.classList.remove('guardian-phase2-burst')}
+  onDone?.();
+ })();
+};
 window.enterAbyssMap=(options={})=>{const g=game(),intro=options?.intro!==false,fresh=!(g.act===4&&g.secretMap&&Array.isArray(g.map)&&g.map.length);try{localStorage.setItem('abyssRegionUnlocked','1')}catch(e){}if(fresh){g.act=4;g.floor=0;g.secretMap=true;g.currentNode=null;g.mapVersion=9;g.map=[{row:0,col:0,count:1,type:'shop',done:false,links:[1]},{row:1,col:0,count:1,type:'secretBoss',done:false,links:[]}];g.hp=Math.min(g.max,g.hp+Math.ceil(g.max*.25))}window.abyssSave?.();window.renderAbyssMap?.();if(intro)window.showAbyssLayerIntro?.(4)};
 window.openAbyssGate=onDone=>{window.enterAbyssMap?.({intro:false});const d=document.createElement('div'),steps=[['四つの欠片が共鳴する','赤、青、黄、紫の光が、沈んだ王の背後へ集まっていく。'],['封印の扉が姿を現す','欠片は古い紋章へ変わり、海そのものに亀裂を刻んだ。'],['深淵への道が開いた','扉の向こうから、誰かの笑い声と黒い潮が流れ込む。']];let page=0,locked=false;d.className='abyss-gate-reveal';d.innerHTML='<div class="abyss-gate"><div class="shard-orbit"><i class="red"></i><i class="blue"></i><i class="yellow"></i><i class="purple"></i><span></span></div><small>ABYSS GATE</small><b></b><p></p><em>画面をタップして進む</em></div>';const draw=()=>{d.dataset.page=String(page+1);d.querySelector('b').textContent=steps[page][0];d.querySelector('p').textContent=steps[page][1]};const advance=e=>{e?.preventDefault?.();if(locked)return;if(page<steps.length-1){page++;draw();return}locked=true;d.classList.add('open');setTimeout(()=>{d.remove();if(onDone)onDone();else window.enterAbyssMap?.()},1100)};draw();document.body.appendChild(d);requestAnimationFrame(()=>d.classList.add('on'));d.onclick=advance;d.tabIndex=0;d.setAttribute('role','button');d.onkeydown=e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();advance(e)}};return true};
 function abyssStory(steps,onDone,className=''){
