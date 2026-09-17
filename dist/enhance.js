@@ -100,7 +100,7 @@ function sync(){if(document.hidden){if(bgm&&!bgm.paused){bgm.pause();hiddenPause
 window.applyFuri=furi;
 window.isAbyssFuriEnabled=furiEnabled;
 window.toggleAbyssFuri=()=>{let next=!furiEnabled();try{localStorage.setItem('abyssFuriEnabled',next?'1':'0')}catch(e){}if(next)furi(document.body);else unfuri(document.body);return next};
-function unlockAbyssAudio(e){if(audio&&audio.state!=='running')rebuildAudioGraph();if(e.target.closest('#newGame')&&window.abyssHasInterruptedRun?.())return;if(e.target.closest('#newGame,#continueGame'))music(mapMode(window.getAbyssGame?.()));else if($('#title')?.classList.contains('on')&&!galleryOpen)music('title');else if(bgm?.paused)sync()}
+function unlockAbyssAudio(e){if(audio&&audio.state!=='running')rebuildAudioGraph();if(e.target.closest('#newGame')&&(window.abyssHasInterruptedRun?.()||window.abyssWillOfferFirstBlessing?.()))return;if(e.target.closest('#newGame,#continueGame'))music(mapMode(window.getAbyssGame?.()));else if($('#title')?.classList.contains('on')&&!galleryOpen)music('title');else if(bgm?.paused)sync()}
 ['pointerdown','touchend','click','keydown'].forEach(evt=>document.addEventListener(evt,unlockAbyssAudio,{capture:true}));
 window.resumeAbyssAudio=()=>{if(!muted)rebuildAudioGraph()};
 function visibilityAudio(){if(document.hidden){pauseRetiringBgm();if(bgm&&!bgm.paused){bgm.pause();hiddenPaused=true}audio?.suspend?.().catch(()=>{})}else{rebuildAudioGraph();hiddenPaused=false;sync()}}document.addEventListener('visibilitychange',visibilityAudio);window.addEventListener('pagehide',()=>{pauseRetiringBgm();if(bgm&&!bgm.paused){bgm.pause();hiddenPaused=true}audio?.suspend?.().catch(()=>{})});window.addEventListener('pageshow',()=>{if(!document.hidden)visibilityAudio()});
