@@ -51,7 +51,7 @@ window.showAbyssCardEcho=(c)=>new Promise(done=>{
  setTimeout(()=>fx.remove(),1050);
 });
 window.endAbyssTactics=g=>{let curses=(g.hand||[]).filter(k=>data(k).g==='呪い').length;if(curses&&g.curseInversion){let healed=Math.min(curses,g.max-g.hp);g.hp+=healed;if(healed&&g.runStats)g.runStats.healing=(g.runStats.healing||0)+healed;let log=document.getElementById('battlelog');if(log)log.textContent=`反転術式：呪い${curses}枚を生命へ反転し、HPを${healed}回復`;window.abyssImpact?.('#playerSprite','heal')}else if(curses){let blocked=Math.min(g.block||0,curses),damage=curses-blocked;g.block-=blocked;g.hp-=damage;if(damage&&g.runStats)g.runStats.damageTaken+=damage;let log=document.getElementById('battlelog');if(log)log.textContent=`呪いが疼く！ ${curses}ダメージ${blocked?`（ブロックで${blocked}軽減）`:''}`;if(damage)window.abyssImpact?.('#playerSprite','poison');else window.abyssImpact?.('#playerSprite','guard');if(g.hp<=0&&g.enemy)g.enemy.intent={}}};
-window.carryAbyssTactics=g=>{if(g.bankBlock){g.nextTurnBlock=Math.min(12,(g.nextTurnBlock||0)+Math.min(g.bankBlock,g.block));g.bankBlock=0}};
+window.carryAbyssTactics=g=>{if(g.bankBlock){g.nextTurnBlock=(g.nextTurnBlock||0)+Math.min(g.bankBlock,g.block);g.bankBlock=0}};
 window.abyssTacticalStatus=g=>[[g.primedAttack,'次の攻撃＋'],[g.futureEnergy,'次ターン⚡＋'],[g.nextTurnBlock,'次ターン🛡'],[g.bankBlock,'🛡️持ち越し'],[g.doubleFirstCard,'初手を二重発動'],[g.extraTurnDraw,'毎ターン＋1枚'],[g.curseInversion,'呪いを回復へ反転']].filter(([n])=>n).map(([n,label])=>'<span class="state-pill">'+label+(typeof n==='number'&&n!==1&&n!==Infinity?n:'')+'</span>').join('');
 window.abyssHandLimit=g=>10;
 window.tacticalCardMoved=(g,kind)=>{};
