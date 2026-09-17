@@ -76,14 +76,37 @@ const relicView=document.getElementById('relicView');if(relicView&&!document.get
 let tutModal=document.createElement('div');tutModal.className='modal';tutModal.id='abyssTutorialModal';tutModal.innerHTML='<div class="panel modal-shell tutorial-panel"><header class="modal-shell-head"><h2>🌊 はじめに</h2></header><div class="modal-shell-body tutorial-body"><p>深海に沈み、敵を倒してカードを増やし、デッキを強くしながら深く進んでいくローグライクです。</p><p>マップでは光るマスを選んで次の深度へ進みます。マスの意味は🗺️ボタンでいつでも確認できます。</p><p>戦闘ではカードでエナジーを使い、攻撃やブロックを行います。エナジーがなくなったらターン終了です。</p><p>力尽きてもまた最初から挑戦できます。まずは潜ってみましょう。</p></div><footer class="modal-shell-foot"><button class="btn gold" id="abyssTutorialStart">はじめる</button></footer></div>';document.body.appendChild(tutModal);let tutFinish=()=>{tutModal.classList.remove('on');try{localStorage.setItem('abyssTutorialSeen','1')}catch(e){}};document.getElementById('abyssTutorialStart').onclick=tutFinish;tutModal.onclick=e=>{if(e.target===tutModal)tutFinish()};let tutShown=false;window.maybeShowAbyssTutorial=(retries=40)=>{if(tutShown)return;let seen=true;try{seen=!!localStorage.getItem('abyssTutorialSeen')}catch(e){}if(seen)return;let blocked=document.querySelector('.modal.on:not(#abyssTutorialModal)')||document.querySelector('.layer-intro.on');if(blocked){if(retries>0)setTimeout(()=>window.maybeShowAbyssTutorial(retries-1),300);return}tutShown=true;tutModal.classList.add('on');window.applyFuri?.(tutModal)};
 let rewardGold=document.querySelector('.reward-gold');if(rewardGold&&rewardGold.tagName!=='BUTTON'){let button=document.createElement('button');button.type='button';button.className=rewardGold.className;button.id='rewardGoldOption';button.setAttribute('aria-label','戦闘報酬のゴールドを受け取る');button.innerHTML=rewardGold.innerHTML+'<em>受け取る ›</em>';rewardGold.replaceWith(button);button.onclick=()=>window.claimAbyssRewardGold?.()}
 
-const FIRST_BONUSES={
- hp:{icon:'🫀',name:'深淵の血脈',text:'次の潜航は最大HPが10増えた状態で始まる。',apply:g=>{g.max+=10;g.hp=g.max}},
- card:{icon:'🔨',name:'最初の記憶',text:'次の潜航は初期デッキの1枚が強化された状態で始まる。',apply:g=>{let i=g.deck.findIndex(k=>k==='fin'||k==='scale');if(i>=0)g.deck[i]+='+'}},
- gold:{icon:'🪙',name:'漂着の宝',text:'次の潜航はゴールドを80持った状態で始まる。',apply:g=>{g.pearl+=80}}
-};
+const BLESSING_UNCOMMON_POOL=['school','ink','current','electric','remora','jelly','tidewall','reefstance','shellgrowth','shoalguard','followbite','moltscale','venombloom','shoalstep','venomfang','toxicarmor','weakambush','scalecharge','hunterfocus','marlin','harpoon','crackshell','kabutowari'];
+const BLESSING_RARE_POOL=['whale','mimic','tsunami','manta','leviathan','abyssarmor','seamiracle','predation'];
+const BLESSING_SAFE_BOSS_RELICS=['呪海の炉','四皇の王冠','深淵炉心','水圧変異','黄金王座','深淵の瞳'];
+function pickCardPool(pool,tier){let extended=window.extendAbyssCardPool?window.extendAbyssCardPool(pool,tier):pool;return extended[Math.random()*extended.length|0]}
+function pickRelicName(pred){let names=Object.keys(window.ABYSS_RELICS||{}).filter(n=>!['深海の鍵','深淵の紋章'].includes(n)&&pred(window.ABYSS_RELICS[n]));return names[Math.random()*names.length|0]}
+// Tiered like Slay the Spire's Neow's Blessing: a safe small boon, a safe bigger boon,
+// a boon with a real cost, and a high-risk/high-reward final option. One first-ever
+// death in the game's lifetime, so this is a one-time welcome, not a per-run choice.
+const FIRST_BONUS_TIERS=[
+ [ // tier 1: safe, small
+  {key:'t1_hp',icon:'🫀',name:'深淵の血脈',text:'次の潜航は最大HPが10増えた状態で始まる。',apply:g=>{g.max+=10;g.hp=g.max}},
+  {key:'t1_gold',icon:'🪙',name:'漂着の宝',text:'次の潜航はゴールドを80持った状態で始まる。',apply:g=>{g.pearl+=80}},
+  {key:'t1_thin',icon:'✂️',name:'身軽な一歩',text:'次の潜航は初期デッキの基本カードが1枚少ない状態で始まる。',apply:g=>{let i=g.deck.findIndex(k=>k==='fin'||k==='scale');if(i>=0)g.deck.splice(i,1)}}
+ ],
+ [ // tier 2: safe, medium
+  {key:'t2_upgrade',icon:'🔨',name:'最初の記憶',text:'次の潜航は初期デッキの1枚が強化された状態で始まる。',apply:g=>{let i=g.deck.findIndex(k=>k==='fin'||k==='scale');if(i>=0)g.deck[i]+='+'}},
+  {key:'t2_uncommon',icon:'🐚',name:'眠っていた技術',text:'次の潜航はランダムなアンコモンカードを1枚持った状態で始まる。',apply:g=>{let k=pickCardPool(BLESSING_UNCOMMON_POOL,'standard');if(k)g.deck.push(k)}},
+  {key:'t2_energy',icon:'🌊',name:'満ちる流れ',text:'次の潜航は、最初の3戦だけエナジーが1多い状態で戦える。',apply:g=>{g.bonusEnergyBattles=3}}
+ ],
+ [ // tier 3: real cost for a bigger boon
+  {key:'t3_rare',icon:'🔥',name:'深淵との契約',text:'次の潜航はレアカードを1枚得るが、代わりに呪いを1枚受け取る。',apply:g=>{let k=pickCardPool(BLESSING_RARE_POOL,'rare');if(k)g.deck.push(k);g.deck.push('abysscurse')}},
+  {key:'t3_relic',icon:'🪨',name:'代償の欠片',text:'次の潜航はランダムなレリックを1つ持った状態で始まるが、所持ゴールドを失う。',apply:g=>{let name=pickRelicName(r=>r[2]!=='boss');if(name)g.relic.push([window.ABYSS_RELICS[name][0],name]);g.pearl=0}},
+  {key:'t3_hpcurse',icon:'🩸',name:'深淵の刻印',text:'次の潜航は最大HPが20増えるが、代わりに呪いを1枚受け取る。',apply:g=>{g.max+=20;g.hp=g.max;g.deck.push('abysscurse')}}
+ ]
+];
+function firstBonusTier4(){return {key:'t4_boss',icon:'👑',name:'深淵王の遺物',text:'次の潜航は強力なボスレリックを1つ持った状態で始まるが、最大HPを10失う。',apply:g=>{let pool=BLESSING_SAFE_BOSS_RELICS.filter(n=>window.ABYSS_RELICS?.[n]),name=pool[Math.random()*pool.length|0];if(name)g.relic.push([window.ABYSS_RELICS[name][0],name]);g.max=Math.max(20,g.max-10);g.hp=Math.min(g.hp,g.max)}}}
+function rollFirstBonusChoices(){return[...FIRST_BONUS_TIERS.map(tier=>tier[Math.random()*tier.length|0]),firstBonusTier4()]}
+const FIRST_BONUSES={};FIRST_BONUS_TIERS.flat().forEach(b=>FIRST_BONUSES[b.key]=b);
 window.ABYSS_FIRST_BONUSES=FIRST_BONUSES;
 let blessingModal=document.createElement('div');blessingModal.className='modal';blessingModal.id='firstBlessingModal';blessingModal.innerHTML='<div class="panel"><div class="bigicon">🌊</div><h2>深淵からの贈り物</h2><p>初めての潜航、お疲れさま。深淵はあなたの挑戦を覚えている。次の潜航への贈り物を一つ選ぼう。</p><div class="choices" id="firstBlessingChoices"></div></div>';document.body.appendChild(blessingModal);
-function renderBlessingChoices(){document.getElementById('firstBlessingChoices').innerHTML=Object.entries(FIRST_BONUSES).map(([key,b])=>`<button class="choice" data-key="${key}"><b>${b.icon} ${b.name}</b><span>${b.text}</span></button>`).join('');document.getElementById('firstBlessingChoices').querySelectorAll('button').forEach(btn=>btn.onclick=()=>{try{localStorage.setItem('abyssPendingFirstBonus',btn.dataset.key);localStorage.setItem('abyssFirstDeathBonusSeen','1')}catch(e){}blessingModal.classList.remove('on')})}
+function renderBlessingChoices(){let offered=rollFirstBonusChoices();offered.forEach(b=>FIRST_BONUSES[b.key]=b);document.getElementById('firstBlessingChoices').innerHTML=offered.map(b=>`<button class="choice" data-key="${b.key}"><b>${b.icon} ${b.name}</b><span>${b.text}</span></button>`).join('');document.getElementById('firstBlessingChoices').querySelectorAll('button').forEach(btn=>btn.onclick=()=>{try{localStorage.setItem('abyssPendingFirstBonus',btn.dataset.key);localStorage.setItem('abyssFirstDeathBonusSeen','1')}catch(e){}blessingModal.classList.remove('on')})}
 window.maybeShowAbyssFirstDeathBlessing=()=>{let seen=true;try{seen=localStorage.getItem('abyssFirstDeathBonusSeen')==='1'}catch(e){}if(seen)return;const open=()=>{renderBlessingChoices();blessingModal.classList.add('on');window.applyFuri?.(blessingModal)};if(window.abyssStory)window.abyssStory([['ABYSS SPEAKS','深淵の声','初めての敗北に、深き者たちは小さな贈り物を用意した。']],open,'first-blessing-reveal');else open()};
 window.applyAbyssFirstBonusIfPending=g=>{let key=null;try{key=localStorage.getItem('abyssPendingFirstBonus')}catch(e){}if(!key||!FIRST_BONUSES[key])return;const b=FIRST_BONUSES[key];b.apply(g);try{localStorage.removeItem('abyssPendingFirstBonus')}catch(e){}setTimeout(()=>window.showAbyssOutcome?.(true,'深淵からの贈り物',`「${b.name}」の効果を受け取った。${b.text}`),500)};
 })();
