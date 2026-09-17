@@ -4,7 +4,7 @@ const COMMON=['bite','dartfish','shell','cleaner','ray','puffer','octoguard'];
 const UNCOMMON=['school','ink','current','heal','electric','remora','jelly','tidewall','reefstance','shellgrowth','shoalguard','followbite','moltscale','venombloom','shoalstep','venomfang','toxicarmor','weakambush','scalecharge','hunterfocus','marlin','harpoon','crackshell','kabutowari'];
 const RARE=['whale','mimic','tsunami','manta','leviathan','abyssarmor','seamiracle','predation'];
 const ABYSS=['lantern','voidjaw','coelacanth','shadoweel','cthulhu','abyssdance','curseward','abyssflame','weakpoint'];
-const BOSS_RELICS=new Set(['呪海の炉','四皇の王冠','深淵炉心','次元圧縮','巨鯨の心臓','水圧変異','黄金王座','深海の鍵','深淵の紋章','深淵の瞳']);
+const BOSS_RELICS=new Set(['呪海の炉','四皇の王冠','深海炉心','次元圧縮','巨鯨の心臓','水圧変異','黄金王座','深海の鍵','深海の紋章','深海の瞳']);
 const RELIC_PRICES={'漂流者の糸':85,'供物の真珠':88,'サイドパック':95,'呪紋の外殻':90,'航海羅針盤':75,'黄金炉':80,'珊瑚の護符':60,'古代の盾':98,'深海時計':70,'黒潮の鱗':96,'捕食者の眼':82,'毒腺の指輪':84,'スラッシュブースト':63,'オウムガイの護殻':80,'皇帝の骨片':105,'防毒ジャケット':68,'深海の血脈':65,'分厚い甲殻':92,'警鐘の巻貝':85,'深海の呼吸':120,'巨獣の顎':100,'VIPカード':110};
 let advanceAfterClose=false,shopRemovedThisVisit=false,stock=null;
 let keeperTimer=null;
@@ -18,7 +18,7 @@ function flash(text){let e=$('#shopMessage');if(!e)return;e.textContent=text;e.c
 function cardData(k){let getter=window.getAbyssIntrinsicCardStats||window.getAbyssCardStats;return getter?.(k)||window.getAbyssCardData?.(k)||{n:k,t:'効果情報なし',c:0}}
 function cardName(k){return cardData(k).n}
 function cardEffect(k){return String(cardData(k).t||'').replace(/^強化済み：/,'')}
-function rarity(c){return c.special?'特殊':c.a?'深淵':c.r?'レア':c.u?'アンコモン':'コモン'}
+function rarity(c){return c.special?'特殊':c.a?'深海':c.r?'レア':c.u?'アンコモン':'コモン'}
 function price(base,g=game()){let mult=window.getAbyssShopPriceMultiplier?.(g)||1;if(g?.relic?.some(r=>r[1]==='VIPカード'))mult*=.7;return Math.max(5,Math.ceil(base*mult/5)*5)}
 function cardPrice(k){let c=cardData(k),base=c.a?90:c.r?76:c.u?48:34,power=(c.d||0)*(c.h||1)+(c.b||0)+(c.p||0)*2+(c.he||0)*2+(c.dr||0)*7+(c.s||0)*10+(c.def||0)*10;return price(base+Math.min(20,Math.floor(power/8)*3))}
 function removalBase(g=game()){return 40+Math.max(0,g?.removeCount||0)*20}
@@ -26,7 +26,7 @@ function take(pool,n){const tier=pool===COMMON?'common':pool===UNCOMMON?'uncommo
 function pickRelicStock(pool){let byTier={common:[],uncommon:[],rare:[]};pool.forEach(n=>{let t=window.ABYSS_RELICS?.[n]?.[2];if(byTier[t])byTier[t].push(n)});let picks=[];['common','uncommon','rare'].forEach(t=>{if(byTier[t].length)picks.push(byTier[t][Math.random()*byTier[t].length|0])});let remaining=pool.filter(n=>!picks.includes(n)).sort(()=>Math.random()-.5);while(picks.length<3&&remaining.length)picks.push(remaining.shift());return picks.sort(()=>Math.random()-.5)}
 function makeStock(){let g=game(),rareCount=Math.random()<.3?1:0,cards=g?.act>=2?[...take(COMMON,1),...take(UNCOMMON,4-rareCount),...take(RARE,rareCount),...take(ABYSS,1)]:[...take(COMMON,1),...take(UNCOMMON,5-rareCount),...take(RARE,rareCount)];cards=cards.map(k=>({k,price:cardPrice(k),sold:false}));let owned=new Set((g?.relic||[]).map(r=>r[1])),relicPool=Object.keys(window.ABYSS_RELICS||{}).filter(n=>!BOSS_RELICS.has(n)&&!owned.has(n)&&RELIC_PRICES[n]),relics=pickRelicStock(relicPool).map(name=>({name,price:price(RELIC_PRICES[name]),sold:false}));return{cards,relics}}
 function render(){let g=game(),grid=$('#shopGrid');if(!g||!grid)return;grid.classList.remove('choosing');let removePrice=price(removalBase(g)),healPrice=price(25),upgradePrice=price(45),asc=(g.ascension||0)>=5,discount=g.relic.some(r=>r[1]==='VIPカード');if(!stock)stock=makeStock();$('#shopHp').textContent=`${g.hp}/${g.max}`;$('#shopPearls').textContent=g.pearl;grid.innerHTML=`
-  ${(asc||discount)?`<div class="shop-adjust">${asc?'<span>深淵階級：価格＋15%</span>':''}${discount?'<span class="discount">🏮 VIP割引：価格−30%</span>':''}</div>`:''}
+  ${(asc||discount)?`<div class="shop-adjust">${asc?'<span>深海階級：価格＋15%</span>':''}${discount?'<span class="discount">🏮 VIP割引：価格−30%</span>':''}</div>`:''}
   <section class="shop-stock-section"><div class="shop-section-title"><b>🎴 カード市場</b><span>6枚の商品</span></div><p>店ごとに品ぞろえが変わり、効果とレアリティが高いカードほど高価です。</p><div class="shop-market unified-shop-market">${stock.cards.map((x,i)=>`<button class="market-item unified-market-item" data-card-stock="${i}" ${x.sold?'disabled':''}>${window.renderAbyssCardView?.(x.k,{sold:x.sold})||''}<strong class="shop-card-price">🪙 ${x.price}</strong></button>`).join('')}</div></section>
   <section class="shop-stock-section"><div class="shop-section-title"><b>🔱 レリック市場</b><span>${stock.relics.length}個の商品</span></div><p>この潜航で持っていないレリックだけが並びます。</p><div class="shop-market relic-market">${stock.relics.length?stock.relics.map((x,i)=>{let r=window.ABYSS_RELICS[x.name],label={common:'コモン',uncommon:'アンコモン',rare:'レア'}[r[2]];return `<button class="market-item relic-stock" data-relic-stock="${i}" ${x.sold?'disabled':''}><i>${r[0]}</i><b>${x.sold?'売り切れ':x.name}${label?`<span class="relic-rarity rarity-${r[2]}">${label}</span>`:''}</b><span>${r[1]}</span><small>🪙 ${x.price}</small></button>`}).join(''):'<p class="sold-out-note">購入できる未所持のレリックはありません。</p>'}</div></section>
   <button class="shop-item" data-buy="heal"><i>🫧</i><b>珊瑚の治療</b><span>HPを20回復</span><strong>🪙 ${healPrice}</strong></button>
