@@ -45,6 +45,7 @@ Object.assign(READINGS,{'音':'おと','鳴ります':'なります'});
 Object.assign(READINGS,{'君':'きみ','懲':'こ','欲張って':'よくばって','欲しい':'ほしい','挑':'いど','逆':'ぎゃく','弱肉強食':'じゃくにくきょうしょく','来た':'きた','飽きない':'あきない','子':'こ','気に入った':'きにいった','貯め込む':'ためこむ','沈んで':'しずんで','好':'す','鍛':'きた','後悔':'こうかい','化け物':'ばけもの','本気':'ほんき','出して':'だして','油断':'ゆだん','禁物':'きんもつ','使わ':'つかわ'});
 Object.assign(READINGS,{'深淵炉心':'しんえんろしん','深海階級':'しんかいかいきゅう','深海増幅':'しんかいぞうふく','眼':'め','取引':'とりひき','精霊':'せいれい','贈り物':'おくりもの','深海王':'しんかいおう'});
 Object.assign(READINGS,{'少し':'すこし','誰':'だれ','着いた':'ついた','夜':'よる','深':'ふか','気':'き','昔':'むかし','呼':'よ'});
+Object.assign(READINGS,{'水':'みず','会えた':'あえた'});
 const keys=Object.keys(READINGS).filter(k=>/[一-龯々]/.test(k)&&!/[ァ-ヶー]/.test(k)).sort((a,b)=>b.length-a.length);
 const furiChecked=new WeakMap();
 function furiEnabled(){try{return localStorage.getItem('abyssFuriEnabled')!=='0'}catch(e){return true}}
