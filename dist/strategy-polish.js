@@ -7,7 +7,24 @@ Object.assign(window.ABYSS_RELICS||{}, {
 });
 function style(g=game()){const cards=(g?.deck||[]).map(k=>window.getAbyssCardData?.(k)||{}),score={連撃:0,毒:0,鉄壁:0,深淵:0};cards.forEach(c=>{if((c.h||0)>1||c.repeatIfAttack||c.perPlayed)score.連撃++;if(c.p||c.doublePoison||c.perPoison||c.blockPerPoison)score.毒++;if(c.b||c.def||c.perBlock)score.鉄壁++;if(c.a||c.hu)score.深淵++});const top=Object.entries(score).sort((a,b)=>b[1]-a[1])[0];return top&&top[1]>=2?top[0]:'均衡'}
 window.getAbyssDeckStyle=style;
-window.getAbyssRunRecap=()=>'';
+const RUN_TITLES=[
+ {icon:'💰',name:'大富豪',desc:'ゴールドを700以上獲得してクリア',cond:(s,g)=>s.goldEarned>=700},
+ {icon:'🎒',name:'大荷物',desc:'デッキが30枚以上の状態でクリア',cond:(s,g)=>(g.deck||[]).length>=30},
+ {icon:'⚔️',name:'エリートキラー',desc:'エリートを5体以上撃破してクリア',cond:(s,g)=>s.elites>=5},
+ {icon:'💥',name:'一撃必殺',desc:'一度に50以上のダメージを与えてクリア',cond:(s,g)=>s.maxHit>=50},
+ {icon:'🛡️',name:'不死身の航海者',desc:'一度も被ダメージを受けずにクリア',cond:(s,g)=>s.damageTaken===0},
+ {icon:'☠️',name:'毒の支配者',desc:'毒を累計100以上与えてクリア',cond:(s,g)=>s.poisonApplied>=100},
+ {icon:'🌊',name:'深淵の覇者',desc:'死海の深さでクリア',cond:(s,g)=>(g.ascension||0)===(window.ABYSS_DEAD_SEA_ASCENSION||11)},
+ {icon:'🔮',name:'遺物収集家',desc:'遺物を6個以上所持してクリア',cond:(s,g)=>(g.relic||[]).length>=6}
+];
+window.getAbyssRunRecap=(s,cleared)=>{
+ if(!cleared||!s)return'';
+ const g=game();
+ if(!g)return'';
+ const earned=RUN_TITLES.filter(t=>t.cond(s,g));
+ if(!earned.length)return'';
+ return `<div class="run-titles"><h3>今回の称号</h3>${earned.map(t=>`<article><i>${t.icon}</i><div><b>${t.name}</b><p>${t.desc}</p></div></article>`).join('')}</div>`;
+};
 function addRelic(name){window.acquireAbyssRelic?.(name)}
 const chainA=['','傷ついた海図師','壊れた潜水艇の横で、海図師が助けを求めている。救えば、次の海域で秘密の補給路を教えるという。',[['修理を手伝う','HPを6失う。次の海域で秘密の補給路が必ず現れる。',()=>{let g=game();g.hp=Math.max(1,g.hp-6);g.echoPromise='cartographer'}],['食料だけ渡す','HPを4回復し、海図師とは別れる。',()=>{let g=game();g.hp=Math.min(g.max,g.hp+4);g.echoCartographerDone=true}],['残骸を回収','39ゴールドを得る。海図師とは別れる。',()=>{let g=game();g.pearl+=39;g.echoCartographerDone=true}]]];chainA.storyWhen=g=>g.act===1&&!g.echoPromise&&!g.echoCartographerDone;
 const chainAFollow=['','海図師の秘密航路','助けた海図師が約束どおり待っていた。あなたのデッキを見て、進む戦い方に合う装備を差し出す。',[['魚群航路','群泳の旗を得る。多段攻撃を強化。',()=>{addRelic('群泳の旗');game().echoPromise=null;game().echoCartographerDone=true}],['逆鱗航路','竜の逆鱗を得る。強化した攻撃をさらに鋭くする。',()=>{addRelic('竜の逆鱗');game().echoPromise=null;game().echoCartographerDone=true}],['臨界航路','生命臨界を得る。HPが半分以下で真価を発揮する。',()=>{addRelic('生命臨界');game().echoPromise=null;game().echoCartographerDone=true}]]];chainAFollow.storyWhen=g=>g.act>=2&&g.echoPromise==='cartographer';chainAFollow.storyPriority=true;
