@@ -1,8 +1,9 @@
 (()=>{'use strict';
 const $=s=>document.querySelector(s);
-const KEYS=['abysscurse','fin','scale','bite','rampage','dartfish','shell','cleaner','ray','school','ink','puffer','current','heal','electric','octoguard','remora','jelly','tidewall','reefstance','shellgrowth','shoalguard','followbite','moltscale','venombloom','shoalstep','venomfang','toxicarmor','weakambush','scalecharge','hunterfocus','marlin','whale','mimic','tsunami','manta','leviathan','abyssarmor','seamiracle','predation','abyssdance','lantern','voidjaw','coelacanth','shadoweel','cthulhu','curseward','abyssflame','seaurchin','pufferguard','treasuremap','rustkey','harpoon','crackshell','weakpoint','kabutowari'];
+const KEYS=['abysscurse','fin','scale','bite','rampage','dartfish','shell','cleaner','ray','school','ink','puffer','current','heal','electric','octoguard','remora','jelly','tidewall','reefstance','shellgrowth','shoalguard','followbite','moltscale','venombloom','shoalstep','venomfang','toxicarmor','weakambush','scalecharge','hunterfocus','marlin','whale','mimic','tsunami','manta','leviathan','abyssarmor','seamiracle','predation','abyssdance','lantern','voidjaw','coelacanth','shadoweel','cthulhu','curseward','abyssflame','seaurchin','pufferguard','treasuremap','rustkey','harpoon','crackshell','weakpoint','kabutowari','overdrive'];
 KEYS.push(...Object.keys(window.ABYSS_ASCENSION_CARDS||{}));
 const PHOTO_ART={
+  overdrive:'assets/cards/card-overdrive.webp',
   ink:'assets/cards/plush-ink.webp',
   rampage:'assets/cards/plush-rampage.webp',
   puffer:'assets/cards/plush-puffer.webp',
