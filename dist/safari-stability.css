@@ -1,10 +1,12 @@
 button,.card,.node,.choice{-webkit-tap-highlight-color:transparent;touch-action:manipulation}.safari-save-note{font-size:11px;color:#8fb0b4}.titlebox{pointer-events:auto}#title:before{pointer-events:none}
 @supports(-webkit-touch-callout:none){button{cursor:pointer;-webkit-user-select:none}.modal.on{transform:translateZ(0)}.panel{-webkit-overflow-scrolling:touch}.quick-nav{transform:translateZ(2px)}}
-/* Phones: keep impact animations, but stop decorative loops that continuously use the GPU. */
+/* Phones: keep character motion at a low refresh rate and stop heavier decorative loops. */
 @media (hover:none) and (pointer:coarse){
  #ocean:before{animation-duration:60s!important}
- .creature.player:not(.playerHit){animation:none!important}
- .creature.enemy-art:not(.enemyHit):not(.enemy-attack):not(.guardian-phase2-tremor):not(.guardian-phase2-burst){animation:none!important}
+ .creature.player:not(.playerHit){animation:mobilePlayerIdle 6s ease-in-out infinite!important}
+ .creature.enemy-art:not(.enemyHit):not(.enemy-attack):not(.guardian-phase2-tremor):not(.guardian-phase2-burst){animation:mobileEnemyIdle 6.4s ease-in-out infinite!important}
  .card:not(.fly):before,.card:not(.fly):after,.card:not(.fly) .card-art,.card:not(.fly) .card-art:before,.card:not(.fly) .card-art:after{animation:none!important}
  body:not(.scene-title) .title-fauna,body:not(.scene-title) .sigil{animation:none!important}
 }
+@keyframes mobilePlayerIdle{0%,100%{transform:translateY(1px) scale(var(--player-scale,.85))}50%{transform:translateY(-4px) rotate(-1deg) scale(var(--player-scale,.85))}}
+@keyframes mobileEnemyIdle{0%,100%{transform:translateY(1px) scaleX(var(--face,1)) scale(var(--enemy-scale,1))}50%{transform:translateY(-5px) rotate(1deg) scaleX(var(--face,1)) scale(var(--enemy-scale,1))}}
