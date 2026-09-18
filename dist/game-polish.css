@@ -87,7 +87,7 @@
 .tutorial-body{text-align:left}.tutorial-body p{margin:0 0 14px;line-height:1.65;font-size:13px;color:#dce8ea}.tutorial-body p:last-child{margin-bottom:0}
 .battle-map-back{position:fixed;left:50%;bottom:calc(18px + env(safe-area-inset-bottom));transform:translateX(-50%);z-index:20;width:max-content;min-width:200px;white-space:nowrap}
 #map .node{pointer-events:auto}#map .node:disabled{cursor:default;filter:none;opacity:1}
-.dead-sea-timer{position:fixed;z-index:40;top:64px;left:50%;transform:translateX(-50%);display:flex;align-items:center;gap:6px;padding:5px 14px;border-radius:999px;background:#000000b3;border:1px solid #ff4d4d66;color:#ffd9d9;font:700 14px/1 "Noto Sans JP",sans-serif;letter-spacing:.04em;box-shadow:0 0 16px #ff4d4d44;pointer-events:none}
+.dead-sea-timer{position:fixed;z-index:40;top:64px;left:50%;transform:translateX(-50%);align-items:center;gap:6px;padding:5px 14px;border-radius:999px;background:#000000b3;border:1px solid #ff4d4d66;color:#ffd9d9;font:700 14px/1 "Noto Sans JP",sans-serif;letter-spacing:.04em;box-shadow:0 0 16px #ff4d4d44;pointer-events:none}.dead-sea-timer:not([hidden]){display:flex}
 .dead-sea-timer b{font-size:19px;font-variant-numeric:tabular-nums;color:#fff}
 .dead-sea-timer.urgent{animation:deadSeaTimerPulse .5s ease-in-out infinite;border-color:#ff2b2bcc;box-shadow:0 0 24px #ff2b2b88}
 .dead-sea-timer.urgent b{color:#ff5c5c}
