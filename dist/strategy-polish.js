@@ -117,13 +117,9 @@ window.enterAbyssMap=(options={})=>{const g=game(),intro=options?.intro!==false,
 window.openAbyssGate=onDone=>{window.enterAbyssMap?.({intro:false});const d=document.createElement('div'),steps=[['四つの欠片が共鳴する','赤、青、黄、紫の光が、沈んだ王の背後へ集まっていく。'],['封印の扉が姿を現す','欠片は古い紋章へ変わり、海そのものに亀裂を刻んだ。'],['深淵への道が開いた','扉の向こうから、誰かの笑い声と黒い潮が流れ込む。']];let page=0,locked=false;d.className='abyss-gate-reveal';d.innerHTML='<div class="abyss-gate"><div class="shard-orbit"><i class="red"></i><i class="blue"></i><i class="yellow"></i><i class="purple"></i><span></span></div><small>ABYSS GATE</small><b></b><p></p><em>画面をタップして進む</em></div>';const draw=()=>{d.dataset.page=String(page+1);d.querySelector('b').textContent=steps[page][0];d.querySelector('p').textContent=steps[page][1]};const advance=e=>{e?.preventDefault?.();if(locked)return;if(page<steps.length-1){page++;draw();return}locked=true;d.classList.add('open');setTimeout(()=>{d.remove();if(onDone)onDone();else window.enterAbyssMap?.()},1100)};draw();document.body.appendChild(d);requestAnimationFrame(()=>d.classList.add('on'));d.onclick=advance;d.tabIndex=0;d.setAttribute('role','button');d.onkeydown=e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();advance(e)}};return true};
 function abyssStory(steps,onDone,className=''){
  if(className==='ending-reveal'&&steps.length===3&&steps[0]?.[0]==='THE DEEP LORD FALLS')steps=[
-  ['THE DEEP LORD FALLS','深海の主、沈む','最後の一撃が深海を揺らした。深海の主は咆哮を失い、巨体をきしませながら、ゆっくりと玉座の前へ沈んでいった。長い戦いに、ついに決着がついた。'],
-  ['THE CROWN BREAKS','砕けた王冠','主の王冠に一本のひびが走る。砕けた欠片は青い光となり、あなたの周りを泳いでから、これまで集めたカードへ静かに吸い込まれていった。'],
-  ['MEMORIES ANSWER','旅の力','傷ついた体を支えるように、旅の途中で得た力が次々と輝く。守った記憶、攻めた勇気、選んだ道。そのすべてが、ここまで潜ってきた証だった。'],
-  ['THE SEA GROWS STILL','静寂が戻る','やがて荒れ狂っていた海流は止まり、深海に静寂が戻る。遠くに隠れていた小さな魚たちが姿を見せ、勝者となったあなたを、声もなく見つめている。'],
-  ['SOMETHING STIRS BELOW','海底の鼓動','しかし、海底から低い鼓動が響いた。深海の主の亡骸の下で、岩だと思っていた大地に巨大な亀裂が走り、海そのものが震え始める。'],
-  ['THE EYE OPENS','瞼が開く','亀裂の奥で、海底だと思っていたものが、ゆっくりと瞼を開いた。闇より黒い瞳が、はるか昔からあなたを待っていたかのように、その姿を映す。'],
-  ['A VOICE FROM THE DARK','闇の底からの声','「ここまで来たか」。さらに深い闇から、あなたの名前を呼ぶ声がする。深海の主を倒した勝利は終わりではない。本当の底へ続く扉は、まだ固く閉ざされている。いつか四つの光がそろう時、さらに深い潜航が始まるだろう。']
+  ['THE DEEP LORD FALLS','深海の主、沈む','最後の一撃が深海を揺らした。深海の主は咆哮を失い、巨体をきしませながら、ゆっくりと玉座の前へ沈んでいった。長い戦いに、ついに決着がつく。主の王冠に走ったひびから青い光があふれ、砕けた欠片はあなたの周りを泳いで、これまで集めたカードへ吸い込まれていった。傷ついた体を支えるように、旅の途中で得た力が次々と輝く。守った記憶、攻めた勇気、選んだ道。そのすべてが、ここまで潜ってきた証だった。'],
+  ['SOMETHING STIRS BELOW','海底の鼓動','やがて荒れ狂っていた海流は止まり、深海に静寂が戻った。遠くに隠れていた小さな魚たちが姿を見せ、勝者となったあなたを声もなく見つめている。しかし、その静けさを破るように、海底から低い鼓動が響いた。深海の主の亡骸の下で、岩だと思っていた大地に巨大な亀裂が走る。カードの光が一斉に揺れ、海そのものが目を覚ましたように震え始めた。'],
+  ['A VOICE FROM THE DARK','闇の底からの声','亀裂の奥で、海底だと思っていたものが、ゆっくりと瞼を開いた。闇より黒い瞳が、はるか昔からあなたを待っていたかのように、その姿を映す。「ここまで来たか」。さらに深い闇から、あなたの名前を呼ぶ声がした。深海の主を倒した勝利は終わりではない。本当の底へ続く扉は、まだ固く閉ざされている。いつか四つの光がそろう時、さらに深い潜航が始まるだろう。']
  ];
  const d=document.createElement('div');let page=0,locked=false;
  d.className=`guardian-reveal story-reveal ${className}`;

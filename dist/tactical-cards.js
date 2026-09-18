@@ -1,5 +1,6 @@
 (()=>{'use strict';
 window.ABYSS_TACTICAL_CARDS={
+rampage:{u:0,r:1},
 bettarevenge:{n:'ベタの逆襲',i:'🐟',c:1,revengeDamage:1,upgrade:{c:-1},t:'この戦闘でHPに受けたダメージと同じ値を敵に与える。ブロックで防いだ分は含まない。',g:'こうげき'},
 cleaner:{c:1,he:3,dr:0,fullHealBlock:8,upgrade:{he:2},t:'HP3回復。使用前からHP満タンなら、代わりに8ブロック。'},
 ink:{c:1,b:6,w:1,quietDraw:2,upgrade:{b:2,w:1},t:'6ブロック。脱力1。敵が攻撃を予定していなければ2枚引く。',upgradeText:'8ブロック。脱力2。敵が攻撃を予定していなければ2枚引く。'},
