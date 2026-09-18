@@ -114,7 +114,8 @@ const TIER_B=[
  {key:'b_relic',icon:'🐚',name:'眠っていた道具',text:'ランダムなノーマルレリックを1個獲得する。',apply:g=>{let name=pickRelicByRarity(['common','uncommon']);if(!name)return[];g.relic.push([window.ABYSS_RELICS[name][0],name]);return[{kind:'relic',name}]}},
  {key:'b_trivialize',icon:'💀',name:'凪いだ最初の戦い',text:'最初の3回の戦闘で、敵のHPが1になる。',apply:g=>{g.trivializeBattles=3;return[{kind:'stat',icon:'💀',text:'最初の3戦、敵のHPが1になる'}]}},
  {key:'b_gold60',icon:'🪙',name:'漂着の宝',text:'ゴールドを60獲得する。',apply:g=>{g.pearl+=60;return[{kind:'stat',icon:'🪙',text:'ゴールド +60'}]}},
- {key:'b_maxhp10',icon:'🫀',name:'深海の血脈',text:'最大HPが10%増える。',apply:g=>{let inc=Math.round(g.max*.1);g.max+=inc;g.hp+=inc;return[{kind:'stat',icon:'🫀',text:`最大HP +${inc}`}]}}
+ {key:'b_maxhp10',icon:'🫀',name:'深海の血脈',text:'最大HPが10%増える。',apply:g=>{let inc=Math.round(g.max*.1);g.max+=inc;g.hp+=inc;return[{kind:'stat',icon:'🫀',text:`最大HP +${inc}`}]}},
+ {key:'b_upgradedRewards',icon:'✨',name:'研ぎ澄まされた技',text:'最初の3回の戦闘報酬が、強化済みのカードになる。',apply:g=>{g.upgradedRewardBattles=3;return[{kind:'stat',icon:'✨',text:'最初の3戦、報酬カードが強化済みになる'}]}}
 ];
 // Tier C: one random demerit paired with one random merit. Excluded pairs would
 // just cancel each other out (gold+gold, maxHP+maxHP, curse+removal), so those
