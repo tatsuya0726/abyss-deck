@@ -34,16 +34,16 @@ const ACH=[
  {id:'clear_three',icon:'🌟',title:'三度底を見た者',desc:'深淵を合計3回踏破する。',test:s=>s.clears>=3}
 ];
 function fresh(){return{unlocked:[],selected:null,stats:{wins:0,elites:0,bosses:0,clears:0,maxPoison:0,maxBlock:0,maxDeck:0}}}
-function read(){try{let x=JSON.parse(localStorage.getItem(KEY)||'null');if(x&&Array.isArray(x.unlocked)){x.stats=Object.assign(fresh().stats,x.stats||{});return x}}catch(e){}return fresh()}
+function read(){try{let x=JSON.parse(window.abyssStorageGet(KEY)||'null');if(x&&Array.isArray(x.unlocked)){x.stats=Object.assign(fresh().stats,x.stats||{});return x}}catch(e){}return fresh()}
 let meta=read();
-function write(){try{localStorage.setItem(KEY,JSON.stringify(meta))}catch(e){}}
+function write(){try{window.abyssStorageSet(KEY,JSON.stringify(meta))}catch(e){}}
 function notify(a,delay=0){setTimeout(()=>{let n=document.createElement('div');n.className='achievement-pop';n.innerHTML=`<i>${a.icon}</i><div><small>称号を獲得</small><b>${a.title}</b></div>`;document.body.appendChild(n);window.applyFuri?.(n);setTimeout(()=>n.classList.add('show'),20);setTimeout(()=>{n.classList.remove('show');setTimeout(()=>n.remove(),350)},2600)},delay)}
 function evaluate(announce=true){let newly=ACH.filter(a=>!meta.unlocked.includes(a.id)&&a.test(meta.stats));if(!newly.length)return false;newly.forEach(a=>meta.unlocked.push(a.id));meta.selected=newly[newly.length-1].id;write();if(announce)newly.forEach((a,i)=>notify(a,i*500));return true}
 window.trackAbyssAchievement=(type,data={})=>{let g=window.getAbyssGame?.(),s=meta.stats,dirty=false;if(type==='win'){s.wins++;if(data.elite)s.elites++;if(data.boss)s.bosses++;dirty=true}if(type==='clear'&&g&&!g.achievementClearRecorded){s.clears++;g.achievementClearRecorded=true;dirty=true;window.abyssSave?.()}if(g){let p=g.poison||0,b=g.block||0,d=g.deck?.length||0;if(p>s.maxPoison){s.maxPoison=p;dirty=true}if(b>s.maxBlock){s.maxBlock=b;dirty=true}if(d>s.maxDeck){s.maxDeck=d;dirty=true}}if(dirty){write();evaluate(true);sync()}};
 function currentModifier(m){const latest=m&&MODIFIERS.find(x=>x.id===m.id);return latest?JSON.parse(JSON.stringify(latest)):m}
 const RUNMOD_KEY='abyssRunModifierEnabled';
-window.isAbyssRunModifierEnabled=()=>localStorage.getItem(RUNMOD_KEY)==='1';
-window.toggleAbyssRunModifier=()=>{let v=!window.isAbyssRunModifierEnabled();try{localStorage.setItem(RUNMOD_KEY,v?'1':'0')}catch(e){}return v};
+window.isAbyssRunModifierEnabled=()=>window.abyssStorageGet(RUNMOD_KEY)==='1';
+window.toggleAbyssRunModifier=()=>{let v=!window.isAbyssRunModifierEnabled();try{window.abyssStorageSet(RUNMOD_KEY,v?'1':'0')}catch(e){}return v};
 window.pickAbyssRunModifier=()=>window.isAbyssRunModifierEnabled()?currentModifier(MODIFIERS[Math.random()*MODIFIERS.length|0]):null;
 window.applyAbyssRunModifier=(enemy,{game})=>{let m=currentModifier(game?.runModifier);if(!m)return enemy;if(game)game.runModifier=m;if(m.enemyHpPct)enemy.hp=Math.max(1,Math.round(enemy.hp*(1+m.enemyHpPct)));if(m.enemyDamage)enemy.m=enemy.m.map(x=>({...x,a:x.a?x.a+m.enemyDamage:x.a}));if(m.enemyBlock)enemy.m=enemy.m.map(x=>({...x,b:x.b?x.b+m.enemyBlock:x.b}));return enemy};
 let reveal=document.createElement('div');reveal.className='modal';reveal.id='runModifierModal';reveal.innerHTML='<div class="panel modifier-panel"><div class="bigicon" id="modifierIcon"></div><small>ABYSSAL CURRENT</small><h2 id="modifierName"></h2><p>今回の潜航を包む深海異変</p><div class="modifier-rules"><div><b>味方の変化</b><span id="modifierBenefit"></span></div><div class="danger-rule"><b>深海の代償</b><span id="modifierCost"></span></div></div><button class="btn gold" id="modifierClose">異変を受け入れる</button></div>';document.body.appendChild(reveal);
