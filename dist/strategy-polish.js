@@ -61,9 +61,9 @@ const oldPolish=window.polishShop;window.polishShop=grid=>{oldPolish?.(grid);con
 let shardModal=document.createElement('div');shardModal.className='modal';shardModal.id='purpleShardModal';shardModal.innerHTML='<div class="panel shard-choice-panel"><i class="shard-gem shard-purple"></i><small>ABYSS OFFERING</small><h2>紫の深淵の欠片</h2><p>鼓動する欠片が、生命を20差し出せと囁いている。</p><div class="choices"><button id="takePurple"><b>HP20を支払う</b><span>紫の欠片を入手する。HPが20以下では選べない。</span></button><button id="leavePurple"><b>背を向ける</b><span>何も得ずに進む。</span></button></div></div>';document.body.appendChild(shardModal);
 const originalAnomaly=window.openAbyssAnomaly;window.openAbyssAnomaly=()=>{const g=game();if((g.ascension||0)<1||shards(g).purple||!g.map?.[g.currentNode]?.purpleShardAnomaly)return originalAnomaly?.();const take=shardModal.querySelector('#takePurple');take.disabled=g.hp<=20;take.onclick=()=>{if(g.hp<=20)return;g.hp-=20;window.acquireAbyssShard?.('purple');shardModal.classList.remove('on');window.abyssAdvance?.()};shardModal.querySelector('#leavePurple').onclick=()=>{shardModal.classList.remove('on');window.abyssAdvance?.()};shardModal.classList.add('on');window.applyFuri?.(shardModal)};
 
-const WATCHER={n:'深淵の監視者・フグ店長',hp:336,trait:'黒い操糸：守りながら毒を喰らい、棘の連撃と潮圧で行動を縛る。',m:[{b:30,counter:2},{a:7,h:5},{a:15,p:7,feed:7},{b:20,devour:18},{a:38,pressure:2}]};
-const GUARDIAN={n:'深淵の守護者・クトゥル＝アビス',hp:576,trait:'虚海胎動：六つの儀式を巡り、毒喰い・反応攻撃・潮圧を重ねて最後に深海崩壊を放つ。',m:[{b:38,pressure:1,counter:2},{a:6,h:6,p:8},{b:24,devour:22,feed:10},{a:19,h:2,counter:3},{b:30,pressure:2,counter:4},{a:42,p:10}]};
-GUARDIAN.m2=[{b:34,pressure:2,counter:3},{a:9,h:5,p:12},{b:26,devour:28,feed:14},{a:24,h:2,counter:4},{a:16,h:3,p:14,counter:3},{a:52,pressure:2}];
+const WATCHER={n:'深淵の監視者・フグ店長',hp:336,trait:'黒い操糸：守りながら毒を喰らい、棘の連撃と潮圧で行動を縛る。',m:[{b:30},{a:7,h:5},{a:15,p:7,feed:7},{b:20,devour:18},{a:38,pressure:2}]};
+const GUARDIAN={n:'深淵の守護者・クトゥル＝アビス',hp:576,trait:'虚海胎動：六つの儀式を巡り、毒喰い・反応攻撃・潮圧を重ねて最後に深海崩壊を放つ。',m:[{b:38,thornsSelf:4},{a:6,h:6,p:8},{b:24,devour:22,feed:10},{a:19,h:2,counter:3},{b:30,pressure:2},{a:42,p:10}]};
+GUARDIAN.m2=[{b:34,denyDraw:1},{a:9,h:5,p:12},{b:26,devour:28,feed:14},{a:24,h:2,counter:4},{a:16,h:3,p:14,counter:3},{a:52,pressure:2}];
 const GUARDIAN_TRUE={n:'深淵の守護者・クトゥル＝アビス（真の姿）',hp:GUARDIAN.hp,trait:'殻を脱ぎ捨てた守護者は、儀式の型を崩し、より速く重い一撃で押し切ろうとする。',m:GUARDIAN.m2};
 window.ABYSS_SPECIAL_ENEMIES={[WATCHER.n]:WATCHER,[GUARDIAN.n]:GUARDIAN,[GUARDIAN_TRUE.n]:GUARDIAN_TRUE};
 window.abyssGuardianPhase2Cutscene=(onReveal,onDone)=>{
