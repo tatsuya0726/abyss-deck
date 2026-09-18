@@ -1,5 +1,6 @@
 (()=>{'use strict';
 window.ABYSS_TACTICAL_CARDS={
+bettarevenge:{n:'ベタの逆襲',i:'🐟',c:1,revengeDamage:1,upgrade:{c:-1},t:'この戦闘でHPに受けたダメージと同じ値を敵に与える。ブロックで防いだ分は含まない。',g:'こうげき'},
 cleaner:{c:1,he:3,dr:0,fullHealBlock:8,upgrade:{he:2},t:'HP3回復。使用前からHP満タンなら、代わりに8ブロック。'},
 ink:{c:1,b:6,w:1,quietDraw:2,upgrade:{b:2,w:1},t:'6ブロック。脱力1。敵が攻撃を予定していなければ2枚引く。',upgradeText:'8ブロック。脱力2。敵が攻撃を予定していなければ2枚引く。'},
 electric:{c:1,d:7,surge:7,upgrade:{d:3},t:'7ダメージ。残りエナジーを最大2消費し、1につき追加7ダメージ。'},
@@ -17,6 +18,7 @@ moltscale:{c:0,b:3,exhaust:0,retain:1,upgrade:{b:2},t:'3ブロック。使わず
 const has=(g,n)=>g.relic?.some(r=>r[1]===n),data=k=>window.getAbyssCardData?.(k)||{},attack=c=>!!(c.d||c.perBlock),block=(g,n)=>{g.block+=n;if(g.runStats)g.runStats.blockGained+=n};
 window.prepareAbyssTactics=(c,g,draw)=>{
  const prev=data(g.lastCard),attacking=!!g.enemy?.intent?.a;
+ if(c.revengeDamage){c.d=Math.max(0,(g.battleDamageTaken||0)-(g.str||0));c.t=c.t.replace('同じ値',`同じ値（現在${g.battleDamageTaken||0}）`)}
  if(c.fullHealBlock&&g.hp>=g.max){c.he=0;c.b=c.fullHealBlock}
  if(c.readAttackBlock&&attacking)c.b+=c.readAttackBlock;
  if(c.quietDraw&&!attacking)draw(c.quietDraw);
@@ -58,4 +60,6 @@ window.carryAbyssTactics=g=>{if(g.bankBlock){g.nextTurnBlock=(g.nextTurnBlock||0
 window.abyssTacticalStatus=g=>[[g.primedAttack,'次の攻撃＋'],[g.futureEnergy,'次ターン⚡＋'],[g.nextTurnBlock,'次ターン🛡'],[g.bankBlock,'🛡️持ち越し'],[g.doubleFirstCard,'初手を二重発動'],[g.extraTurnDraw,'毎ターン＋1枚'],[g.curseInversion,'呪いを回復へ反転'],[g.overdriveDrain?1:0,`オーバードライブ：毎ターンHP-${g.overdriveDrain||0}/⚡+${g.overdriveEnergy||0}/🎴+${g.overdriveDraw||0}`]].filter(([n])=>n).map(([n,label])=>'<span class="state-pill">'+label+(typeof n==='number'&&n!==1&&n!==Infinity?n:'')+'</span>').join('');
 window.abyssHandLimit=g=>10;
 window.tacticalCardMoved=(g,kind)=>{};
+let trackedEnemy=null,lastHp=null;
+setInterval(()=>{let g=window.getAbyssGame?.();if(!g?.enemy){if(g)g.battleDamageTaken=0;trackedEnemy=null;lastHp=g?.hp;return}if(g.enemy!==trackedEnemy){trackedEnemy=g.enemy;lastHp=g.hp;g.battleDamageTaken=Math.max(0,g.battleDamageTaken||0);return}if(typeof lastHp==='number'&&g.hp<lastHp)g.battleDamageTaken=(g.battleDamageTaken||0)+(lastHp-g.hp);lastHp=g.hp},16);
 })();
