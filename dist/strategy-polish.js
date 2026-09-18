@@ -12,10 +12,10 @@ const RUN_TITLES=[
  {icon:'🎒',name:'大荷物',desc:'デッキが30枚以上の状態でクリア',cond:(s,g)=>(g.deck||[]).length>=30},
  {icon:'⚔️',name:'エリートキラー',desc:'エリートを5体以上撃破してクリア',cond:(s,g)=>s.elites>=5},
  {icon:'💥',name:'一撃必殺',desc:'一度に50以上のダメージを与えてクリア',cond:(s,g)=>s.maxHit>=50},
- {icon:'🛡️',name:'不死身の航海者',desc:'一度も被ダメージを受けずにクリア',cond:(s,g)=>s.damageTaken===0},
- {icon:'☠️',name:'毒の支配者',desc:'毒を累計100以上与えてクリア',cond:(s,g)=>s.poisonApplied>=100},
+ {icon:'🛡️',name:'不死身の航海者',desc:'被ダメージを15以下に抑えてクリア',cond:(s,g)=>s.damageTaken<=15},
+ {icon:'☠️',name:'毒の支配者',desc:'毒を累計500以上与えてクリア',cond:(s,g)=>s.poisonApplied>=500},
  {icon:'🌊',name:'深淵の覇者',desc:'死海の深さでクリア',cond:(s,g)=>(g.ascension||0)===(window.ABYSS_DEAD_SEA_ASCENSION||11)},
- {icon:'🔮',name:'遺物収集家',desc:'遺物を6個以上所持してクリア',cond:(s,g)=>(g.relic||[]).length>=6}
+ {icon:'🔮',name:'遺物収集家',desc:'遺物を10個以上所持してクリア',cond:(s,g)=>(g.relic||[]).length>=10}
 ];
 window.getAbyssRunRecap=(s,cleared)=>{
  if(!cleared||!s)return'';
