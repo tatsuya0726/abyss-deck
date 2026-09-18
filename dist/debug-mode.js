@@ -1,8 +1,8 @@
 (()=>{'use strict';
-const $=s=>document.querySelector(s),KEY='abyssDebugEnabled',SNAP='abyssDebugSnapshot';
+const $=s=>document.querySelector(s),KEY='abyssDebugEnabled',SNAP='abyssDebugSnapshot',authorized=()=>window.abyssActiveProfileName?.()==='達也0726';
 const typeLabel={battle:'通常戦',elite:'エリート',event:'イベント',anomaly:'深淵',rest:'休憩',treasure:'宝箱',shop:'ショップ',boss:'ボス',secretBoss:'ボス'};
 const typeIcon={battle:'⚔',elite:'☠',event:'?',anomaly:'◈',rest:'♨',treasure:'◇',shop:'◉',boss:'♛',secretBoss:'◆'};
-let enabled=localStorage.getItem(KEY)==='1';
+let enabled=authorized()&&localStorage.getItem(KEY)==='1';
 
 const titleButton=document.createElement('button');
 titleButton.type='button';titleButton.id='debugTitleToggle';titleButton.hidden=true;
@@ -43,12 +43,12 @@ function hasRun(){const g=game();return !!(g&&Array.isArray(g.deck)&&g.deck.leng
 function saveSnapshot(){if(!hasRun()||sessionStorage.getItem(SNAP))return;try{sessionStorage.setItem(SNAP,JSON.stringify(game()))}catch(e){}}
 function toast(message){let t=$('#toast');if(!t)return;t.textContent=message;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),1400)}
 function closeOtherModals(){document.querySelectorAll('.modal.on').forEach(x=>{if(x!==modal)x.classList.remove('on')})}
-function syncLauncher(){const onTitle=$('#title')?.classList.contains('on'),inBattle=$('#battle')?.classList.contains('on')&&!!game()?.enemy;launcher.hidden=!enabled||onTitle;killNow.hidden=!enabled||!inBattle;launcher.classList.toggle('setup',!enabled);launcher.querySelector('b').textContent=enabled?'DEBUG':'デバッグ開始'}
+function syncLauncher(){const allowed=authorized(),onTitle=$('#title')?.classList.contains('on'),inBattle=$('#battle')?.classList.contains('on')&&!!game()?.enemy;launcher.hidden=!allowed||!enabled||onTitle;killNow.hidden=!allowed||!enabled||!inBattle;launcher.classList.toggle('setup',!enabled);launcher.querySelector('b').textContent=enabled?'DEBUG':'デバッグ開始'}
 function sync(){titleButton.textContent=enabled?'🛠 デバッグ ON':'🛠 デバッグ OFF';titleButton.classList.toggle('active',enabled);syncLauncher()}
 function refresh(){const g=game(),run=hasRun();$('#debugNoRun').hidden=run;$('#debugTools').hidden=!run;if(!run)return;$('#debugMapState').textContent=`第${g.act||1}層・深度${g.floor||0}`;const list=$('#debugNodeList'),nodes=Array.isArray(g.map)?g.map:[];list.innerHTML=nodes.map((n,i)=>`<button type="button" data-node="${i}" class="debug-node ${n.done?'done':''} ${i===g.currentNode?'current':''}"><i>${typeIcon[n.type]||'•'}</i><span><b>${n.row+1}段目・${n.col+1}</b><small>${typeLabel[n.type]||n.type}${n.redShardElite?'・赤い欠片':''}</small></span></button>`).join('')||'<span class="debug-no-nodes">マップを生成するとマスが表示されます。</span>'}
-function open(){if(!enabled)return;saveSnapshot();refresh();modal.classList.add('on');window.applyFuri?.(modal)}
-function setEnabled(next){enabled=next;localStorage.setItem(KEY,next?'1':'0');if(next){saveSnapshot();sync();open()}else{modal.classList.remove('on');sync()}}
-window.toggleAbyssDebug=()=>setEnabled(!enabled);window.isAbyssDebugEnabled=()=>enabled;
+function open(){if(!enabled||!authorized())return;saveSnapshot();refresh();modal.classList.add('on');window.applyFuri?.(modal)}
+function setEnabled(next){if(next&&!authorized())return;enabled=next;localStorage.setItem(KEY,next?'1':'0');if(next){saveSnapshot();sync();open()}else{modal.classList.remove('on');sync()}}
+window.toggleAbyssDebug=()=>setEnabled(!enabled);window.isAbyssDebugEnabled=()=>authorized()&&enabled;
 
 let lastTouch=0;
 function bindTap(el,handler){el.addEventListener('touchend',e=>{e.preventDefault();lastTouch=Date.now();handler(e)},{passive:false});el.addEventListener('click',e=>{if(Date.now()-lastTouch<500)return;handler(e)})}
