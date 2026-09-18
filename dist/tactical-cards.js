@@ -62,5 +62,7 @@ window.abyssTacticalStatus=g=>[[g.primedAttack,'次の攻撃＋'],[g.futureEnerg
 window.abyssHandLimit=g=>10;
 window.tacticalCardMoved=(g,kind)=>{};
 let trackedEnemy=null,lastHp=null;
-setInterval(()=>{let g=window.getAbyssGame?.();if(!g?.enemy){if(g)g.battleDamageTaken=0;trackedEnemy=null;lastHp=g?.hp;return}if(g.enemy!==trackedEnemy){trackedEnemy=g.enemy;lastHp=g.hp;g.battleDamageTaken=Math.max(0,g.battleDamageTaken||0);return}if(typeof lastHp==='number'&&g.hp<lastHp)g.battleDamageTaken=(g.battleDamageTaken||0)+(lastHp-g.hp);lastHp=g.hp},16);
+const recordBattleDamage=()=>{let g=window.getAbyssGame?.();if(!g?.enemy){if(g)g.battleDamageTaken=0;trackedEnemy=null;lastHp=g?.hp;return}if(g.enemy!==trackedEnemy){if(trackedEnemy)g.battleDamageTaken=0;trackedEnemy=g.enemy;lastHp=g.hp;return}if(typeof lastHp==='number'&&g.hp<lastHp)g.battleDamageTaken=(g.battleDamageTaken||0)+(lastHp-g.hp);lastHp=g.hp};
+const hpText=document.getElementById('playerHpText');if(hpText)new MutationObserver(recordBattleDamage).observe(hpText,{subtree:true,childList:true,characterData:true});
+const finishEnemyHpBar=window.win;window.win=function(){const g=window.getAbyssGame?.();if(g?.enemy){g.enemy.hp=0;const fill=document.getElementById('enemyHpFill'),text=document.getElementById('enemyHpText');if(fill)fill.style.width='0%';if(text)text.textContent=`0/${g.enemy.max}`}return finishEnemyHpBar?.()};
 })();

@@ -1,2 +1,10 @@
 button,.card,.node,.choice{-webkit-tap-highlight-color:transparent;touch-action:manipulation}.safari-save-note{font-size:11px;color:#8fb0b4}.titlebox{pointer-events:auto}#title:before{pointer-events:none}
 @supports(-webkit-touch-callout:none){button{cursor:pointer;-webkit-user-select:none}.modal.on{transform:translateZ(0)}.panel{-webkit-overflow-scrolling:touch}.quick-nav{transform:translateZ(2px)}}
+/* Phones: keep impact animations, but stop decorative loops that continuously use the GPU. */
+@media (hover:none) and (pointer:coarse){
+ #ocean:before{animation-duration:60s!important}
+ .creature.player:not(.playerHit){animation:none!important}
+ .creature.enemy-art:not(.enemyHit):not(.enemy-attack):not(.guardian-phase2-tremor):not(.guardian-phase2-burst){animation:none!important}
+ .card:not(.fly):before,.card:not(.fly):after,.card:not(.fly) .card-art,.card:not(.fly) .card-art:before,.card:not(.fly) .card-art:after{animation:none!important}
+ body:not(.scene-title) .title-fauna,body:not(.scene-title) .sigil{animation:none!important}
+}
