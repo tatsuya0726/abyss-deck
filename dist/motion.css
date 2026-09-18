@@ -14,7 +14,7 @@
 .choice::after{content:"";position:absolute;inset:-40% auto -40% -35%;width:22%;background:linear-gradient(90deg,transparent,#aafff366,transparent);transform:skewX(-20deg);opacity:0;pointer-events:none}
 .choice:hover::after,.choice:focus-visible::after{animation:choiceGleam .65s ease-out}.choice:active{transform:scale(.975);border-color:#b8fff8!important;box-shadow:0 0 22px #55e8db55,inset 0 0 20px #4ce1d522}
 .rewardCard{animation:rewardReveal .48s cubic-bezier(.2,.82,.2,1) both}.rewardCard:nth-child(2){animation-delay:.08s}.rewardCard:nth-child(3){animation-delay:.16s}
-.node.available:not(.anomaly):not(.current){animation:nodeBreathe 2.3s ease-in-out infinite}.node:active{filter:brightness(1.65);transform:translate(-50%,-50%) scale(.86)!important}
+.node.available:not(.anomaly):not(.current)::before{content:'';position:absolute;inset:0;border-radius:inherit;box-shadow:0 0 18px #65e8dd55;opacity:0;animation:nodeBreatheFade 2.3s ease-in-out infinite;pointer-events:none}.node:active{filter:brightness(1.65);transform:translate(-50%,-50%) scale(.86)!important}
 .creature.player:not(.playerHit){filter:drop-shadow(0 16px 12px #000)!important}
 .creature.player.playerHit{animation:playerHitLux .42s cubic-bezier(.2,.65,.25,1),swim 3s ease-in-out .44s infinite!important}
 .creature.enemy-art.enemyHit{animation:enemyHitLux .34s cubic-bezier(.2,.7,.25,1),enemyIdle 3.2s ease-in-out .36s infinite!important}
@@ -28,10 +28,10 @@
 @keyframes choiceRise{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
 @keyframes choiceGleam{0%{left:-35%;opacity:0}25%{opacity:1}100%{left:115%;opacity:0}}
 @keyframes rewardReveal{from{opacity:0;transform:translateY(34px) rotate(-2deg) scale(.88);filter:brightness(2)}to{opacity:1;transform:none;filter:none}}
-@keyframes nodeBreathe{50%{box-shadow:0 0 18px #65e8dd55,0 0 0 5px #061016}}
+@keyframes nodeBreatheFade{50%{opacity:1}}
 @keyframes playerHitLux{0%,100%{transform:translateX(0);filter:drop-shadow(0 16px 12px #000)}24%{transform:translateX(-24px) rotate(-4deg);filter:brightness(3) saturate(1.7) drop-shadow(0 0 28px #ff334d)}52%{transform:translateX(12px) rotate(2deg);filter:brightness(.7) saturate(1.2) drop-shadow(0 0 18px #a50019)}76%{transform:translateX(-5px);filter:brightness(1.25) drop-shadow(0 12px 12px #000)}}
 @keyframes enemyHitLux{0%,100%{transform:translateX(0) scaleX(var(--face));filter:drop-shadow(0 16px 12px #000)}35%{transform:translateX(28px) rotate(7deg) scaleX(var(--face));filter:brightness(3) drop-shadow(0 0 28px #fff)}70%{transform:translateX(-12px) scaleX(var(--face));filter:brightness(.85) drop-shadow(0 0 18px #4ff)}}
 @keyframes impactRing{0%{opacity:1;transform:translate(-50%,-50%) scale(.25)}100%{opacity:0;transform:translate(-50%,-50%) scale(4.2)}}
 @keyframes impactBubble{0%{opacity:1;transform:translate(-50%,-50%) rotate(var(--burst-angle)) translateX(5px) scale(.5)}100%{opacity:0;transform:translate(-50%,-50%) rotate(var(--burst-angle)) translateX(76px) scale(1.45)}}
 @keyframes hitCounter{0%{opacity:0;transform:translate(-50%,8px) scale(.8)}28%{opacity:1;transform:translate(-50%,0) scale(1.08)}100%{opacity:0;transform:translate(-50%,-20px) scale(1)}}
-@media(prefers-reduced-motion:reduce){.screen.on,.modal.on,.modal.on .panel,.modal.on .bigicon,.modal.on .choice,.rewardCard,.node.available{animation:none!important}.impact-ring,.impact-bubble{display:none}}
+@media(prefers-reduced-motion:reduce){.screen.on,.modal.on,.modal.on .panel,.modal.on .bigicon,.modal.on .choice,.rewardCard,.node.available,.node.available::before{animation:none!important}.impact-ring,.impact-bubble{display:none}}

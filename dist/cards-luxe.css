@@ -41,8 +41,8 @@
   border: 2px solid #fff0a4;
   background: linear-gradient(115deg,transparent 15%,#fffbd8cc 27%,transparent 39%) -200px 0/180px 100% no-repeat, conic-gradient(from 35deg,#6e4305,#ffe88b,#8f5b0d,#fff4b0,#593300,#d9a62d,#6e4305);
   box-shadow: 0 0 12px #ffe88b, 0 0 30px #e2a92966, 0 14px 30px #000d, inset 0 0 0 2px #4d2e04;
-  animation: rareAura 2.8s ease-in-out infinite;
 }
+.card.rare::before { content:''; position:absolute; inset:0; border:none; padding:0; border-radius:inherit; box-shadow:0 0 18px #fff3a5, 0 0 38px #e2a92988; opacity:0; animation:rareAuraFade 2.8s ease-in-out infinite; pointer-events:none; }
 .card.rare:hover { background-position: 240px 0, 0 0; }
 .rare .cardInner { border: 1px solid #ffe99a; box-shadow: inset 0 0 28px #e5ad2138, 0 0 0 2px #593b08; }
 .rare .art { background: radial-gradient(circle at 50% 45%,#a97b25,#211304 72%); text-shadow: 0 0 22px #ffe076; }
@@ -51,17 +51,17 @@
   border: 2px solid #a9fffb;
   background: conic-gradient(from var(--abyss-turn,0deg),#55fff0,#3f258d,#070519,#d05ce6,#67e9ff,#241058,#55fff0);
   box-shadow: 0 0 14px #6dfcff,0 0 34px #a64fff88,0 14px 32px #000e,inset 0 0 0 2px #08031b;
-  animation: abyssAura 2.2s ease-in-out infinite;
 }
+.card.abyss::before { content:''; position:absolute; inset:0; border:none; padding:0; border-radius:inherit; box-shadow:0 0 20px #85fffa, 0 0 44px #b54fffaa; opacity:0; animation:abyssAuraFade 2.2s ease-in-out infinite; pointer-events:none; }
 .abyss .cardInner { border-color:#c1fffb; background:linear-gradient(165deg,#160d38,#050311 68%); box-shadow:inset 0 0 32px #7b3fbe66,0 0 0 2px #1d0c45; }
 .abyss .art { background:radial-gradient(circle,#693295,#09051e 70%); text-shadow:0 0 25px #87fff7,0 0 12px #e471ff; }
 .abyss::after { content:none; color:#a9fffb; font-size:12px; }
 .rare .cost { background:radial-gradient(#fffbd1,#e6b938 58%,#654100 62%); box-shadow:0 0 12px #ffe56e; }
 .abyss .cost { background:radial-gradient(#d7fffc,#7b6ee9 48%,#26134f 66%); color:#fff; box-shadow:0 0 13px #79fff4; }
 .card .cost{z-index:20;width:30px;height:30px;font-size:15px;pointer-events:none}
-@keyframes rareAura { 50% { box-shadow:0 0 18px #fff3a5,0 0 38px #e2a92988,0 14px 30px #000d,inset 0 0 0 2px #4d2e04; } }
-@keyframes abyssAura { 50% { box-shadow:0 0 20px #85fffa,0 0 44px #b54fffaa,0 14px 32px #000e,inset 0 0 0 2px #08031b; } }
-@media (prefers-reduced-motion: reduce) { .card.rare,.card.abyss { animation:none; } }
+@keyframes rareAuraFade { 50% { opacity:1; } }
+@keyframes abyssAuraFade { 50% { opacity:1; } }
+@media (prefers-reduced-motion: reduce) { .card.rare,.card.abyss,.card.rare::before,.card.abyss::before { animation:none; } }
 
 /* Each card keeps its own readable little scene across battle, rewards and the codex. */
 .card-art,.codex-art,.reveal-art,.shop-card-art{
