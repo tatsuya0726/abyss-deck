@@ -1,10 +1,10 @@
 (()=>{'use strict';
 const $=s=>document.querySelector(s);
-const KEYS=['abysscurse','fin','scale','bite','rampage','dartfish','shell','cleaner','ray','school','ink','puffer','current','heal','electric','octoguard','remora','jelly','tidewall','reefstance','shellgrowth','shoalguard','followbite','moltscale','venombloom','shoalstep','venomfang','toxicarmor','weakambush','scalecharge','hunterfocus','marlin','whale','mimic','tsunami','manta','leviathan','abyssarmor','seamiracle','predation','abyssdance','lantern','voidjaw','coelacanth','shadoweel','cthulhu','curseward','abyssflame','seaurchin','pufferguard','treasuremap','rustkey','harpoon','crackshell','weakpoint','kabutowari','bettarevenge','overdrive','madness'];
+const KEYS=['abysscurse','fin','scale','bite','rampage','dartfish','shell','cleaner','ray','school','ink','puffer','current','heal','electric','octoguard','remora','jelly','tidewall','reefstance','shellgrowth','shoalguard','followbite','moltscale','venombloom','shoalstep','venomfang','toxicarmor','weakambush','scalecharge','hunterfocus','marlin','whale','mimic','tsunami','manta','leviathan','abyssarmor','seamiracle','predation','abyssdance','lantern','voidjaw','coelacanth','shadoweel','cthulhu','curseward','abyssflame','seaurchin','pufferguard','treasuremap','rustkey','harpoon','crackshell','weakpoint','kabutowari','bettarevenge','overdrive','madness','abysssonar','tideforesight','hungryshoal','recklesscharge','abyssescape'];
 KEYS.push(...Object.keys(window.ABYSS_ASCENSION_CARDS||{}));
 const PHOTO_ART={
   bettarevenge:'assets/cards/card-betta-revenge.webp',
-  madness:'assets/cards/card-madness.webp',
+  madness:'assets/cards/card-madness.webp',abysssonar:'assets/cards/card-abyss-sonar.webp',tideforesight:'assets/cards/card-tide-foresight.webp',hungryshoal:'assets/cards/card-hungry-shoal.webp',recklesscharge:'assets/cards/card-reckless-charge.webp',abyssescape:'assets/cards/card-abyss-escape.webp',
   overdrive:'assets/cards/card-overdrive.webp',
   ink:'assets/cards/plush-ink.webp',
   rampage:'assets/cards/plush-rampage.webp',
@@ -47,7 +47,7 @@ const PHOTO_ART={
   fin:'assets/cards/plush-fin.webp',
   scale:'assets/cards/plush-scale.webp',
   dartfish:'assets/cards/plush-dartfish.webp',
-  cleaner:'assets/cards/plush-cleaner.webp',
+  cleaner:'assets/cards/card-cleaner-heal-v2.webp',
   school:'assets/cards/plush-school.webp',
   electric:'assets/cards/plush-electric.webp',
   remora:'assets/cards/plush-remora.webp',
@@ -74,7 +74,7 @@ const PHOTO_ART={
 function photoOf(k){return PHOTO_ART[keyOf(k)]||''}
 function keyOf(k){return String(k||'').replace(/~\d+$/,'').replace(/[+*]+$/,'')}
 function data(k,up=false){let getter=window.getAbyssIntrinsicCardStats||window.getAbyssCardStats;return getter?.(keyOf(k)+(up?'+':''))||window.getAbyssCardData?.(keyOf(k))||{n:k,i:'❔',c:0,t:'効果情報なし'} }
-function typeOf(k){let c=window.getAbyssCardData?.(keyOf(k))||{};return c.p?'poison':c.b&&c.d?'counter':c.b?'block':c.he?'heal':c.dr||c.en?'flow':c.s||c.def?'power':'attack'}
+function typeOf(k){let c=window.getAbyssCardData?.(keyOf(k))||{};return c.p?'poison':c.b&&c.d?'counter':c.b?'block':c.he?'heal':c.dr||c.en||c.choice||c.redrawHand?'flow':c.s||c.def?'power':'attack'}
 function art(k,cl='codex-art'){let key=keyOf(k),c=data(key),photo=photoOf(key);return `<div class="${cl}${photo?' plush-photo-art':''}" data-card-art="${key}" data-art-type="${typeOf(key)}"${photo?` style="--card-photo:url('${photo}')"`:''}>${photo?'':`<span>${c.i||'🐟'}</span>`}</div>`}
 window.getAbyssCardArtType=typeOf;
 window.getAbyssCardArtHtml=art;

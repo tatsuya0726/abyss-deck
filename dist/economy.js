@@ -1,9 +1,9 @@
 (()=>{'use strict';
 const $=s=>document.querySelector(s);
-const COMMON=['bite','dartfish','shell','cleaner','ray','puffer','octoguard'];
-const UNCOMMON=['school','ink','current','heal','electric','remora','jelly','tidewall','reefstance','shellgrowth','shoalguard','followbite','moltscale','venombloom','shoalstep','venomfang','toxicarmor','weakambush','scalecharge','hunterfocus','marlin','harpoon','crackshell','kabutowari'];
+const COMMON=['bite','dartfish','shell','cleaner','ray','puffer','octoguard','tideforesight'];
+const UNCOMMON=['school','ink','current','heal','electric','remora','jelly','tidewall','reefstance','shellgrowth','shoalguard','followbite','moltscale','venombloom','shoalstep','venomfang','toxicarmor','weakambush','scalecharge','hunterfocus','marlin','harpoon','crackshell','kabutowari','abysssonar','hungryshoal','recklesscharge'];
 const RARE=['whale','mimic','tsunami','manta','leviathan','abyssarmor','seamiracle','predation'];
-const ABYSS=['lantern','voidjaw','coelacanth','shadoweel','cthulhu','abyssdance','curseward','abyssflame','weakpoint'];
+const ABYSS=['lantern','voidjaw','coelacanth','shadoweel','cthulhu','abyssdance','curseward','abyssflame','weakpoint','abyssescape'];
 const BOSS_RELICS=new Set(['呪海の炉','四皇の王冠','深淵炉心','次元圧縮','巨鯨の心臓','水圧変異','黄金王座','深海の鍵','深海の紋章','深淵の瞳']);
 const RELIC_PRICES={'漂流者の糸':85,'供物の真珠':88,'サイドパック':95,'呪紋の外殻':90,'航海羅針盤':75,'黄金炉':80,'珊瑚の護符':60,'古代の盾':98,'深海時計':70,'黒潮の鱗':96,'捕食者の眼':82,'毒腺の指輪':84,'スラッシュブースト':63,'オウムガイの護殻':80,'皇帝の骨片':105,'防毒ジャケット':68,'深海の血脈':65,'分厚い甲殻':92,'警鐘の巻貝':85,'深海の呼吸':120,'巨獣の顎':100,'VIPカード':110};
 let advanceAfterClose=false,shopRemovedThisVisit=false,stock=null;

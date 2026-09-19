@@ -2,7 +2,7 @@
 window.ABYSS_TACTICAL_CARDS={
 rampage:{u:0,r:1},
 bettarevenge:{n:'ベタの逆襲',i:'🐟',c:1,revengeDamage:1,upgrade:{c:-1},t:'この戦闘でHPに受けたダメージと同じ値を敵に与える。ブロックで防いだ分は含まない。',g:'こうげき'},
-cleaner:{c:1,he:3,dr:0,fullHealBlock:8,upgrade:{he:2},t:'HP3回復。使用前からHP満タンなら、代わりに8ブロック。'},
+cleaner:{c:1,he:3,dr:0,fullHealBlock:8,upgrade:{he:2},t:'HP3回復。使用前からHP満タンなら、代わりに8ブロック。使い切り。'},
 ink:{c:1,b:6,w:1,quietDraw:2,upgrade:{b:2,w:1},t:'6ブロック。脱力1。敵が攻撃を予定していなければ2枚引く。',upgradeText:'8ブロック。脱力2。敵が攻撃を予定していなければ2枚引く。'},
 electric:{c:1,d:7,surge:7,upgrade:{d:3},t:'7ダメージ。残りエナジーを最大2消費し、1につき追加7ダメージ。'},
 remora:{c:1,s:1,futureEnergy:1,upgrade:{c:-1},t:'攻撃力＋1。次のターンのエナジー＋1。'},
@@ -21,15 +21,15 @@ window.prepareAbyssTactics=(c,g,draw)=>{
  const prev=data(g.lastCard),attacking=!!g.enemy?.intent?.a;
  if(c.revengeDamage){c.d=Math.max(0,(g.battleDamageTaken||0)-(g.str||0));c.t=c.t.replace('同じ値',`同じ値（現在${g.battleDamageTaken||0}）`)}
  if(c.fullHealBlock&&g.hp>=g.max){c.he=0;c.b=c.fullHealBlock}
- if(c.readAttackBlock&&attacking)c.b+=c.readAttackBlock;
+ if(c.readAttackBlock&&attacking)c.b+=c.readAttackBlock;if(c.readAttackDraw&&attacking)draw(c.readAttackDraw);if(c.quietEnergy&&!attacking)g.energy+=c.quietEnergy;
  if(c.quietDraw&&!attacking)draw(c.quietDraw);
- if(c.surge){const used=Math.min(2,g.energy);g.energy-=used;c.d+=used*c.surge}
+ if(c.surge){const used=Math.min(2,g.energy);g.energy-=used;c.d+=used*c.surge}if(c.lowHpBonus&&g.hp<=g.max*.5)c.d+=c.lowHpBonus;
  if(c.graveAttack)c.d+=Math.min(3,g.discard.filter(k=>attack(data(k))).length)*c.graveAttack;
  if(c.graveSize)c.d+=Math.min(6,g.discard.length)*c.graveSize;
  if(c.alternate){if(prev.b||prev.def)c.d+=c.alternate;if(attack(prev))c.b+=c.alternate}
  if(c.spendPoison){const n=Math.min(c.spendPoison,g.poison);g.poison-=n;c.b=n*3}
  if(c.poisonBloom)c.p=Math.min(c.poisonBloom,Math.ceil(g.poison/2));
- if(c.generateCurse)for(let i=0;i<c.generateCurse;i++)g.discard.push('abysscurse');
+ if(c.generateCurse)for(let i=0;i<c.generateCurse;i++)g.discard.push('abysscurse');if(c.redrawHand){const n=g.hand.length;g.discard.push(...g.hand.splice(0));draw(n)}
  if(c.curseScale){const n=window.countAbyssCurses?.(g)||0;c.d=n*c.curseScale;c.b=n*c.curseScale}
  if(c.d&&g.primedAttack){c.d+=g.primedAttack;g.primedAttack=0}
  if(c.primeAttack)g.primedAttack=Math.min(8,(g.primedAttack||0)+c.primeAttack);
