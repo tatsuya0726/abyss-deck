@@ -23,7 +23,9 @@ const RELICS={
  '皇帝の骨片':['🦴','入手時に最大HPとHPが7増える。','rare'],
  '防毒ジャケット':['🦺','敵の毒針の追加ダメージをブロックできるようになる。','common'],
  '巨獣の顎':['🦈','戦闘開始時、攻撃力＋1（この戦闘中ずっと）。','uncommon'],
- 'VIPカード':['💳','ショップのすべての価格が30%安くなる。','rare']
+ 'VIPカード':['💳','ショップのすべての価格が30%安くなる。','rare'],
+ 'グリズリースーツ':['🐻','相手から受けるダメージを1減らす。連続攻撃は1回ごとに減らす。','rare'],
+ '再生ウロコ':['🩹','各戦闘で初めて自分のターン中にHPを失った時、HPを3回復する。','uncommon']
 };
 const BOSS_RELICS={
  '呪海の炉':['🕯️','毎ターンのエナジー＋1。ただし、戦闘開始時に手札へ呪いを1枚追加する。','boss'],
@@ -57,7 +59,7 @@ const chooseRewardRelics=window.openAbyssRewardRelics;window.openAbyssRewardReli
 window.openAbyssBossRelics=next=>window.openAbyssRewardRelics('boss',()=>next?.());
 let relicViewButton=document.getElementById('relicView');if(relicViewButton){relicViewButton.disabled=false;relicViewButton.onclick=showRelics}
 document.getElementById('deckView')?.addEventListener('click',()=>{document.getElementById('collectionGrid').className='modal-shell-body collection-grid'});
-const rare=['marlin','whale','mimic','tsunami','manta','leviathan','abyssarmor'],abyss=['lantern','voidjaw','coelacanth','shadoweel','cthulhu','curseward','abyssflame'];
+const rare=['marlin','whale','mimic','tsunami','manta','leviathan','abyssarmor','coelacanth','zeroshift'],abyss=['lantern','voidjaw','shadoweel','curseward','abyssflame','bloodprice'];
 window.ABYSS_EVENTS?.push(
  ['🦴','鯨骨の墓場','巨大な鯨の骨が海底に横たわり、その内側で古い力が脈打っている。',[['骨の中へ入る','HPを10失い、遺物「古代の盾」を得る',()=>{let g=game();g.hp=Math.max(1,g.hp-10);addRelic('古代の盾')}],['ゴールドだけ拾う','ゴールドを61得る',()=>game().pearl+=61],['静かに祈る','HPを10回復',()=>{let g=game();g.hp=Math.min(g.max,g.hp+10)}]]],
  ['🪼','月光クラゲの群れ','青白いクラゲたちが、傷を癒す光の輪を作っている。',[['光に包まれる','遺物「珊瑚の護符」を得る',()=>addRelic('珊瑚の護符')],['群れと泳ぐ','HPを16回復',()=>{let g=game();g.hp=Math.min(g.max,g.hp+16)}],['光を結晶化する','ゴールド35を払い、レアカードを得る',()=>{let g=game();if(g.pearl>=35){g.pearl-=35;addCard(rare)}}]]],
