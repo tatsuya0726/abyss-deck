@@ -90,6 +90,7 @@ window.abyssGuardianPhase2Cutscene=(onReveal,onDone)=>{
  requestAnimationFrame(()=>overlay.classList.add('on'));
  if(sp)sp.classList.add('guardian-phase2-tremor');
  if(log)log.textContent='深淵の守護者の様子がおかしい……！';
+ window.playAbyssGuardianPhase2Music?.();
  const lineEl=overlay.querySelector('#phase2Line');
  const showLine=async(text,holdMs)=>{lineEl.textContent=text;window.applyFuri?.(lineEl);lineEl.classList.add('show');await wait(holdMs);lineEl.classList.remove('show');await wait(400)};
  (async()=>{
