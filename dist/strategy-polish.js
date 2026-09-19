@@ -81,7 +81,7 @@ const originalAnomaly=window.openAbyssAnomaly;window.openAbyssAnomaly=()=>{const
 const WATCHER={n:'深淵の監視者・フグ店長',hp:336,trait:'黒い操糸：守りながら毒を喰らい、棘の連撃と潮圧で行動を縛る。',m:[{b:30},{a:7,h:5},{a:15,p:7,feed:7},{b:20,devour:18},{a:38,pressure:2}]};
 const GUARDIAN={n:'深淵の守護者・クトゥル＝アビス',hp:576,trait:'虚海胎動：六つの儀式を巡り、毒喰い・反応攻撃・潮圧を重ねて最後に深海崩壊を放つ。',m:[{b:38,thornsSelf:4},{a:6,h:6,p:8},{b:24,devour:22,feed:10},{a:19,h:2,counter:3},{b:30,pressure:2},{a:42,p:10}]};
 GUARDIAN.m2=[{b:34,handCostUp:1},{a:9,h:5,p:12},{b:26,devour:28,feed:14},{a:24,h:2,counter:4},{a:16,h:3,p:14,counter:3},{a:52,pressure:2}];
-const GUARDIAN_TRUE={n:'深淵の守護者・クトゥル＝アビス（真の姿）',hp:GUARDIAN.hp,trait:'殻を脱ぎ捨てた守護者は、儀式の型を崩し、より速く重い一撃で押し切ろうとする。',m:GUARDIAN.m2};
+const GUARDIAN_TRUE={n:'虚星邪神・クトゥル＝アビス',hp:GUARDIAN.hp,trait:'殻の内に封じられていた、無数の眼と虚星を宿す邪神。儀式の型を捨て、より速く重い一撃で押し切ろうとする。',m:GUARDIAN.m2};
 window.ABYSS_SPECIAL_ENEMIES={[WATCHER.n]:WATCHER,[GUARDIAN.n]:GUARDIAN,[GUARDIAN_TRUE.n]:GUARDIAN_TRUE};
 window.abyssGuardianPhase2Cutscene=(onReveal,onDone)=>{
  const wait=ms=>new Promise(r=>setTimeout(r,ms));
@@ -98,12 +98,12 @@ window.abyssGuardianPhase2Cutscene=(onReveal,onDone)=>{
    await wait(800);
    await showLine('……まだだ。まだ終わらぬ。',2600);
    await showLine('この程度で、私を止められると思ったか。',2600);
-   lineEl.textContent='殻が砕け、内より真の姿が溢れ出す――';window.applyFuri?.(lineEl);lineEl.classList.add('show');
+   lineEl.textContent='殻が砕け、虚星邪神が深淵へ溢れ出す――';window.applyFuri?.(lineEl);lineEl.classList.add('show');
    if(sp){sp.classList.remove('guardian-phase2-tremor');sp.classList.remove('guardian-phase2-burst');void sp.offsetWidth;sp.classList.add('guardian-phase2-burst')}
    await wait(500);
    try{onReveal?.()}catch(err){console.error('guardian phase2 reveal error',err)}
    const flash=document.createElement('div');flash.className='guardian-phase2-flash';document.body.appendChild(flash);setTimeout(()=>flash.remove(),1200);
-   if(log)log.textContent='深淵の守護者が殻を脱ぎ捨て、真の姿を現した……！';
+   if(log)log.textContent='虚星邪神・クトゥル＝アビスが顕現した……！';
    await wait(2200);
    lineEl.classList.remove('show');
    overlay.classList.remove('on');
