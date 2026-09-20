@@ -25,7 +25,8 @@ const RELICS={
  '巨獣の顎':['🦈','戦闘開始時、攻撃力＋1（この戦闘中ずっと）。','uncommon'],
  'VIPカード':['💳','ショップのすべての価格が30%安くなる。','rare'],
  'グリズリースーツ':['🐻','相手から受けるダメージを1減らす。連続攻撃は1回ごとに減らす。','rare'],
- '再生ウロコ':['🩹','各戦闘で初めて自分のターン中にHPを失った時、HPを3回復する。','uncommon']
+ '再生ウロコ':['🩹','各戦闘で初めて自分のターン中にHPを失った時、HPを3回復する。','uncommon'],
+ '血時計':['🕰️','自分のターン中にダメージを受けた時、カードを1枚引く（各ターン1回）。','uncommon']
 };
 const BOSS_RELICS={
  '呪海の炉':['🕯️','毎ターンのエナジー＋1。ただし、戦闘開始時に手札へ呪いを1枚追加する。','boss'],
@@ -37,7 +38,7 @@ const BOSS_RELICS={
  '黄金王座':['🫧','エリートを倒すと、追加でレリックを1個入手する。','boss'],
  '深淵の瞳':['🌌','ターン開始時、追加でカードを2枚引く。ただし、すべてのカードのコストは引くたびにランダムになる。','boss']
 };
-const NORMAL_RELICS=Object.keys(RELICS);
+const NORMAL_RELICS=Object.keys(RELICS).filter(n=>n!=='深海の血脈');
 const REWARD_BLOCKED=new Set(['深海の鍵','深海の紋章']);
 Object.assign(RELICS,BOSS_RELICS);
 window.ABYSS_RELICS=RELICS;
