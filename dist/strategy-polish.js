@@ -64,7 +64,7 @@ const brokenStrings=['','ほどけた黒糸','店長を縛っていた糸が、�
 const memoryVault=['','逆流する記憶庫','捨て札になった可能性が、魚の群れとなって泳いでいる。一つの記憶だけを現実へ引き上げられる。',[
  ['強い記憶を複製','デッキ内のレアまたは深海カード1枚を選んで複製。対象がなければ通常カードから選ぶ。',()=>{const g=game(),hasSpecial=g.deck.some(k=>{const c=window.getAbyssCardData?.(k);return c?.r||c?.a});window.openAbyssDeckSelection?.({title:'複製する記憶を選ぶ',text:'複製するカードを1枚選んでください。',count:1,filter:k=>!k.startsWith('abysscurse')&&(!hasSpecial||(()=>{const c=window.getAbyssCardData?.(k);return c?.r||c?.a})()),action:(picks,state)=>{const k=picks[0]?.key;if(k)state.deck.push(k);state.abyssInterludeStep=2;return k?[{kind:'duplicate',before:k}]:[]}})}],
  ['古い札を沈める','デッキから指定したカード2枚を除去する。',()=>window.chooseAbyssRemovals?.(2,'沈めるカードを選ぶ',k=>!k.startsWith('abysscurse'),()=>{game().abyssInterludeStep=2})],
- ['回収の記憶を選ぶ','「沈没船の回収網＋」を得る。捨て札のカードを再利用できる。',()=>{const g=game();g.deck.push('nautilusreturn+');finishPathCards('回収した記憶',[{kind:'gain',before:'nautilusreturn+'}],2)}]
+ ['回収の記憶を選ぶ','「サルベージ＋」を得る。廃棄札のカードを再利用できる。',()=>{const g=game();g.deck.push('nautilusreturn+');finishPathCards('回収した記憶',[{kind:'gain',before:'nautilusreturn+'}],2)}]
 ]];memoryVault.storyWhen=g=>g.act===4&&g.abyssInterludeStep===1;memoryVault.storyPriority=true;
 const voidScales=['','虚海の天秤','深淵の鼓動が近い。天秤は「身軽さ」「完成」「呪いとの共生」のどれを最後の武器にするか問う。',[
  ['身軽さを選ぶ','呪いを最大2枚選んで除去。呪いがなければ未強化カード2枚を強化する。',()=>{const g=game(),n=Math.min(2,g.deck.filter(k=>k.startsWith('abysscurse')).length);if(n)window.chooseAbyssRemovals?.(n,'取り除く呪いを選ぶ',k=>k.startsWith('abysscurse'),()=>{game().abyssInterludeStep=3});else window.chooseAbyssUpgrades?.(2,'身軽にするカードを選ぶ',()=>{game().abyssInterludeStep=3})}],
