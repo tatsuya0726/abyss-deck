@@ -1,7 +1,7 @@
 (()=>{'use strict';
 const CARDS={
 armoredshrimp:{n:'呪鱗の守り',i:'🛡️',c:1,b:9,curseBlock:3,curseCap:Infinity,unlock:1,upgrade:{b:3},t:'9ブロック。戦闘中の呪い1枚につき追加3ブロック。',upgradeText:'12ブロック。戦闘中の呪い1枚につき追加3ブロック。',g:'呪い・防御'},
-sunfishcalm:{n:'供物の選別',i:'🐚',c:1,b:7,choice:'offering',r:1,unlock:3,upgrade:{b:2},t:'7ブロック。手札1枚を選んで廃棄。呪いなら追加6ブロック、それ以外なら1枚引く。',upgradeText:'9ブロック。手札1枚を選んで廃棄。呪いなら追加6ブロック、それ以外なら2枚引く。',g:'廃棄・呪い'},
+sunfishcalm:{n:'供物の選別',i:'🐚',c:1,dr:2,choice:'cycle',cycleDraw:-1,u:1,unlock:3,upgrade:{dr:1},t:'カードを2枚引き、手札を1枚捨てる。',upgradeText:'カードを3枚引き、手札を1枚捨てる。',g:'アンコモン・手札交換'},
 lanternpact:{n:'深海との共生',i:'🏮',c:2,p:0,seedCurse:0,choice:'playDiscarded',u:1,unlock:3,upgrade:{c:-1},t:'手札を1枚選んで捨て、そのカードの効果をコストなしで発動する。',g:'捨て札・共生'},
 gobysweep:{n:'呪牙の一刺し',i:'🦈',c:1,d:9,curseDamage:3,curseCap:Infinity,unlock:5,upgrade:{d:3},t:'9ダメージ。戦闘中の呪い1枚につき追加3ダメージ。',upgradeText:'12ダメージ。戦闘中の呪い1枚につき追加3ダメージ。',g:'呪い・攻撃'},
 cleanerflow:{n:'脱皮する海流',i:'🌊',c:1,b:4,choice:'cycle',u:1,unlock:5,upgrade:{b:3},t:'4ブロック。手札1枚を選んで捨て、2枚引く。',g:'手札交換'},

@@ -1,7 +1,7 @@
 (()=>{'use strict';
 const $=s=>document.querySelector(s);
 const COMMON=['bite','dartfish','shell','cleaner','ray','puffer','octoguard','tideforesight','surpriseattack','heavybomb'];
-const UNCOMMON=['school','ink','current','heal','electric','remora','jelly','tidewall','reefstance','shellgrowth','shoalguard','followbite','moltscale','venombloom','shoalstep','venomfang','toxicarmor','weakambush','scalecharge','hunterfocus','marlin','harpoon','crackshell','kabutowari','abysssonar','hungryshoal','recklesscharge','cthulhu','graverobber'];
+const UNCOMMON=['school','ink','current','heal','electric','remora','jelly','tidewall','reefstance','shellgrowth','shoalguard','followbite','moltscale','venombloom','venomfang','toxicarmor','weakambush','scalecharge','hunterfocus','marlin','harpoon','crackshell','kabutowari','abysssonar','hungryshoal','recklesscharge','cthulhu','graverobber'];
 const RARE=['whale','mimic','tsunami','manta','leviathan','abyssarmor','seamiracle','predation','coelacanth','zeroshift'];
 const ABYSS=['lantern','voidjaw','shadoweel','abyssdance','curseward','abyssflame','weakpoint','abyssescape','bloodprice'];
 const BOSS_RELICS=new Set(['呪海の炉','四皇の王冠','深淵炉心','次元圧縮','巨鯨の心臓','水圧変異','黄金王座','深海の鍵','深海の紋章','深淵の瞳']);

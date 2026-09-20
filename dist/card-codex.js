@@ -1,10 +1,10 @@
 (()=>{'use strict';
 const $=s=>document.querySelector(s);
-const KEYS=['abysscurse','fin','scale','bite','rampage','dartfish','shell','cleaner','ray','school','ink','puffer','current','heal','electric','octoguard','remora','jelly','tidewall','reefstance','shellgrowth','shoalguard','followbite','moltscale','venombloom','shoalstep','venomfang','toxicarmor','weakambush','scalecharge','hunterfocus','marlin','whale','mimic','tsunami','manta','leviathan','abyssarmor','seamiracle','predation','abyssdance','lantern','voidjaw','coelacanth','shadoweel','cthulhu','curseward','abyssflame','seaurchin','pufferguard','treasuremap','rustkey','harpoon','crackshell','weakpoint','kabutowari','bettarevenge','overdrive','madness','abysssonar','tideforesight','hungryshoal','recklesscharge','abyssescape','zeroshift','surpriseattack','bloodprice','graverobber','heavybomb'];
+const KEYS=['abysscurse','fin','scale','bite','rampage','dartfish','shell','cleaner','ray','school','ink','puffer','current','heal','electric','octoguard','remora','jelly','tidewall','reefstance','shellgrowth','shoalguard','followbite','moltscale','venombloom','venomfang','toxicarmor','weakambush','scalecharge','hunterfocus','marlin','whale','mimic','tsunami','manta','leviathan','abyssarmor','seamiracle','predation','abyssdance','lantern','voidjaw','coelacanth','shadoweel','cthulhu','curseward','abyssflame','seaurchin','pufferguard','treasuremap','rustkey','harpoon','crackshell','weakpoint','kabutowari','bettarevenge','overdrive','madness','abysssonar','tideforesight','hungryshoal','recklesscharge','abyssescape','zeroshift','surpriseattack','bloodprice','graverobber','heavybomb'];
 KEYS.push(...Object.keys(window.ABYSS_ASCENSION_CARDS||{}));
 const PHOTO_ART={
   bettarevenge:'assets/cards/card-betta-revenge.webp',
-  zeroshift:'assets/cards/card-zero-shift-v3.webp',surpriseattack:'assets/cards/card-surprise-attack-v3.webp',bloodprice:'assets/cards/card-blood-price.webp',graverobber:'assets/cards/card-grave-robber-v2.webp',heavybomb:'assets/cards/card-heavy-bomb.webp',
+  zeroshift:'assets/cards/card-zero-shift-v3.webp',surpriseattack:'assets/cards/card-surprise-attack-v4.webp',bloodprice:'assets/cards/card-blood-price.webp',graverobber:'assets/cards/card-grave-robber-v2.webp',heavybomb:'assets/cards/card-heavy-bomb.webp',
   madness:'assets/cards/card-madness.webp',abysssonar:'assets/cards/card-abyss-sonar.webp',tideforesight:'assets/cards/card-tide-foresight.webp',hungryshoal:'assets/cards/card-hungry-shoal.webp',recklesscharge:'assets/cards/card-reckless-charge-v2.webp',abyssescape:'assets/cards/card-abyss-escape.webp',
   overdrive:'assets/cards/card-overdrive.webp',
   ink:'assets/cards/plush-ink.webp',
@@ -53,7 +53,6 @@ const PHOTO_ART={
   electric:'assets/cards/card-electric-eel-v2.webp',
   remora:'assets/cards/card-remora-power-v2.webp',
   venombloom:'assets/cards/plush-venombloom.webp',
-  shoalstep:'assets/cards/card-shoal-step-v3.webp',
   seamiracle:'assets/cards/plush-seamiracle.webp',
   predation:'assets/cards/plush-predation.webp',
   abyssflame:'assets/cards/plush-abyssflame.webp',
