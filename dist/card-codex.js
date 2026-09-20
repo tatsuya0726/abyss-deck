@@ -4,7 +4,7 @@ const KEYS=['abysscurse','fin','scale','bite','rampage','dartfish','shell','clea
 KEYS.push(...Object.keys(window.ABYSS_ASCENSION_CARDS||{}));
 const PHOTO_ART={
   bettarevenge:'assets/cards/card-betta-revenge.webp',
-  zeroshift:'assets/cards/card-zero-shift.webp',surpriseattack:'assets/cards/card-surprise-attack.webp',bloodprice:'assets/cards/card-blood-price.webp',graverobber:'assets/cards/card-grave-robber.webp',heavybomb:'assets/cards/card-heavy-bomb.webp',
+  zeroshift:'assets/cards/card-zero-shift-v2.webp',surpriseattack:'assets/cards/card-surprise-attack-v2.webp',bloodprice:'assets/cards/card-blood-price.webp',graverobber:'assets/cards/card-grave-robber-v2.webp',heavybomb:'assets/cards/card-heavy-bomb.webp',
   madness:'assets/cards/card-madness.webp',abysssonar:'assets/cards/card-abyss-sonar.webp',tideforesight:'assets/cards/card-tide-foresight.webp',hungryshoal:'assets/cards/card-hungry-shoal.webp',recklesscharge:'assets/cards/card-reckless-charge-v2.webp',abyssescape:'assets/cards/card-abyss-escape.webp',
   overdrive:'assets/cards/card-overdrive.webp',
   ink:'assets/cards/plush-ink.webp',
@@ -14,12 +14,12 @@ const PHOTO_ART={
   jelly:'assets/cards/plush-jelly.webp',
   whale:'assets/cards/card-whale-roar.webp',
   voidjaw:'assets/cards/card-voidjaw.webp',
-  coelacanth:'assets/cards/plush-coelacanth.webp',
+  coelacanth:'assets/cards/card-ancient-memory-v2.webp',
   shadoweel:'assets/cards/plush-shadoweel.webp',
   weakambush:'assets/cards/plush-weakambush.webp',
   tidewall:'assets/cards/card-tidewall-bowhead.webp',
   cthulhu:'assets/cards/card-cthulhu-dream.webp',
-  marlin:'assets/cards/card-multi-thrust-v2.webp',
+  marlin:'assets/cards/card-multi-thrust-v3.webp',
   tsunami:'assets/cards/card-tsunami-whale.webp',
   manta:'assets/cards/card-manta-dance.webp',
   leviathan:'assets/cards/card-leviathan-dragon.webp',
@@ -42,7 +42,7 @@ const PHOTO_ART={
   moltscale:'assets/cards/plush-moltscale.webp',
   rustkey:'assets/cards/plush-rustkey.webp',
   followbite:'assets/cards/plush-followbite.webp',
-  scalecharge:'assets/cards/plush-scalecharge.webp',
+  scalecharge:'assets/cards/card-scale-charge-v2.webp',
   shoalguard:'assets/cards/card-shoal-guard-v2.webp',
   abysscurse:'assets/cards/plush-abysscurse.webp',
   fin:'assets/cards/plush-fin.webp',
@@ -51,9 +51,9 @@ const PHOTO_ART={
   cleaner:'assets/cards/card-cleaner-heal-v2.webp',
   school:'assets/cards/card-school-assault-v2.webp',
   electric:'assets/cards/card-electric-eel-v2.webp',
-  remora:'assets/cards/plush-remora.webp',
+  remora:'assets/cards/card-remora-power-v2.webp',
   venombloom:'assets/cards/plush-venombloom.webp',
-  shoalstep:'assets/cards/card-shoal-step-v2.webp',
+  shoalstep:'assets/cards/card-shoal-step-v3.webp',
   seamiracle:'assets/cards/plush-seamiracle.webp',
   predation:'assets/cards/plush-predation.webp',
   abyssflame:'assets/cards/plush-abyssflame.webp',
@@ -70,7 +70,7 @@ const PHOTO_ART={
   cleanerflow:'assets/cards/plush-cleanerflow.webp',
   nautilusreturn:'assets/cards/plush-nautilusreturn.webp',
   voidtribute:'assets/cards/plush-voidtribute.webp',
-  flyingbreath:'assets/cards/plush-flyingbreath.webp'
+  flyingbreath:'assets/cards/card-release-burden-v2.webp'
 };
 function photoOf(k){return PHOTO_ART[keyOf(k)]||''}
 function keyOf(k){return String(k||'').replace(/~\d+$/,'').replace(/[+*]+$/,'')}
