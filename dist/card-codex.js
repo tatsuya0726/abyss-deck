@@ -4,7 +4,7 @@ const KEYS=['abysscurse','fin','scale','bite','rampage','dartfish','shell','clea
 KEYS.push(...Object.keys(window.ABYSS_ASCENSION_CARDS||{}));
 const PHOTO_ART={
   bettarevenge:'assets/cards/card-betta-revenge.webp',
-  zeroshift:'assets/cards/card-zero-shift-v2.webp',surpriseattack:'assets/cards/card-surprise-attack-v2.webp',bloodprice:'assets/cards/card-blood-price.webp',graverobber:'assets/cards/card-grave-robber-v2.webp',heavybomb:'assets/cards/card-heavy-bomb.webp',
+  zeroshift:'assets/cards/card-zero-shift-v3.webp',surpriseattack:'assets/cards/card-surprise-attack-v3.webp',bloodprice:'assets/cards/card-blood-price.webp',graverobber:'assets/cards/card-grave-robber-v2.webp',heavybomb:'assets/cards/card-heavy-bomb.webp',
   madness:'assets/cards/card-madness.webp',abysssonar:'assets/cards/card-abyss-sonar.webp',tideforesight:'assets/cards/card-tide-foresight.webp',hungryshoal:'assets/cards/card-hungry-shoal.webp',recklesscharge:'assets/cards/card-reckless-charge-v2.webp',abyssescape:'assets/cards/card-abyss-escape.webp',
   overdrive:'assets/cards/card-overdrive.webp',
   ink:'assets/cards/plush-ink.webp',
@@ -42,7 +42,7 @@ const PHOTO_ART={
   moltscale:'assets/cards/plush-moltscale.webp',
   rustkey:'assets/cards/plush-rustkey.webp',
   followbite:'assets/cards/plush-followbite.webp',
-  scalecharge:'assets/cards/card-scale-charge-v2.webp',
+  scalecharge:'assets/cards/card-scale-charge-v3.webp',
   shoalguard:'assets/cards/card-shoal-guard-v2.webp',
   abysscurse:'assets/cards/plush-abysscurse.webp',
   fin:'assets/cards/plush-fin.webp',
