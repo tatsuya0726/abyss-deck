@@ -19,6 +19,8 @@ moltscale:{c:0,b:3,exhaust:0,retain:1,upgrade:{b:2},t:'3ブロック。使わず
 const has=(g,n)=>g.relic?.some(r=>r[1]===n),data=k=>window.getAbyssCardData?.(k)||{},attack=c=>!!(c.d||c.perBlock),block=(g,n)=>{g.block+=n;if(g.runStats)g.runStats.blockGained+=n};
 window.prepareAbyssTactics=(c,g,draw)=>{
  const prev=data(g.lastCard),attacking=!!g.enemy?.intent?.a;
+ g.damageBlockCardEligible=!!(c.d||c.perBlock||c.perExhaustCard);
+ g.damageBlockCardTriggered=false;
  if(c.revengeDamage){c.d=Math.max(0,(g.battleDamageTaken||0)-(g.str||0));c.t=c.t.replace('同じ値',`同じ値（現在${g.battleDamageTaken||0}）`)}
  if(c.fullHealBlock&&g.hp>=g.max){c.he=0;c.b=c.fullHealBlock}
  if(c.readAttackBlock&&attacking)c.b+=c.readAttackBlock;if(c.readAttackDraw&&attacking)draw(c.readAttackDraw);if(c.quietEnergy&&!attacking)g.energy+=c.quietEnergy;
