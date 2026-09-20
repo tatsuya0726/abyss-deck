@@ -4,7 +4,7 @@ const KEYS=['abysscurse','fin','scale','bite','rampage','dartfish','shell','clea
 KEYS.push(...Object.keys(window.ABYSS_ASCENSION_CARDS||{}));
 const PHOTO_ART={
   bettarevenge:'assets/cards/card-betta-revenge.webp',
-  zeroshift:'assets/cards/card-zero-shift-v3.webp',surpriseattack:'assets/cards/card-surprise-attack-v4.webp',bloodprice:'assets/cards/card-blood-price.webp',graverobber:'assets/cards/card-grave-robber-v2.webp',heavybomb:'assets/cards/card-heavy-bomb.webp',
+  zeroshift:'assets/cards/card-zero-shift-v3.webp',surpriseattack:'assets/cards/card-surprise-attack-v5.webp',bloodprice:'assets/cards/card-blood-price.webp',graverobber:'assets/cards/card-grave-robber-v2.webp',heavybomb:'assets/cards/card-heavy-bomb.webp',
   madness:'assets/cards/card-madness.webp',abysssonar:'assets/cards/card-abyss-sonar.webp',tideforesight:'assets/cards/card-tide-foresight.webp',hungryshoal:'assets/cards/card-hungry-shoal.webp',recklesscharge:'assets/cards/card-reckless-charge-v2.webp',abyssescape:'assets/cards/card-abyss-escape.webp',
   overdrive:'assets/cards/card-overdrive.webp',
   ink:'assets/cards/plush-ink.webp',
