@@ -55,7 +55,7 @@ Object.assign(READINGS,{'発狂':'はっきょう','激昂':'げきこう','血�
 Object.assign(READINGS,{'相性':'あいしょう','販売':'はんばい','関連':'かんれん'});
 Object.assign(READINGS,{'並べ替え':'ならべかえ','図鑑順':'ずかんじゅん','コスト別':'こすとべつ','分類別':'ぶんるいべつ','手札・山札操作':'てふだ・やまふだそうさ','永続強化':'えいぞくきょうか','使用不可':'しようふか'});
 Object.assign(READINGS,{'穢れ':'けがれ','一帯':'いったい','凶暴':'きょうぼう','汚れ':'よごれ','理由':'りゆう','受け止めて':'うけとめて','抱えきれなく':'かかえきれなく','途切れず':'とぎれず','拾った':'ひろった','染みた':'しみた'});
-Object.assign(READINGS,{'城塞':'じょうさい'});
+Object.assign(READINGS,{'城塞':'じょうさい','全体':'ぜんたい'});
 const keys=Object.keys(READINGS).filter(k=>/[一-龯々]/.test(k)&&!/[ァ-ヶー]/.test(k)).sort((a,b)=>b.length-a.length);
 const furiChecked=new WeakMap();
 const KATAKANA_SUFFIX_READINGS={'中':'ちゅう','戦':'せん'};
