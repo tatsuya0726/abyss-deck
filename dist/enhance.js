@@ -69,8 +69,8 @@ function furi(root=document.body){if(!furiEnabled())return;const w=document.crea
 let audio=null,bgm=null,sfxBus=null,limiter=null,bgmDuckUntil=0,muted=(()=>{try{return localStorage.abyssSoundMuted==='1'}catch(e){return false}})(),mode='map1',step=0,galleryOpen=false,hiddenPaused=false,rewardWasOpen=false,gateRumbleBuffer=null,gateRumbleLoading=null;
 const dbVolumeCurve=value=>{const v=Math.max(0,Math.min(1,Number(value)||0));return v<=0?0:Math.pow(10,(v-1)*2)};
 const volumeGain=dbVolumeCurve;
-const sfxVolumeGain=dbVolumeCurve;
-const SFX_OUTPUT_GAIN=1.573;
+const sfxVolumeGain=value=>{const v=Math.max(0,Math.min(1,Number(value)||0));return v<=0?0:Math.pow(10,(v-1)*.8)};
+const SFX_OUTPUT_GAIN=1.35;
 const audioPrefs={version:3,bgm:.5,sfx:.5};
 function applyElementVolume(el){if(!el||el._disposed)return;const src=(el.dataset.src||'').split('?')[0],trim=BGM_NORMALIZATION[src]??1,combat=COMBAT_BGM_TRACKS.has(src)?.9:1,duck=performance.now()<bgmDuckUntil?.42:1,level=el._fadeLevel??1,g=Math.max(0,Math.min(1,trim*combat*duck*level));el.volume=muted?0:Math.max(0,Math.min(1,volumeGain(audioPrefs.bgm)*g*2.117016))}
 function setBusGain(bus,value){if(!bus||!audio)return;const now=audio.currentTime;bus.gain.cancelScheduledValues(now);bus.gain.setValueAtTime(value,now);bus.gain.value=value}
