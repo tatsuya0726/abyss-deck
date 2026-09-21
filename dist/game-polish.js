@@ -74,8 +74,6 @@ window.beginBattleTransition=start=>{if(window.__battleTransition)return true;wi
 window.openAbyssAnomaly=()=>{let a=ANOMALIES[Math.random()*ANOMALIES.length|0];openChoice(a[0],a[1],a[2],a[3])};
 window.ABYSS_EVENTS?.push(
  ['⚒️','深海鍛冶の炉','魚の骨でできた炉が、カードに生きた紋様を刻もうとしている。力は得られるが、身体の一部を代価に求めている。',[['カードを刻む','最大HPを3失い、指定したカード1枚に「深海刻印」を付ける（潜航中1回）',()=>window.chooseAbyssMark?.()],['骨を鍛える','ゴールド45を払い、最大HP＋5・HP5回復',()=>{let g=game();if(g.pearl>=45){g.pearl-=45;g.max+=5;g.hp+=5}}],['炉を壊す','HPを6失い、ゴールド39を得る',()=>{let g=game();g.hp=Math.max(1,g.hp-6);g.pearl+=39}]]],
- ['🧬','骨文字の錬成槽','骨に刻まれた名前を別の魚の名へ書き換える槽。変えるカードは選べるが、変化先は深海の流れが決める。',[['錬成を始める','指定したカード1枚をランダムなカードへ変化。HPを6失う',()=>window.openAbyssTransform?.()],['骨粉を売る','ゴールドを39得る',()=>game().pearl+=39],['触れずに去る','何も起こらない',()=>{}]]],
- ['🪞','鏡鱗の群れ','鏡のような鱗が手札の記憶を写そうとしている。写すものは自分で選べるが、命の色も奪われる。',[['カードを写す','指定したカード1枚を複製し、HPを10失う',()=>window.openAbyssDuplicate?.()],['光を集める','HPを10回復',()=>{let g=game();g.hp=Math.min(g.max,g.hp+10)}],['鱗を売る','ゴールドを33得る',()=>game().pearl+=33]]],
  ['🫥','記憶喰いの二枚貝','巨大な貝が、不要な技の記憶を食べたがっている。忘れる記憶は自分で決められる。',[['記憶を渡す','指定したカード1枚を削除し、最大HPとHPを4増やす',()=>window.openAbyssForget?.()],['口を閉じる','HPを8回復',()=>{let g=game();g.hp=Math.min(g.max,g.hp+8)}],['ゴールドを投げ込む','ゴールドを20失う',()=>{let g=game();g.pearl=Math.max(0,g.pearl-20)}]]]
 );
 let witch=window.ABYSS_EVENTS?.find(e=>e[1]==='深海の魔女');if(witch)witch[3][0]=['契約する','指定したカード1枚をランダムなカードへ変化。HPを6失う',()=>window.openAbyssTransform?.('深海の魔女との契約')];
