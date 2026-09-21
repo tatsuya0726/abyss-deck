@@ -70,14 +70,14 @@ let audio=null,bgm=null,sfxBus=null,limiter=null,bgmDuckUntil=0,bgmDuckLevel=1,b
 const dbVolumeCurve=value=>{const v=Math.max(0,Math.min(1,Number(value)||0));return v<=0?0:Math.pow(10,(v-1)*2)};
 const volumeGain=dbVolumeCurve;
 const sfxVolumeGain=value=>{const v=Math.max(0,Math.min(1,Number(value)||0));return v<=0?0:Math.pow(10,(v-1)*.8)};
-const SFX_OUTPUT_GAIN=1.35;
-let audioPrefs=(()=>{try{const saved=JSON.parse(localStorage.abyssAudioPrefs||'{}'),bgm=Number(saved.bgm),sfx=Number(saved.sfx);if(Number.isFinite(bgm)&&Number.isFinite(sfx))return{version:4,bgm:Math.max(0,Math.min(1,bgm)),sfx:Math.max(0,Math.min(1,sfx))}}catch(e){}return{version:4,bgm:.3,sfx:1}})();
+const SFX_OUTPUT_GAIN=1.35,AUDIO_PREFS_VERSION=5,DEFAULT_AUDIO_PREFS={version:AUDIO_PREFS_VERSION,bgm:.25,sfx:1};
+let audioPrefs=(()=>{try{const saved=JSON.parse(localStorage.abyssAudioPrefs||'{}'),bgm=Number(saved.bgm),sfx=Number(saved.sfx);if(Number(saved.version)>=AUDIO_PREFS_VERSION&&Number.isFinite(bgm)&&Number.isFinite(sfx))return{version:AUDIO_PREFS_VERSION,bgm:Math.max(0,Math.min(1,bgm)),sfx:Math.max(0,Math.min(1,sfx))}}catch(e){}return{...DEFAULT_AUDIO_PREFS}})();
 function applyElementVolume(el){if(!el||el._disposed)return;const src=(el.dataset.src||'').split('?')[0],trim=BGM_NORMALIZATION[src]??1,combat=COMBAT_BGM_TRACKS.has(src)?.9:1,duck=performance.now()<bgmDuckUntil?bgmDuckLevel:1,level=el._fadeLevel??1,g=Math.max(0,Math.min(1,trim*combat*duck*level));el.volume=muted?0:Math.max(0,Math.min(1,volumeGain(audioPrefs.bgm)*g*2.117016))}
 function setBusGain(bus,value){if(!bus||!audio)return;const now=audio.currentTime;bus.gain.cancelScheduledValues(now);bus.gain.setValueAtTime(value,now);bus.gain.value=value}
 function updateAudioGains(){setBusGain(sfxBus,sfxVolumeGain(audioPrefs.sfx)*SFX_OUTPUT_GAIN);for(const el of liveBgm)applyElementVolume(el)}
 function applyBgmVolume(){if(bgm)applyElementVolume(bgm)}
 function saveAudioPrefs(){try{localStorage.abyssAudioPrefs=JSON.stringify(audioPrefs)}catch(e){}}
-function setAudioPrefs(next={}){for(const key of ['bgm','sfx'])if(Number.isFinite(Number(next[key])))audioPrefs[key]=Math.max(0,Math.min(1,Number(next[key])));audioPrefs.version=4;saveAudioPrefs();updateAudioGains();return{...audioPrefs}}
+function setAudioPrefs(next={}){for(const key of ['bgm','sfx'])if(Number.isFinite(Number(next[key])))audioPrefs[key]=Math.max(0,Math.min(1,Number(next[key])));audioPrefs.version=AUDIO_PREFS_VERSION;saveAudioPrefs();updateAudioGains();return{...audioPrefs}}
 function finishBgmDuck(){let remaining=bgmDuckUntil-performance.now();if(remaining>0){clearTimeout(bgmDuckTimer);bgmDuckTimer=setTimeout(finishBgmDuck,remaining+20);return}bgmDuckLevel=1;applyBgmVolume()}
 function duckBgmForSfx(duration=360,level=.26){if(!bgm||audioPrefs.bgm<=0)return;const now=performance.now(),alreadyDucked=now<bgmDuckUntil;bgmDuckUntil=Math.max(bgmDuckUntil,now+duration);bgmDuckLevel=Math.min(alreadyDucked?bgmDuckLevel:1,Math.max(.12,Math.min(1,level)));applyBgmVolume();clearTimeout(bgmDuckTimer);bgmDuckTimer=setTimeout(finishBgmDuck,duration+20)}
 window.getAbyssAudioPrefs=()=>({...audioPrefs});window.setAbyssAudioPrefs=setAudioPrefs;window.duckAbyssBgm=duckBgmForSfx;window.previewAbyssSfx=()=>{if(muted)toggleSound();ensureAudio();duckBgmForSfx(520,.2);if(window.previewAbyssImpact)window.previewAbyssImpact();else sfx(true)};
