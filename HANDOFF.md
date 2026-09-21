@@ -1,74 +1,66 @@
-# ABYSS DECK v126 — Claude移行手順
+# ABYSS DECK — 次のWorkへの引き継ぎ
 
-## パッケージ
+## リポジトリ
 
-- `ABYSS-DECK-v126-Claude-handoff-full.zip`：画像・音楽を含む完全版。これを開発の原本にします。
-- `ABYSS-DECK-v126-Claude-handoff-code.zip`：画像・音楽を除いた軽量版。完全版ZIPをClaudeへ添付できない場合に使います。
-- `ABYSS-DECK-v126-ASSET-MANIFEST.csv`：画像・音楽の相対パス、容量、SHA-256一覧です。
-- `CLAUDE用-最初の指示-v126.txt`：Claudeの新しい会話へ最初に貼る文章です。
+- GitHub: https://github.com/tatsuya0726/abyss-deck
+- 作業ブランチ: `claude/serene-meitner-83ufqa`
+- `main` は作業ブランチをfast-forwardして同期する運用
+- 最新位置は `git log -1 --oneline` で確認する
 
-## Claudeへ渡す手順
+## 構成と作業ルール
 
-1. 完全版ZIPを保管用の原本として残します。
-2. Claudeの新しい会話またはプロジェクトへ、完全版ZIPを添付します。
-3. ZIPを直接読めない場合は手元で展開し、フォルダまたは必要なファイルを添付します。容量で拒否される場合はコード版ZIPと資産一覧を渡します。
-4. `CLAUDE用-最初の指示-v126.txt` の全文を最初のメッセージとして貼ります。
-5. 変更ごとに、Claudeから変更済みファイル一式またはZIPを受け取ります。画像・音楽を削除したコード版だけを原本として扱わないでください。
+- ビルド不要の静的サイト。ゲーム本体は `dist/` 配下
+- ローカル起動: `node tools/local-server.cjs`
+- 検証: `node tools/verify-project.cjs`
+- 検証後に変更される `verify-report.json` はコミットせず元へ戻す
+- JavaScript/CSSを変更したら `dist/index.html` の該当 `?v=` を更新する
+- 日本語UIを変更したら `dist/enhance.js` のふりがな辞書も確認する
+- 変更後は検証、コミット、作業ブランチへプッシュし、`main`をfast-forwardする
+- 名称変更時は既存セーブデータと図鑑の撃破記録に移行処理を入れる
 
-## フォルダ構成
+## 直近で完了した変更
 
-- `dist/index.html`：ゲーム本体の入口
-- `dist/*.js`：ゲームロジック
-- `dist/*.css`：画面表示
-- `dist/assets/`：画像・音楽
-- `.openai/hosting.json`：現在のChatGPT Sites公開設定
-- `tools/local-server.cjs`：ローカルサーバー
-- `tools/verify-project.cjs`：不足ファイル・空ファイル・JavaScript構文の検査
+### 深海生物
 
-## ローカル起動
+- ミツマタヤリウオを削除し、第3層の同じ枠を「呪灯ワニトカゲギス」へ変更
+- 呪灯ワニトカゲギスは旧ミツマタヤリウオのHP・行動バランスを継承
+- 旧セーブ中の戦闘相手と旧図鑑撃破記録を新名称へ移行
+- メンダコ、ブロブフィッシュ、トガリムネエソを、幽殻ゾウギンザメに合わせた半実在・半UMAの画風へ変更
+- 新画像:
+  - `dist/assets/enemies/dragonfish-uma-v1.webp`
+  - `dist/assets/enemies/flapjack-octopus-uma-v2.webp`
+  - `dist/assets/enemies/blobfish-uma-v2.webp`
+  - `dist/assets/enemies/hatchetfish-uma-v2.webp`
+- 4画像は1536×1024、透過WebP
+- 図鑑説明とふりがな辞書を更新
+- 現在のキャッシュ番号: `enhance.js?v=245`、`upgrade.js?v=138`
 
-展開したフォルダでPowerShellを開き、次を実行します。
+### その直前の敵追加
 
-```powershell
-node tools/local-server.cjs
-```
+- 第1層: ブロブフィッシュ、幽殻ゾウギンザメ
+- 第2層: トガリムネエソ
+- 第3層: ウバザメ、呪灯ワニトカゲギス
+- 旧「鉄壁ダンゴウオ」「オオグソクムシ」系の記録は幽殻ゾウギンザメへ移行
 
-その後、ブラウザで `http://127.0.0.1:8119/` を開きます。`start-local.ps1` をPowerShellから実行しても起動できます。
+## 最新の検証結果
 
-## 検証
+`node tools/verify-project.cjs` 実行済み。
 
-```powershell
-node tools/verify-project.cjs
-```
+- missing: なし
+- empty: なし
+- syntaxErrors: なし
+- `dist/upgrade.js`、`dist/enhance.js` の `node --check`: 正常
+- `verify-report.json`: 元へ戻し、変更対象から除外済み
 
-結果の `missing`、`empty`、`syntaxErrors` がすべて空であることを確認します。変更した画面はブラウザでも実操作してください。
+## 次のWork開始時に貼る文章
 
-## キャッシュ更新
-
-JavaScriptまたはCSSを変更したら、`dist/index.html` 内の該当ファイルの `?v=数字` も増やします。これを忘れると、公開版が古いファイルを表示することがあります。
-
-例：`game-polish.css?v=126` を変更した場合は `game-polish.css?v=127` にします。
-
-## 現在の公開版
-
-- バージョン：126
-- URL：https://deep-sea-fishing-spirits.aa047076.chatgpt.site/
-- 公開先：ChatGPT Sites
-
-Claude単体では、このChatGPT Sitesプロジェクトへ直接公開できない場合があります。その場合は、Claudeで編集とローカル確認を行い、変更済みZIPをCodexへ戻して公開します。完全にClaude側へ移す場合は、GitHub Pages、Cloudflare Pagesなど別の静的ホスティング先を用意し、`dist` を公開対象にします。
-
-## 引き継ぎ時点で完了している主な変更
-
-- ショップ価格を金貨絵文字と数字で表示
-- カード、レリック、治療、削除、強化、退店の確認画面と「やめる」ボタン
-- ショップの強化・削除カードを中央配置
-- 戦闘報酬カードを戦闘カードと同じ寸法に統一
-- 戦闘中のレリックボタンと中断ボタンを修正
-- イベント選択カード下の案内文を削除し、決定ボタンを固定
-- アセンション解放カードを共通カード表示へ統一
-- 深淵イベントの獲得結果カードを中央配置
-
-## 動作確認記録
-
-- 2026-09-12：Claude側でファイル読み取り・編集・`node tools/verify-project.cjs`・`node tools/local-server.cjs` によるローカル起動・`git push` を実施し、いずれも動作することを確認しました。
-
+> ABYSS DECKの開発を続けてください。
+>
+> リポジトリ: https://github.com/tatsuya0726/abyss-deck
+>
+> 作業ブランチ: claude/serene-meitner-83ufqa
+>
+> 最初に最新コミットを取得し、HANDOFF.mdを全文確認してください。ビルド不要の静的サイトで、ゲーム本体はdist/配下です。
+>
+> ローカル起動は node tools/local-server.cjs、検証は node tools/verify-project.cjs です。検証後のverify-report.jsonは破棄してください。JS/CSS変更時はdist/index.htmlの?v=番号を更新し、日本語UI変更時はdist/enhance.jsのふりがな辞書も確認してください。
+> 変更後は作業ブランチへコミット・プッシュし、mainをfast-forwardで同期してください。
