@@ -3,7 +3,7 @@ const $=s=>document.querySelector(s);
 const BEASTS=[
  {n:'飢えたウツボ',file:'moray-eel.webp',face:1,desc:'岩穴にかくれ、長い体で急におそってくる。口を大きく開くが、守りを固めるターンもある。'},
  {n:'甲冑ガニ',file:'armored-crab.webp',face:0,desc:'とても固いこうらと大きなハサミを持つ。先に守りを作るので、強い一撃で割ろう。殻を固めた直後はトゲが立つ。'},
- {n:'ブロブフィッシュ',file:'blobfish-uma-v2.webp',face:0,gen:1,desc:'水圧で変質したやわらかな肉体に、黒い鉱物質の殻が浮かぶ深海魚。体内の青い光を脈打たせ、重い体当たりを仕掛ける。'},
+ {n:'沈泥ブロブフィッシュ',file:'blobfish-uma-v2.webp',face:0,gen:1,desc:'水圧で変質したやわらかな肉体に、黒い鉱物質の殻が浮かぶ深海魚。体内の青い光を脈打たせ、重い体当たりを仕掛ける。'},
  {n:'毒針ミノカサゴ',file:'lionfish.webp',face:1,desc:'きれいなひれに毒のトゲをかくしている。毒針はその場の追加ダメージで、次のターンには残らない。ひれを立てた直後はトゲの反撃に注意。'},
  {n:'銀牙バラクーダ',file:'barracuda.webp',face:1,desc:'銀色に光る高速ハンター。守らず何度もかみつくため、早めに倒すのが安全。'},
  {n:'幽殻ゾウギンザメ',file:'ghost-chimaera-v1.webp',face:0,gen:1,desc:'長い吻と翼のような胸びれを持つ深海魚。背びれの前に毒棘を備え、暗闇から滑るように近づく。'},
@@ -13,7 +13,7 @@ const BEASTS=[
  {n:'深海ミツクリザメ',file:'goblin-shark.webp',face:1,desc:'長い鼻と、前へ飛び出すあごを持つ珍しいサメ。次の攻撃が大きいときは必ず守ろう。'},
  {n:'古代魚シーラカンス',file:'coelacanth.webp',face:1,desc:'太古から姿がほとんど変わらない「生きた化石」。体力と守りが高く、長い戦いになる。'},
  {n:'竜宮の使者',file:'oarfish.webp',face:0,desc:'リュウグウノツカイに似た神秘の魚。赤いひれで海流を操り、攻撃と守りを切り替える。'},
- {n:'トガリムネエソ',file:'hatchetfish-uma-v2.webp',face:0,gen:1,desc:'刃物のような銀黒の胸を、ガラス質の装甲が覆う深海魚。腹の発光器で輪郭を消し、暗闇から鋭く襲いかかる。'},
+ {n:'鏡腹トガリムネエソ',file:'hatchetfish-uma-v2.webp',face:0,gen:1,desc:'刃物のような銀黒の胸を、ガラス質の装甲が覆う深海魚。腹の発光器で輪郭を消し、暗闇から鋭く襲いかかる。'},
  {n:'UMA・海坊主',file:'umi-bozu.webp',face:0,desc:'正体不明の黒い海の怪物。船乗りの昔話に出てくるUMAで、大きな壁のように立ちはだかる。'},
  {n:'白骨鮫・モルディガン',file:'bone-shark-wide-v101.webp',face:0,gen:1,desc:'フジツボの王冠をまとった白い巨大ザメ。強烈なかみつきの前に、十分なブロックを作ろう。'},
  {n:'深海王クラーケン',file:'kraken-wide-v101.webp',face:0,gen:1,desc:'深海神殿で眠る最後の王。何本もの腕、毒、鉄壁の守りを使うクトゥルフ風の大怪物。'},
@@ -24,7 +24,7 @@ const BEASTS=[
  {n:'古代鮫ラブカ',file:'frilled-shark-transparent-v110.webp',face:0,gen:1,desc:'原始的な姿を残す細長いサメ。六対のえらと鋭い歯を持ち、四回連続で獲物へ噛みつく。'},
  {n:'暴食ボウエンギョ',file:'black-swallower-transparent-v110.webp',face:0,gen:1,desc:'自分より大きな獲物をのみ込める伸びる腹を持つ。奈落で力をため、強烈な攻撃を放つ。'},
  {n:'呪灯ワニトカゲギス',file:'dragonfish-uma-v1.webp',face:0,gen:1,desc:'闇に溶ける細長い体に、青い発光器を並べる深海魚。顎下の呪灯で獲物を誘い、体より長い牙で何度も噛みつく。'},
- {n:'ウバザメ',file:'basking-shark-real-v1.webp',face:0,gen:1,desc:'洞窟のような巨大な口で海水ごと獲物を呑み込む。歯ではなく無数の鰓耙が並び、逃げ道を塞いでゆっくり迫る。'},
+ {n:'巨口ウバザメ',file:'basking-shark-real-v1.webp',face:0,gen:1,desc:'洞窟のような巨大な口で海水ごと獲物を呑み込む。歯ではなく無数の鰓耙が並び、逃げ道を塞いでゆっくり迫る。'},
  {n:'灯喰いアンコウ・ネブラ',file:'boss-nebula-transparent-v86.webp',face:1,gen:1,desc:'光そのものを食べる巨大アンコウ。守りを固めて力をため、暗闇から重い一撃を放つ。'},
  {n:'城塞クジラ・バルガス',file:'fortress-whale-balgas-v1.webp',face:0,gen:1,desc:'背中に海底城をいただく巨大なクジラ。高いブロックと城塞反射で長期戦を仕掛ける。'},
  {n:'夢喰いダイオウイカ・ノクス',file:'boss-nox-squid.webp',face:1,gen:1,desc:'眠りの霧をまとう巨大イカ。脱力でこちらの攻撃を鈍らせ、夢を食べるほど強くなる。'},
@@ -39,7 +39,7 @@ const BEASTS=[
  {n:'閃光蝦・ライジェル',file:'elite-mantis-shrimp-raizeru.webp',face:0,gen:1,desc:'発光する一対の巨大な鋏を持つ深海のシャコ。拳を重ねるほど衝撃が育ち、大きな一撃が飛んでくる。'},
  {n:'鋼骸鮫・ゾルグ',file:'elite-steel-shark-zorugu.webp',face:0,gen:1,desc:'鋼の装甲と青い雷紋をまとうサメ。装甲が帯びる余波が、こちらのエナジーを乱す。装甲を展開した直後だけ棘をまとい、攻撃すると反撃を受ける。'},
  {n:'白霜大蟹・スノウクロウ',file:'elite-snow-crab-snowclaw.webp',face:0,gen:1,desc:'白い体毛と巨大な鋏を持つ大蟹。凍てつく鋏の一撃は、力そのものを凍らせる。甲殻を固めた直後はトゲが立つ。'},
- {n:'電紋鮟鱇・ヴォルティア',file:'elite-volt-anglerfish-voltia.webp',face:0,gen:1,desc:'雷紋の光を放つ王冠状のヒレを持つ深海魚。放電の灯りが毒すら喰らい、殻へと変える。'},
+ {n:'電紋オオグチボヤ・ヴォルティア',file:'elite-electric-tunicate-voltia-v1.webp',face:0,gen:1,desc:'巨大な入水孔を開く肉食性のオオグチボヤ。半透明の体内を走る電紋で毒を分解し、吸収した力を雷圧へ変える。'},
  {n:'古骸主・ノーティラム',file:'elite-nautilus-lord-nautilam.webp',face:0,gen:1,desc:'古い甲殻に触腕を宿すアンモナイトの主。分厚い殻に受けた衝撃を、そのまま撃ち返してくる。'},
  {n:'灯呪蛇王・ルミナグ',file:'elite-lantern-serpent-luminagu.webp',face:0,gen:1,desc:'灯りの飾りを纏う大蛇の王。噛みつくたびに古い呪いの毒を注ぎ込んでくる。'},
  {n:'深紅女王・ヴェスパルナ',file:'elite-crimson-queen-vesparna.webp',face:0,gen:1,desc:'紅い瞳と王冠を戴くコウモリ状の魔物。羽ばたいて守るたび、紅い力が際限なく膨れ上がる。'},
@@ -50,9 +50,9 @@ const warmedEnemies=new Set();
 window.preloadEnemyAssets=(names=[])=>BEASTS.filter(b=>names.includes(b.n)).forEach(b=>{if(warmedEnemies.has(b.file))return;warmedEnemies.add(b.file);const img=new Image();img.decoding='async';img.fetchPriority='low';img.src=`assets/enemies/${b.file}?v=79`});
 const normalizeBeastName=n=>String(n||'').replace(/^(精鋭|深海強化)・/,'').replace('深淵の守護者・アトラク＝ナクア','深淵の守護者・クトゥル＝アビス').replace('深淵の守護者・クトゥル＝アビス（真の姿）','虚星邪神・クトゥル＝アビス').trim();
 const findBeast=n=>{n=normalizeBeastName(n);return BEASTS.find(x=>x.n===n)};
-const LAYER_1=new Set(['飢えたウツボ','甲冑ガニ','ブロブフィッシュ','毒針ミノカサゴ','銀牙バラクーダ','幽殻ゾウギンザメ','奈落のチョウチンアンコウ','鎖顎鮫・グラウド','閃光蝦・ライジェル','鋼骸鮫・ゾルグ']);
-const LAYER_2=new Set(['青光ホウライエソ','紅腕ダイオウイカ','深海ミツクリザメ','古代魚シーラカンス','竜宮の使者','トガリムネエソ','UMA・海坊主','白霜大蟹・スノウクロウ','電紋鮟鱇・ヴォルティア','古骸主・ノーティラム']);
-const LAYER_3=new Set(['奈落牙オニキンメ','大口フクロウナギ','透頭デメニギス','夢耳メンダコ','古代鮫ラブカ','暴食ボウエンギョ','呪灯ワニトカゲギス','ウバザメ','灯呪蛇王・ルミナグ','深紅女王・ヴェスパルナ','燭海主・ルクスメドゥーサ']);
+const LAYER_1=new Set(['飢えたウツボ','甲冑ガニ','沈泥ブロブフィッシュ','毒針ミノカサゴ','銀牙バラクーダ','幽殻ゾウギンザメ','奈落のチョウチンアンコウ','鎖顎鮫・グラウド','閃光蝦・ライジェル','鋼骸鮫・ゾルグ']);
+const LAYER_2=new Set(['青光ホウライエソ','紅腕ダイオウイカ','深海ミツクリザメ','古代魚シーラカンス','竜宮の使者','鏡腹トガリムネエソ','UMA・海坊主','白霜大蟹・スノウクロウ','電紋オオグチボヤ・ヴォルティア','古骸主・ノーティラム']);
+const LAYER_3=new Set(['奈落牙オニキンメ','大口フクロウナギ','透頭デメニギス','夢耳メンダコ','古代鮫ラブカ','暴食ボウエンギョ','呪灯ワニトカゲギス','巨口ウバザメ','灯呪蛇王・ルミナグ','深紅女王・ヴェスパルナ','燭海主・ルクスメドゥーサ']);
 const BOSS_PLACES={'白骨鮫・モルディガン':'第1層・1680m（ボス）','灯喰いアンコウ・ネブラ':'第1層・1680m（ボス）','城塞クジラ・バルガス':'第1層・1680m（ボス）','深海王クラーケン':'第2層・3600m（ボス）','夢喰いダイオウイカ・ノクス':'第2層・3600m（ボス）','沈没艦ザメ・アビサル':'第2層・3600m（ボス）','深海皇リヴァイアサン':'第3層・5520m（ボス）','星喰らいクトゥルム':'第3層・5520m（ボス）','終焉竜ヒュドラ・アビス':'第3層・5520m（ボス）','深淵の監視者・フグ店長':'深淵領域（ボス）','深淵の守護者・クトゥル＝アビス':'深淵領域（ボス）','虚星邪神・クトゥル＝アビス':'深淵領域（ボス）'};
 const BEAST_GROUPS=[
  ['第1層','薄明の沈降海',[...LAYER_1,'白骨鮫・モルディガン','灯喰いアンコウ・ネブラ','城塞クジラ・バルガス']],
@@ -63,7 +63,7 @@ const BEAST_GROUPS=[
 function beastPlace(n){if(BOSS_PLACES[n])return BOSS_PLACES[n];if(LAYER_1.has(n))return '第1層・0〜1440m';if(LAYER_2.has(n))return '第2層・1920〜3360m';if(LAYER_3.has(n))return '第3層・3840〜5280m';return '出現深度不明'}
 window.syncEnemyArt=()=>{let enemy=window.getAbyssGame?.()?.enemy,s=$('#enemySprite');if(!s||!enemy)return;let b=findBeast(enemy.n);if(!b){s.style.backgroundImage='';s.classList.remove('direct-enemy','boss-enemy','elite-enemy','secret-keeper','secret-guardian','guardian-phase2');s.parentElement?.classList.remove('boss-unit','elite-unit');return}let isGuardianP2=!!enemy.phase2&&(b.n==='深淵の守護者・クトゥル＝アビス'||b.n==='虚星邪神・クトゥル＝アビス'),artKey=b.n+(isGuardianP2?'#p2':'');if(s.dataset.enemyArtKey===artKey&&!s.textContent&&s.classList.contains('direct-enemy'))return;s.dataset.enemyArtKey=artKey;let isBoss=!!BOSS_PLACES[b.n],isElite=!isBoss&&!!enemy.elite,flip=BESTIARY_FLIP.has(b.file);s.style.setProperty('--face',flip?-1:1);['creature','enemy-art','direct-enemy'].forEach(c=>{if(!s.classList.contains(c))s.classList.add(c)});s.classList.toggle('generated-enemy',!!b.gen);s.classList.toggle('face-left',flip);s.classList.toggle('face-front',!flip);s.classList.toggle('boss-enemy',isBoss);s.classList.toggle('elite-enemy',isElite);s.classList.toggle('secret-keeper',b.n==='深淵の監視者・フグ店長');s.classList.toggle('secret-guardian',b.n==='深淵の守護者・クトゥル＝アビス'||b.n==='虚星邪神・クトゥル＝アビス');s.classList.toggle('guardian-phase2',isGuardianP2);s.parentElement?.classList.toggle('boss-unit',isBoss);s.parentElement?.classList.toggle('elite-unit',isElite);let file=isGuardianP2?'abyss-guardian-cthulhu-form2-v1.webp':b.file,bg=`url("assets/enemies/${file}?v=79")`;if(s.style.backgroundImage!==bg)s.style.backgroundImage=bg;if(s.textContent)s.textContent=''};
 window.recordDefeat=n=>{let d=JSON.parse(window.abyssStorageGet('abyssDefeated')||'{}'),key=n.replace(/^(精鋭|深海強化)・/,'');d[key]=(d[key]||0)+1;window.abyssStorageSet('abyssDefeated',JSON.stringify(d))};
-function normalizeDefeats(d){let aliases={'墓守オオグソクムシ':'幽殻ゾウギンザメ','鉄壁ダンゴウオ':'幽殻ゾウギンザメ','鉄殻オオグソクムシ':'幽殻ゾウギンザメ','三脚ミツマタヤリウオ':'呪灯ワニトカゲギス','鎧王ダイオウグソクムシ':'城塞クジラ・バルガス','城塞王マッコウクジラ・バルガス':'城塞クジラ・バルガス'},changed=false;for(const [oldName,newName] of Object.entries(aliases)){if(!d[oldName])continue;d[newName]=(d[newName]||0)+d[oldName];delete d[oldName];changed=true}if(changed)window.abyssStorageSet('abyssDefeated',JSON.stringify(d));return d}
+function normalizeDefeats(d){let aliases={'ブロブフィッシュ':'沈泥ブロブフィッシュ','トガリムネエソ':'鏡腹トガリムネエソ','ウバザメ':'巨口ウバザメ','電紋鮟鱇・ヴォルティア':'電紋オオグチボヤ・ヴォルティア','墓守オオグソクムシ':'幽殻ゾウギンザメ','鉄壁ダンゴウオ':'幽殻ゾウギンザメ','鉄殻オオグソクムシ':'幽殻ゾウギンザメ','三脚ミツマタヤリウオ':'呪灯ワニトカゲギス','鎧王ダイオウグソクムシ':'城塞クジラ・バルガス','城塞王マッコウクジラ・バルガス':'城塞クジラ・バルガス'},changed=false;for(const [oldName,newName] of Object.entries(aliases)){if(!d[oldName])continue;d[newName]=(d[newName]||0)+d[oldName];delete d[oldName];changed=true}if(changed)window.abyssStorageSet('abyssDefeated',JSON.stringify(d));return d}
 function inject(){let nav=document.createElement('div');nav.className='quick-nav';nav.innerHTML='<button id="deckView">🎴 デッキ</button><button id="beastView">🐟 図鑑</button><button id="effectView">？ 効果</button><button id="relicView">🔱 レリック</button>';document.querySelector('.hud')?.insertBefore(nav,document.querySelector('.res'));let m=document.createElement('div');m.className='modal';m.id='collectionModal';m.innerHTML='<div class="panel collection-panel modal-shell"><header class="modal-shell-head"><div><h2 id="collectionTitle">デッキ</h2><p id="collectionSub"></p></div></header><div class="modal-shell-body collection-grid" id="collectionGrid"></div><footer class="modal-shell-foot"><button class="btn" id="collectionClose">閉じる</button></footer></div>';document.body.appendChild(m);$('#deckView').onclick=showDeck;$('#beastView').onclick=showBeasts;$('#collectionClose').onclick=()=>m.classList.remove('on');m.onclick=e=>{if(e.target===m)m.classList.remove('on')}}
 function showDeck(){let g=window.getAbyssGame?.(),deck=g?.deck||[],$g=$('#collectionGrid');$g.className='modal-shell-body collection-grid unified-card-grid';$('#collectionTitle').textContent='いまのデッキ';$('#collectionSub').textContent=`ぜんぶで ${deck.length} 枚。戦闘中と同じ表示で確認できます。`;let counts={};deck.forEach(k=>counts[k]=(counts[k]||0)+1);$g.innerHTML=Object.entries(counts).map(([k,num])=>window.renderAbyssCardView?.(k,{quantity:num,live:true})||'').join('')||'<p>潜水を始めるとカードが表示されます。</p>';$('#collectionModal').classList.add('on')}
 function cardData(k){let c=window.getAbyssCardStats?.(k)||window.getAbyssCardData?.(k);if(c)return{name:c.n,text:c.t,cost:c.c,cl:c.r?'rare':c.a?'abyss':c.u?'uncommon':''};return{name:k,text:'',cost:0,cl:''}}
