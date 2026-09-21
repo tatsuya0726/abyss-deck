@@ -1,7 +1,7 @@
 (()=>{'use strict';
 const profiles={slash:['#8cfff2',900,.10,'sawtooth'],bite:['#ffba80',170,.15,'triangle'],water:['#53bdff',340,.24,'sine'],thunder:['#ffea75',1300,.10,'square'],poison:['#b2fa74',470,.19,'sine'],abyss:['#d48bff',100,.32,'sine'],guard:['#8ceaff',700,.18,'triangle'],heal:['#89ffd2',660,.32,'sine'],power:['#ffc971',440,.24,'triangle'],draw:['#d8f7ff',980,.09,'sine'],crush:['#ff967f',90,.25,'triangle'],tentacle:['#db91ed',210,.22,'sine']};
 window.abyssAttackKind=(c={},k='')=>c.a?'abyss':/electric|jelly/.test(k)?'thunder':/bite|shark|fang|leviathan/.test(k)?'bite':/whale|tsunami|current|ray|manta/.test(k)?'water':'slash';
-window.abyssEnemyKind=e=>/クトゥル|ノクス/.test(e?.n)?'abyss':/イカ|クラーケン/.test(e?.n)?'tentacle':/ヒュドラ|リヴァイアサン|マッコウクジラ/.test(e?.n)?'water':/ダンゴウオ|カニ/.test(e?.n)?'crush':'bite';
+window.abyssEnemyKind=e=>/クトゥル|ノクス/.test(e?.n)?'abyss':/イカ|クラーケン/.test(e?.n)?'tentacle':/ヒュドラ|リヴァイアサン|マッコウクジラ|ゾウギンザメ/.test(e?.n)?'water':/カニ/.test(e?.n)?'crush':'bite';
 let noise,rapidVariant=0;
 const impactUrls={attack:'assets/audio/heavy-attack-v104.ogg',shield:'assets/audio/heavy-block-v104.ogg',block:'assets/audio/clashing-swords-1.mp3'},impactRaw={},impactBuffers={},impactDecoding={};
 for(const key of ['strike','impact','explosion','rapid1','rapid2','apparition','metal','dark','slash3','slash11','firewind'])impactUrls[key]=`assets/audio/user-${key}-v107.mp3`;
