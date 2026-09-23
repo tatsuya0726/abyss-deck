@@ -4,8 +4,8 @@ const COMMON=['bite','dartfish','shell','cleaner','ray','puffer','octoguard','su
 const UNCOMMON=['school','ink','current','heal','electric','remora','jelly','tidewall','reefstance','shellgrowth','shoalguard','followbite','moltscale','venombloom','venomfang','toxicarmor','weakambush','scalecharge','hunterfocus','marlin','harpoon','crackshell','kabutowari','tideforesight','abysssonar','hungryshoal','recklesscharge','cthulhu','graverobber'];
 const RARE=['whale','mimic','tsunami','manta','leviathan','abyssarmor','seamiracle','predation','coelacanth','zeroshift'];
 const ABYSS=['lantern','voidjaw','shadoweel','abyssdance','curseward','abyssflame','weakpoint','abyssescape','bloodprice'];
-const BOSS_RELICS=new Set(['呪海の炉','四皇の王冠','深淵炉心','次元圧縮','巨鯨の心臓','水圧変異','黄金王座','深海の鍵','深海の紋章','深淵の瞳','竜の逆鱗','永久潮汐機関','喰らう海溝']);
-const RELIC_PRICES={'漂流者の糸':85,'供物の真珠':88,'サイドパック':95,'呪紋の外殻':90,'航海羅針盤':75,'黄金炉':80,'珊瑚の護符':60,'古代の盾':98,'深海時計':70,'黒潮の鱗':96,'捕食者の眼':82,'毒腺の指輪':84,'スラッシュブースト':63,'オウムガイの護殻':80,'皇帝の骨片':105,'防毒ジャケット':68,'分厚い甲殻':92,'警鐘の巻貝':85,'深海の呼吸':120,'巨獣の顎':100,'VIPカード':110,'グリズリースーツ':125,'再生ウロコ':88,'血時計':88,'潮捨ての貝殻':90,'灰珊瑚':92,'海溝の滑車':118,'沈黙の錨':95,'圧力真珠':115};
+const BOSS_RELICS=new Set(['呪海の炉','四皇の王冠','深淵炉心','次元圧縮','巨鯨の心臓','水圧変異','黄金王座','深海の鍵','深海の紋章','深淵の瞳','竜の逆鱗','エナジーボトル','喰らう海溝','紫炎の呪符']);
+const RELIC_PRICES={'漂流者の糸':85,'供物の真珠':88,'サイドパック':95,'呪紋の外殻':90,'航海羅針盤':75,'黄金炉':80,'珊瑚の護符':60,'古代の盾':98,'深海時計':70,'黒潮の鱗':96,'捕食者の眼':82,'毒腺の指輪':84,'スラッシュブースト':63,'オウムガイの護殻':80,'皇帝の骨片':105,'防毒ジャケット':68,'分厚い甲殻':92,'警鐘の巻貝':85,'深海の呼吸':120,'巨獣の顎':100,'VIPカード':110,'グリズリースーツ':125,'再生ウロコ':88,'血時計':88,'潮捨ての貝殻':90,'灰珊瑚':92,'海溝の滑車':118,'永久機関':118,'圧力真珠':115};
 let advanceAfterClose=false,shopRemovedThisVisit=false,stock=null;
 let keeperTimer=null;
 const KEEPER={hello:['いらっしゃい！　今日もピカッといい品ぞろえだよ！','やあやあ！　見るだけでも大歓迎！','深い海ほど、掘り出し物が光るんだよ！'],card:['その一枚、きっといい仕事をするよ！','いい目をしてるねえ！　お買い上げありがとう！','デッキがまたひとつ強くなったね！'],relic:['おおっ、そいつは長い付き合いになりそうだ！','レリックは持っているだけで働く、えらい品だよ！'],poor:['おっと、金貨がもう少し必要みたい！','お財布も深呼吸中かな？　またおいで！'],choose:['じっくり選んでね。押した一枚だけが変わるよ！'],heal:['ぷくっと元気！　フグ店長の治療だよ！']};
