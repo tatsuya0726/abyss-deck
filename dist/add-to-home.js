@@ -8,7 +8,7 @@ function markSeen(){try{localStorage.setItem(seenKey,'1')}catch(e){}}
 if(seen())return;
 let deferredPrompt=null;
 window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();deferredPrompt=e});
-let modal=document.createElement('div');modal.className='modal';modal.id='a2hsModal';modal.innerHTML='<div class="panel reset-panel"><div class="bigicon">📲</div><h2>ホーム画面に追加してください</h2><p class="reset-warning">ブラウザで起動すると戦闘画面の描画に問題が生じるため、ホーム画面に追加した後にそちらから起動して下さい。</p><div class="reset-actions"><button class="btn" id="a2hsLater">あとで</button><button class="btn gold" id="a2hsAdd">ホーム画面に追加</button></div></div>';document.body.appendChild(modal);
+let modal=document.createElement('div');modal.className='modal';modal.id='a2hsModal';modal.innerHTML='<div class="panel reset-panel"><div class="bigicon">📲</div><h2>ホーム画面に追加してください</h2><p class="reset-warning">アドレスバーがあると、戦闘の際にHPバーとカードウィンドウが重なってしまうため、ホーム画面に追加した後にそちらから起動してください。</p><div class="reset-actions"><button class="btn" id="a2hsLater">あとで</button><button class="btn gold" id="a2hsAdd">ホーム画面に追加</button></div></div>';document.body.appendChild(modal);
 let iosModal=document.createElement('div');iosModal.className='modal';iosModal.id='a2hsIosModal';iosModal.innerHTML='<div class="panel reset-panel"><div class="bigicon">📲</div><h2>ホーム画面に追加</h2><p class="reset-warning">Safariの共有ボタン<i>□↑</i>をタップし、一覧から「ホーム画面に追加」を選んでください。</p><div class="reset-actions"><button class="btn gold" id="a2hsIosClose">わかった</button></div></div>';document.body.appendChild(iosModal);
 function openNotice(){if(seen())return;modal.classList.add('on');window.applyFuri?.(modal)}
 function closeNotice(){modal.classList.remove('on');markSeen()}
