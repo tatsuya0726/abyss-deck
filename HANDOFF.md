@@ -3,6 +3,8 @@
 ## リポジトリ
 
 - GitHub: https://github.com/tatsuya0726/abyss-deck
+- 正式公開URL: https://tatsuya0726.github.io/abyss-deck/
+- 公開方法: `main` 更新時にGitHub ActionsからGitHub Pagesへ自動公開
 - 作業ブランチ: `claude/serene-meitner-83ufqa`
 - `main` は作業ブランチをfast-forwardして同期する運用
 - 最新位置は `git log -1 --oneline` で確認する
@@ -16,7 +18,8 @@
 - JavaScript/CSSを変更したら `dist/index.html` の該当 `?v=` を更新する
 - 日本語UIを変更したら `dist/enhance.js` のふりがな辞書も確認する
 - 変更後は検証、コミット、作業ブランチへプッシュし、`main`をfast-forwardする
-- 今後はSitesへアップロード・公開せず、GitHubだけ更新する
+- 公開先はGitHub Pagesのみ。Sitesへはアップロード・公開しない
+- `.openai/hosting.json` は削除済み。今後追加しない
 - 名称変更時は既存セーブデータと図鑑の撃破記録に移行処理を入れる
 
 ## 直近で完了した変更
