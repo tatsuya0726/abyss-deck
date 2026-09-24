@@ -25,18 +25,14 @@
 
 ## 直近で完了した変更
 
-### スマホ版・TV版の正式URL統合
+### 正式URLのスマホ起動復旧
 
-- 正式URLを `https://tatsuya0726.github.io/abyss-deck/` の1つへ統合
-- 縦画面では従来のスマホ表示、横画面ではTV・スマホ横向き表示へ、再読み込みなしで自動切替
-- TV向けのキーボード／ゲームパッド操作、フォーカス枠、音楽・コントローラー・フルスクリーン設定をゲーム本体へ直接統合
-- 旧TV専用ページ `dist/tv.html`、`dist/tv-input.js`、`dist/tv-landscape.css` を削除
-- 旧TV URL `/abyss-deck/tv.html` は廃止。今後案内しない
-- 同一オリジンのlocalStorageを継続使用するため、既存セーブデータは保持
-- タイトル画面は横画面でHUDを非表示にし、TVでは中央配置、スマホ横画面では左右2カラムでスクロールなし
-- スマホ縦画面の起動を保護するため、横画面用JSは横向き時だけ遅延読込し、CSSも横向き時だけ適用
-- 横画面のフォーカス候補・配置再計算を毎フレームから約8回/秒へ抑制し、起動時の描画停止を防止
-- 現在のキャッシュ番号: `adaptive-input.js?v=2`、`adaptive-landscape.css?v=2`
+- 正式URLは `https://tatsuya0726.github.io/abyss-deck/` のまま。URLとlocalStorage保存領域は変更しない
+- TV統合直後に一部スマホで黒画面になったため、正式URLの `dist/index.html` を統合前の安定版へ復元
+- `adaptive-input.js` と `adaptive-landscape.css` の読込を完全に削除し、TV統合用ファイル本体も公開ツリーから削除
+- 旧TV専用ページ `dist/tv.html`、`dist/tv-input.js`、`dist/tv-landscape.css` は引き続き削除済み
+- 既存セーブデータには触れず、同じオリジンのlocalStorageを継続使用
+- TV・横画面統合はスマホ起動と実機検証を優先し、安定した方式で再実装する
 
 ### レリック再調整
 
