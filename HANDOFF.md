@@ -25,16 +25,17 @@
 
 ## 直近で完了した変更
 
-### 正式URLへの動作版統合
+### 正式URLの横画面を旧TV構成へ復元
 
-- 正式URLは `https://tatsuya0726.github.io/abyss-deck/` のまま。URLとlocalStorage保存領域は変更しない
-- `?fix=40ffb368` で起動確認できた版を、正式URLの `dist/index.html` へそのまま配置
-- HTMLへキャッシュ抑制指定を追加し、修正確認用の `?fix=`／`?v=` 付きURLで開いた場合もアドレス表示を正式URLへ戻す
-- 縦画面では横画面用JSを読み込まず、横向きへ変更した時だけ `adaptive-input.js` を遅延読込
-- 横画面用CSSは横向き時だけ適用
-- 既存セーブデータには触れず、同一オリジンのlocalStorageを継続使用
-- iPhone Safariの回転を確実に拾うため、`resize`、`orientationchange`、`visualViewport.resize`を併用
-- 現在のキャッシュ番号: `adaptive-input.js?v=3`、`adaptive-landscape.css?v=2`
+- 正式URLは `https://tatsuya0726.github.io/abyss-deck/` のまま。localStorage保存領域も変更しない
+- 以前正常だったTV版と同じ、外側シェル＋同一オリジンiframeの構成を正式URLへ移植
+- ルート `dist/index.html` は表示シェル、ゲーム本体は `dist/game.html`
+- 縦画面では通常スマホ表示、横画面では `html.tv-mode` の旧TVレイアウトを適用
+- 回転時は `resize`、`orientationchange`、`visualViewport.resize`を監視
+- 回転後に現在の画面を再判定し、タイトル・マップ・戦闘・ボス等の正しいBGMへ強制再同期
+- フォーカス候補と敵意図の再計算は約8回/秒に抑え、描画負荷を軽減
+- 旧 `tv.html` URLは復活させず、正式URLだけを使用
+- 現在のキャッシュ番号: `game.html?v=1`、`responsive-shell.js?v=1`、`responsive-landscape.css?v=1`、`enhance.js?v=254`
 
 ### レリック再調整
 

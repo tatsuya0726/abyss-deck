@@ -267,8 +267,3 @@ html.tv-mode .settings-hub-grid>button small{font-size:11px!important;line-heigh
   html.tv-mode .settings-hub-panel>.modal-shell-foot{padding:0 8px 8px!important}
   html.tv-mode .settings-hub-panel>.modal-shell-foot .btn{min-height:36px!important}
 }
-
-
-/* Direct-root keyboard/gamepad focus indicator. */
-#gp-focus-ring{position:fixed;pointer-events:none;z-index:99999;border:3px solid var(--gold);border-radius:12px;box-shadow:0 0 0 3px #00000090,0 0 20px var(--gold);transition:left .12s ease,top .12s ease,width .12s ease,height .12s ease;display:none}
-#adaptive-controls{display:none!important}
