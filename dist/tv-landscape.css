@@ -176,3 +176,75 @@ html.tv-mode .rewards{flex-wrap:wrap!important;max-width:900px!important;margin:
   html.tv-mode .card-codex-panel, html.tv-mode .title-hub-panel, html.tv-mode .strategy-panel, html.tv-mode .memory-panel, html.tv-mode .collection-panel{max-width:96vw!important}
   html.tv-mode .card-codex-grid, html.tv-mode .collection-grid, html.tv-mode .title-hub-grid, html.tv-mode .achievement-grid{grid-template-columns:repeat(auto-fill,minmax(120px,1fr))!important}
 }
+
+
+/* ---------- Clean title screen: full viewport, no persistent settings overlay ---------- */
+html.tv-mode .hud{padding-right:14px!important}
+html.tv-mode body.scene-title .hud{display:none!important}
+html.tv-mode body.scene-title #title{
+  inset:0!important;padding:clamp(12px,3vh,30px) clamp(18px,5vw,72px)!important;
+  overflow:hidden!important;align-items:center!important;justify-content:center!important}
+html.tv-mode body.scene-title .titlebox{
+  display:flex!important;flex-direction:column!important;align-items:center!important;justify-content:center!important;
+  gap:5px!important;width:min(88vw,720px)!important;max-width:720px!important;margin:auto!important;padding:0!important;
+  text-align:center!important;border:0!important;border-radius:0!important;background:none!important;
+  box-shadow:none!important;backdrop-filter:none!important}
+html.tv-mode body.scene-title .titlebox::before,
+html.tv-mode body.scene-title .titlebox::after{display:none!important}
+html.tv-mode body.scene-title .sigil{font-size:clamp(42px,5vh,64px)!important;margin:0 auto!important}
+html.tv-mode body.scene-title .titlebox h1{
+  font-size:clamp(38px,6.2vh,70px)!important;line-height:.96!important;margin:0 0 3px!important;
+  filter:drop-shadow(0 4px 2px #000) drop-shadow(0 0 24px #4ee7dc55)!important}
+html.tv-mode body.scene-title .subtitle{margin:2px 0 8px!important}
+html.tv-mode body.scene-title #ascensionPanel{
+  width:min(420px,76vw)!important;max-width:420px!important;margin:0 auto 5px!important;justify-self:center!important}
+html.tv-mode body.scene-title .title-actions{
+  width:min(430px,78vw)!important;margin:0 auto!important;align-self:center!important;justify-self:center!important}
+html.tv-mode body.scene-title .start{width:100%!important;min-height:46px!important;margin:0 0 7px!important}
+html.tv-mode body.scene-title .title-library-grid{
+  grid-template-columns:repeat(2,minmax(0,1fr))!important;width:100%!important;max-width:none!important;gap:5px!important}
+html.tv-mode body.scene-title .title-library-grid .title-tool{
+  min-height:39px!important;padding:6px 9px!important;border-color:#49666d88!important;
+  background:linear-gradient(180deg,#07141bc7,#030a10b8)!important;font-size:12px!important}
+html.tv-mode body.scene-title .title-library-grid #titleSettingsMenu{
+  border-color:#ad925788!important;background:linear-gradient(180deg,#1a160dc7,#0b0906ba)!important}
+html.tv-mode body.scene-title #title .equipped-title{display:none!important}
+html.tv-mode body.scene-title .title-hint{
+  position:fixed!important;left:50%!important;bottom:6px!important;transform:translateX(-50%)!important;
+  margin:0!important;font-size:10px!important;white-space:nowrap!important}
+
+/* Phone landscape: retain the same clean look, but use the width so every
+   control fits without vertical scrolling. */
+@media (orientation:landscape) and (max-height:600px){
+  html.tv-mode body.scene-title #title{padding:6px 18px!important}
+  html.tv-mode body.scene-title .titlebox{
+    display:grid!important;grid-template-columns:minmax(0,1.1fr) minmax(290px,.9fr)!important;
+    grid-template-rows:auto auto auto auto!important;column-gap:clamp(20px,5vw,58px)!important;row-gap:1px!important;
+    width:min(96vw,1040px)!important;max-width:1040px!important;height:100%!important;text-align:left!important}
+  html.tv-mode body.scene-title .sigil{
+    grid-column:1!important;grid-row:1!important;justify-self:center!important;font-size:clamp(32px,9vh,44px)!important}
+  html.tv-mode body.scene-title .titlebox h1{
+    grid-column:1!important;grid-row:2!important;justify-self:center!important;
+    font-size:clamp(30px,9.5vh,48px)!important;text-align:center!important}
+  html.tv-mode body.scene-title .subtitle{
+    grid-column:1!important;grid-row:3!important;justify-self:center!important;margin:0 0 3px!important}
+  html.tv-mode body.scene-title #ascensionPanel{
+    grid-column:1!important;grid-row:4!important;align-self:start!important;width:min(390px,100%)!important;
+    max-width:390px!important;margin:0 auto!important}
+  html.tv-mode body.scene-title .title-actions{
+    grid-column:2!important;grid-row:1/5!important;align-self:center!important;width:100%!important;margin:0!important}
+  html.tv-mode body.scene-title .start{min-height:42px!important;margin-bottom:5px!important;font-size:14px!important}
+  html.tv-mode body.scene-title .title-library-grid{gap:4px!important}
+  html.tv-mode body.scene-title .title-library-grid .title-tool{min-height:36px!important;padding:4px 7px!important;font-size:11px!important}
+  html.tv-mode body.scene-title .title-hint{display:none!important}
+}
+@media (orientation:landscape) and (max-height:430px){
+  html.tv-mode body.scene-title .sigil{display:none!important}
+  html.tv-mode body.scene-title .titlebox h1{grid-row:1/3!important}
+  html.tv-mode body.scene-title .subtitle{grid-row:3!important}
+  html.tv-mode body.scene-title #ascensionPanel{grid-row:4!important}
+  html.tv-mode body.scene-title .title-library-grid .title-tool{min-height:33px!important}
+}
+
+/* TV controls now live inside the ordinary title-screen settings modal. */
+html.tv-mode .settings-hub-grid .tv-title-setting{border-color:#3e6d72!important}
