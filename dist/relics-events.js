@@ -20,22 +20,34 @@ const RELICS={
  '毒腺の指輪':['💍','カードで敵に与える毒が1増える。','uncommon'],
  'スラッシュブースト':['🗡️','「フィン・スラッシュ」のダメージが3増える。','common'],
  'オウムガイの護殻':['🐚','戦闘開始時、防御力＋1。','uncommon'],
- '皇帝の骨片':['🦴','入手時に最大HPとHPが7増える。','rare'],
+ '皇帝の骨片':['🦴','入手時に最大HPとHPが7増える。','uncommon'],
  '防毒ジャケット':['🦺','敵の毒針の追加ダメージをブロックできるようになる。','common'],
  '巨獣の顎':['🦈','戦闘開始時、攻撃力＋1（この戦闘中ずっと）。','uncommon'],
- 'VIPカード':['💳','ショップのすべての価格が30%安くなる。','rare']
+ 'VIPカード':['💳','ショップのすべての価格が30%安くなる。','rare'],
+ 'グリズリースーツ':['🐻','相手から受けるダメージを1減らす。連続攻撃は1回ごとに減らす。','rare'],
+ '再生ウロコ':['🩹','各戦闘で初めて自分のターン中にHPを失った時、HPを3回復する。','uncommon'],
+ '血時計':['🕰️','自分のターン中にダメージを受けた時、カードを1枚引く（各ターン1回）。','uncommon'],
+ '潮捨ての貝殻':['🐚','各ターン最初にカードを捨てた時、カードを1枚引く。','uncommon'],
+ '灰珊瑚':['🪨','各ターン最初にカードを廃棄した時、5ブロックを得る。','uncommon'],
+ '海溝の滑車':['⚙️','各ターン最初に捨て札・廃棄札から回収したカードのコストを、そのターンだけ1減らす。','rare'],
+ '永久機関':['♾️','手札が0枚になると、カードを1枚引く。','rare'],
+ '圧力真珠':['🫧','各ターン最初に2コスト以上のカードを使うと、6ブロックを得る。','rare']
 };
 const BOSS_RELICS={
  '呪海の炉':['🕯️','毎ターンのエナジー＋1。ただし、戦闘開始時に手札へ呪いを1枚追加する。','boss'],
  '四皇の王冠':['👑','毎ターンのエナジー＋1。ただし、毎ターン引けるカードが1枚少なくなる。','boss'],
  '深淵炉心':['🌋','毎ターンのエナジーが1増える。ただし、1ターンに使えるカードは5枚まで。','boss'],
  '次元圧縮':['♋️','入手時、デッキ内のすべての「フィン・スラッシュ」と「鱗の守り」をランダムなカードに変える。','boss'],
- '巨鯨の心臓':['🫀','入手時に最大HPとHPが18増える。ただし、戦闘開始時にHPを3失う。','boss'],
- '水圧変異':['🧬','ターン終了時、手札を捨てなくなる。','boss'],
+ '巨鯨の心臓':['🫀','入手時に最大HPとHPが18増える。ただし、戦闘開始時にHPを4失う。','boss'],
+ '水圧変異':['🧬','ターン終了時、手札を捨てない。次のターン開始時、残した手札に加えて通常5枚引く。','boss'],
  '黄金王座':['🫧','エリートを倒すと、追加でレリックを1個入手する。','boss'],
- '深淵の瞳':['🌌','ターン開始時、追加でカードを2枚引く。ただし、すべてのカードのコストは引くたびにランダムになる。','boss']
+ '深淵の瞳':['🌌','ターン開始時、追加でカードを2枚引く。ただし、すべてのカードのコストは引くたびにランダムになる。','boss'],
+ '竜の逆鱗':['🐉','強化した攻撃カードのダメージが3増える。','boss'],
+ 'エナジーボトル':['🧪','余ったエナジーをすべて次のターンへ持ち越す。','boss'],
+ '喰らう海溝':['🕳️','各ターン最初にカードを廃棄すると、カードを1枚引き、エナジー＋1。','boss'],
+ '紫炎の呪符':['🪬','毎ターン、エナジー＋1。ターン開始時に2ダメージを受ける（ブロック可能）。','boss']
 };
-const NORMAL_RELICS=Object.keys(RELICS);
+const NORMAL_RELICS=Object.keys(RELICS).filter(n=>n!=='深海の血脈');
 const REWARD_BLOCKED=new Set(['深海の鍵','深海の紋章']);
 Object.assign(RELICS,BOSS_RELICS);
 window.ABYSS_RELICS=RELICS;
@@ -46,7 +58,7 @@ function randomRelicGrant(){let g=game(),owned=new Set((g?.relic||[]).map(r=>r[1
 const RARITY_ORDER={common:0,uncommon:1,rare:2,boss:3};
 function showRelics(){let g=game(),owned=new Set((g?.relic||[]).map(r=>r[1])),titleOpen=document.getElementById('title')?.classList.contains('on'),ownedOnly=!titleOpen,entries=Object.entries(RELICS).filter(([name])=>!ownedOnly||owned.has(name)).sort((a,b)=>(RARITY_ORDER[a[1][2]]??1)-(RARITY_ORDER[b[1][2]]??1)),modal=document.getElementById('collectionModal'),grid=document.getElementById('collectionGrid');document.getElementById('collectionTitle').textContent=ownedOnly?'所持レリック':'レリック図鑑';document.getElementById('collectionSub').textContent=ownedOnly?`現在の潜航で入手したレリック ${owned.size}個`:`レリックの効果を確認できます。入手 ${owned.size}/${Object.keys(RELICS).length}`;grid.className='modal-shell-body relic-grid';grid.innerHTML=entries.length?'<h3 class="collection-section">🔱 レリック</h3>'+entries.map(([name,[icon,effect,rarity]])=>{let boss=rarity==='boss',label={common:'コモン',uncommon:'アンコモン',rare:'レア'}[rarity],badge=boss?'<span class="boss-relic-mark">👑 ボスレリック</span>':(label?`<span class="relic-rarity rarity-${rarity}">${label}</span>`:'');return `<article class="relic-card owned ${boss?'boss-relic-card':''}"><div class="relic-icon">${icon}</div><div><div class="relic-name">${name}${badge}</div><div class="relic-effect">${effect}</div><div class="relic-lock">入手済み</div></div></article>`}).join(''):`<p class="empty-relic-list">まだレリックを入手していません。</p>`;modal.classList.add('on');window.applyFuri?.(modal)}window.openAbyssRelicCollection=showRelics;
 let relicReveal=document.createElement('div');relicReveal.className='modal';relicReveal.id='relicRevealModal';relicReveal.innerHTML='<div class="panel relic-reveal"><div class="bigicon" id="relicRevealIcon"></div><h2 id="relicRevealName"></h2><p id="relicRevealEffect"></p><button class="btn gold" id="relicRevealClose">効果を確認</button></div>';document.body.appendChild(relicReveal);window.showRelicAcquired=name=>{let r=RELICS[name];if(!r)return;document.getElementById('relicRevealIcon').textContent=r[0];document.getElementById('relicRevealName').textContent=`レリック「${name}」を獲得`;document.getElementById('relicRevealEffect').textContent=r[1];relicReveal.classList.add('on');window.applyFuri?.(relicReveal)};let pendingBossRelicDone=null;
-function closeRelicReveal(){relicReveal.classList.remove('on');setTimeout(()=>window.playPendingAbyssLayerIntro?.(),120);if(pendingBossRelicDone){let fn=pendingBossRelicDone;pendingBossRelicDone=null;fn()}}document.getElementById('relicRevealClose').onclick=closeRelicReveal;relicReveal.onclick=e=>{if(e.target===relicReveal)closeRelicReveal()};
+function closeRelicReveal(){relicReveal.classList.remove('on');if(document.getElementById('rewardModal')?.classList.contains('on'))document.querySelectorAll('.layer-intro').forEach(x=>x.remove());else setTimeout(()=>window.playPendingAbyssLayerIntro?.(),120);if(pendingBossRelicDone){let fn=pendingBossRelicDone;pendingBossRelicDone=null;fn()}}document.getElementById('relicRevealClose').onclick=closeRelicReveal;relicReveal.onclick=e=>{if(e.target===relicReveal)closeRelicReveal()};
 let bossNext=null,bossModal=document.createElement('div');bossModal.className='modal';bossModal.id='bossRelicModal';bossModal.innerHTML='<div class="panel boss-relic-panel"><small id="relicChoiceEyebrow">ABYSSAL TROPHY</small><h2 id="relicChoiceTitle">ボスレリック</h2><p id="relicChoiceText">深海の主から奪う力を1つ選べ。強い力には代償がある。</p><div class="boss-relic-choices" id="bossRelicChoices"></div></div>';document.body.appendChild(bossModal);
 function grantBossRelic(name,onTransformed){let g=game(),r=BOSS_RELICS[name];if(!g||!r||g.relic.some(x=>x[1]===name))return false;g.relic.push([r[0],name]);g.pendingBossRelic=false;if(name==='巨鯨の心臓'){g.max+=18;g.hp+=18}if(name==='次元圧縮')window.transformAbyssBasicCards?.(onTransformed);return true}
 window.openAbyssRewardRelics=(kind,next)=>{let g=game(),boss=kind==='boss',owned=new Set((g?.relic||[]).map(r=>r[1])),source=boss?Object.keys(BOSS_RELICS):NORMAL_RELICS.filter(n=>!REWARD_BLOCKED.has(n)),pool=source.filter(n=>!owned.has(n)).sort(()=>Math.random()-.5).slice(0,3);if(!g||!pool.length){window.abyssSave?.();return next?.(null)}if(!boss){let name=pool[0],ok=addRelic(name,false);window.abyssSave?.();if(ok)window.showRelicAcquired?.(name);return next?.(ok?name:null)}bossNext=next;document.getElementById('relicChoiceEyebrow').textContent='ABYSSAL TROPHY';document.getElementById('relicChoiceTitle').textContent='ボスレリック';document.getElementById('relicChoiceText').textContent='深海の主から奪う力を1つ選べ。強い力には代償がある。';document.getElementById('bossRelicChoices').innerHTML=pool.map(name=>{let [icon,effect]=RELICS[name],[power,cost]=effect.split('ただし、');return `<button class="boss-relic-choice" data-name="${name}"><i>${icon}</i><b>${name}</b><span class="boss-power">${power}</span>${cost?`<span class="boss-cost">⚠ ${cost}</span>`:''}</button>`}).join('');document.querySelectorAll('#bossRelicChoices .boss-relic-choice').forEach(b=>b.onclick=()=>{let name=b.dataset.name,done=bossNext;bossNext=null;let ok=grantBossRelic(name,name==='次元圧縮'?(()=>{pendingBossRelicDone=()=>done?.(name);window.showRelicAcquired?.(name)}):null);if(!ok)return;bossModal.classList.remove('on');window.abyssSave?.();if(name!=='次元圧縮'){window.showRelicAcquired?.(name);done?.(name)}});bossModal.classList.add('on');window.applyFuri?.(bossModal)};
@@ -57,7 +69,7 @@ const chooseRewardRelics=window.openAbyssRewardRelics;window.openAbyssRewardReli
 window.openAbyssBossRelics=next=>window.openAbyssRewardRelics('boss',()=>next?.());
 let relicViewButton=document.getElementById('relicView');if(relicViewButton){relicViewButton.disabled=false;relicViewButton.onclick=showRelics}
 document.getElementById('deckView')?.addEventListener('click',()=>{document.getElementById('collectionGrid').className='modal-shell-body collection-grid'});
-const rare=['marlin','whale','mimic','tsunami','manta','leviathan','abyssarmor'],abyss=['lantern','voidjaw','coelacanth','shadoweel','cthulhu','curseward','abyssflame'];
+const rare=['marlin','whale','mimic','tsunami','manta','leviathan','abyssarmor','coelacanth','zeroshift'],abyss=['lantern','voidjaw','shadoweel','curseward','abyssflame','bloodprice'];
 window.ABYSS_EVENTS?.push(
  ['🦴','鯨骨の墓場','巨大な鯨の骨が海底に横たわり、その内側で古い力が脈打っている。',[['骨の中へ入る','HPを10失い、遺物「古代の盾」を得る',()=>{let g=game();g.hp=Math.max(1,g.hp-10);addRelic('古代の盾')}],['ゴールドだけ拾う','ゴールドを61得る',()=>game().pearl+=61],['静かに祈る','HPを10回復',()=>{let g=game();g.hp=Math.min(g.max,g.hp+10)}]]],
  ['🪼','月光クラゲの群れ','青白いクラゲたちが、傷を癒す光の輪を作っている。',[['光に包まれる','遺物「珊瑚の護符」を得る',()=>addRelic('珊瑚の護符')],['群れと泳ぐ','HPを16回復',()=>{let g=game();g.hp=Math.min(g.max,g.hp+16)}],['光を結晶化する','ゴールド35を払い、レアカードを得る',()=>{let g=game();if(g.pearl>=35){g.pearl-=35;addCard(rare)}}]]],
@@ -71,7 +83,6 @@ window.ABYSS_EVENTS?.push(
  ['🌟','墜星の亡骸','空から落ちたはずの巨大な星が、海底で腐りながら呼吸している。触れた者の未来を食べるという。',[['核に触れる','50%でレアカード。失敗するとHPを15失う',()=>{let g=game();if(Math.random()<.5)addCard(rare,'成功！ レアカードを獲得');else{g.hp=Math.max(1,g.hp-15);window.showAbyssOutcome?.(false,'抽選結果：外れ','星の核は砕け、HPを15失った。')}}],['欠片を売る','最大HPを3失い、ゴールドを77得る',()=>{let g=game();g.max=Math.max(20,g.max-3);g.hp=Math.min(g.hp,g.max);g.pearl+=77}],['亡骸を埋める','HPを8回復する',()=>{let g=game();g.hp=Math.min(g.max,g.hp+8)}]]],
  ['🪞','反転する海溝','海溝の底に、上へ向かって落ち続けるもう一つの海が見える。供物を落とせば力が返る。',[['カードを捧げる','指定したカード1枚を失い、最大HP＋7',()=>window.chooseAbyssRemovals?.(1,'海溝へ捧げるカードを選ぶ',()=>true,()=>{let g=game();g.max+=7;g.hp+=7})],['ゴールドを落とす','ゴールド40を失い、遺物「分厚い甲殻」を得る',()=>{let g=game();if(g.pearl>=40){g.pearl-=40;addRelic('分厚い甲殻')}}],['何も落とさない','海溝がHPを5奪う',()=>{let g=game();g.hp=Math.max(1,g.hp-5)}]]],
  ['🤿','もう一人の潜水者','暗闇から、未来のあなたが泳いでくる。「一枚だけ変えろ。でなければ同じ場所で死ぬ」',[['未来を信じる','指定した未強化カード1枚を強化',()=>window.chooseAbyssUpgrades?.(1,'未来を変えるカードを選ぶ')],['荷を託される','HPを10失い、遺物「サイドパック」を得る',()=>{let g=game();g.hp=Math.max(1,g.hp-10);addRelic('サイドパック')}],['目をそらす','何も起こらない',()=>{}]]],
- ['🏺','漂着した宝物入れ','波間に漂う古い箱には、名も知らぬ遺物が眠っている。',[['箱を開ける','ランダムな遺物を1つ得る',()=>randomRelicGrant()],['そっと売り払う','ゴールドを55得る',()=>game().pearl+=55],['触れずに立ち去る','何も起こらない',()=>{}]]],
  ['🧳','漂流者の遺品','海底に沈んだ鞄の中に、まだ使える道具が残っている。',[['遺品を受け取る','HPを6失い、ランダムな遺物を得る',()=>{let g=game();g.hp=Math.max(1,g.hp-6);randomRelicGrant()}],['そのまま埋葬する','HPを10回復',()=>{let g=game();g.hp=Math.min(g.max,g.hp+10)}],['中身だけ確認する','ゴールドを33得る',()=>game().pearl+=33]]]
 );
 })();

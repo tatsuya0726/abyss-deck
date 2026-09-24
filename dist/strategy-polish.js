@@ -1,7 +1,7 @@
 (()=>{'use strict';
 const game=()=>window.getAbyssGame?.();
 Object.assign(window.ABYSS_RELICS||{}, {
- '群泳の旗':['🐟','多段攻撃の1発ごとのダメージが1増える。','rare'],
+ '群泳の旗':['🐟','多段攻撃の1発ごとのダメージが1増える。','common'],
  '竜の逆鱗':['🐉','強化した攻撃カードのダメージが3増える。','boss'],
  '生命臨界':['💢','HPが50%以下の間、攻撃カードのダメージが3増える。','rare']
 });
@@ -25,14 +25,14 @@ window.getAbyssRunRecap=(s,cleared)=>{
  if(!earned.length)return'';
  return `<div class="run-titles"><h3>今回の称号</h3>${earned.map(t=>`<article><i>${t.icon}</i><div><b>${t.name}</b><p>${t.desc}</p></div></article>`).join('')}</div>`;
 };
-function addRelic(name){window.acquireAbyssRelic?.(name)}
+function addRelic(name){return window.acquireAbyssRelic?.(name)}
 const chainA=['','傷ついた海図師','壊れた潜水艇の横で、海図師が助けを求めている。救えば、次の海域で秘密の補給路を教えるという。',[['修理を手伝う','HPを6失う。次の海域で秘密の補給路が必ず現れる。',()=>{let g=game();g.hp=Math.max(1,g.hp-6);g.echoPromise='cartographer'}],['食料だけ渡す','HPを4回復し、海図師とは別れる。',()=>{let g=game();g.hp=Math.min(g.max,g.hp+4);g.echoCartographerDone=true}],['残骸を回収','39ゴールドを得る。海図師とは別れる。',()=>{let g=game();g.pearl+=39;g.echoCartographerDone=true}]]];chainA.storyWhen=g=>g.act===1&&!g.echoPromise&&!g.echoCartographerDone;
-const chainAFollow=['','海図師の秘密航路','助けた海図師が約束どおり待っていた。あなたのデッキを見て、進む戦い方に合う装備を差し出す。',[['魚群航路','群泳の旗を得る。多段攻撃を強化。',()=>{addRelic('群泳の旗');game().echoPromise=null;game().echoCartographerDone=true}],['逆鱗航路','竜の逆鱗を得る。強化した攻撃をさらに鋭くする。',()=>{addRelic('竜の逆鱗');game().echoPromise=null;game().echoCartographerDone=true}],['臨界航路','生命臨界を得る。HPが半分以下で真価を発揮する。',()=>{addRelic('生命臨界');game().echoPromise=null;game().echoCartographerDone=true}]]];chainAFollow.storyWhen=g=>g.act>=2&&g.echoPromise==='cartographer';chainAFollow.storyPriority=true;
+const chainAFollow=['','海図師の秘密航路','助けた海図師が約束どおり待っていた。あなたのデッキを見て、進む戦い方に合う装備を差し出す。',[['魚群航路','群泳の旗を得る。多段攻撃を強化。',()=>{addRelic('群泳の旗');game().echoPromise=null;game().echoCartographerDone=true}],['逆鱗航路','竜の逆鱗を得る。所持済みなら圧力真珠を得る。',()=>{if(!addRelic('竜の逆鱗'))addRelic('圧力真珠');game().echoPromise=null;game().echoCartographerDone=true}],['臨界航路','生命臨界を得る。HPが半分以下で真価を発揮する。',()=>{addRelic('生命臨界');game().echoPromise=null;game().echoCartographerDone=true}]]];chainAFollow.storyWhen=g=>g.act>=2&&g.echoPromise==='cartographer';chainAFollow.linkedFollowup=true;
 const chainB=['','眠る珊瑚の種','弱い鼓動を放つ珊瑚の種がある。持ち運べばデッキを圧迫するが、次の海域で芽吹くかもしれない。',[['種を運ぶ','お荷物カードを1枚受け取る。次の海域で必ず芽吹く。',()=>{let g=game();g.deck.push('abysscurse');g.echoPromise='coral'}],['今ここで砕く','HPを12回復する。',()=>{let g=game();g.hp=Math.min(g.max,g.hp+12);g.echoCoralDone=true}],['商人へ売る','50ゴールドを得る。',()=>{let g=game();g.pearl+=50;g.echoCoralDone=true}]]];chainB.storyWhen=g=>g.act===2&&!g.echoPromise&&!g.echoCoralDone;
-const chainBFollow=['','芽吹いた記憶珊瑚','運んだ種が巨大な珊瑚へ育った。内側には、潜航中に使ったカードの記憶が輝いている。',[['呪いを養分にする','深淵のささやきを1枚消し、最大HP＋6。',()=>window.chooseAbyssRemovals?.(1,'養分にする呪いを選ぶ',k=>k.startsWith('abysscurse'),()=>{let g=game();g.max+=6;g.hp+=6;g.echoPromise=null;g.echoCoralDone=true})],['戦いの記憶を吸う','指定した未強化カード2枚を強化する。',()=>window.chooseAbyssUpgrades?.(2,'珊瑚へ刻むカードを選ぶ',()=>{let g=game();g.echoPromise=null;g.echoCoralDone=true})],['珊瑚を採取','99ゴールドを得る。',()=>{let g=game();g.pearl+=99;g.echoPromise=null;g.echoCoralDone=true}]]];chainBFollow.storyWhen=g=>g.act===3&&g.echoPromise==='coral';chainBFollow.storyPriority=true;
+const chainBFollow=['','芽吹いた記憶珊瑚','運んだ種が巨大な珊瑚へ育った。内側には、潜航中に使ったカードの記憶が輝いている。',[['呪いを養分にする','深淵のささやきを1枚消し、最大HP＋6。',()=>window.chooseAbyssRemovals?.(1,'養分にする呪いを選ぶ',k=>k.startsWith('abysscurse'),()=>{let g=game();g.max+=6;g.hp+=6;g.echoPromise=null;g.echoCoralDone=true})],['戦いの記憶を吸う','指定した未強化カード2枚を強化する。',()=>window.chooseAbyssUpgrades?.(2,'珊瑚へ刻むカードを選ぶ',()=>{let g=game();g.echoPromise=null;g.echoCoralDone=true})],['珊瑚を採取','99ゴールドを得る。',()=>{let g=game();g.pearl+=99;g.echoPromise=null;g.echoCoralDone=true}]]];chainBFollow.storyWhen=g=>g.act===3&&g.echoPromise==='coral';chainBFollow.linkedFollowup=true;
 window.ABYSS_EVENTS?.push(chainA,chainAFollow,chainB,chainBFollow);
 
-const styleLink=document.createElement('link');styleLink.rel='stylesheet';styleLink.href='abyss-endgame.css?v=117';document.head.appendChild(styleLink);
+const styleLink=document.createElement('link');styleLink.rel='stylesheet';styleLink.href='abyss-endgame.css?v=120';document.head.appendChild(styleLink);
 const SHARDS={red:['赤','強化エリート'],blue:['青','イベント'],yellow:['黄','ショップ'],purple:['紫','深淵マス']};
 let shardGuide=document.createElement('div');shardGuide.className='modal';shardGuide.id='shardGuideModal';shardGuide.innerHTML='<div class="panel modal-shell shard-guide-panel"><header class="modal-shell-head"><small>NEW ABYSS SYSTEM</small><h2>四つの深淵の欠片</h2><p>アセンション1以降の潜航に、新たな目的が追加されました。</p></header><div class="modal-shell-body"><div class="shard-guide-grid"><article class="red"><i></i><b>赤の欠片</b><span>強化エリートを倒す</span></article><article class="blue"><i></i><b>青の欠片</b><span>イベントで見つける</span></article><article class="yellow"><i></i><b>黄の欠片</b><span>ショップで購入する</span></article><article class="purple"><i></i><b>紫の欠片</b><span>深淵マスで代償を支払う</span></article></div><p class="shard-guide-rule"><strong>1回の潜航で四つすべて集めよう。</strong><br>四つの欠片を持って第3層ボスを倒すと、封印された「深淵領域」への道が開きます。</p></div><footer class="modal-shell-foot"><button class="btn gold" id="shardGuideClose">理解した</button></footer></div>';document.body.appendChild(shardGuide);
 window.showAbyssShardGuide=()=>{try{if(window.abyssStorageGet('abyssShardGuidePending')!=='1')return;window.abyssStorageRemove('abyssShardGuidePending')}catch(e){}shardGuide.classList.add('on');window.applyFuri?.(shardGuide)};const closeShardGuide=()=>shardGuide.classList.remove('on');shardGuide.querySelector('#shardGuideClose').onclick=closeShardGuide;shardGuide.onclick=e=>{if(e.target===shardGuide)closeShardGuide()};
@@ -48,28 +48,30 @@ window.abyssNodeClass=n=>{const g=game();return n.redShardElite&&!shards(g).red?
 window.abyssNodeIcon=n=>{const g=game();return n.redShardElite&&!shards(g).red?'<span class="red-shard-mark">◆</span>':n.blueShardEvent&&!shards(g).blue?'<span class="blue-shard-mark">◆</span>':n.purpleShardAnomaly&&!shards(g).purple?'<span class="purple-shard-mark">◆</span>':n.type==='secretBoss'?(n.guardian?'<span class="secret-eye">◉</span><span class="guardian-shock"></span><span class="guardian-shock d2"></span>':'<span class="secret-eye">◉</span>'):n.abyssPath?`<span class="abyss-path-mark">${['','⌁','◫','◇'][n.abyssPath]||'?'}</span>`:''};
 window.paintAbyssDread=on=>{const path=document.getElementById('path');if(!path)return;let el=document.getElementById('abyssDread');if(!on){el?.remove();return}if(!el){el=document.createElement('div');el.id='abyssDread';el.innerHTML='<div class="dread-vignette"></div>'+Array.from({length:14},(_,i)=>{const left=(i*7+3)%100,delay=-(i*1.7+Math.random()*2),dur=9+((i*3)%7),drift=((i%2?1:-1)*(6+i%5*3));return `<span class="ember" style="left:${left}%;animation-delay:${delay}s;animation-duration:${dur}s;--drift:${drift}px"></span>`}).join('');path.appendChild(el)}};
 window.syncAbyssShardHud=()=>{let map=document.querySelector('#map .mapHead'),g=game(),bar=document.getElementById('abyssShardHud');if(!map||!g)return;if((g.ascension||0)<1||g.act>4){bar?.remove();return}if(!bar){bar=document.createElement('div');bar.id='abyssShardHud';map.appendChild(bar)}bar.innerHTML=Object.entries(SHARDS).map(([k,v])=>`<span class="shard-${k} ${shards(g)[k]?'owned':''}" title="${v[1]}"><i></i>${v[0]}</span>`).join('');bar.classList.toggle('complete',window.shouldEnterAbyssMap(g))};
-window.showAbyssLayerIntro=act=>{const names={1:['第1層','薄明の沈降海'],2:['第2層','忘れられた深海'],3:['第3層','奈落の王域'],4:['深淵領域','四つの欠片が開く海']},d=document.createElement('div'),n=names[act]||names[1];d.className='layer-intro';d.innerHTML=`<span>― ${n[0]} ―</span><b>${n[1]}</b>`;document.body.appendChild(d);requestAnimationFrame(()=>d.classList.add('on'));setTimeout(()=>d.classList.add('out'),1750);setTimeout(()=>d.remove(),2600)};
+function rewardScreenOpen(){return document.getElementById('rewardModal')?.classList.contains('on')}
+window.showAbyssLayerIntro=act=>{const g=game();if(rewardScreenOpen()||window.abyssGateOpening||g?.pendingAbyssGate||g?.act===4&&act!==4)return false;const names={1:['第1層','薄明の静海'],2:['第2層','忘れられた深海'],3:['第3層','奈落の王域'],4:['深淵領域','四つの欠片が開く海']},d=document.createElement('div'),n=names[act]||names[1];d.className='layer-intro';d.innerHTML=`<span>― ${n[0]} ―</span><b>${n[1]}</b>`;document.body.appendChild(d);requestAnimationFrame(()=>d.classList.add('on'));setTimeout(()=>d.classList.add('out'),1750);setTimeout(()=>d.remove(),2600);return true};
 window.requestAbyssLayerIntro=act=>{const g=game();if(!g||act===4)return;g.pendingLayerIntro=act;window.abyssSave?.()};
-window.playPendingAbyssLayerIntro=()=>{const g=game(),act=g?.pendingLayerIntro;if(!act)return false;delete g.pendingLayerIntro;window.abyssSave?.();window.showAbyssLayerIntro?.(act);return true};
+window.playPendingAbyssLayerIntro=()=>{const g=game(),act=g?.pendingLayerIntro;if(!act)return false;delete g.pendingLayerIntro;window.abyssSave?.();if(rewardScreenOpen()||window.abyssGateOpening||g?.pendingAbyssGate||g?.act===4)return false;return window.showAbyssLayerIntro?.(act)!==false};
 
 const blueEvent=['','欠片を抱く蒼い魚影','傷ついた魚影の胸で、青い結晶が脈打っている。手を伸ばせば深淵への道が一つ開くだろう。',[['青い欠片を受け取る','青の深淵の欠片を入手する。',()=>window.acquireAbyssShard?.('blue')],['魚影を治療する','欠片を見送り、HPを16回復する。',()=>{const g=game();g.hp=Math.min(g.max,g.hp+16);g.blueShardDeclinedAct=g.act}]]];blueEvent.storyWhen=g=>(g.ascension||0)>=1&&!shards(g).blue&&g.blueShardDeclinedAct!==g.act&&!!g.map?.[g.currentNode]?.blueShardEvent;blueEvent.storyPriority=true;window.ABYSS_EVENTS?.unshift(blueEvent);
 
 function addPathCurse(count=1){const g=game();for(let i=0;i<count;i++)g.deck.push('abysscurse')}
-function finishPathCards(title,results,step){const g=game();g.abyssInterludeStep=step;window.__abyssEventDeferred=true;window.showAbyssDeckResults?.(title,results,()=>{window.__abyssEventDeferred=false;window.abyssSave?.();window.abyssAdvance?.()})}
+let pathCardChoice=document.createElement('div');pathCardChoice.className='modal';pathCardChoice.id='abyssPathCardChoice';pathCardChoice.innerHTML='<div class="panel modal-shell path-card-choice-panel"><header class="modal-shell-head"><small>ABYSS CARD CHOICE</small><h2 id="pathCardChoiceTitle"></h2><p id="pathCardChoiceText"></p></header><div class="modal-shell-body unified-card-grid" id="pathCardChoiceList"></div></div>';document.body.appendChild(pathCardChoice);
+function choosePathCard(title,text,pool,step){const g=game(),choices=[...new Set(pool)].filter(k=>window.getAbyssCardData?.(k)).sort(()=>Math.random()-.5).slice(0,3).map(k=>k.endsWith('+')?k:k+'+');window.__abyssEventDeferred=true;pathCardChoice.querySelector('#pathCardChoiceTitle').textContent=title;pathCardChoice.querySelector('#pathCardChoiceText').textContent=text;const list=pathCardChoice.querySelector('#pathCardChoiceList');list.innerHTML=choices.map(k=>`<button type="button" class="choice unified-card-choice" data-path-card="${k}">${window.renderAbyssCardView?.(k)||''}</button>`).join('');list.querySelectorAll('[data-path-card]').forEach(b=>b.onclick=()=>{const k=b.dataset.pathCard;if(!k)return;g.deck.push(k);g.abyssInterludeStep=step;pathCardChoice.classList.remove('on');window.showAbyssDeckResults?.(title,[{kind:'gain',before:k}],()=>{window.__abyssEventDeferred=false;window.abyssSave?.();window.abyssAdvance?.()})});pathCardChoice.classList.add('on');window.applyFuri?.(pathCardChoice)}
 const brokenStrings=['','ほどけた黒糸','店長を縛っていた糸が、三つの生き物のように漂っている。切り捨てるか、次の戦いへ編み直すか。',[
  ['甲殻へ編み直す','最大HP＋8。増えた分だけ現在HPも増える。',()=>{const g=game();g.max+=8;g.hp+=8;g.abyssInterludeStep=1}],
  ['技へ編み直す','指定した未強化カード2枚を強化する。',()=>window.chooseAbyssUpgrades?.(2,'黒糸で強化するカードを選ぶ',()=>{game().abyssInterludeStep=1})],
- ['呪鱗へ編み直す','呪いを1枚受け、「呪鱗の守り＋」を得る。',()=>{addPathCurse();game().deck.push('armoredshrimp+');finishPathCards('呪鱗へ編み直した結果',[{kind:'gain',before:'abysscurse'},{kind:'gain',before:'armoredshrimp+'}],1)}]
+ ['呪鱗へ編み直す','呪いを1枚受け、提示される強化済みカード3枚から1枚を選ぶ。',()=>{addPathCurse();choosePathCard('呪鱗へ編み直す','呪いと守りに関わる3枚から、次の戦いへ持ち込む1枚を選んでください。',['armoredshrimp','curseward','shadoweel','voidtribute','toxicarmor','abyssarmor'],1)}]
 ]];brokenStrings.storyWhen=g=>g.act===4&&g.abyssInterludeStep===0;brokenStrings.storyPriority=true;
 const memoryVault=['','逆流する記憶庫','捨て札になった可能性が、魚の群れとなって泳いでいる。一つの記憶だけを現実へ引き上げられる。',[
  ['強い記憶を複製','デッキ内のレアまたは深海カード1枚を選んで複製。対象がなければ通常カードから選ぶ。',()=>{const g=game(),hasSpecial=g.deck.some(k=>{const c=window.getAbyssCardData?.(k);return c?.r||c?.a});window.openAbyssDeckSelection?.({title:'複製する記憶を選ぶ',text:'複製するカードを1枚選んでください。',count:1,filter:k=>!k.startsWith('abysscurse')&&(!hasSpecial||(()=>{const c=window.getAbyssCardData?.(k);return c?.r||c?.a})()),action:(picks,state)=>{const k=picks[0]?.key;if(k)state.deck.push(k);state.abyssInterludeStep=2;return k?[{kind:'duplicate',before:k}]:[]}})}],
  ['古い札を沈める','デッキから指定したカード2枚を除去する。',()=>window.chooseAbyssRemovals?.(2,'沈めるカードを選ぶ',k=>!k.startsWith('abysscurse'),()=>{game().abyssInterludeStep=2})],
- ['回収の記憶を選ぶ','「沈没船の回収網＋」を得る。捨て札のカードを再利用できる。',()=>{const g=game();g.deck.push('nautilusreturn+');finishPathCards('回収した記憶',[{kind:'gain',before:'nautilusreturn+'}],2)}]
+ ['回収の記憶を選ぶ','回収・山札操作の強化済みカード3枚から1枚を選ぶ。',()=>choosePathCard('回収の記憶を選ぶ','捨て札・廃棄札・山札を操る3枚から、現実へ戻す1枚を選んでください。',['nautilusreturn','invisiblehand','graverobber','trick','mimic','zeroshift'],2)]
 ]];memoryVault.storyWhen=g=>g.act===4&&g.abyssInterludeStep===1;memoryVault.storyPriority=true;
 const voidScales=['','虚海の天秤','深淵の鼓動が近い。天秤は「身軽さ」「完成」「呪いとの共生」のどれを最後の武器にするか問う。',[
  ['身軽さを選ぶ','呪いを最大2枚選んで除去。呪いがなければ未強化カード2枚を強化する。',()=>{const g=game(),n=Math.min(2,g.deck.filter(k=>k.startsWith('abysscurse')).length);if(n)window.chooseAbyssRemovals?.(n,'取り除く呪いを選ぶ',k=>k.startsWith('abysscurse'),()=>{game().abyssInterludeStep=3});else window.chooseAbyssUpgrades?.(2,'身軽にするカードを選ぶ',()=>{game().abyssInterludeStep=3})}],
  ['完成を選ぶ','最大HPを8失い、指定した未強化カード3枚を強化する。',()=>{const g=game();g.max=Math.max(20,g.max-8);g.hp=Math.min(g.hp,g.max);window.chooseAbyssUpgrades?.(3,'完成させるカードを選ぶ',()=>{game().abyssInterludeStep=3})}],
- ['共生を選ぶ','呪いを2枚受け、「影喰いウツボ＋」と「反転術式＋」を得る。',()=>{const g=game();addPathCurse(2);g.deck.push('shadoweel+','voidtribute+');finishPathCards('呪いとの共生',[{kind:'gain',before:'abysscurse'},{kind:'gain',before:'abysscurse'},{kind:'gain',before:'shadoweel+'},{kind:'gain',before:'voidtribute+'}],3)}]
+ ['共生を選ぶ','呪いを2枚受け、提示される強化済み深淵カード3枚から1枚を選ぶ。',()=>{addPathCurse(2);choosePathCard('呪いとの共生','呪いと共鳴する3枚から、最後の戦いへ持ち込む1枚を選んでください。',['shadoweel','voidtribute','lantern','curseward','abyssflame','armoredshrimp','gobysweep'],3)}]
 ]];voidScales.storyWhen=g=>g.act===4&&g.abyssInterludeStep===2;voidScales.storyPriority=true;
 window.ABYSS_EVENTS?.push(brokenStrings,memoryVault,voidScales);
 
@@ -79,9 +81,9 @@ let shardModal=document.createElement('div');shardModal.className='modal';shardM
 const originalAnomaly=window.openAbyssAnomaly;window.openAbyssAnomaly=()=>{const g=game();if((g.ascension||0)<1||shards(g).purple||!g.map?.[g.currentNode]?.purpleShardAnomaly)return originalAnomaly?.();const take=shardModal.querySelector('#takePurple');take.disabled=g.hp<=20;take.onclick=()=>{if(g.hp<=20)return;g.hp-=20;window.acquireAbyssShard?.('purple');shardModal.classList.remove('on');window.abyssAdvance?.()};shardModal.querySelector('#leavePurple').onclick=()=>{shardModal.classList.remove('on');window.abyssAdvance?.()};shardModal.classList.add('on');window.applyFuri?.(shardModal)};
 
 const WATCHER={n:'深淵の監視者・フグ店長',hp:336,trait:'黒い操糸：守りながら毒を喰らい、棘の連撃と潮圧で行動を縛る。',m:[{b:30},{a:7,h:5},{a:15,p:7,feed:7},{b:20,devour:18},{a:38,pressure:2}]};
-const GUARDIAN={n:'深淵の守護者・クトゥル＝アビス',hp:576,trait:'虚海胎動：六つの儀式を巡り、毒喰い・反応攻撃・潮圧を重ねて最後に深海崩壊を放つ。',m:[{b:38,thornsSelf:4},{a:6,h:6,p:8},{b:24,devour:22,feed:10},{a:19,h:2,counter:3},{b:30,pressure:2},{a:42,p:10}]};
-GUARDIAN.m2=[{b:34,handCostUp:1},{a:9,h:5,p:12},{b:26,devour:28,feed:14},{a:24,h:2,counter:4},{a:16,h:3,p:14,counter:3},{a:52,pressure:2}];
-const GUARDIAN_TRUE={n:'深淵の守護者・クトゥル＝アビス（真の姿）',hp:GUARDIAN.hp,trait:'殻を脱ぎ捨てた守護者は、儀式の型を崩し、より速く重い一撃で押し切ろうとする。',m:GUARDIAN.m2};
+const GUARDIAN={n:'深淵の守護者・クトゥル＝アビス',hp:576,trait:'虚海胎動：六つの儀式を巡り、毒喰い・反応攻撃・潮圧を重ねて最後に深海崩壊を放つ。',m:[{b:38,thornsSelf:4},{a:6,h:6,p:8},{b:24,devour:22},{a:19,h:2,counter:3},{b:30,pressure:2},{a:42,p:10}]};
+GUARDIAN.m2=[{b:34,handCostUp:1},{a:9,h:5,p:12},{b:26,devour:28},{a:24,h:2,counter:4},{a:16,h:3,p:14,counter:3},{a:52,pressure:2}];
+const GUARDIAN_TRUE={n:'虚星邪神・クトゥル＝アビス',hp:GUARDIAN.hp,trait:'殻の内に封じられていた、無数の眼と虚星を宿す邪神。儀式の型を捨て、より速く重い一撃で押し切ろうとする。',m:GUARDIAN.m2};
 window.ABYSS_SPECIAL_ENEMIES={[WATCHER.n]:WATCHER,[GUARDIAN.n]:GUARDIAN,[GUARDIAN_TRUE.n]:GUARDIAN_TRUE};
 window.abyssGuardianPhase2Cutscene=(onReveal,onDone)=>{
  const wait=ms=>new Promise(r=>setTimeout(r,ms));
@@ -90,6 +92,7 @@ window.abyssGuardianPhase2Cutscene=(onReveal,onDone)=>{
  requestAnimationFrame(()=>overlay.classList.add('on'));
  if(sp)sp.classList.add('guardian-phase2-tremor');
  if(log)log.textContent='深淵の守護者の様子がおかしい……！';
+ window.playAbyssGuardianPhase2Music?.();
  const lineEl=overlay.querySelector('#phase2Line');
  const showLine=async(text,holdMs)=>{lineEl.textContent=text;window.applyFuri?.(lineEl);lineEl.classList.add('show');await wait(holdMs);lineEl.classList.remove('show');await wait(400)};
  (async()=>{
@@ -97,12 +100,12 @@ window.abyssGuardianPhase2Cutscene=(onReveal,onDone)=>{
    await wait(800);
    await showLine('……まだだ。まだ終わらぬ。',2600);
    await showLine('この程度で、私を止められると思ったか。',2600);
-   lineEl.textContent='殻が砕け、内より真の姿が溢れ出す――';window.applyFuri?.(lineEl);lineEl.classList.add('show');
+   lineEl.textContent='殻が砕け、虚星邪神が深淵へ溢れ出す――';window.applyFuri?.(lineEl);lineEl.classList.add('show');
    if(sp){sp.classList.remove('guardian-phase2-tremor');sp.classList.remove('guardian-phase2-burst');void sp.offsetWidth;sp.classList.add('guardian-phase2-burst')}
    await wait(500);
    try{onReveal?.()}catch(err){console.error('guardian phase2 reveal error',err)}
    const flash=document.createElement('div');flash.className='guardian-phase2-flash';document.body.appendChild(flash);setTimeout(()=>flash.remove(),1200);
-   if(log)log.textContent='深淵の守護者が殻を脱ぎ捨て、真の姿を現した……！';
+   if(log)log.textContent='虚星邪神・クトゥル＝アビスが顕現した……！';
    await wait(2200);
    lineEl.classList.remove('show');
    overlay.classList.remove('on');
@@ -113,14 +116,21 @@ window.abyssGuardianPhase2Cutscene=(onReveal,onDone)=>{
   onDone?.();
  })();
 };
-window.enterAbyssMap=(options={})=>{const g=game(),intro=options?.intro!==false,fresh=!(g.act===4&&g.secretMap&&Array.isArray(g.map)&&g.map.length);try{window.abyssStorageSet('abyssRegionUnlocked','1')}catch(e){}if(fresh){g.act=4;g.floor=0;g.secretMap=true;g.currentNode=null;g.mapVersion=9;g.map=[{row:0,col:0,count:1,type:'shop',done:false,links:[1]},{row:1,col:0,count:1,type:'secretBoss',done:false,links:[]}];g.hp=Math.min(g.max,g.hp+Math.ceil(g.max*.25))}window.abyssSave?.();window.renderAbyssMap?.();if(intro)window.showAbyssLayerIntro?.(4)};
-window.openAbyssGate=onDone=>{window.enterAbyssMap?.({intro:false});const d=document.createElement('div'),steps=[['四つの欠片が共鳴する','赤、青、黄、紫の光が、沈んだ王の背後へ集まっていく。'],['封印の扉が姿を現す','欠片は古い紋章へ変わり、海そのものに亀裂を刻んだ。'],['深淵への道が開いた','扉の向こうから、誰かの笑い声と黒い潮が流れ込む。']];let page=0,locked=false;d.className='abyss-gate-reveal';d.innerHTML='<div class="abyss-gate"><div class="shard-orbit"><i class="red"></i><i class="blue"></i><i class="yellow"></i><i class="purple"></i><span></span></div><small>ABYSS GATE</small><b></b><p></p><em>画面をタップして進む</em></div>';const draw=()=>{d.dataset.page=String(page+1);d.querySelector('b').textContent=steps[page][0];d.querySelector('p').textContent=steps[page][1]};const advance=e=>{e?.preventDefault?.();if(locked)return;if(page<steps.length-1){page++;draw();return}locked=true;d.classList.add('open');setTimeout(()=>{d.remove();if(onDone)onDone();else window.enterAbyssMap?.()},1100)};draw();document.body.appendChild(d);requestAnimationFrame(()=>d.classList.add('on'));d.onclick=advance;d.tabIndex=0;d.setAttribute('role','button');d.onkeydown=e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();advance(e)}};return true};
+window.enterAbyssMap=(options={})=>{const g=game(),intro=options?.intro!==false,fresh=!(g.act===4&&g.secretMap&&Array.isArray(g.map)&&g.map.length);delete g.pendingLayerIntro;try{window.abyssStorageSet('abyssRegionUnlocked','1')}catch(e){}if(fresh){g.act=4;g.floor=0;g.secretMap=true;g.currentNode=null;g.mapVersion=9;g.map=[{row:0,col:0,count:1,type:'shop',done:false,links:[1]},{row:1,col:0,count:1,type:'secretBoss',done:false,links:[]}];g.hp=Math.min(g.max,g.hp+Math.ceil(g.max*.25))}window.abyssSave?.();window.renderAbyssMap?.();if(intro)window.showAbyssLayerIntro?.(4)};
+window.openAbyssGate=onDone=>{window.abyssGateOpening=true;document.querySelectorAll('.layer-intro').forEach(x=>x.remove());window.stopAbyssMusicNow?.();window.preloadAbyssGateRumble?.();window.preloadAbyssMapMusic?.();window.enterAbyssMap?.({intro:false});const d=document.createElement('div'),steps=[['四つの欠片が共鳴する','赤、青、黄、紫の光が、沈んだ王の背後へ集まっていく。'],['封印の扉が姿を現す','欠片は古い紋章へ変わり、海そのものに亀裂を刻んだ。'],['深淵への道が開いた','扉の向こうから、誰かの笑い声と黒い潮が流れ込む。']];let page=0,locked=false;d.className='abyss-gate-reveal';d.innerHTML='<div class="abyss-gate"><div class="shard-orbit"><i class="red"></i><i class="blue"></i><i class="yellow"></i><i class="purple"></i><span></span></div><small>ABYSS GATE</small><b></b><p></p><em>画面をタップして進む</em></div>';const draw=()=>{d.dataset.page=String(page+1);d.querySelector('b').textContent=steps[page][0];d.querySelector('p').textContent=steps[page][1]};const advance=e=>{e?.preventDefault?.();if(locked)return;if(page<steps.length-1){page++;draw();return}locked=true;window.playAbyssGateRumble?.();d.classList.add('open');setTimeout(()=>{onDone?.();window.abyssGateOpening=false;d.remove();window.playAbyssMapMusic?.()},1750)};draw();document.body.appendChild(d);requestAnimationFrame(()=>d.classList.add('on'));d.onclick=advance;d.tabIndex=0;d.setAttribute('role','button');d.onkeydown=e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();advance(e)}};return true};
 function abyssStory(steps,onDone,className=''){
+ if(className==='ending-reveal'&&steps.length===3&&steps[0]?.[0]==='THE DEEP LORD FALLS')steps=[
+  ['THE DEEP LORD FALLS','深海の主、沈む','最後の一撃が深海を揺らした。深海の主は咆哮を失い、巨体をきしませながら、ゆっくりと玉座の前へ沈んでいった。長い戦いに、ついに決着がつく。主の王冠に走ったひびから青い光があふれ、砕けた欠片はあなたの周りを泳いで、これまで集めたカードへ吸い込まれていった。傷ついた体を支えるように、旅の途中で得た力が次々と輝く。守った記憶、攻めた勇気、選んだ道。そのすべてが、ここまで潜ってきた証だった。'],
+  ['SOMETHING STIRS BELOW','海底の鼓動','やがて荒れ狂っていた海流は止まり、深海に静寂が戻った。遠くに隠れていた小さな魚たちが姿を見せ、勝者となったあなたを声もなく見つめている。しかし、その静けさを破るように、海底から低い鼓動が響いた。深海の主の亡骸の下で、岩だと思っていた大地に巨大な亀裂が走る。カードの光が一斉に揺れ、海そのものが目を覚ましたように震え始めた。'],
+  ['A VOICE FROM THE DARK','闇の底からの声','亀裂の奥で、海底だと思っていたものが、ゆっくりと瞼を開いた。闇より黒い瞳が、はるか昔からあなたを待っていたかのように、その姿を映す。「ここまで来たか」。さらに深い闇から、あなたの名前を呼ぶ声がした。深海の主を倒した勝利は終わりではない。本当の底へ続く扉は、まだ固く閉ざされている。いつか四つの光がそろう時、さらに深い潜航が始まるだろう。']
+ ];
  const d=document.createElement('div');let page=0,locked=false;
  d.className=`guardian-reveal story-reveal ${className}`;
- const draw=()=>{const s=steps[page];d.classList.toggle('story-normal-keeper',!!s[3]);d.classList.toggle('story-long-title',(s[1]||'').length>10);d.innerHTML=`<div class="keeper-shadow"></div><small>${s[0]}</small><b>${s[1]}</b><p>${s[2]}</p><span class="story-progress">${page+1} / ${steps.length}</span><em class="story-tap">画面をタップして進む</em>`;window.applyFuri?.(d)};
- const advance=e=>{e?.preventDefault?.();if(locked)return;if(page<steps.length-1){page++;draw();d.classList.remove('story-pulse');void d.offsetWidth;d.classList.add('story-pulse');return}locked=true;d.classList.add('tear');setTimeout(()=>{d.remove();onDone?.()},720)};
- draw();document.body.appendChild(d);requestAnimationFrame(()=>d.classList.add('on'));d.onclick=advance;d.setAttribute('role','button');d.tabIndex=0;d.onkeydown=e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();advance(e)}};
+ const skippable=['ending-reveal','watcher-awaken','post-watcher-story'].includes(className);
+ const finish=(fast=false)=>{if(locked)return;locked=true;try{onDone?.()}finally{d.classList.add(fast?'story-skipped':'tear');setTimeout(()=>d.remove(),fast?180:720)}};
+ const draw=()=>{const s=steps[page],portrait=s[3]===true?'keeper':(s[3]||'');d.dataset.portrait=portrait;d.classList.toggle('story-normal-keeper',portrait==='keeper');d.classList.toggle('story-spirit',String(portrait).startsWith('spirit-'));d.classList.toggle('story-long-title',(s[1]||'').length>10);d.innerHTML=`${skippable?'<button type="button" class="story-skip" aria-label="物語をスキップ">スキップ</button>':''}<div class="keeper-shadow"></div><small>${s[0]}</small><b>${s[1]}</b><p>${s[2]}</p><span class="story-progress">${page+1} / ${steps.length}</span><em class="story-tap">画面をタップして進む</em>`;d.querySelector('.story-skip')?.addEventListener('click',e=>{e.preventDefault();e.stopPropagation();finish(true)});window.applyFuri?.(d)};
+ const advance=e=>{e?.preventDefault?.();if(locked)return;if(page<steps.length-1){page++;draw();d.classList.remove('story-pulse');void d.offsetWidth;d.classList.add('story-pulse');return}finish()};
+ draw();document.body.appendChild(d);requestAnimationFrame(()=>d.classList.add('on'));d.onclick=e=>{if(!e.target.closest?.('.story-skip'))advance(e)};d.setAttribute('role','button');d.tabIndex=0;d.onkeydown=e=>{if(e.target.closest?.('.story-skip'))return;if(e.key==='Enter'||e.key===' '){e.preventDefault();advance(e)}};
 }
 window.abyssStory=abyssStory;
 window.startAbyssSecretBoss=()=>{const g=game();if(g.map?.[g.currentNode]?.guardian)return window.startAbyssGuardianBoss?.();g.secretBossPhase=1;window.abyssSave?.();abyssStory([

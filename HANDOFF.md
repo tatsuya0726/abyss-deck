@@ -1,74 +1,150 @@
-# ABYSS DECK v126 — Claude移行手順
+# ABYSS DECK — 次のWorkへの引き継ぎ
 
-## パッケージ
+## リポジトリ
 
-- `ABYSS-DECK-v126-Claude-handoff-full.zip`：画像・音楽を含む完全版。これを開発の原本にします。
-- `ABYSS-DECK-v126-Claude-handoff-code.zip`：画像・音楽を除いた軽量版。完全版ZIPをClaudeへ添付できない場合に使います。
-- `ABYSS-DECK-v126-ASSET-MANIFEST.csv`：画像・音楽の相対パス、容量、SHA-256一覧です。
-- `CLAUDE用-最初の指示-v126.txt`：Claudeの新しい会話へ最初に貼る文章です。
+- GitHub: https://github.com/tatsuya0726/abyss-deck
+- 正式公開URL: https://tatsuya0726.github.io/abyss-deck/
+- 公開方法: `main` 更新時にGitHub ActionsからGitHub Pagesへ自動公開
+- 作業ブランチ: `claude/serene-meitner-83ufqa`
+- `main` は作業ブランチをfast-forwardして同期する運用
+- 最新位置は `git log -1 --oneline` で確認する
 
-## Claudeへ渡す手順
+## 構成と作業ルール
 
-1. 完全版ZIPを保管用の原本として残します。
-2. Claudeの新しい会話またはプロジェクトへ、完全版ZIPを添付します。
-3. ZIPを直接読めない場合は手元で展開し、フォルダまたは必要なファイルを添付します。容量で拒否される場合はコード版ZIPと資産一覧を渡します。
-4. `CLAUDE用-最初の指示-v126.txt` の全文を最初のメッセージとして貼ります。
-5. 変更ごとに、Claudeから変更済みファイル一式またはZIPを受け取ります。画像・音楽を削除したコード版だけを原本として扱わないでください。
+- ビルド不要の静的サイト。ゲーム本体は `dist/` 配下
+- ローカル起動: `node tools/local-server.cjs`
+- 検証: `node tools/verify-project.cjs`
+- 検証後に変更される `verify-report.json` はコミットせず元へ戻す
+- JavaScript/CSSを変更したら `dist/index.html` の該当 `?v=` を更新する
+- 日本語UIを変更したら `dist/enhance.js` のふりがな辞書も確認する
+- 変更後は検証、コミット、作業ブランチへプッシュし、`main`をfast-forwardする
+- 公開先はGitHub Pagesのみ。Sitesへはアップロード・公開しない
+- `.openai/hosting.json` は削除済み。今後追加しない
+- 公開版からデバッグUI・デバッグスクリプト・名前による解放条件を削除済み
+- 名称変更時は既存セーブデータと図鑑の撃破記録に移行処理を入れる
 
-## フォルダ構成
+## 直近で完了した変更
 
-- `dist/index.html`：ゲーム本体の入口
-- `dist/*.js`：ゲームロジック
-- `dist/*.css`：画面表示
-- `dist/assets/`：画像・音楽
-- `.openai/hosting.json`：現在のChatGPT Sites公開設定
-- `tools/local-server.cjs`：ローカルサーバー
-- `tools/verify-project.cjs`：不足ファイル・空ファイル・JavaScript構文の検査
+### レリック再調整
 
-## ローカル起動
+- ボスレリック「永久潮汐機関」を「エナジーボトル」へ変更
+  - 残ったエナジーを上限なしですべて次ターンへ持ち越す
+  - 毎ターンのドロー減少を削除
+- 「喰らう海溝」から戦闘開始時の呪い追加を削除
+- 「皇帝の骨片」をレアからアンコモンへ変更
+- 「沈黙の錨」を「永久機関」へ変更し、レアへ移動、絵文字を♾️へ変更
+  - 手札が0枚になった時にカードを1枚引く
+- 「群泳の旗」をレアからコモンへ変更
+- 新ボスレリック「紫炎の呪符」を追加
+  - 毎ターン、エナジー＋1
+  - ターン開始時に2ダメージ（ブロック可能）
+- 旧名称を含む既存セーブは新名称と新絵文字へ自動移行
+- 現在のキャッシュ番号: `tactical-cards.js?v=140`、`enhance.js?v=253`、`economy.js?v=157`、`relics-events.js?v=154`、`strategy-polish.js?v=185`
 
-展開したフォルダでPowerShellを開き、次を実行します。
+### 第1層の名称変更
 
-```powershell
-node tools/local-server.cjs
-```
+- 「薄明の沈降海」を「薄明の静海（はくめいのせいかい）」へ変更
+- 層突入演出、図鑑、ふりがな辞書を統一
+- 現在のキャッシュ番号: `enhance.js?v=252`、`upgrade.js?v=141`、`strategy-polish.js?v=184`
 
-その後、ブラウザで `http://127.0.0.1:8119/` を開きます。`start-local.ps1` をPowerShellから実行しても起動できます。
 
-## 検証
+### 公開版のセキュリティ整理
 
-```powershell
-node tools/verify-project.cjs
-```
+- 設定画面からデバッグ項目を削除
+- `dist/index.html` から `debug-mode.js` の読み込みを削除
+- 公開ツリーから `dist/debug-mode.js` と `dist/debug-mode.css` を削除
+- 「達也0726」によるデバッグ解放条件を公開版から削除
+- 現在のキャッシュ番号: `title-tools.js?v=110`
 
-結果の `missing`、`empty`、`syntaxErrors` がすべて空であることを確認します。変更した画面はブラウザでも実操作してください。
 
-## キャッシュ更新
+### 初回案内・設定からの再表示
 
-JavaScriptまたはCSSを変更したら、`dist/index.html` 内の該当ファイルの `?v=数字` も増やします。これを忘れると、公開版が古いファイルを表示することがあります。
+- 初回の「ホーム画面に追加」案内を、アドレスバーがあると戦闘中にHPバーとカードウィンドウが重なるためだと具体化
+- 初回チュートリアルにも同じスマホ向け注意を追加
+- タイトル画面の「⚙️ 設定」に「📘 はじめに・遊び方」を追加し、初回チュートリアルをいつでも再表示可能にした
+- ふりがな辞書を追加
+- 現在のキャッシュ番号: `enhance.js?v=251`、`title-tools.js?v=109`、`game-polish.js?v=193`、`add-to-home.js?v=3`
 
-例：`game-polish.css?v=126` を変更した場合は `game-polish.css?v=127` にします。
+### 第1層・第2層の通常敵追加
 
-## 現在の公開版
+- 第1層後半に「岩牙オオカミウオ」を追加（HP63）
+  - 単発攻撃、防御、2連撃、ブロック4強奪の4手
+  - 新規透過WebP: `dist/assets/enemies/wolf-eel-iwakiba-v1.webp`
+- 第2層後半に「玻璃翼クシクラゲ」を追加（HP94）
+  - 山札上のコスト攪乱、防御、3連撃、単発攻撃、潮圧の4手
+  - 新規透過WebP: `dist/assets/enemies/comb-jelly-hariyoku-v1.webp`
+- どちらも毒攻撃なし。既存敵の出現範囲を保ったまま、各層の後半候補を3体から4体へ増加
+- 図鑑、出現深度、ふりがなを追加
+- 現在のキャッシュ番号: `enhance.js?v=250`、`upgrade.js?v=140`
 
-- バージョン：126
-- URL：https://deep-sea-fishing-spirits.aa047076.chatgpt.site/
-- 公開先：ChatGPT Sites
+### 敵名・ヴォルティア・エリート行動
 
-Claude単体では、このChatGPT Sitesプロジェクトへ直接公開できない場合があります。その場合は、Claudeで編集とローカル確認を行い、変更済みZIPをCodexへ戻して公開します。完全にClaude側へ移す場合は、GitHub Pages、Cloudflare Pagesなど別の静的ホスティング先を用意し、`dist` を公開対象にします。
+- 新規通常敵の名称を既存の二つ名形式へ統一
+  - ブロブフィッシュ → 沈泥ブロブフィッシュ
+  - トガリムネエソ → 鏡腹トガリムネエソ
+  - ウバザメ → 巨口ウバザメ
+- ヴォルティアをアンコウから「電紋オオグチボヤ・ヴォルティア」へ変更
+- ヴォルティアの新規透過WebP: `dist/assets/enemies/elite-electric-tunicate-voltia-v1.webp`（1024×1024）
+- 全9種のエリート行動を5〜6手へ拡張し、連撃・防御・強化に加えて潮圧、トゲ、反応、強奪、呪い、脱力、気絶中断などを個別に組み合わせた
+- 灯呪蛇王・ルミナグの毒行動は5手中1回に抑えた
+- 旧名称の戦闘中セーブと図鑑撃破記録は新名称へ自動移行
+- 現在のキャッシュ番号: `enhance.js?v=249`、`upgrade.js?v=139`
 
-## 引き継ぎ時点で完了している主な変更
+### 効果音の音量補正
 
-- ショップ価格を金貨絵文字と数字で表示
-- カード、レリック、治療、削除、強化、退店の確認画面と「やめる」ボタン
-- ショップの強化・削除カードを中央配置
-- 戦闘報酬カードを戦闘カードと同じ寸法に統一
-- 戦闘中のレリックボタンと中断ボタンを修正
-- イベント選択カード下の案内文を削除し、決定ボタンを固定
-- アセンション解放カードを共通カード表示へ統一
-- 深淵イベントの獲得結果カードを中央配置
+- 前回の出力倍率変更だけでは初期音量で約2.3dBしか上がらず、BGM中で差が分かりにくかった原因を修正
+- BGMと共用していた音量カーブをSE専用カーブへ分離
+- 初期設定（SE 0.5）の実効ゲインを従来比約3.42倍（約+10.67dB）へ変更
+- 既存のダイナミクスコンプレッサー／リミッターは維持し、大きな効果音のピークを保護
+- 追加調査で、保存済み音量を読み込まず両方50%固定にしていた退行を修正
+- 旧バージョンの50%／50%設定がSafariのlocalStorageに残って新バランスを打ち消すため、v5移行時にBGM 25%・効果音100%へ一度だけ更新
+- v5以降にユーザーが変更したBGM／効果音設定はそのまま保持
+- 戦闘効果音の素材別ゲインを通常約+4.3dB、ボス約+4.3dB追加
+- 攻撃・防御などの効果音再生中はBGMを一時的に18〜26%まで下げ、効果音終了後に自動復帰
+- 音符ボタンは従来どおり全サウンドON/OFFのみ。音量設定画面は追加せず、バランスは内部で自動調整
+- 現在のキャッシュ番号: `enhance.js?v=249`、`title-tools.js?v=108`、`combat-feedback.js?v=123`
 
-## 動作確認記録
+### 深海生物
 
-- 2026-09-12：Claude側でファイル読み取り・編集・`node tools/verify-project.cjs`・`node tools/local-server.cjs` によるローカル起動・`git push` を実施し、いずれも動作することを確認しました。
+- ミツマタヤリウオを削除し、第3層の同じ枠を「呪灯ワニトカゲギス」へ変更
+- 呪灯ワニトカゲギスは旧ミツマタヤリウオのHP・行動バランスを継承
+- 旧セーブ中の戦闘相手と旧図鑑撃破記録を新名称へ移行
+- メンダコ、ブロブフィッシュ、トガリムネエソを、幽殻ゾウギンザメに合わせた半実在・半UMAの画風へ変更
+- 新画像:
+  - `dist/assets/enemies/dragonfish-uma-v1.webp`
+  - `dist/assets/enemies/flapjack-octopus-uma-v2.webp`
+  - `dist/assets/enemies/blobfish-uma-v2.webp`
+  - `dist/assets/enemies/hatchetfish-uma-v2.webp`
+- 4画像は1536×1024、透過WebP
+- 図鑑説明とふりがな辞書を更新
+- 現在のキャッシュ番号: `enhance.js?v=249`、`upgrade.js?v=139`
 
+### その直前の敵追加
+
+- 第1層: 沈泥ブロブフィッシュ、幽殻ゾウギンザメ
+- 第2層: 鏡腹トガリムネエソ
+- 第3層: 巨口ウバザメ、呪灯ワニトカゲギス
+- 旧「鉄壁ダンゴウオ」「オオグソクムシ」系の記録は幽殻ゾウギンザメへ移行
+
+## 最新の検証結果
+
+`node tools/verify-project.cjs` 実行済み。
+
+- missing: なし
+- empty: なし
+- syntaxErrors: なし
+- `dist/upgrade.js`、`dist/enhance.js` の `node --check`: 正常
+- `verify-report.json`: 元へ戻し、変更対象から除外済み
+
+## 次のWork開始時に貼る文章
+
+> ABYSS DECKの開発を続けてください。
+>
+> リポジトリ: https://github.com/tatsuya0726/abyss-deck
+>
+> 作業ブランチ: claude/serene-meitner-83ufqa
+>
+> 最初に最新コミットを取得し、HANDOFF.mdを全文確認してください。ビルド不要の静的サイトで、ゲーム本体はdist/配下です。
+>
+> ローカル起動は node tools/local-server.cjs、検証は node tools/verify-project.cjs です。検証後のverify-report.jsonは破棄してください。JS/CSS変更時はdist/index.htmlの?v=番号を更新し、日本語UI変更時はdist/enhance.jsのふりがな辞書も確認してください。
+> 変更後は作業ブランチへコミット・プッシュし、mainをfast-forwardで同期してください。
