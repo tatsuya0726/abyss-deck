@@ -54,8 +54,9 @@ html.tv-mode #battle{flex-direction:row!important;flex-wrap:wrap!important;align
 html.tv-mode .dead-sea-timer{left:auto!important;right:16px!important}
 html.tv-mode .battlelog{top:auto!important;bottom:calc(30% + 6px)!important;font-size:11px!important}
 html.tv-mode .arena{width:100%!important;height:70%!important;align-items:center!important;padding:6px 6vw 0!important}
-html.tv-mode .unit{width:34%!important}
-html.tv-mode .creature{height:min(20vh,180px)!important;margin-top:0!important}
+html.tv-mode .unit{width:38%!important}
+html.tv-mode .creature{height:min(32vh,340px)!important;width:auto!important;aspect-ratio:1.61!important;min-width:0!important;max-width:100%!important;margin:0 auto!important}
+html.tv-mode .creature.player{--player-scale:1!important}
 html.tv-mode .handArea{width:100%!important;height:30%!important;padding:8px 12px!important;
   display:flex!important;align-items:center!important;justify-content:center!important;gap:10px!important}
 html.tv-mode .energy{position:static!important;flex-shrink:0!important;width:46px!important;height:46px!important;font-size:17px!important}
