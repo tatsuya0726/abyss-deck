@@ -1,20 +1,23 @@
 (()=>{'use strict';
-const BASE_W=430,BASE_H=932;
 const stage=document.getElementById('stage'),ring=document.getElementById('gp-focus-ring'),hint=document.getElementById('hint'),fsBtn=document.getElementById('fullscreen-btn');
 const SELECTOR="#newGame,#continueGame,#titleSettingsMenu,.title-hub-grid button:not(:disabled),[data-hub-close],#titleBestiary,#titleCardCodex,#titleRelicCodex,#titleBgmGallery:not(:disabled),#titleCodex,#resetAllData,#resetCancel,#resetConfirm,#modifierClose,#strategyClose,#runModifierBadge,#mapHelpView,#mapHelpClose,#rewardGoldOption,#rewardCardOption,#rewardRelicOption,#rewardContinue,#rewardBack,#skipReward,.boss-relic-choice,.achievement-card:not(:disabled),.market-item:not(:disabled),.node.available,.choice,.card[data-i],.pileBtn,#collectionClose,button:not([disabled]),.codex-card-wrap,[data-setting],[data-filter],[data-tab],a[href]";
 
-function fitStage(){
- const scale=Math.min(window.innerWidth/BASE_W,window.innerHeight/BASE_H)*0.96;
- stage.style.width=BASE_W+'px';stage.style.height=BASE_H+'px';stage.style.transform=`scale(${scale})`;
-}
-window.addEventListener('resize',fitStage);
-fitStage();
-
 fsBtn.onclick=()=>{if(document.fullscreenElement)document.exitFullscreen?.();else document.documentElement.requestFullscreen?.().catch(()=>{})};
 
-let focusEl=null,gpConnected=false;
+let focusEl=null,gpConnected=false,cssInjected=false;
 function doc(){try{return stage.contentDocument}catch(e){return null}}
 function win(){try{return stage.contentWindow}catch(e){return null}}
+
+function injectLandscapeCss(){
+ const d=doc();if(!d||cssInjected)return;
+ try{
+  d.documentElement.classList.add('tv-mode');
+  const link=d.createElement('link');
+  link.rel='stylesheet';link.href='tv-landscape.css?v=2';
+  d.head.appendChild(link);
+  cssInjected=true;
+ }catch(e){}
+}
 
 function visible(el){
  if(!el)return false;
@@ -34,9 +37,9 @@ function candidates(){
 }
 
 function rectOf(el){
- const r=el.getBoundingClientRect(),f=stage.getBoundingClientRect(),sx=f.width/BASE_W,sy=f.height/BASE_H;
- const left=f.left+r.left*sx,top=f.top+r.top*sy,width=r.width*sx,height=r.height*sy;
- return{left,top,width,height,cx:left+width/2,cy:top+height/2};
+ const r=el.getBoundingClientRect(),f=stage.getBoundingClientRect();
+ const left=f.left+r.left,top=f.top+r.top;
+ return{left,top,width:r.width,height:r.height,cx:left+r.width/2,cy:top+r.height/2};
 }
 
 function updateRing(){
@@ -126,13 +129,15 @@ requestAnimationFrame(pollGamepad);
 let rescanQueued=false;
 stage.addEventListener('load',()=>{
  try{stage.contentWindow.localStorage.setItem('abyssA2hsSeen','1')}catch(e){}
- setTimeout(ensureFocus,300);
+ injectLandscapeCss();
+ requestAnimationFrame(()=>requestAnimationFrame(()=>{stage.classList.add('ready');ensureFocus()}));
  try{
   const d=stage.contentDocument;
   const mo=new MutationObserver(()=>{if(rescanQueued)return;rescanQueued=true;requestAnimationFrame(()=>{rescanQueued=false;ensureFocus()})});
   mo.observe(d.body,{subtree:true,childList:true,attributes:true,attributeFilter:['class','hidden','disabled']});
  }catch(e){}
 });
+window.addEventListener('resize',()=>{ensureFocus();updateRing()});
 
 window.abyssTvDebug={candidates,moveFocus,doConfirm,doBack,ensureFocus,get focusEl(){return focusEl}};
 })();
