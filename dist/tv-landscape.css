@@ -210,8 +210,8 @@ html.tv-mode body.scene-title .title-library-grid #titleSettingsMenu{
   border-color:#ad925788!important;background:linear-gradient(180deg,#1a160dc7,#0b0906ba)!important}
 html.tv-mode body.scene-title #title .equipped-title{display:none!important}
 html.tv-mode body.scene-title .title-hint{
-  position:fixed!important;left:50%!important;bottom:6px!important;transform:translateX(-50%)!important;
-  margin:0!important;font-size:10px!important;white-space:nowrap!important}
+  position:static!important;transform:none!important;margin:5px 0 0!important;
+  font-size:10px!important;white-space:nowrap!important}
 
 /* Phone landscape: retain the same clean look, but use the width so every
    control fits without vertical scrolling. */
@@ -248,3 +248,22 @@ html.tv-mode body.scene-title .title-hint{
 
 /* TV controls now live inside the ordinary title-screen settings modal. */
 html.tv-mode .settings-hub-grid .tv-title-setting{border-color:#3e6d72!important}
+
+
+/* Keep all nine title settings readable without a tall, narrow panel. */
+html.tv-mode .settings-hub-panel{
+  width:min(760px,94vw)!important;max-width:760px!important;height:auto!important;max-height:94vh!important}
+html.tv-mode .settings-hub-grid{
+  grid-template-columns:repeat(3,minmax(0,1fr))!important;grid-auto-rows:auto!important}
+html.tv-mode .settings-hub-grid>button{
+  min-height:88px!important;padding:9px 11px!important;gap:9px!important}
+html.tv-mode .settings-hub-grid>button b{font-size:14px!important;line-height:1.2!important}
+html.tv-mode .settings-hub-grid>button small{font-size:11px!important;line-height:1.25!important}
+@media (orientation:landscape) and (max-height:600px){
+  html.tv-mode .settings-hub-panel{width:min(820px,96vw)!important;max-height:96vh!important}
+  html.tv-mode .settings-hub-panel .modal-shell-head{padding:8px 14px!important}
+  html.tv-mode .settings-hub-grid{padding:7px!important;gap:6px!important}
+  html.tv-mode .settings-hub-grid>button{min-height:64px!important;padding:6px 8px!important}
+  html.tv-mode .settings-hub-panel>.modal-shell-foot{padding:0 8px 8px!important}
+  html.tv-mode .settings-hub-panel>.modal-shell-foot .btn{min-height:36px!important}
+}
