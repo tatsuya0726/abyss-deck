@@ -19,13 +19,13 @@ const SELECTOR="#newGame,#continueGame,#titleSettingsMenu,.title-hub-grid button
 fsBtn.onclick=()=>{if(document.fullscreenElement)document.exitFullscreen?.();else document.documentElement.requestFullscreen?.().catch(()=>{})};
 
 const soundBtn=document.getElementById('sound-toggle');
-function syncSoundBtn(){try{let b=doc()?.getElementById('soundBtn');if(!b)return;let on=!b.classList.contains('muted');soundBtn.textContent=`♫ 音楽：${on?'ON':'OFF'}`;let label=doc()?.querySelector('#titleTvSound small'),text=`音楽 ${on?'ON':'OFF'}`;if(label&&label.textContent!==text)label.textContent=text}catch(e){}}
+function syncSoundBtn(){try{let b=doc()?.getElementById('soundBtn');if(!b)return;let on=!b.classList.contains('muted'),buttonText=`♫ 音楽：${on?'ON':'OFF'}`;if(soundBtn.textContent!==buttonText)soundBtn.textContent=buttonText;let label=doc()?.querySelector('#titleTvSound small'),text=`音楽 ${on?'ON':'OFF'}`;if(label&&label.textContent!==text)label.textContent=text}catch(e){}}
 soundBtn.onclick=()=>{try{doc()?.getElementById('soundBtn')?.click()}catch(e){}syncSoundBtn()};
 
 const CTRL_KEY='abyssTvControllerEnabled';
 let enabled=true;
 try{enabled=localStorage.getItem(CTRL_KEY)!=='0'}catch(e){}
-function syncCtrlBtn(){ctrlBtn.textContent=`🎮 コントローラー操作：${enabled?'ON':'OFF'}`;ctrlBtn.classList.toggle('off',!enabled);let label=doc()?.querySelector('#titleTvController small'),text=`コントローラー ${enabled?'ON':'OFF'}`;if(label&&label.textContent!==text)label.textContent=text;if(!enabled)ring.style.display='none'}
+function syncCtrlBtn(){let buttonText=`🎮 コントローラー操作：${enabled?'ON':'OFF'}`;if(ctrlBtn.textContent!==buttonText)ctrlBtn.textContent=buttonText;ctrlBtn.classList.toggle('off',!enabled);let label=doc()?.querySelector('#titleTvController small'),text=`コントローラー ${enabled?'ON':'OFF'}`;if(label&&label.textContent!==text)label.textContent=text;if(!enabled)ring.style.display='none'}
 syncCtrlBtn();
 ctrlBtn.onclick=()=>{enabled=!enabled;try{localStorage.setItem(CTRL_KEY,enabled?'1':'0')}catch(e){}syncCtrlBtn();if(enabled)ensureFocus()};
 

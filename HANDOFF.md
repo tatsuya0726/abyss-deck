@@ -44,7 +44,7 @@
 - HUD、敵画像、カード、文字、マップ、報酬・ショップ画面を `clamp()` とvw/vhで自動拡大縮小
 - スマホ横画面は短い高さへ収め、TVでは固定上限による小さすぎる表示を解消
 - 横画面のカード・生物・レリック図鑑を高さ基準でコンパクト化し、本文だけを縦スクロール可能に変更
-- 現在のキャッシュ番号: `responsive-shell.js?v=4`、`responsive-landscape.css?v=4`、`enhance.js?v=254`
+- 現在のキャッシュ番号: `responsive-shell.js?v=5`、`responsive-landscape.css?v=4`、`enhance.js?v=254`
 
 ### レリック再調整
 
