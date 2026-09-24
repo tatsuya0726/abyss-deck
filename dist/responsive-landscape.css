@@ -605,3 +605,169 @@ html.tv-mode .rewards{max-width:min(88vw,1380px)!important;gap:var(--tv-gap)!imp
   html.tv-mode #eventModal>.panel{height:95vh!important}
   html.tv-mode #eventModal .choice{min-height:36px!important}
 }
+
+
+/* ==========================================================================
+   Landscape title presentation v3
+   Centred, compact start screen matching the established TV composition.
+   Disabling transforms here also keeps Safari's visual and hit-test boxes
+   aligned after an orientation change.
+   ========================================================================== */
+html.tv-mode body.scene-title #title{
+  display:flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  inset:0!important;
+  padding:clamp(10px,2vh,24px) clamp(12px,2vw,30px)!important;
+  overflow:hidden!important
+}
+html.tv-mode body.scene-title .titlebox{
+  display:flex!important;
+  flex-direction:column!important;
+  align-items:center!important;
+  justify-content:center!important;
+  gap:clamp(3px,.65vh,8px)!important;
+  width:clamp(420px,35vw,600px)!important;
+  max-width:92vw!important;
+  height:auto!important;
+  max-height:96vh!important;
+  margin:auto!important;
+  text-align:center!important;
+  animation:none!important;
+  transform:none!important;
+  filter:none!important
+}
+html.tv-mode body.scene-title .sigil{
+  flex:0 0 auto!important;
+  font-size:clamp(42px,min(4.5vw,7vh),70px)!important;
+  line-height:1!important;
+  margin:0!important;
+  transform:none!important
+}
+html.tv-mode body.scene-title .titlebox h1{
+  flex:0 0 auto!important;
+  align-self:center!important;
+  font-size:clamp(42px,min(4vw,7.2vh),72px)!important;
+  line-height:.96!important;
+  margin:0!important;
+  text-align:center!important;
+  white-space:nowrap!important;
+  transform:none!important
+}
+html.tv-mode body.scene-title .subtitle{
+  flex:0 0 auto!important;
+  align-self:center!important;
+  margin:0 0 clamp(2px,.5vh,6px)!important;
+  font-size:clamp(11px,min(.9vw,1.65vh),17px)!important;
+  transform:none!important
+}
+html.tv-mode body.scene-title #ascensionPanel{
+  flex:0 0 auto!important;
+  align-self:center!important;
+  width:100%!important;
+  max-width:600px!important;
+  max-height:26vh!important;
+  margin:0!important;
+  font-size:var(--tv-small)!important;
+  transform:none!important
+}
+html.tv-mode body.scene-title .title-actions{
+  flex:0 0 auto!important;
+  align-self:center!important;
+  width:100%!important;
+  max-width:600px!important;
+  margin:0!important;
+  transform:none!important
+}
+html.tv-mode body.scene-title .start{
+  display:block!important;
+  width:min(68%,430px)!important;
+  min-height:clamp(46px,5.8vh,62px)!important;
+  margin:clamp(4px,.75vh,9px) auto clamp(5px,.85vh,10px)!important;
+  padding:clamp(8px,1.1vh,14px)!important;
+  font-size:clamp(15px,min(1.15vw,2.2vh),22px)!important;
+  transform:none!important
+}
+html.tv-mode body.scene-title .title-library-grid{
+  display:grid!important;
+  grid-template-columns:repeat(2,minmax(0,1fr))!important;
+  gap:clamp(5px,.65vw,10px)!important;
+  width:100%!important
+}
+html.tv-mode body.scene-title .title-library-grid .title-tool{
+  min-height:clamp(39px,4.9vh,54px)!important;
+  padding:clamp(6px,.8vh,10px) clamp(8px,.8vw,14px)!important;
+  font-size:clamp(11px,min(.9vw,1.75vh),18px)!important;
+  transform:none!important
+}
+html.tv-mode body.scene-title .title-hint{
+  bottom:clamp(6px,1vh,13px)!important;
+  font-size:var(--tv-small)!important
+}
+
+@media (orientation:landscape) and (max-height:600px){
+  html.tv-mode body.scene-title #title{padding:4px 10px!important}
+  html.tv-mode body.scene-title .titlebox{
+    gap:2px!important;
+    width:clamp(390px,52vw,520px)!important;
+    max-width:92vw!important;
+    height:auto!important;
+    max-height:98vh!important
+  }
+  html.tv-mode body.scene-title .sigil{font-size:clamp(28px,8vh,42px)!important}
+  html.tv-mode body.scene-title .titlebox h1{font-size:clamp(31px,min(5vw,10vh),49px)!important}
+  html.tv-mode body.scene-title .subtitle{font-size:10px!important;margin-bottom:1px!important}
+  html.tv-mode body.scene-title #ascensionPanel{
+    width:100%!important;
+    max-height:25vh!important;
+    margin:0!important
+  }
+  html.tv-mode body.scene-title .title-actions{width:100%!important;max-width:none!important}
+  html.tv-mode body.scene-title .start{
+    width:min(66%,360px)!important;
+    min-height:40px!important;
+    margin:3px auto 4px!important;
+    padding:6px!important;
+    font-size:13px!important
+  }
+  html.tv-mode body.scene-title .title-library-grid{gap:4px!important}
+  html.tv-mode body.scene-title .title-library-grid .title-tool{
+    min-height:34px!important;
+    padding:3px 6px!important;
+    font-size:10px!important
+  }
+  html.tv-mode body.scene-title .title-hint{display:none!important}
+}
+
+@media (orientation:landscape) and (max-height:430px){
+  html.tv-mode body.scene-title .sigil{display:none!important}
+  html.tv-mode body.scene-title .subtitle{display:block!important;font-size:9px!important}
+  html.tv-mode body.scene-title .titlebox{
+    width:clamp(360px,50vw,470px)!important;
+    max-height:99vh!important
+  }
+  html.tv-mode body.scene-title .titlebox h1{
+    font-size:clamp(28px,min(4.6vw,10vh),40px)!important;
+    line-height:.9!important
+  }
+  html.tv-mode body.scene-title #ascensionPanel{max-height:28vh!important}
+  html.tv-mode body.scene-title .start{min-height:35px!important;margin:2px auto 3px!important}
+  html.tv-mode body.scene-title .title-library-grid .title-tool{min-height:29px!important;padding:2px 5px!important}
+}
+
+
+/* Safari landscape hit testing: interactive screens must not keep composited
+   transform layers after their entrance animation. This applies to every
+   horizontal scene (map, battle, events, shops and title). */
+html.tv-mode .screen.on,
+html.tv-mode .modal.on,
+html.tv-mode .modal.on .panel{
+  animation:none!important;
+  transform:none!important;
+  filter:none!important
+}
+html.tv-mode .modal.on .bigicon,
+html.tv-mode .modal.on .choice,
+html.tv-mode .rewardCard{
+  animation:none!important
+}

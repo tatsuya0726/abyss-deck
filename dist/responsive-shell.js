@@ -1,6 +1,18 @@
 (()=>{'use strict';
 const stage=document.getElementById('stage'),ring=document.getElementById('gp-focus-ring'),fsBtn=document.getElementById('fullscreen-btn'),ctrlBtn=document.getElementById('controller-toggle');
 let landscapeLayout=matchMedia('(orientation:landscape)').matches||innerWidth>innerHeight;
+const stageWrap=document.getElementById('stage-wrap');
+function syncStageViewport(){
+ const viewport=window.visualViewport;
+ const width=Math.max(1,Math.round(viewport?.width||window.innerWidth));
+ const height=Math.max(1,Math.round(viewport?.height||window.innerHeight));
+ stageWrap.style.setProperty('width',width+'px');
+ stageWrap.style.setProperty('height',height+'px');
+ stageWrap.style.setProperty('right','auto');
+ stageWrap.style.setProperty('bottom','auto');
+ stage.style.setProperty('width','100%');
+ stage.style.setProperty('height','100%');
+}
 const SELECTOR="#newGame,#continueGame,#titleSettingsMenu,.title-hub-grid button:not(:disabled),[data-hub-close],#titleBestiary,#titleCardCodex,#titleRelicCodex,#titleBgmGallery:not(:disabled),#titleCodex,#resetAllData,#resetCancel,#resetConfirm,#modifierClose,#strategyClose,#runModifierBadge,#mapHelpView,#mapHelpClose,#rewardGoldOption,#rewardCardOption,#rewardRelicOption,#rewardContinue,#rewardBack,#skipReward,.boss-relic-choice,.achievement-card:not(:disabled),.market-item:not(:disabled),.node.available,.choice,.card[data-i],.pileBtn,#collectionClose,button:not([disabled]),.codex-card-wrap,[data-setting],[data-filter],[data-tab],a[href]";
 
 fsBtn.onclick=()=>{if(document.fullscreenElement)document.exitFullscreen?.();else document.documentElement.requestFullscreen?.().catch(()=>{})};
@@ -46,7 +58,7 @@ function injectLandscapeCss(){
  const d=doc();if(!d||cssInjected)return;
  try{
   const link=d.createElement('link');
-  link.rel='stylesheet';link.href='responsive-landscape.css?v=2';
+  link.rel='stylesheet';link.href='responsive-landscape.css?v=3';
   d.head.appendChild(link);
   cssInjected=true;
  }catch(e){}
@@ -206,10 +218,17 @@ stage.addEventListener('load',()=>{
   mo.observe(d.body,{subtree:true,childList:true,attributes:true,attributeFilter:['class','hidden','disabled']});
  }catch(e){}
 });
-const handleOrientation=()=>{syncOrientationLayout();syncIntentPosition();updateRing()};
+const handleOrientation=()=>{
+ syncStageViewport();
+ syncOrientationLayout();
+ syncIntentPosition();
+ updateRing();
+};
+syncStageViewport();
 window.addEventListener('resize',handleOrientation,{passive:true});
 window.addEventListener('orientationchange',()=>setTimeout(handleOrientation,80),{passive:true});
 window.visualViewport?.addEventListener('resize',handleOrientation,{passive:true});
+window.visualViewport?.addEventListener('scroll',syncStageViewport,{passive:true});
 
 window.abyssResponsiveDebug={candidates,moveFocus,doConfirm,doBack,ensureFocus,get focusEl(){return focusEl},get enabled(){return enabled},setEnabled(v){enabled=v;syncCtrlBtn();if(enabled)ensureFocus();else updateRing()}};
 })();
