@@ -29,10 +29,31 @@ function injectLandscapeCss(){
  try{
   d.documentElement.classList.add('tv-mode');
   const link=d.createElement('link');
-  link.rel='stylesheet';link.href='tv-landscape.css?v=10';
+  link.rel='stylesheet';link.href='tv-landscape.css?v=11';
   d.head.appendChild(link);
   cssInjected=true;
  }catch(e){}
+}
+
+/* The enemy's intent panel should always line up with the enemy's name label,
+   whatever the viewport size or creature art does to the surrounding layout.
+   Rather than keep guessing a static top offset in CSS, read the name's real
+   position every frame and pin the panel's vertical center to it directly.
+   #battle picks up a residual (identity) transform matrix from motion.css's
+   screen-transition animation even once it's finished — and any transform,
+   even a no-op one, makes that element the containing block for its
+   position:fixed descendants instead of the real viewport. So #intent's
+   `top` ends up relative to #battle's box, not the viewport; subtract
+   #battle's own viewport offset to compensate. */
+function syncIntentPosition(){
+ const d=doc();if(!d)return;
+ const nameEl=d.getElementById('enemyName'),intentEl=d.getElementById('intent'),battleEl=d.getElementById('battle');
+ if(!nameEl||!intentEl||!battleEl)return;
+ const r=nameEl.getBoundingClientRect();
+ if(!r.height)return;
+ const containerTop=battleEl.getBoundingClientRect().top;
+ intentEl.style.setProperty('top',(r.top+r.height/2-containerTop)+'px','important');
+ intentEl.style.setProperty('transform','translate(-50%,-50%)','important');
 }
 
 function visible(el){
@@ -142,6 +163,7 @@ function pollGamepad(){
  }
  ensureFocus();
  updateRing();
+ syncIntentPosition();
  requestAnimationFrame(pollGamepad);
 }
 requestAnimationFrame(pollGamepad);
