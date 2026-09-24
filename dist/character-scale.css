@@ -1,0 +1,17 @@
+/* Bigger, more prominent character art in battle (inspired by other mobile
+   RPGs' battle screens), plus a slimmer top toolbar to make room for it. */
+
+body:has(#battle.on) .quick-nav,body:has(#map.on) .quick-nav{grid-template-columns:repeat(6,1fr);width:calc(100% - 16px);left:8px;top:53px;gap:3px}
+body:has(#battle.on) .quick-nav button,body:has(#map.on) .quick-nav button,.quick-nav button{font-size:8.5px;padding:6px 1px;min-height:0;line-height:1.2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+
+.arena{align-items:center;padding-top:6px}
+.unit{width:42%;max-width:340px}
+.creature{height:210px;min-width:266px;margin-top:0}
+.creature.player{--player-scale:1}
+
+@media(max-width:700px){
+  .quick-nav button{font-size:7.5px;padding:4px 1px}
+  .arena{padding:4px 1vw 0}
+  .unit{width:46%}
+  .creature{height:168px;min-width:213px}
+}
