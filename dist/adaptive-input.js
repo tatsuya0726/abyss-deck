@@ -1,5 +1,10 @@
 (()=>{'use strict';
-const stage=document.getElementById('stage'),ring=document.getElementById('gp-focus-ring'),fsBtn=document.getElementById('fullscreen-btn'),ctrlBtn=document.getElementById('controller-toggle');
+const controls=document.createElement('div');
+controls.id='adaptive-controls';controls.hidden=true;controls.setAttribute('aria-hidden','true');
+controls.innerHTML='<button id="sound-toggle" type="button" tabindex="-1">♫ 音楽：ON</button><button id="controller-toggle" type="button" tabindex="-1">🎮 コントローラー操作：ON</button><button id="fullscreen-btn" type="button" tabindex="-1">⛶ フルスクリーン</button>';
+document.body.appendChild(controls);
+const ring=document.createElement('div');ring.id='gp-focus-ring';ring.setAttribute('aria-hidden','true');document.body.appendChild(ring);
+const fsBtn=document.getElementById('fullscreen-btn'),ctrlBtn=document.getElementById('controller-toggle');
 let landscapeLayout=matchMedia('(orientation:landscape)').matches;
 const SELECTOR="#newGame,#continueGame,#titleSettingsMenu,.title-hub-grid button:not(:disabled),[data-hub-close],#titleBestiary,#titleCardCodex,#titleRelicCodex,#titleBgmGallery:not(:disabled),#titleCodex,#resetAllData,#resetCancel,#resetConfirm,#modifierClose,#strategyClose,#runModifierBadge,#mapHelpView,#mapHelpClose,#rewardGoldOption,#rewardCardOption,#rewardRelicOption,#rewardContinue,#rewardBack,#skipReward,.boss-relic-choice,.achievement-card:not(:disabled),.market-item:not(:disabled),.node.available,.choice,.card[data-i],.pileBtn,#collectionClose,button:not([disabled]),.codex-card-wrap,[data-setting],[data-filter],[data-tab],a[href]";
 
@@ -16,9 +21,9 @@ function syncCtrlBtn(){ctrlBtn.textContent=`🎮 コントローラー操作：$
 syncCtrlBtn();
 ctrlBtn.onclick=()=>{enabled=!enabled;try{localStorage.setItem(CTRL_KEY,enabled?'1':'0')}catch(e){}syncCtrlBtn();if(enabled)ensureFocus()};
 
-let focusEl=null,cssInjected=false;
-function doc(){try{return stage.contentDocument}catch(e){return null}}
-function win(){try{return stage.contentWindow}catch(e){return null}}
+let focusEl=null;
+function doc(){return document}
+function win(){return window}
 
 function installTitleSettings(){
  const d=doc(),grid=d?.querySelector('#titleSettingsModal .settings-hub-grid');if(!grid)return;
@@ -38,16 +43,6 @@ function syncOrientationLayout(){
  installTitleSettings();
  if(!landscapeLayout){focusEl=null;ring.style.display='none'}
  else ensureFocus();
-}
-
-function injectLandscapeCss(){
- const d=doc();if(!d||cssInjected)return;
- try{
-  const link=d.createElement('link');
-  link.rel='stylesheet';link.href='tv-landscape.css?v=14';
-  d.head.appendChild(link);
-  cssInjected=true;
- }catch(e){}
 }
 
 /* The enemy's intent panel should always line up with the enemy's name label,
@@ -91,8 +86,7 @@ function candidates(){
 }
 
 function rectOf(el){
- const r=el.getBoundingClientRect(),f=stage.getBoundingClientRect();
- const left=f.left+r.left,top=f.top+r.top;
+ const r=el.getBoundingClientRect(),left=r.left,top=r.top;
  return{left,top,width:r.width,height:r.height,cx:left+r.width/2,cy:top+r.height/2};
 }
 
@@ -186,21 +180,17 @@ function pollGamepad(){
 requestAnimationFrame(pollGamepad);
 
 let rescanQueued=false;
-stage.addEventListener('load',()=>{
- landscapeLayout=matchMedia('(orientation:landscape)').matches;
- try{if(landscapeLayout)stage.contentWindow.localStorage.setItem('abyssA2hsSeen','1')}catch(e){}
- injectLandscapeCss();
- installTitleSettings();
- syncOrientationLayout();
- syncSoundBtn();
- requestAnimationFrame(()=>requestAnimationFrame(()=>{stage.classList.add('ready');ensureFocus()}));
- try{
-  const d=stage.contentDocument;
-  const mo=new MutationObserver(()=>{installTitleSettings();syncSoundBtn();if(rescanQueued)return;rescanQueued=true;requestAnimationFrame(()=>{rescanQueued=false;ensureFocus()})});
-  mo.observe(d.body,{subtree:true,childList:true,attributes:true,attributeFilter:['class','hidden','disabled']});
- }catch(e){}
-});
+landscapeLayout=matchMedia('(orientation:landscape)').matches;
+try{if(landscapeLayout)localStorage.setItem('abyssA2hsSeen','1')}catch(e){}
+installTitleSettings();
+syncOrientationLayout();
+syncSoundBtn();
+requestAnimationFrame(()=>requestAnimationFrame(ensureFocus));
+try{
+ const mo=new MutationObserver(()=>{installTitleSettings();syncSoundBtn();if(rescanQueued)return;rescanQueued=true;requestAnimationFrame(()=>{rescanQueued=false;ensureFocus()})});
+ mo.observe(document.body,{subtree:true,childList:true,attributes:true,attributeFilter:['class','hidden','disabled']});
+}catch(e){}
 window.addEventListener('resize',()=>{syncOrientationLayout();syncIntentPosition();updateRing()});
 
-window.abyssTvDebug={candidates,moveFocus,doConfirm,doBack,ensureFocus,get focusEl(){return focusEl},get enabled(){return enabled},setEnabled(v){enabled=v;syncCtrlBtn();if(enabled)ensureFocus();else updateRing()}};
+window.abyssAdaptiveDebug={candidates,moveFocus,doConfirm,doBack,ensureFocus,get focusEl(){return focusEl},get enabled(){return enabled},setEnabled(v){enabled=v;syncCtrlBtn();if(enabled)ensureFocus();else updateRing()}};
 })();
