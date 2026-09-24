@@ -1,5 +1,6 @@
 (()=>{'use strict';
 const stage=document.getElementById('stage'),ring=document.getElementById('gp-focus-ring'),fsBtn=document.getElementById('fullscreen-btn'),ctrlBtn=document.getElementById('controller-toggle');
+let landscapeLayout=matchMedia('(orientation:landscape)').matches;
 const SELECTOR="#newGame,#continueGame,#titleSettingsMenu,.title-hub-grid button:not(:disabled),[data-hub-close],#titleBestiary,#titleCardCodex,#titleRelicCodex,#titleBgmGallery:not(:disabled),#titleCodex,#resetAllData,#resetCancel,#resetConfirm,#modifierClose,#strategyClose,#runModifierBadge,#mapHelpView,#mapHelpClose,#rewardGoldOption,#rewardCardOption,#rewardRelicOption,#rewardContinue,#rewardBack,#skipReward,.boss-relic-choice,.achievement-card:not(:disabled),.market-item:not(:disabled),.node.available,.choice,.card[data-i],.pileBtn,#collectionClose,button:not([disabled]),.codex-card-wrap,[data-setting],[data-filter],[data-tab],a[href]";
 
 fsBtn.onclick=()=>{if(document.fullscreenElement)document.exitFullscreen?.();else document.documentElement.requestFullscreen?.().catch(()=>{})};
@@ -20,18 +21,28 @@ function doc(){try{return stage.contentDocument}catch(e){return null}}
 function win(){try{return stage.contentWindow}catch(e){return null}}
 
 function installTitleSettings(){
- const d=doc(),grid=d?.querySelector('#titleSettingsModal .settings-hub-grid');if(!grid||d.getElementById('titleTvSound'))return;
- const add=(id,icon,title,detail,action)=>{let b=d.createElement('button');b.id=id;b.type='button';b.className='tv-title-setting';b.innerHTML=`<i>${icon}</i><span><b>${title}</b><small>${detail}</small></span>`;b.addEventListener('click',e=>{e.preventDefault();e.stopPropagation();action()});grid.appendChild(b);return b};
- add('titleTvSound','♫','音楽','音楽 ON',()=>soundBtn.click());
- add('titleTvController','🎮','コントローラー','コントローラー ON',()=>ctrlBtn.click());
- add('titleTvFullscreen','⛶','フルスクリーン','画面いっぱいに表示',()=>fsBtn.click());
+ const d=doc(),grid=d?.querySelector('#titleSettingsModal .settings-hub-grid');if(!grid)return;
+ if(!d.getElementById('titleTvSound')){
+  const add=(id,icon,title,detail,action)=>{let b=d.createElement('button');b.id=id;b.type='button';b.className='tv-title-setting';b.innerHTML=`<i>${icon}</i><span><b>${title}</b><small>${detail}</small></span>`;b.addEventListener('click',e=>{e.preventDefault();e.stopPropagation();action()});grid.appendChild(b);return b};
+  add('titleTvSound','♫','音楽','音楽 ON',()=>soundBtn.click());
+  add('titleTvController','🎮','コントローラー','コントローラー ON',()=>ctrlBtn.click());
+  add('titleTvFullscreen','⛶','フルスクリーン','画面いっぱいに表示',()=>fsBtn.click());
+ }
+ const hide=!landscapeLayout;d.querySelectorAll('.tv-title-setting').forEach(b=>{if(b.hidden!==hide)b.hidden=hide});
  syncSoundBtn();syncCtrlBtn();
+}
+function syncOrientationLayout(){
+ const d=doc();if(!d)return;
+ landscapeLayout=matchMedia('(orientation:landscape)').matches;
+ d.documentElement.classList.toggle('tv-mode',landscapeLayout);
+ installTitleSettings();
+ if(!landscapeLayout){focusEl=null;ring.style.display='none'}
+ else ensureFocus();
 }
 
 function injectLandscapeCss(){
  const d=doc();if(!d||cssInjected)return;
  try{
-  d.documentElement.classList.add('tv-mode');
   const link=d.createElement('link');
   link.rel='stylesheet';link.href='tv-landscape.css?v=14';
   d.head.appendChild(link);
@@ -52,7 +63,9 @@ function injectLandscapeCss(){
 function syncIntentPosition(){
  const d=doc();if(!d)return;
  const nameEl=d.getElementById('enemyName'),intentEl=d.getElementById('intent'),battleEl=d.getElementById('battle');
- if(!nameEl||!intentEl||!battleEl)return;
+ if(!intentEl)return;
+ if(!landscapeLayout){intentEl.style.removeProperty('top');intentEl.style.removeProperty('transform');return}
+ if(!nameEl||!battleEl)return;
  const r=nameEl.getBoundingClientRect();
  if(!r.height)return;
  const containerTop=battleEl.getBoundingClientRect().top;
@@ -84,7 +97,7 @@ function rectOf(el){
 }
 
 function updateRing(){
- if(!enabled||!focusEl||!visible(focusEl)){ring.style.display='none';return}
+ if(!landscapeLayout||!enabled||!focusEl||!visible(focusEl)){ring.style.display='none';return}
  const r=rectOf(focusEl);
  ring.style.display='block';
  ring.style.left=(r.left-4)+'px';ring.style.top=(r.top-4)+'px';ring.style.width=(r.width+8)+'px';ring.style.height=(r.height+8)+'px';
@@ -96,7 +109,7 @@ function pickDefault(list){
  return list[0];
 }
 function ensureFocus(){
- if(!enabled)return;
+ if(!landscapeLayout||!enabled){focusEl=null;updateRing();return}
  const list=candidates();
  if(!list.length){focusEl=null;updateRing();return}
  if(focusEl&&list.includes(focusEl))return;
@@ -134,7 +147,7 @@ function doBack(){
 }
 
 window.addEventListener('keydown',e=>{
- if(!enabled)return;
+ if(!landscapeLayout||!enabled)return;
  const map={ArrowUp:'up',ArrowDown:'down',ArrowLeft:'left',ArrowRight:'right'};
  if(map[e.key]){e.preventDefault();moveFocus(map[e.key])}
  else if(e.key==='Enter'){e.preventDefault();doConfirm()}
@@ -144,7 +157,7 @@ window.addEventListener('keydown',e=>{
 const heldSince={};
 const REPEAT_DELAY=380,REPEAT_RATE=140;
 function pollGamepad(){
- if(!enabled){requestAnimationFrame(pollGamepad);return}
+ if(!landscapeLayout||!enabled){ring.style.display='none';requestAnimationFrame(pollGamepad);return}
  const pads=navigator.getGamepads?navigator.getGamepads():[];
  let pad=null;
  for(const p of pads)if(p){pad=p;break}
@@ -174,9 +187,11 @@ requestAnimationFrame(pollGamepad);
 
 let rescanQueued=false;
 stage.addEventListener('load',()=>{
- try{stage.contentWindow.localStorage.setItem('abyssA2hsSeen','1')}catch(e){}
+ landscapeLayout=matchMedia('(orientation:landscape)').matches;
+ try{if(landscapeLayout)stage.contentWindow.localStorage.setItem('abyssA2hsSeen','1')}catch(e){}
  injectLandscapeCss();
  installTitleSettings();
+ syncOrientationLayout();
  syncSoundBtn();
  requestAnimationFrame(()=>requestAnimationFrame(()=>{stage.classList.add('ready');ensureFocus()}));
  try{
@@ -185,7 +200,7 @@ stage.addEventListener('load',()=>{
   mo.observe(d.body,{subtree:true,childList:true,attributes:true,attributeFilter:['class','hidden','disabled']});
  }catch(e){}
 });
-window.addEventListener('resize',()=>{ensureFocus();updateRing()});
+window.addEventListener('resize',()=>{syncOrientationLayout();syncIntentPosition();updateRing()});
 
 window.abyssTvDebug={candidates,moveFocus,doConfirm,doBack,ensureFocus,get focusEl(){return focusEl},get enabled(){return enabled},setEnabled(v){enabled=v;syncCtrlBtn();if(enabled)ensureFocus();else updateRing()}};
 })();
