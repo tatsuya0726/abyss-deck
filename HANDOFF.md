@@ -25,14 +25,15 @@
 
 ## 直近で完了した変更
 
-### 正式URLのスマホ起動復旧
+### 正式URLへの動作版統合
 
 - 正式URLは `https://tatsuya0726.github.io/abyss-deck/` のまま。URLとlocalStorage保存領域は変更しない
-- TV統合直後に一部スマホで黒画面になったため、正式URLの `dist/index.html` を統合前の安定版へ復元
-- `adaptive-input.js` と `adaptive-landscape.css` の読込を完全に削除し、TV統合用ファイル本体も公開ツリーから削除
-- 旧TV専用ページ `dist/tv.html`、`dist/tv-input.js`、`dist/tv-landscape.css` は引き続き削除済み
-- 既存セーブデータには触れず、同じオリジンのlocalStorageを継続使用
-- TV・横画面統合はスマホ起動と実機検証を優先し、安定した方式で再実装する
+- `?fix=40ffb368` で起動確認できた版を、正式URLの `dist/index.html` へそのまま配置
+- HTMLへキャッシュ抑制指定を追加し、修正確認用の `?fix=`／`?v=` 付きURLで開いた場合もアドレス表示を正式URLへ戻す
+- 縦画面では横画面用JSを読み込まず、横向きへ変更した時だけ `adaptive-input.js` を遅延読込
+- 横画面用CSSは横向き時だけ適用
+- 既存セーブデータには触れず、同一オリジンのlocalStorageを継続使用
+- 現在のキャッシュ番号: `adaptive-input.js?v=2`、`adaptive-landscape.css?v=2`
 
 ### レリック再調整
 

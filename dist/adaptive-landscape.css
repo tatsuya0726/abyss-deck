@@ -1,0 +1,274 @@
+/* Landscape-native layout for the TV/controller version (dist/tv.html).
+   Scoped entirely under html.tv-mode so the phone-portrait experience
+   (index.html opened directly) is completely unaffected. */
+
+html.tv-mode, html.tv-mode body{width:100%;height:100%}
+
+/* ---------- Header ---------- */
+/* Right padding on .hud reserves room for the ⚙設定 button, which lives in the
+   parent document (tv.html) and overlays the iframe at a fixed position — without
+   this reserve it sits at the exact same right edge as the last HUD chip and
+   visually collides with it. */
+html.tv-mode .hud{height:54px!important;padding:0 122px 0 14px!important;gap:8px!important}
+html.tv-mode .screen{inset:54px 0 0!important}
+html.tv-mode .logo{font-size:15px!important}
+html.tv-mode .zone{display:none!important}
+/* Explicit height + flex centering (rather than relying on padding + the font's
+   own line-height metrics) keeps this box the same size no matter which font
+   actually ends up rendering the Japanese label — different browsers can fall
+   back to different system fonts for 'Noto Sans JP', which otherwise skews the
+   button's rendered height even with identical padding/font-size values. */
+html.tv-mode .chip{display:inline-flex!important;align-items:center!important;justify-content:center!important;
+  box-sizing:border-box!important;height:34px!important;padding:0 10px!important;font-size:13px!important;line-height:1!important}
+/* Equipped-relic icon, deck-count chip and the in-game sound button are dropped
+   from the TV HUD; sound is folded into the ⚙設定 panel instead (see tv.html). */
+html.tv-mode .relics{display:none!important}
+html.tv-mode .res .chip:has(#deckCount){display:none!important}
+html.tv-mode #soundBtn{display:none!important}
+
+/* Quick-nav (デッキ/図鑑/効果/レリック/マス/中断) is already a child of .hud in the
+   base layout (upgrade.js inserts it right before .res); instead of pulling it out
+   into a separate left-edge rail, let it flow inline in the header row so the map
+   and battle screens below get the full width. Sized to match the HP/gold chips
+   exactly (same padding/font-size/radius) for a consistent header. */
+html.tv-mode .quick-nav{position:static!important;display:flex!important;flex-direction:row!important;
+  flex-wrap:nowrap!important;gap:6px!important;max-width:none!important;width:auto!important;
+  padding:0!important;margin:0 0 0 auto!important;background:none!important}
+html.tv-mode .quick-nav button,html.tv-mode .suspend-run,html.tv-mode #mapHelpView{
+  position:static!important;left:auto!important;top:auto!important;bottom:auto!important;
+  display:inline-flex!important;align-items:center!important;justify-content:center!important;box-sizing:border-box!important;
+  width:auto!important;min-width:0!important;min-height:0!important;height:34px!important;
+  padding:0 10px!important;font-size:13px!important;line-height:1!important;border-radius:9px!important;
+  white-space:nowrap!important;overflow:visible!important;text-overflow:clip!important;z-index:auto!important}
+
+/* ---------- Title screen: two-column layout ---------- */
+html.tv-mode #title{padding:0 40px!important}
+html.tv-mode .titlebox{display:grid!important;grid-template-columns:1fr 1.05fr!important;grid-auto-rows:min-content!important;
+  align-items:center!important;column-gap:56px!important;width:100%!important;max-width:1180px!important;
+  margin:0 auto!important;text-align:left!important}
+html.tv-mode .sigil{grid-column:1!important;grid-row:1!important;font-size:56px!important}
+html.tv-mode .titlebox h1{grid-column:1!important;grid-row:2!important;font-size:clamp(32px,4.2vw,58px)!important;margin:4px 0!important}
+html.tv-mode .subtitle{grid-column:1!important;grid-row:3!important;margin:6px 0 14px!important}
+html.tv-mode #ascensionPanel{grid-column:1!important;grid-row:4!important;justify-self:start!important;width:100%!important;max-width:420px!important}
+html.tv-mode .title-actions{grid-column:2!important;grid-row:1/6!important;align-self:center!important;justify-self:stretch!important}
+html.tv-mode .title-library-grid{grid-template-columns:repeat(3,1fr)!important}
+html.tv-mode #title .equipped-title{position:static!important;text-align:left!important;grid-column:1!important;margin-top:8px!important}
+html.tv-mode .title-hint{position:fixed!important;left:50%!important;bottom:10px!important;transform:translateX(-50%)!important;font-size:11px!important}
+
+/* ---------- Map screen ---------- */
+html.tv-mode #map{padding:10px 24px!important;justify-content:flex-start!important}
+html.tv-mode .mapHead{margin-bottom:2px!important}
+html.tv-mode .mapHead h2{font-size:16px!important;margin:0!important}
+html.tv-mode .mapHead p{font-size:11px!important;margin:2px!important}
+html.tv-mode .path{height:calc(100vh - 96px)!important;width:min(58vw,620px)!important;margin-top:4px!important}
+
+/* ---------- Battle screen ---------- */
+html.tv-mode #battle{flex-direction:row!important;flex-wrap:wrap!important;align-content:flex-start!important}
+html.tv-mode .dead-sea-timer{left:auto!important;right:16px!important}
+html.tv-mode .battlelog{top:auto!important;bottom:calc(30% + 6px)!important;font-size:11px!important}
+html.tv-mode .arena{width:100%!important;height:63%!important;align-items:center!important;padding:6px 3vw 0!important}
+html.tv-mode .unit{width:36%!important}
+html.tv-mode .creature{height:min(27vh,290px)!important;width:auto!important;aspect-ratio:1.61!important;min-width:0!important;max-width:100%!important;margin:0 auto!important}
+html.tv-mode .creature.player{--player-scale:.8!important}
+
+/* The enemy's intent panel is pinned to a fixed viewport position in the open
+   gap between the two units (leaning toward the enemy side, clear of the enemy
+   sprite) instead of being anchored relative to the unit/creature box. Anchoring
+   to the unit made its exact position depend on the creature artwork's actual
+   rendered width, which could bring it right up against wide sprites; a fixed
+   position in the middle gap is independent of any creature's art and can
+   never collide with either sprite. Anchored from the top so it grows downward
+   as multi-line intents add more content, instead of growing both ways from a
+   vertical center. */
+html.tv-mode .enemy-unit>.intent,html.tv-mode #intent{
+  position:fixed!important;top:calc(44px + 4vh)!important;bottom:auto!important;
+  left:58%!important;right:auto!important;margin:0!important;
+  transform:translateX(-50%)!important;
+  width:min(148px,18vw)!important;max-height:min(40vh,180px)!important;overflow-y:auto!important;font-size:12px!important;z-index:15!important}
+
+/* End turn moves out of the hand row entirely, to sit just below-right of the
+   enemy's HP bar — freeing the whole hand row for cards. */
+html.tv-mode .endTurn{position:fixed!important;top:57%!important;right:5vw!important;left:auto!important;bottom:auto!important;
+  flex-shrink:0!important;padding:9px 16px!important;font-size:13px!important;z-index:20!important}
+
+/* ---------- Hand area: end turn now lives in the arena (see above), so the hand
+   row only has to share space with a small energy badge + pile-count readout,
+   both packed tight to the right. Cards sit centered in the remaining space and
+   fan outward as more are added, instead of stacking from the left edge. ---------- */
+html.tv-mode .handArea{width:100%!important;height:37%!important;padding:8px 14px!important;
+  display:flex!important;align-items:center!important;justify-content:flex-start!important;gap:8px!important}
+html.tv-mode .hand{order:1;width:auto!important;flex:1 1 auto!important;height:auto!important;overflow-x:auto!important;justify-content:center!important;gap:10px!important;padding:4px 2px}
+html.tv-mode .energy{order:2;position:static!important;flex-shrink:0!important;width:34px!important;height:34px!important;font-size:13px!important}
+html.tv-mode .deckInfo{order:3;position:static!important;flex-shrink:0!important;flex-direction:column!important;align-items:flex-start!important;font-size:10px!important;gap:2px!important}
+html.tv-mode .deckInfo .pileBtn{padding:2px 7px!important;font-size:10px!important}
+
+/* Cards: fixed minimum size (no shrink-to-fit as hand count grows). Names wrap
+   instead of overflowing the card edge when they're too long to fit on one line. */
+html.tv-mode .card{flex-shrink:0!important;width:clamp(136px,12vw,200px)!important;height:clamp(192px,32vh,282px)!important}
+/* The base hover-lift (translateY(-20px) scale(1.05)) was tall enough to push a
+   hovered card up past the handArea/arena boundary line, and on touchscreens the
+   lift's visual shift away from the finger's actual touch point made taps feel
+   like they landed below the button. Scope it to real hover-capable pointers
+   (mouse/trackpad) only, and keep the lift subtle even there. */
+@media(hover:hover) and (pointer:fine){
+  html.tv-mode .card:hover{transform:translateY(-8px) scale(1.02)!important}
+}
+html.tv-mode .card:nth-child(n+6){display:flex!important}
+html.tv-mode .art{font-size:clamp(50px,6.8vw,84px)!important}
+html.tv-mode .cname{font-size:12px!important;padding:6px 3px 3px!important;white-space:normal!important;line-height:1.2!important}
+html.tv-mode .ctext{font-size:11px!important;line-height:1.32!important}
+html.tv-mode .enemyName{font-size:12px!important}
+html.tv-mode .cost{width:32px!important;height:32px!important;font-size:14px!important}
+
+/* ---------- Modals: use the extra width instead of staying phone-narrow ---------- */
+html.tv-mode .panel{max-width:min(78vw,860px)!important;max-height:92vh!important}
+html.tv-mode .card-codex-panel, html.tv-mode .title-hub-panel, html.tv-mode .strategy-panel, html.tv-mode .memory-panel, html.tv-mode .collection-panel{max-width:min(86vw,980px)!important}
+html.tv-mode .card-codex-grid, html.tv-mode .collection-grid, html.tv-mode .title-hub-grid, html.tv-mode .achievement-grid{grid-template-columns:repeat(auto-fill,minmax(150px,1fr))!important}
+html.tv-mode .settings-hub-grid{grid-template-columns:repeat(3,1fr)!important}
+html.tv-mode .rewards{flex-wrap:wrap!important;max-width:900px!important;margin:0 auto!important}
+
+@media(max-height:500px){
+  html.tv-mode .hud{height:44px!important;padding-right:110px!important}
+  html.tv-mode .screen{inset:44px 0 0!important}
+  html.tv-mode .quick-nav button,html.tv-mode .suspend-run,html.tv-mode #mapHelpView{padding:0 8px!important;font-size:11px!important}
+  html.tv-mode .handArea{height:40%!important}
+  html.tv-mode .arena{height:60%!important}
+  html.tv-mode .endTurn{padding:7px 12px!important;font-size:11.5px!important}
+  html.tv-mode .enemy-unit>.intent,html.tv-mode #intent{
+    width:min(126px,28vw)!important;max-height:min(30vh,110px)!important;font-size:10.5px!important;padding:5px 7px!important}
+  /* .card's height:clamp(...) has a floor that no longer fits inside the
+     shrunken hand row on a short landscape viewport (a phone lying down),
+     pushing cards up past the arena boundary and clipping them at the bottom.
+     min() here has no forced floor, so it shrinks to fit instead. */
+  html.tv-mode .card{width:min(88px,18.5vw)!important;height:min(125px,26vh)!important}
+  html.tv-mode .art{font-size:clamp(28px,5vw,40px)!important}
+  html.tv-mode .cname{font-size:9px!important;padding:3px 2px 1px!important}
+  html.tv-mode .ctext{font-size:8px!important;line-height:1.2!important}
+  html.tv-mode .cost{width:24px!important;height:24px!important;font-size:11px!important}
+}
+
+/* Narrow widths (phone landscape): the gap between the two units is proportionally
+   tighter here, so leaning the intent panel toward the enemy side (left:58% on
+   wider screens) brings it too close to the enemy sprite. Center it more evenly
+   and shrink it a bit instead — still a fixed position independent of the unit
+   box, just tuned for less available width. The end-turn button also needs a
+   different spot here, since there isn't room beside the enemy's HP bar. */
+@media(max-width:1100px){
+  html.tv-mode .enemy-unit>.intent,html.tv-mode #intent{left:54%!important;width:min(104px,24vw)!important}
+  html.tv-mode .endTurn{top:auto!important;bottom:calc(30% + 10px)!important;right:3vw!important}
+
+  /* Title screen: the two-column grid (sigil/title on the left, actions on the
+     right) was tuned for a wide TV screen — squeezed into a narrow phone-
+     landscape width it left both columns too cramped to read comfortably.
+     Stack it into one column instead. */
+  html.tv-mode #title{padding:14px 24px!important;overflow-y:auto!important}
+  html.tv-mode .titlebox{display:flex!important;flex-direction:column!important;align-items:center!important;
+    text-align:center!important;gap:4px!important;max-width:520px!important}
+  html.tv-mode .sigil{font-size:40px!important}
+  html.tv-mode .titlebox h1{font-size:clamp(26px,7vw,40px)!important;margin:2px 0!important}
+  html.tv-mode #ascensionPanel{max-width:100%!important;justify-self:center!important}
+  html.tv-mode .title-actions{width:100%!important;margin-top:6px!important}
+  html.tv-mode #title .equipped-title{text-align:center!important}
+
+  /* Modals/codex panels: use nearly the full width instead of leaving big
+     empty margins on a narrow phone screen. */
+  html.tv-mode .panel{max-width:94vw!important;max-height:90vh!important}
+  html.tv-mode .card-codex-panel, html.tv-mode .title-hub-panel, html.tv-mode .strategy-panel, html.tv-mode .memory-panel, html.tv-mode .collection-panel{max-width:96vw!important}
+  html.tv-mode .card-codex-grid, html.tv-mode .collection-grid, html.tv-mode .title-hub-grid, html.tv-mode .achievement-grid{grid-template-columns:repeat(auto-fill,minmax(120px,1fr))!important}
+}
+
+
+/* ---------- Clean title screen: full viewport, no persistent settings overlay ---------- */
+html.tv-mode .hud{padding-right:14px!important}
+html.tv-mode body.scene-title .hud{display:none!important}
+html.tv-mode body.scene-title #title{
+  inset:0!important;padding:clamp(12px,3vh,30px) clamp(18px,5vw,72px)!important;
+  overflow:hidden!important;align-items:center!important;justify-content:center!important}
+html.tv-mode body.scene-title .titlebox{
+  display:flex!important;flex-direction:column!important;align-items:center!important;justify-content:center!important;
+  gap:5px!important;width:min(88vw,720px)!important;max-width:720px!important;margin:auto!important;padding:0!important;
+  text-align:center!important;border:0!important;border-radius:0!important;background:none!important;
+  box-shadow:none!important;backdrop-filter:none!important}
+html.tv-mode body.scene-title .titlebox::before,
+html.tv-mode body.scene-title .titlebox::after{display:none!important}
+html.tv-mode body.scene-title .sigil{font-size:clamp(42px,5vh,64px)!important;margin:0 auto!important}
+html.tv-mode body.scene-title .titlebox h1{
+  font-size:clamp(38px,6.2vh,70px)!important;line-height:.96!important;margin:0 0 3px!important;
+  filter:drop-shadow(0 4px 2px #000) drop-shadow(0 0 24px #4ee7dc55)!important}
+html.tv-mode body.scene-title .subtitle{margin:2px 0 8px!important}
+html.tv-mode body.scene-title #ascensionPanel{
+  width:min(420px,76vw)!important;max-width:420px!important;margin:0 auto 5px!important;justify-self:center!important}
+html.tv-mode body.scene-title .title-actions{
+  width:min(430px,78vw)!important;margin:0 auto!important;align-self:center!important;justify-self:center!important}
+html.tv-mode body.scene-title .start{width:100%!important;min-height:46px!important;margin:0 0 7px!important}
+html.tv-mode body.scene-title .title-library-grid{
+  grid-template-columns:repeat(2,minmax(0,1fr))!important;width:100%!important;max-width:none!important;gap:5px!important}
+html.tv-mode body.scene-title .title-library-grid .title-tool{
+  min-height:39px!important;padding:6px 9px!important;border-color:#49666d88!important;
+  background:linear-gradient(180deg,#07141bc7,#030a10b8)!important;font-size:12px!important}
+html.tv-mode body.scene-title .title-library-grid #titleSettingsMenu{
+  border-color:#ad925788!important;background:linear-gradient(180deg,#1a160dc7,#0b0906ba)!important}
+html.tv-mode body.scene-title #title .equipped-title{display:none!important}
+html.tv-mode body.scene-title .title-hint{
+  position:static!important;transform:none!important;margin:5px 0 0!important;
+  font-size:10px!important;white-space:nowrap!important}
+
+/* Phone landscape: retain the same clean look, but use the width so every
+   control fits without vertical scrolling. */
+@media (orientation:landscape) and (max-height:600px){
+  html.tv-mode body.scene-title #title{padding:6px 18px!important}
+  html.tv-mode body.scene-title .titlebox{
+    display:grid!important;grid-template-columns:minmax(0,1.1fr) minmax(290px,.9fr)!important;
+    grid-template-rows:auto auto auto auto!important;column-gap:clamp(20px,5vw,58px)!important;row-gap:1px!important;
+    width:min(96vw,1040px)!important;max-width:1040px!important;height:100%!important;text-align:left!important}
+  html.tv-mode body.scene-title .sigil{
+    grid-column:1!important;grid-row:1!important;justify-self:center!important;font-size:clamp(32px,9vh,44px)!important}
+  html.tv-mode body.scene-title .titlebox h1{
+    grid-column:1!important;grid-row:2!important;justify-self:center!important;
+    font-size:clamp(30px,9.5vh,48px)!important;text-align:center!important}
+  html.tv-mode body.scene-title .subtitle{
+    grid-column:1!important;grid-row:3!important;justify-self:center!important;margin:0 0 3px!important}
+  html.tv-mode body.scene-title #ascensionPanel{
+    grid-column:1!important;grid-row:4!important;align-self:start!important;width:min(390px,100%)!important;
+    max-width:390px!important;margin:0 auto!important}
+  html.tv-mode body.scene-title .title-actions{
+    grid-column:2!important;grid-row:1/5!important;align-self:center!important;width:100%!important;margin:0!important}
+  html.tv-mode body.scene-title .start{min-height:42px!important;margin-bottom:5px!important;font-size:14px!important}
+  html.tv-mode body.scene-title .title-library-grid{gap:4px!important}
+  html.tv-mode body.scene-title .title-library-grid .title-tool{min-height:36px!important;padding:4px 7px!important;font-size:11px!important}
+  html.tv-mode body.scene-title .title-hint{display:none!important}
+}
+@media (orientation:landscape) and (max-height:430px){
+  html.tv-mode body.scene-title .sigil{display:none!important}
+  html.tv-mode body.scene-title .titlebox h1{grid-row:1/3!important}
+  html.tv-mode body.scene-title .subtitle{grid-row:3!important}
+  html.tv-mode body.scene-title #ascensionPanel{grid-row:4!important}
+  html.tv-mode body.scene-title .title-library-grid .title-tool{min-height:33px!important}
+}
+
+/* TV controls now live inside the ordinary title-screen settings modal. */
+html.tv-mode .settings-hub-grid .tv-title-setting{border-color:#3e6d72!important}
+
+
+/* Keep all nine title settings readable without a tall, narrow panel. */
+html.tv-mode .settings-hub-panel{
+  width:min(760px,94vw)!important;max-width:760px!important;height:min(520px,94vh)!important;max-height:94vh!important}
+html.tv-mode .settings-hub-grid{
+  grid-template-columns:repeat(3,minmax(0,1fr))!important;grid-auto-rows:auto!important}
+html.tv-mode .settings-hub-grid>button{
+  min-height:88px!important;padding:9px 11px!important;gap:9px!important}
+html.tv-mode .settings-hub-grid>button b{font-size:14px!important;line-height:1.2!important}
+html.tv-mode .settings-hub-grid>button small{font-size:11px!important;line-height:1.25!important}
+@media (orientation:landscape) and (max-height:600px){
+  html.tv-mode .settings-hub-panel{width:min(820px,96vw)!important;height:96vh!important;max-height:96vh!important}
+  html.tv-mode .settings-hub-panel .modal-shell-head{padding:8px 14px!important}
+  html.tv-mode .settings-hub-grid{padding:7px!important;gap:6px!important}
+  html.tv-mode .settings-hub-grid>button{min-height:64px!important;padding:6px 8px!important}
+  html.tv-mode .settings-hub-panel>.modal-shell-foot{padding:0 8px 8px!important}
+  html.tv-mode .settings-hub-panel>.modal-shell-foot .btn{min-height:36px!important}
+}
+
+
+/* Direct-root keyboard/gamepad focus indicator. */
+#gp-focus-ring{position:fixed;pointer-events:none;z-index:99999;border:3px solid var(--gold);border-radius:12px;box-shadow:0 0 0 3px #00000090,0 0 20px var(--gold);transition:left .12s ease,top .12s ease,width .12s ease,height .12s ease;display:none}
+#adaptive-controls{display:none!important}
