@@ -267,3 +267,341 @@ html.tv-mode .settings-hub-grid>button small{font-size:11px!important;line-heigh
   html.tv-mode .settings-hub-panel>.modal-shell-foot{padding:0 8px 8px!important}
   html.tv-mode .settings-hub-panel>.modal-shell-foot .btn{min-height:36px!important}
 }
+
+
+/* ==========================================================================
+   Landscape presentation v2
+   Horizontal-only. Every rule remains under html.tv-mode so portrait stays
+   byte-for-byte on the existing layout.
+   ========================================================================== */
+html.tv-mode{
+  --tv-text:clamp(13px,min(1.05vw,2.25vh),22px);
+  --tv-small:clamp(11px,min(.82vw,1.75vh),17px);
+  --tv-title:clamp(42px,min(5.4vw,8.8vh),104px);
+  --tv-gap:clamp(8px,min(1.15vw,2vh),24px);
+  --tv-radius:clamp(9px,min(.8vw,1.4vh),18px);
+}
+html.tv-mode body{font-size:var(--tv-text)!important}
+html.tv-mode .btn{font-size:var(--tv-text)!important;border-radius:var(--tv-radius)!important}
+html.tv-mode .hud{
+  height:clamp(48px,6.3vh,74px)!important;
+  padding:0 clamp(16px,2vw,38px)!important;
+  gap:clamp(7px,1vw,18px)!important
+}
+html.tv-mode .screen{inset:clamp(48px,6.3vh,74px) 0 0!important}
+html.tv-mode .logo{font-size:clamp(15px,min(1.35vw,2.5vh),26px)!important}
+html.tv-mode .chip{
+  height:clamp(34px,4.5vh,52px)!important;
+  padding:0 clamp(9px,1vw,18px)!important;
+  font-size:clamp(12px,min(.95vw,1.9vh),20px)!important
+}
+html.tv-mode .quick-nav button,
+html.tv-mode .suspend-run,
+html.tv-mode #mapHelpView{
+  height:clamp(34px,4.5vh,52px)!important;
+  padding:0 clamp(8px,.9vw,17px)!important;
+  font-size:clamp(11px,min(.9vw,1.8vh),19px)!important
+}
+
+/* Title: large identity on the left, clear action menu on the right. */
+html.tv-mode body.scene-title #title{
+  inset:0!important;
+  padding:clamp(14px,3vh,42px) clamp(22px,4vw,82px)!important;
+  overflow:hidden!important
+}
+html.tv-mode body.scene-title .titlebox{
+  display:grid!important;
+  grid-template-columns:minmax(0,1.14fr) minmax(390px,.86fr)!important;
+  grid-template-rows:auto auto auto auto!important;
+  column-gap:clamp(34px,6vw,120px)!important;
+  row-gap:clamp(3px,.8vh,10px)!important;
+  align-items:center!important;
+  width:min(94vw,1780px)!important;
+  max-width:none!important;
+  height:min(90vh,980px)!important;
+  margin:auto!important;
+  text-align:left!important
+}
+html.tv-mode body.scene-title .sigil{
+  grid-column:1!important;grid-row:1!important;
+  justify-self:center!important;
+  font-size:clamp(54px,min(6vw,10vh),118px)!important
+}
+html.tv-mode body.scene-title .titlebox h1{
+  grid-column:1!important;grid-row:2!important;
+  justify-self:center!important;
+  font-size:var(--tv-title)!important;
+  line-height:.94!important;
+  margin:0!important;
+  text-align:center!important;
+  white-space:nowrap!important
+}
+html.tv-mode body.scene-title .subtitle{
+  grid-column:1!important;grid-row:3!important;
+  justify-self:center!important;
+  margin:0!important;
+  font-size:clamp(12px,min(1vw,2vh),21px)!important
+}
+html.tv-mode body.scene-title #ascensionPanel{
+  grid-column:1!important;grid-row:4!important;
+  justify-self:center!important;
+  width:min(92%,720px)!important;
+  max-width:720px!important;
+  margin:clamp(5px,1vh,14px) 0 0!important;
+  font-size:var(--tv-small)!important
+}
+html.tv-mode body.scene-title .title-actions{
+  grid-column:2!important;grid-row:1/5!important;
+  align-self:center!important;
+  justify-self:center!important;
+  width:clamp(410px,34vw,680px)!important;
+  max-width:100%!important;
+  margin:0!important
+}
+html.tv-mode body.scene-title .start{
+  min-height:clamp(50px,6.2vh,72px)!important;
+  margin:0 0 clamp(7px,1vh,13px)!important;
+  font-size:clamp(16px,min(1.25vw,2.5vh),25px)!important
+}
+html.tv-mode body.scene-title .title-library-grid{
+  grid-template-columns:repeat(2,minmax(0,1fr))!important;
+  gap:clamp(6px,.75vw,12px)!important
+}
+html.tv-mode body.scene-title .title-library-grid .title-tool{
+  min-height:clamp(43px,5.4vh,64px)!important;
+  padding:clamp(7px,1vh,12px) clamp(10px,1vw,18px)!important;
+  font-size:clamp(12px,min(1vw,2vh),20px)!important
+}
+html.tv-mode body.scene-title .title-hint{
+  bottom:clamp(8px,1.5vh,20px)!important;
+  font-size:var(--tv-small)!important
+}
+
+/* Battle: artwork, labels and controls grow with the physical display. */
+html.tv-mode .arena{
+  height:62%!important;
+  padding:clamp(4px,1vh,12px) clamp(24px,5vw,110px) 0!important
+}
+html.tv-mode .unit{width:min(38%,620px)!important;max-width:620px!important}
+html.tv-mode .creature{
+  height:clamp(170px,35vh,520px)!important;
+  width:auto!important;
+  max-width:min(38vw,700px)!important;
+  min-width:0!important
+}
+html.tv-mode .enemyName{
+  font-size:clamp(13px,min(1.15vw,2.25vh),24px)!important;
+  margin-bottom:clamp(5px,1vh,12px)!important
+}
+html.tv-mode .hpbar{height:clamp(18px,2.6vh,34px)!important}
+html.tv-mode .hptext{font-size:clamp(11px,min(.9vw,1.8vh),19px)!important}
+html.tv-mode .statusRow{font-size:var(--tv-small)!important;height:clamp(24px,3.2vh,38px)!important}
+html.tv-mode .battlelog{font-size:var(--tv-small)!important}
+html.tv-mode .enemy-unit>.intent,
+html.tv-mode #intent{
+  width:clamp(120px,13vw,260px)!important;
+  max-height:min(42vh,360px)!important;
+  padding:clamp(7px,1vh,14px)!important;
+  font-size:clamp(12px,min(1vw,2vh),21px)!important
+}
+html.tv-mode .endTurn{
+  padding:clamp(9px,1.25vh,16px) clamp(16px,1.6vw,30px)!important;
+  font-size:clamp(13px,min(1vw,2vh),21px)!important
+}
+html.tv-mode .handArea{height:38%!important;padding:clamp(6px,1vh,14px) clamp(10px,1.3vw,24px)!important}
+html.tv-mode .hand{gap:clamp(5px,.75vw,14px)!important}
+html.tv-mode .card{
+  width:clamp(124px,11.2vw,230px)!important;
+  height:clamp(178px,33vh,356px)!important
+}
+html.tv-mode .art{font-size:clamp(46px,min(6.5vw,11vh),112px)!important}
+html.tv-mode .cname{font-size:clamp(10px,min(.9vw,1.65vh),18px)!important}
+html.tv-mode .ctext{font-size:clamp(9px,min(.78vw,1.45vh),16px)!important}
+html.tv-mode .cost{
+  width:clamp(29px,2.4vw,48px)!important;
+  height:clamp(29px,2.4vw,48px)!important;
+  font-size:clamp(13px,min(1.1vw,2vh),22px)!important
+}
+html.tv-mode .energy{
+  width:clamp(38px,3.4vw,64px)!important;
+  height:clamp(38px,3.4vw,64px)!important;
+  font-size:clamp(15px,min(1.3vw,2.4vh),26px)!important
+}
+html.tv-mode .deckInfo,
+html.tv-mode .deckInfo .pileBtn{font-size:var(--tv-small)!important}
+
+/* Map: use the available display instead of the old 620px ceiling. */
+html.tv-mode #map{padding:clamp(8px,1.4vh,18px) clamp(22px,3vw,60px)!important}
+html.tv-mode .mapHead h2{font-size:clamp(18px,min(1.7vw,3vh),34px)!important}
+html.tv-mode .mapHead p{font-size:var(--tv-small)!important}
+html.tv-mode .path{
+  width:min(72vw,980px)!important;
+  height:calc(100vh - clamp(105px,13vh,160px))!important
+}
+html.tv-mode .node{
+  width:clamp(54px,4.8vw,88px)!important;
+  height:clamp(54px,4.8vw,88px)!important;
+  font-size:clamp(22px,2.1vw,38px)!important
+}
+
+/* Slay-the-Spire-like event composition: emblem/art left, story and choices right. */
+html.tv-mode #eventModal{
+  padding:clamp(18px,4vh,56px) clamp(26px,5vw,100px)!important;
+  background:linear-gradient(90deg,#01050be8,#06121bd9 48%,#01050bf2)!important
+}
+html.tv-mode #eventModal>.panel{
+  display:grid!important;
+  grid-template-columns:minmax(260px,.8fr) minmax(420px,1.35fr)!important;
+  grid-template-rows:auto minmax(0,1fr) auto!important;
+  column-gap:clamp(24px,4vw,76px)!important;
+  row-gap:clamp(10px,1.6vh,24px)!important;
+  align-items:center!important;
+  width:min(92vw,1580px)!important;
+  max-width:none!important;
+  height:min(86vh,900px)!important;
+  max-height:none!important;
+  padding:clamp(24px,4vh,58px)!important;
+  overflow:hidden!important;
+  text-align:left!important;
+  border-color:#61808d!important;
+  background:linear-gradient(135deg,#102734ee,#061018f4 56%,#03080df7)!important
+}
+html.tv-mode #eventModal .modal-resources{
+  position:absolute!important;
+  top:clamp(12px,2vh,24px)!important;
+  right:clamp(16px,2vw,34px)!important;
+  font-size:var(--tv-small)!important
+}
+html.tv-mode #eventModal .bigicon{
+  grid-column:1!important;
+  grid-row:1/4!important;
+  align-self:stretch!important;
+  display:grid!important;
+  place-items:center!important;
+  min-height:0!important;
+  font-size:clamp(92px,min(16vw,28vh),330px)!important;
+  border:1px solid #41616c88!important;
+  border-radius:clamp(14px,2vw,30px)!important;
+  background:radial-gradient(circle at 50% 40%,#1b536066,#07131bd9 64%,#02070cf2)!important;
+  filter:drop-shadow(0 0 28px #43d8d044)!important
+}
+html.tv-mode #eventModal h2{
+  grid-column:2!important;grid-row:1!important;
+  align-self:end!important;
+  margin:0!important;
+  font-size:clamp(28px,min(2.5vw,4.8vh),54px)!important;
+  text-align:left!important
+}
+html.tv-mode #eventModal #eventText{
+  grid-column:2!important;grid-row:2!important;
+  align-self:start!important;
+  max-height:100%!important;
+  margin:0!important;
+  overflow-y:auto!important;
+  padding-right:clamp(6px,.7vw,12px)!important;
+  font-size:clamp(14px,min(1.15vw,2.25vh),24px)!important;
+  line-height:1.8!important;
+  color:#c6d9dc!important
+}
+html.tv-mode #eventModal .choices{
+  grid-column:2!important;grid-row:3!important;
+  display:grid!important;
+  grid-template-columns:repeat(2,minmax(0,1fr))!important;
+  gap:clamp(8px,1vh,14px)!important;
+  width:100%!important;
+  margin:0!important
+}
+html.tv-mode #eventModal .choice{
+  min-height:clamp(58px,8vh,92px)!important;
+  padding:clamp(10px,1.4vh,18px) clamp(14px,1.2vw,24px)!important;
+  font-size:clamp(13px,min(1vw,2vh),21px)!important;
+  line-height:1.45!important
+}
+html.tv-mode #eventModal .choice b{font-size:1.08em!important}
+
+/* Other horizontal overlays use the extra width and readable TV sizing. */
+html.tv-mode .modal{padding:clamp(14px,2.5vh,34px)!important}
+html.tv-mode .panel{
+  width:min(90vw,1380px)!important;
+  max-width:none!important;
+  max-height:90vh!important;
+  padding:clamp(18px,2.8vh,38px)!important
+}
+html.tv-mode .panel h2{font-size:clamp(24px,min(2vw,4vh),44px)!important}
+html.tv-mode .panel p{font-size:var(--tv-text)!important}
+html.tv-mode #shopModal .panel,
+html.tv-mode #rewardModal .panel,
+html.tv-mode #endModal .panel{width:min(92vw,1500px)!important}
+html.tv-mode .shop-grid,
+html.tv-mode .market-grid,
+html.tv-mode .shop-items{grid-template-columns:repeat(auto-fit,minmax(clamp(150px,13vw,240px),1fr))!important}
+html.tv-mode .reward-row{
+  min-height:clamp(64px,8vh,100px)!important;
+  font-size:var(--tv-text)!important
+}
+html.tv-mode .rewards{max-width:min(88vw,1380px)!important;gap:var(--tv-gap)!important}
+
+/* Phone landscape keeps the same composition, scaled to its short height. */
+@media (orientation:landscape) and (max-height:600px){
+  html.tv-mode{
+    --tv-text:clamp(11px,2.8vh,15px);
+    --tv-small:clamp(9px,2.2vh,12px)
+  }
+  html.tv-mode .hud{height:44px!important;padding:0 10px!important}
+  html.tv-mode .screen{inset:44px 0 0!important}
+  html.tv-mode body.scene-title #title{inset:0!important;padding:5px 12px!important}
+  html.tv-mode body.scene-title .titlebox{
+    grid-template-columns:minmax(0,.95fr) minmax(330px,1.05fr)!important;
+    column-gap:clamp(12px,3vw,30px)!important;
+    width:97vw!important;
+    height:96vh!important
+  }
+  html.tv-mode body.scene-title .sigil{font-size:clamp(30px,10vh,46px)!important}
+  html.tv-mode body.scene-title .titlebox h1{font-size:clamp(30px,min(6vw,12vh),52px)!important}
+  html.tv-mode body.scene-title .subtitle{font-size:10px!important}
+  html.tv-mode body.scene-title #ascensionPanel{width:96%!important;max-height:24vh!important;margin-top:2px!important}
+  html.tv-mode body.scene-title .title-actions{width:100%!important;max-width:440px!important}
+  html.tv-mode body.scene-title .start{min-height:44px!important;margin-bottom:5px!important;font-size:14px!important}
+  html.tv-mode body.scene-title .title-library-grid{gap:4px!important}
+  html.tv-mode body.scene-title .title-library-grid .title-tool{min-height:37px!important;padding:4px 7px!important;font-size:11px!important}
+  html.tv-mode body.scene-title .title-hint{display:none!important}
+
+  html.tv-mode .arena{height:60%!important;padding:2px 3vw 0!important}
+  html.tv-mode .handArea{height:40%!important;padding:4px 7px!important}
+  html.tv-mode .creature{height:clamp(105px,31vh,175px)!important}
+  html.tv-mode .enemyName{font-size:11px!important}
+  html.tv-mode .card{width:min(112px,16vw)!important;height:min(150px,31vh)!important}
+  html.tv-mode .art{font-size:clamp(32px,8vh,48px)!important}
+  html.tv-mode .cname{font-size:9px!important}
+  html.tv-mode .ctext{font-size:8px!important}
+  html.tv-mode .endTurn{font-size:11px!important;padding:7px 11px!important}
+
+  html.tv-mode #eventModal{padding:8px 14px!important}
+  html.tv-mode #eventModal>.panel{
+    grid-template-columns:minmax(150px,.68fr) minmax(0,1.32fr)!important;
+    column-gap:18px!important;
+    row-gap:6px!important;
+    width:96vw!important;
+    height:92vh!important;
+    padding:14px 18px!important
+  }
+  html.tv-mode #eventModal .bigicon{font-size:clamp(68px,24vh,130px)!important}
+  html.tv-mode #eventModal h2{font-size:clamp(20px,6vh,30px)!important}
+  html.tv-mode #eventModal #eventText{font-size:clamp(11px,3vh,14px)!important;line-height:1.55!important}
+  html.tv-mode #eventModal .choices{gap:5px!important}
+  html.tv-mode #eventModal .choice{min-height:42px!important;padding:6px 9px!important;font-size:10px!important}
+  html.tv-mode .panel{width:96vw!important;max-height:94vh!important;padding:12px 16px!important}
+}
+
+/* Very short phone landscape: keep every action visible without page scrolling. */
+@media (orientation:landscape) and (max-height:430px){
+  html.tv-mode body.scene-title .sigil,
+  html.tv-mode body.scene-title .subtitle,
+  html.tv-mode body.scene-title .title-hint{display:none!important}
+  html.tv-mode body.scene-title .titlebox h1{grid-row:1/3!important}
+  html.tv-mode body.scene-title #ascensionPanel{grid-row:3/5!important;max-height:30vh!important}
+  html.tv-mode body.scene-title .start{min-height:38px!important}
+  html.tv-mode body.scene-title .title-library-grid .title-tool{min-height:32px!important}
+  html.tv-mode #eventModal>.panel{height:95vh!important}
+  html.tv-mode #eventModal .choice{min-height:36px!important}
+}
