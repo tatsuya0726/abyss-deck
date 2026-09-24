@@ -37,7 +37,7 @@
 - コントローラーモードON時だけ「ターン終了」にXボタン表示を追加し、ゲームパッドのXでターン終了できるようにした
 - コントローラーのフォーカス移動時に画面外の項目へ自動スクロールし、右スティック／LB・RBでもスクロールできるようにした
 - プレイヤー名が「達也0726」の場合だけ、設定からデバッグモードを有効化できる機能を復活
-- 現在のキャッシュ番号: `responsive-landscape.css?v=6`、`responsive-shell.js?v=6`、`enhance.js?v=256`、`game-polish.js?v=194`、`title-tools.js?v=111`、`debug-mode.js?v=122`
+- 現在のキャッシュ番号: `responsive-landscape.css?v=6`、`responsive-shell.js?v=6`、`enhance.js?v=257`、`game-polish.js?v=194`、`title-tools.js?v=111`、`debug-mode.js?v=122`
 
 ### 正式URLの横画面を旧TV構成へ復元
 
