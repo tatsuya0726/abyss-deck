@@ -33,7 +33,7 @@ function injectLandscapeCss(){
  try{
   d.documentElement.classList.add('tv-mode');
   const link=d.createElement('link');
-  link.rel='stylesheet';link.href='tv-landscape.css?v=13';
+  link.rel='stylesheet';link.href='tv-landscape.css?v=14';
   d.head.appendChild(link);
   cssInjected=true;
  }catch(e){}

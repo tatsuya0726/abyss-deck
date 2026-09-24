@@ -252,7 +252,7 @@ html.tv-mode .settings-hub-grid .tv-title-setting{border-color:#3e6d72!important
 
 /* Keep all nine title settings readable without a tall, narrow panel. */
 html.tv-mode .settings-hub-panel{
-  width:min(760px,94vw)!important;max-width:760px!important;height:auto!important;max-height:94vh!important}
+  width:min(760px,94vw)!important;max-width:760px!important;height:min(520px,94vh)!important;max-height:94vh!important}
 html.tv-mode .settings-hub-grid{
   grid-template-columns:repeat(3,minmax(0,1fr))!important;grid-auto-rows:auto!important}
 html.tv-mode .settings-hub-grid>button{
@@ -260,7 +260,7 @@ html.tv-mode .settings-hub-grid>button{
 html.tv-mode .settings-hub-grid>button b{font-size:14px!important;line-height:1.2!important}
 html.tv-mode .settings-hub-grid>button small{font-size:11px!important;line-height:1.25!important}
 @media (orientation:landscape) and (max-height:600px){
-  html.tv-mode .settings-hub-panel{width:min(820px,96vw)!important;max-height:96vh!important}
+  html.tv-mode .settings-hub-panel{width:min(820px,96vw)!important;height:96vh!important;max-height:96vh!important}
   html.tv-mode .settings-hub-panel .modal-shell-head{padding:8px 14px!important}
   html.tv-mode .settings-hub-grid{padding:7px!important;gap:6px!important}
   html.tv-mode .settings-hub-grid>button{min-height:64px!important;padding:6px 8px!important}
