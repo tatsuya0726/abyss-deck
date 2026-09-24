@@ -1,10 +1,17 @@
 (()=>{'use strict';
-const stage=document.getElementById('stage'),ring=document.getElementById('gp-focus-ring'),hint=document.getElementById('hint'),fsBtn=document.getElementById('fullscreen-btn');
+const stage=document.getElementById('stage'),ring=document.getElementById('gp-focus-ring'),fsBtn=document.getElementById('fullscreen-btn'),ctrlBtn=document.getElementById('controller-toggle');
 const SELECTOR="#newGame,#continueGame,#titleSettingsMenu,.title-hub-grid button:not(:disabled),[data-hub-close],#titleBestiary,#titleCardCodex,#titleRelicCodex,#titleBgmGallery:not(:disabled),#titleCodex,#resetAllData,#resetCancel,#resetConfirm,#modifierClose,#strategyClose,#runModifierBadge,#mapHelpView,#mapHelpClose,#rewardGoldOption,#rewardCardOption,#rewardRelicOption,#rewardContinue,#rewardBack,#skipReward,.boss-relic-choice,.achievement-card:not(:disabled),.market-item:not(:disabled),.node.available,.choice,.card[data-i],.pileBtn,#collectionClose,button:not([disabled]),.codex-card-wrap,[data-setting],[data-filter],[data-tab],a[href]";
 
 fsBtn.onclick=()=>{if(document.fullscreenElement)document.exitFullscreen?.();else document.documentElement.requestFullscreen?.().catch(()=>{})};
 
-let focusEl=null,gpConnected=false,cssInjected=false;
+const CTRL_KEY='abyssTvControllerEnabled';
+let enabled=true;
+try{enabled=localStorage.getItem(CTRL_KEY)!=='0'}catch(e){}
+function syncCtrlBtn(){ctrlBtn.textContent=`🎮 コントローラー操作：${enabled?'ON':'OFF'}`;ctrlBtn.classList.toggle('off',!enabled);if(!enabled)ring.style.display='none'}
+syncCtrlBtn();
+ctrlBtn.onclick=()=>{enabled=!enabled;try{localStorage.setItem(CTRL_KEY,enabled?'1':'0')}catch(e){}syncCtrlBtn();if(enabled)ensureFocus()};
+
+let focusEl=null,cssInjected=false;
 function doc(){try{return stage.contentDocument}catch(e){return null}}
 function win(){try{return stage.contentWindow}catch(e){return null}}
 
@@ -43,7 +50,7 @@ function rectOf(el){
 }
 
 function updateRing(){
- if(!focusEl||!visible(focusEl)){ring.style.display='none';return}
+ if(!enabled||!focusEl||!visible(focusEl)){ring.style.display='none';return}
  const r=rectOf(focusEl);
  ring.style.display='block';
  ring.style.left=(r.left-4)+'px';ring.style.top=(r.top-4)+'px';ring.style.width=(r.width+8)+'px';ring.style.height=(r.height+8)+'px';
@@ -55,6 +62,7 @@ function pickDefault(list){
  return list[0];
 }
 function ensureFocus(){
+ if(!enabled)return;
  const list=candidates();
  if(!list.length){focusEl=null;updateRing();return}
  if(focusEl&&list.includes(focusEl))return;
@@ -62,6 +70,7 @@ function ensureFocus(){
 }
 
 function moveFocus(dir){
+ if(!enabled)return;
  const list=candidates();
  if(!list.length){focusEl=null;return}
  if(!focusEl||!list.includes(focusEl)){focusEl=pickDefault(list);updateRing();return}
@@ -79,17 +88,19 @@ function moveFocus(dir){
   const score=primary+ortho*2.2;
   if(score<bestScore){bestScore=score;best=el}
  }
- if(best){focusEl=best;updateRing();hint.classList.add('hide')}
+ if(best){focusEl=best;updateRing()}
 }
 
-function doConfirm(){if(!focusEl)return;focusEl.click();hint.classList.add('hide')}
+function doConfirm(){if(!enabled||!focusEl)return;focusEl.click()}
 function doBack(){
+ if(!enabled)return;
  const d=doc();if(!d)return;
  const modals=[...d.querySelectorAll('.modal.on')];
  if(modals.length)modals[modals.length-1].dispatchEvent(new MouseEvent('click',{bubbles:true,cancelable:true,view:win()}));
 }
 
 window.addEventListener('keydown',e=>{
+ if(!enabled)return;
  const map={ArrowUp:'up',ArrowDown:'down',ArrowLeft:'left',ArrowRight:'right'};
  if(map[e.key]){e.preventDefault();moveFocus(map[e.key])}
  else if(e.key==='Enter'){e.preventDefault();doConfirm()}
@@ -99,11 +110,11 @@ window.addEventListener('keydown',e=>{
 const heldSince={};
 const REPEAT_DELAY=380,REPEAT_RATE=140;
 function pollGamepad(){
+ if(!enabled){requestAnimationFrame(pollGamepad);return}
  const pads=navigator.getGamepads?navigator.getGamepads():[];
  let pad=null;
  for(const p of pads)if(p){pad=p;break}
  if(pad){
-  if(!gpConnected){gpConnected=true;hint.textContent='🎮 コントローラー接続中';setTimeout(()=>hint.classList.add('hide'),1800)}
   const now=performance.now();
   const dirs=[
    ['up',!!pad.buttons[12]?.pressed||pad.axes[1]<-0.5],
@@ -139,5 +150,5 @@ stage.addEventListener('load',()=>{
 });
 window.addEventListener('resize',()=>{ensureFocus();updateRing()});
 
-window.abyssTvDebug={candidates,moveFocus,doConfirm,doBack,ensureFocus,get focusEl(){return focusEl}};
+window.abyssTvDebug={candidates,moveFocus,doConfirm,doBack,ensureFocus,get focusEl(){return focusEl},get enabled(){return enabled},setEnabled(v){enabled=v;syncCtrlBtn();if(enabled)ensureFocus();else updateRing()}};
 })();
