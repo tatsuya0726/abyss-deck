@@ -25,7 +25,15 @@ soundBtn.onclick=()=>{try{doc()?.getElementById('soundBtn')?.click()}catch(e){}s
 const CTRL_KEY='abyssTvControllerEnabled';
 let enabled=true;
 try{enabled=localStorage.getItem(CTRL_KEY)!=='0'}catch(e){}
-function syncCtrlBtn(){let buttonText=`🎮 コントローラー操作：${enabled?'ON':'OFF'}`;if(ctrlBtn.textContent!==buttonText)ctrlBtn.textContent=buttonText;ctrlBtn.classList.toggle('off',!enabled);let label=doc()?.querySelector('#titleTvController small'),text=`コントローラー ${enabled?'ON':'OFF'}`;if(label&&label.textContent!==text)label.textContent=text;if(!enabled)ring.style.display='none'}
+function syncControllerUi(){
+ const d=doc();if(!d)return;
+ d.documentElement.classList.toggle('controller-mode',enabled&&landscapeLayout);
+ const end=d.getElementById('endTurn');
+ if(end&&!end.querySelector('.controller-end-hint')){
+  const hint=d.createElement('span');hint.className='controller-end-hint';hint.setAttribute('aria-hidden','true');hint.textContent='X';end.prepend(hint);
+ }
+}
+function syncCtrlBtn(){let buttonText=`🎮 コントローラー操作：${enabled?'ON':'OFF'}`;if(ctrlBtn.textContent!==buttonText)ctrlBtn.textContent=buttonText;ctrlBtn.classList.toggle('off',!enabled);let label=doc()?.querySelector('#titleTvController small'),text=`コントローラー ${enabled?'ON':'OFF'}`;if(label&&label.textContent!==text)label.textContent=text;if(!enabled)ring.style.display='none';syncControllerUi()}
 syncCtrlBtn();
 ctrlBtn.onclick=()=>{enabled=!enabled;try{localStorage.setItem(CTRL_KEY,enabled?'1':'0')}catch(e){}syncCtrlBtn();if(enabled)ensureFocus()};
 
@@ -48,6 +56,7 @@ function syncOrientationLayout(){
  const d=doc();if(!d)return;
  landscapeLayout=matchMedia('(orientation:landscape)').matches||innerWidth>innerHeight;
  d.documentElement.classList.toggle('tv-mode',landscapeLayout);
+ syncControllerUi();
  installTitleSettings();
  if(!landscapeLayout){focusEl=null;ring.style.display='none'}
  else ensureFocus();
@@ -59,7 +68,7 @@ function injectLandscapeCss(){
  const d=doc();if(!d||cssInjected)return;
  try{
   const link=d.createElement('link');
-  link.rel='stylesheet';link.href='responsive-landscape.css?v=4';
+  link.rel='stylesheet';link.href='responsive-landscape.css?v=6';
   d.head.appendChild(link);
   cssInjected=true;
  }catch(e){}
@@ -83,8 +92,15 @@ function syncIntentPosition(){
  if(!nameEl||!battleEl)return;
  const r=nameEl.getBoundingClientRect();
  if(!r.height)return;
- const containerTop=battleEl.getBoundingClientRect().top;
- intentEl.style.setProperty('top',(r.top+r.height/2-containerTop)+'px','important');
+ const battleRect=battleEl.getBoundingClientRect(),transformed=getComputedStyle(battleEl).transform!=='none';
+ const containerTop=transformed?battleRect.top:0;
+ const hudBottom=d.querySelector('.hud')?.getBoundingClientRect().bottom||0;
+ const handTop=d.querySelector('.handArea')?.getBoundingClientRect().top||innerHeight;
+ const intentHeight=Math.max(1,intentEl.getBoundingClientRect().height||intentEl.offsetHeight||1);
+ const minCenter=Math.max(battleRect.top,hudBottom)+8+intentHeight/2;
+ const maxCenter=Math.max(minCenter,Math.min(battleRect.bottom,handTop)-8-intentHeight/2);
+ const center=Math.max(minCenter,Math.min(maxCenter,r.top+r.height/2));
+ intentEl.style.setProperty('top',(center-containerTop)+'px','important');
  intentEl.style.setProperty('transform','translate(-50%,-50%)','important');
 }
 
@@ -131,6 +147,25 @@ function ensureFocus(){
  focusEl=pickDefault(list);updateRing();
 }
 
+function scrollParent(el){
+ const d=doc();
+ for(let p=el?.parentElement;p&&p!==d?.body;p=p.parentElement){const s=getComputedStyle(p);if(/auto|scroll/.test(s.overflowY+s.overflowX)&&(p.scrollHeight>p.clientHeight+2||p.scrollWidth>p.clientWidth+2))return p}
+ return d?.querySelector('.modal.on .modal-shell-body,.modal.on .panel,#map.on .path,#battle.on .hand');
+}
+function revealFocus(el){
+ if(!el)return;
+ try{el.scrollIntoView({block:'nearest',inline:'nearest',behavior:'smooth'})}catch(e){el.scrollIntoView(false)}
+ requestAnimationFrame(updateRing);
+}
+function scrollActive(amount){
+ const d=doc();if(!d)return false;
+ let target=scrollParent(focusEl);
+ if(!target){const modal=[...d.querySelectorAll('.modal.on')].pop();target=modal?.querySelector('.modal-shell-body,.panel')||d.querySelector('#map.on .path,#battle.on .hand,.screen.on')}
+ if(!target)return false;
+ const vertical=target.scrollHeight>target.clientHeight+2;
+ if(vertical)target.scrollBy({top:amount,behavior:'auto'});else if(target.scrollWidth>target.clientWidth+2)target.scrollBy({left:amount,behavior:'auto'});else return false;
+ requestAnimationFrame(updateRing);return true;
+}
 function moveFocus(dir){
  if(!enabled)return;
  const list=candidates();
@@ -150,7 +185,8 @@ function moveFocus(dir){
   const score=primary+ortho*2.2;
   if(score<bestScore){bestScore=score;best=el}
  }
- if(best){focusEl=best;updateRing()}
+ if(best){focusEl=best;revealFocus(best);updateRing()}
+ else if(dir==='up'||dir==='down')scrollActive(dir==='up'?-110:110);
 }
 
 function doConfirm(){if(!enabled||!focusEl)return;focusEl.click()}
@@ -160,6 +196,12 @@ function doBack(){
  const modals=[...d.querySelectorAll('.modal.on')];
  if(modals.length)modals[modals.length-1].dispatchEvent(new MouseEvent('click',{bubbles:true,cancelable:true,view:win()}));
 }
+function doEndTurn(){
+ if(!enabled)return;
+ const d=doc(),battle=d?.getElementById('battle'),end=d?.getElementById('endTurn');
+ if(!battle?.classList.contains('on')||!end||end.disabled||d.querySelector('.modal.on'))return;
+ end.click();
+}
 
 window.addEventListener('keydown',e=>{
  if(!landscapeLayout||!enabled)return;
@@ -167,6 +209,7 @@ window.addEventListener('keydown',e=>{
  if(map[e.key]){e.preventDefault();moveFocus(map[e.key])}
  else if(e.key==='Enter'){e.preventDefault();doConfirm()}
  else if(e.key==='Escape'||e.key==='Backspace'){e.preventDefault();doBack()}
+ else if(e.key.toLowerCase()==='x'){e.preventDefault();doEndTurn()}
 });
 
 const heldSince={};
@@ -193,6 +236,10 @@ function pollGamepad(frameTime=0){
   }
   if(pad.buttons[0]?.pressed){if(!heldSince.a){heldSince.a=true;doConfirm()}}else heldSince.a=false;
   if(pad.buttons[1]?.pressed){if(!heldSince.b){heldSince.b=true;doBack()}}else heldSince.b=false;
+  if(pad.buttons[2]?.pressed){if(!heldSince.x){heldSince.x=true;doEndTurn()}}else heldSince.x=false;
+  const scrollAxis=Math.abs(pad.axes[3]||0)>.32?(pad.axes[3]||0):0;
+  const scrollButtons=(pad.buttons[5]?.pressed?1:0)-(pad.buttons[4]?.pressed?1:0);
+  if(scrollAxis||scrollButtons)scrollActive((scrollAxis||scrollButtons)*12);
  }
  if(frameTime-lastLayoutSync>=120){
   lastLayoutSync=frameTime;
@@ -215,7 +262,7 @@ function initializeResponsive(){
  requestAnimationFrame(()=>requestAnimationFrame(()=>{if(!directMode)stage.classList.add('ready');ensureFocus()}));
  try{
   const d=doc();
-  const mo=new MutationObserver(()=>{installTitleSettings();syncSoundBtn();if(rescanQueued)return;rescanQueued=true;requestAnimationFrame(()=>{rescanQueued=false;ensureFocus()})});
+  const mo=new MutationObserver(()=>{installTitleSettings();syncSoundBtn();syncControllerUi();if(rescanQueued)return;rescanQueued=true;requestAnimationFrame(()=>{rescanQueued=false;ensureFocus()})});
   mo.observe(d.body,{subtree:true,childList:true,attributes:true,attributeFilter:['class','hidden','disabled']});
  }catch(e){}
 }
@@ -235,5 +282,5 @@ window.addEventListener('orientationchange',()=>setTimeout(handleOrientation,80)
 window.visualViewport?.addEventListener('resize',handleOrientation,{passive:true});
 window.visualViewport?.addEventListener('scroll',syncStageViewport,{passive:true});
 
-window.abyssResponsiveDebug={candidates,moveFocus,doConfirm,doBack,ensureFocus,get focusEl(){return focusEl},get enabled(){return enabled},setEnabled(v){enabled=v;syncCtrlBtn();if(enabled)ensureFocus();else updateRing()}};
+window.abyssResponsiveDebug={candidates,moveFocus,doConfirm,doBack,doEndTurn,scrollActive,ensureFocus,get focusEl(){return focusEl},get enabled(){return enabled},setEnabled(v){enabled=v;syncCtrlBtn();if(enabled)ensureFocus();else updateRing()}};
 })();

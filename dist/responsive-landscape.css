@@ -408,6 +408,12 @@ html.tv-mode .endTurn{
   padding:clamp(9px,1.25vh,16px) clamp(16px,1.6vw,30px)!important;
   font-size:clamp(13px,min(1vw,2vh),21px)!important
 }
+html.tv-mode .controller-end-hint{display:none}
+html.tv-mode.controller-mode .controller-end-hint{
+  display:inline-grid;place-items:center;width:1.65em;height:1.65em;margin-right:.48em;
+  border:2px solid currentColor;border-radius:50%;font:800 .78em/1 system-ui,sans-serif;
+  vertical-align:middle;box-shadow:0 0 8px #82edf066
+}
 html.tv-mode .handArea{height:38%!important;padding:clamp(6px,1vh,14px) clamp(10px,1.3vw,24px)!important}
 html.tv-mode .hand{gap:clamp(5px,.75vw,14px)!important}
 html.tv-mode .card{
@@ -529,6 +535,23 @@ html.tv-mode .panel{
 }
 html.tv-mode .panel h2{font-size:clamp(24px,min(2vw,4vh),44px)!important}
 html.tv-mode .panel p{font-size:var(--tv-text)!important}
+html.tv-mode .modal-shell-head small,
+html.tv-mode .panel>header small{font-size:var(--tv-small)!important}
+html.tv-mode .modal-shell-foot .btn,
+html.tv-mode .codex-toolbar button,
+html.tv-mode [data-filter],
+html.tv-mode [data-tab]{font-size:var(--tv-text)!important}
+html.tv-mode .settings-hub-grid>button b{
+  font-size:clamp(14px,min(1.05vw,2.2vh),22px)!important
+}
+html.tv-mode .settings-hub-grid>button small,
+html.tv-mode .map-help-item span,
+html.tv-mode .profile-row,
+html.tv-mode .collection-panel small,
+html.tv-mode .card-codex-panel small{font-size:var(--tv-small)!important}
+html.tv-mode .map-help-item b,
+html.tv-mode .collection-panel b,
+html.tv-mode .card-codex-panel b{font-size:var(--tv-text)!important}
 html.tv-mode #shopModal .panel,
 html.tv-mode #rewardModal .panel,
 html.tv-mode #endModal .panel{width:min(92vw,1500px)!important}
@@ -543,6 +566,11 @@ html.tv-mode .rewards{max-width:min(88vw,1380px)!important;gap:var(--tv-gap)!imp
 
 /* Phone landscape keeps the same composition, scaled to its short height. */
 @media (orientation:landscape) and (max-height:600px){
+  html.tv-mode body,html.tv-mode .app{height:100dvh!important;min-height:0!important}
+  html.tv-mode .app{position:fixed!important;inset:0!important;transform:none!important}
+  html.tv-mode .hud{position:absolute!important;top:0!important;left:0!important;right:0!important}
+  html.tv-mode .screen{position:absolute!important;top:44px!important;right:0!important;bottom:0!important;left:0!important}
+  html.tv-mode body.scene-title #title{position:fixed!important;top:0!important;right:0!important;bottom:0!important;left:0!important}
   html.tv-mode{
     --tv-text:clamp(11px,2.8vh,15px);
     --tv-small:clamp(9px,2.2vh,12px)
