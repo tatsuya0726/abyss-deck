@@ -13,7 +13,13 @@ html.tv-mode .hud{height:44px!important;padding:0 108px 0 14px!important;gap:8px
 html.tv-mode .screen{inset:44px 0 0!important}
 html.tv-mode .logo{font-size:15px!important}
 html.tv-mode .zone{display:none!important}
-html.tv-mode .chip{padding:4px 8px!important;font-size:11px!important;line-height:1.2!important}
+/* Explicit height + flex centering (rather than relying on padding + the font's
+   own line-height metrics) keeps this box the same size no matter which font
+   actually ends up rendering the Japanese label — different browsers can fall
+   back to different system fonts for 'Noto Sans JP', which otherwise skews the
+   button's rendered height even with identical padding/font-size values. */
+html.tv-mode .chip{display:inline-flex!important;align-items:center!important;justify-content:center!important;
+  box-sizing:border-box!important;height:24px!important;padding:0 8px!important;font-size:11px!important;line-height:1!important}
 /* Equipped-relic icon, deck-count chip and the in-game sound button are dropped
    from the TV HUD; sound is folded into the ⚙設定 panel instead (see tv.html). */
 html.tv-mode .relics{display:none!important}
@@ -30,8 +36,9 @@ html.tv-mode .quick-nav{position:static!important;display:flex!important;flex-di
   padding:0!important;margin:0 0 0 auto!important;background:none!important}
 html.tv-mode .quick-nav button,html.tv-mode .suspend-run,html.tv-mode #mapHelpView{
   position:static!important;left:auto!important;top:auto!important;bottom:auto!important;
-  width:auto!important;min-width:0!important;min-height:0!important;
-  padding:4px 8px!important;font-size:11px!important;line-height:1.2!important;border-radius:8px!important;
+  display:inline-flex!important;align-items:center!important;justify-content:center!important;box-sizing:border-box!important;
+  width:auto!important;min-width:0!important;min-height:0!important;height:24px!important;
+  padding:0 8px!important;font-size:11px!important;line-height:1!important;border-radius:8px!important;
   white-space:nowrap!important;overflow:visible!important;text-overflow:clip!important;z-index:auto!important}
 
 /* ---------- Title screen: two-column layout ---------- */
@@ -65,17 +72,19 @@ html.tv-mode .creature{height:min(32vh,340px)!important;width:auto!important;asp
 html.tv-mode .creature.player{--player-scale:.8!important}
 
 /* The enemy's intent panel is pinned to a fixed viewport position in the open
-   gap between the two units (arena-center, leaning slightly toward the enemy
-   side) instead of being anchored relative to the unit/creature box. Anchoring
+   gap between the two units (leaning toward the enemy side, clear of the enemy
+   sprite) instead of being anchored relative to the unit/creature box. Anchoring
    to the unit made its exact position depend on the creature artwork's actual
    rendered width, which could bring it right up against wide sprites; a fixed
    position in the middle gap is independent of any creature's art and can
-   never collide with either sprite. */
+   never collide with either sprite. Anchored from the top so it grows downward
+   as multi-line intents add more content, instead of growing both ways from a
+   vertical center. */
 html.tv-mode .enemy-unit>.intent,html.tv-mode #intent{
-  position:fixed!important;top:calc(44px + 33vh)!important;bottom:auto!important;
-  left:56%!important;right:auto!important;margin:0!important;
-  transform:translate(-50%,-50%)!important;
-  width:min(148px,20vw)!important;max-height:min(40vh,180px)!important;overflow-y:auto!important;font-size:12px!important;z-index:15!important}
+  position:fixed!important;top:calc(44px + 16vh)!important;bottom:auto!important;
+  left:62%!important;right:auto!important;margin:0!important;
+  transform:translateX(-50%)!important;
+  width:min(148px,18vw)!important;max-height:min(40vh,180px)!important;overflow-y:auto!important;font-size:12px!important;z-index:15!important}
 
 /* End turn moves out of the hand row entirely, to sit just below-right of the
    enemy's HP bar — freeing the whole hand row for cards. */
@@ -116,21 +125,31 @@ html.tv-mode .rewards{flex-wrap:wrap!important;max-width:900px!important;margin:
 @media(max-height:500px){
   html.tv-mode .hud{height:36px!important;padding-right:96px!important}
   html.tv-mode .screen{inset:36px 0 0!important}
-  html.tv-mode .quick-nav button,html.tv-mode .suspend-run,html.tv-mode #mapHelpView{padding:3px 6px!important;font-size:9.5px!important}
+  html.tv-mode .quick-nav button,html.tv-mode .suspend-run,html.tv-mode #mapHelpView{padding:0 6px!important;font-size:9.5px!important}
   html.tv-mode .handArea{height:34%!important}
   html.tv-mode .arena{height:66%!important}
   html.tv-mode .endTurn{padding:7px 12px!important;font-size:11.5px!important}
   html.tv-mode .enemy-unit>.intent,html.tv-mode #intent{
-    top:calc(36px + 31vh)!important;width:min(126px,30vw)!important;max-height:min(30vh,110px)!important;font-size:10.5px!important;padding:5px 7px!important}
+    top:calc(36px + 14vh)!important;width:min(126px,28vw)!important;max-height:min(30vh,110px)!important;font-size:10.5px!important;padding:5px 7px!important}
+  /* .card's height:clamp(144px,23vh,206px) forces a 144px floor even when 23vh
+     is much smaller — on a short landscape viewport (a phone lying down) that
+     floor no longer fits inside the shrunken hand row, so cards poked up past
+     the arena boundary at the top and got clipped at the bottom. Uses min()
+     here instead of clamp() specifically because it has no forced floor. */
+  html.tv-mode .card{width:min(66px,14vw)!important;height:min(94px,19.5vh)!important}
+  html.tv-mode .art{font-size:clamp(22px,4.4vw,34px)!important}
+  html.tv-mode .cname{font-size:8px!important;padding:2px 2px 1px!important}
+  html.tv-mode .ctext{font-size:7px!important;line-height:1.15!important}
+  html.tv-mode .cost{width:20px!important;height:20px!important;font-size:10px!important}
 }
 
 /* Narrow widths (phone landscape): the gap between the two units is proportionally
-   tighter here, so leaning the intent panel toward the enemy side (left:56% on
+   tighter here, so leaning the intent panel toward the enemy side (left:62% on
    wider screens) brings it too close to the enemy sprite. Center it more evenly
    and shrink it a bit instead — still a fixed position independent of the unit
    box, just tuned for less available width. The end-turn button also needs a
    different spot here, since there isn't room beside the enemy's HP bar. */
 @media(max-width:1100px){
-  html.tv-mode .enemy-unit>.intent,html.tv-mode #intent{left:50%!important;width:min(104px,24vw)!important}
+  html.tv-mode .enemy-unit>.intent,html.tv-mode #intent{left:54%!important;width:min(104px,24vw)!important}
   html.tv-mode .endTurn{top:auto!important;bottom:calc(30% + 10px)!important;right:3vw!important}
 }
