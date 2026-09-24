@@ -771,3 +771,174 @@ html.tv-mode .modal.on .choice,
 html.tv-mode .rewardCard{
   animation:none!important
 }
+
+
+/* ==========================================================================
+   Landscape direct-page v4
+   The official URL now renders the game directly (no iframe), so Safari uses
+   a single visual and hit-test coordinate space after rotation.
+   ========================================================================== */
+html.tv-mode body.scene-title .title-actions{
+  display:grid!important;
+  grid-template-columns:repeat(2,minmax(0,1fr))!important;
+  column-gap:clamp(6px,.8vw,12px)!important;
+  row-gap:clamp(5px,.7vh,9px)!important;
+  width:100%!important;
+  max-width:600px!important;
+  margin:clamp(10px,1.5vh,18px) auto 0!important
+}
+html.tv-mode body.scene-title #continueGame,
+html.tv-mode body.scene-title #newGame{
+  display:block!important;
+  grid-row:1!important;
+  width:100%!important;
+  min-width:0!important;
+  min-height:clamp(46px,5.8vh,62px)!important;
+  margin:0!important;
+  padding:clamp(8px,1.1vh,14px)!important;
+  font-size:clamp(14px,min(1.05vw,2.1vh),21px)!important;
+  transform:none!important
+}
+html.tv-mode body.scene-title #continueGame{grid-column:1!important}
+html.tv-mode body.scene-title #newGame{grid-column:2!important}
+html.tv-mode body.scene-title #continueGame[hidden]{display:none!important}
+html.tv-mode body.scene-title .title-actions:has(#continueGame[hidden]) #newGame{
+  grid-column:1/-1!important;
+  justify-self:center!important;
+  width:min(68%,430px)!important
+}
+html.tv-mode body.scene-title .title-library-grid{
+  grid-column:1/-1!important;
+  grid-row:2!important
+}
+html.tv-mode body.scene-title #ascensionPanel{
+  margin-bottom:clamp(8px,1.2vh,14px)!important
+}
+
+/* All horizontal archives: compact fixed header/footer and a genuinely
+   scrollable content area. This targets phone landscape by height, not width. */
+html.tv-mode .panel.modal-shell{
+  box-sizing:border-box!important;
+  width:min(96vw,1500px)!important;
+  height:min(92dvh,900px)!important;
+  max-width:none!important;
+  max-height:92dvh!important;
+  padding:0!important;
+  overflow:hidden!important;
+  display:flex!important;
+  flex-direction:column!important
+}
+html.tv-mode .panel.modal-shell>.modal-shell-head{
+  flex:0 0 auto!important;
+  margin:0!important
+}
+html.tv-mode .panel.modal-shell>.modal-shell-body{
+  flex:1 1 0!important;
+  min-height:0!important;
+  max-height:none!important;
+  overflow-x:hidden!important;
+  overflow-y:auto!important;
+  -webkit-overflow-scrolling:touch!important;
+  touch-action:pan-y!important
+}
+html.tv-mode .panel.modal-shell>.modal-shell-foot{
+  flex:0 0 auto!important
+}
+html.tv-mode .card-codex-panel{width:min(96vw,1500px)!important}
+html.tv-mode #collectionGrid.beast-grid{
+  grid-template-columns:repeat(auto-fill,minmax(clamp(220px,22vw,360px),1fr))!important
+}
+
+@media (orientation:landscape) and (max-height:600px){
+  html.tv-mode body.scene-title .title-actions{
+    column-gap:5px!important;
+    row-gap:4px!important;
+    margin:6px auto 0!important
+  }
+  html.tv-mode body.scene-title #continueGame,
+  html.tv-mode body.scene-title #newGame{
+    min-height:38px!important;
+    padding:5px 7px!important;
+    font-size:12px!important
+  }
+  html.tv-mode body.scene-title #ascensionPanel{margin-bottom:5px!important}
+
+  html.tv-mode .modal{padding:3px!important}
+  html.tv-mode .panel.modal-shell{
+    width:calc(100vw - 6px)!important;
+    height:calc(100dvh - 6px)!important;
+    max-height:calc(100dvh - 6px)!important;
+    border-radius:8px!important
+  }
+  html.tv-mode .panel.modal-shell>.modal-shell-head{
+    padding:5px 8px 4px!important
+  }
+  html.tv-mode .panel.modal-shell>.modal-shell-head small{display:none!important}
+  html.tv-mode .panel.modal-shell>.modal-shell-head h2{
+    margin:0!important;
+    font-size:clamp(17px,4.8vh,23px)!important;
+    line-height:1.1!important
+  }
+  html.tv-mode .panel.modal-shell>.modal-shell-head p{
+    display:none!important;
+    margin:0!important
+  }
+  html.tv-mode .panel.modal-shell>.modal-shell-body{padding:4px 6px!important}
+  html.tv-mode .panel.modal-shell>.modal-shell-foot{
+    padding:4px 6px max(4px,env(safe-area-inset-bottom))!important
+  }
+  html.tv-mode .panel.modal-shell>.modal-shell-foot .btn{
+    min-height:34px!important;
+    padding:5px 9px!important;
+    font-size:11px!important
+  }
+  html.tv-mode .codex-filters,
+  html.tv-mode .codex-sortbar{
+    gap:4px!important;
+    padding:3px 0 0!important
+  }
+  html.tv-mode .codex-filters button,
+  html.tv-mode .codex-sortbar button{
+    min-height:28px!important;
+    padding:4px 8px!important;
+    font-size:10px!important
+  }
+  html.tv-mode .card-codex-grid,
+  html.tv-mode #collectionGrid.collection-grid{
+    grid-template-columns:repeat(auto-fill,minmax(128px,1fr))!important;
+    gap:7px 4px!important
+  }
+  html.tv-mode .unified-card{
+    width:124px!important;
+    height:180px!important
+  }
+  html.tv-mode .unified-card .cname{font-size:9px!important;padding:3px 2px!important}
+  html.tv-mode .unified-card .ctext{font-size:8px!important;line-height:1.28!important}
+  html.tv-mode #collectionGrid.beast-grid{
+    grid-template-columns:repeat(2,minmax(0,1fr))!important;
+    gap:6px!important
+  }
+  html.tv-mode .beast-grid .beast-card{
+    display:grid!important;
+    grid-template-columns:minmax(105px,34%) minmax(0,1fr)!important;
+    align-items:center!important;
+    min-height:128px!important
+  }
+  html.tv-mode .beast-grid .beast-img{
+    height:128px!important;
+    min-height:128px!important
+  }
+  html.tv-mode .beast-grid .beast-copy{padding:6px 8px!important}
+  html.tv-mode .beast-grid .beast-copy h3{font-size:12px!important;margin-bottom:2px!important}
+  html.tv-mode .beast-grid .beast-copy p{font-size:9px!important;line-height:1.35!important;margin:2px 0!important}
+}
+
+@media (orientation:landscape) and (max-height:430px){
+  html.tv-mode .panel.modal-shell>.modal-shell-head h2{font-size:16px!important}
+  html.tv-mode .codex-filters button,
+  html.tv-mode .codex-sortbar button{min-height:25px!important;padding:3px 7px!important}
+  html.tv-mode .panel.modal-shell>.modal-shell-foot .btn{min-height:30px!important}
+  html.tv-mode .unified-card{width:112px!important;height:164px!important}
+  html.tv-mode .card-codex-grid,
+  html.tv-mode #collectionGrid.collection-grid{grid-template-columns:repeat(auto-fill,minmax(116px,1fr))!important}
+}

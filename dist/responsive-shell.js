@@ -1,8 +1,9 @@
 (()=>{'use strict';
-const stage=document.getElementById('stage'),ring=document.getElementById('gp-focus-ring'),fsBtn=document.getElementById('fullscreen-btn'),ctrlBtn=document.getElementById('controller-toggle');
+const stage=document.getElementById('stage'),directMode=!stage,ring=document.getElementById('gp-focus-ring'),fsBtn=document.getElementById('fullscreen-btn'),ctrlBtn=document.getElementById('controller-toggle');
 let landscapeLayout=matchMedia('(orientation:landscape)').matches||innerWidth>innerHeight;
 const stageWrap=document.getElementById('stage-wrap');
 function syncStageViewport(){
+ if(directMode)return;
  const viewport=window.visualViewport;
  const width=Math.max(1,Math.round(viewport?.width||window.innerWidth));
  const height=Math.max(1,Math.round(viewport?.height||window.innerHeight));
@@ -28,9 +29,9 @@ function syncCtrlBtn(){ctrlBtn.textContent=`🎮 コントローラー操作：$
 syncCtrlBtn();
 ctrlBtn.onclick=()=>{enabled=!enabled;try{localStorage.setItem(CTRL_KEY,enabled?'1':'0')}catch(e){}syncCtrlBtn();if(enabled)ensureFocus()};
 
-let focusEl=null,cssInjected=false;
-function doc(){try{return stage.contentDocument}catch(e){return null}}
-function win(){try{return stage.contentWindow}catch(e){return null}}
+let focusEl=null,cssInjected=directMode&&!!document.querySelector('link[href*="responsive-landscape.css"]');
+function doc(){try{return directMode?document:stage.contentDocument}catch(e){return null}}
+function win(){try{return directMode?window:stage.contentWindow}catch(e){return null}}
 
 function installTitleSettings(){
  const d=doc(),grid=d?.querySelector('#titleSettingsModal .settings-hub-grid');if(!grid)return;
@@ -58,7 +59,7 @@ function injectLandscapeCss(){
  const d=doc();if(!d||cssInjected)return;
  try{
   const link=d.createElement('link');
-  link.rel='stylesheet';link.href='responsive-landscape.css?v=3';
+  link.rel='stylesheet';link.href='responsive-landscape.css?v=4';
   d.head.appendChild(link);
   cssInjected=true;
  }catch(e){}
@@ -105,7 +106,7 @@ function candidates(){
 }
 
 function rectOf(el){
- const r=el.getBoundingClientRect(),f=stage.getBoundingClientRect();
+ const r=el.getBoundingClientRect(),f=directMode?{left:0,top:0}:stage.getBoundingClientRect();
  const left=f.left+r.left,top=f.top+r.top;
  return{left,top,width:r.width,height:r.height,cx:left+r.width/2,cy:top+r.height/2};
 }
@@ -204,20 +205,24 @@ function pollGamepad(frameTime=0){
 requestAnimationFrame(pollGamepad);
 
 let rescanQueued=false;
-stage.addEventListener('load',()=>{
+function initializeResponsive(){
  landscapeLayout=matchMedia('(orientation:landscape)').matches||innerWidth>innerHeight;
- try{if(landscapeLayout)stage.contentWindow.localStorage.setItem('abyssA2hsSeen','1')}catch(e){}
+ try{if(landscapeLayout)win().localStorage.setItem('abyssA2hsSeen','1')}catch(e){}
  injectLandscapeCss();
  installTitleSettings();
  syncOrientationLayout();
  syncSoundBtn();
- requestAnimationFrame(()=>requestAnimationFrame(()=>{stage.classList.add('ready');ensureFocus()}));
+ requestAnimationFrame(()=>requestAnimationFrame(()=>{if(!directMode)stage.classList.add('ready');ensureFocus()}));
  try{
-  const d=stage.contentDocument;
+  const d=doc();
   const mo=new MutationObserver(()=>{installTitleSettings();syncSoundBtn();if(rescanQueued)return;rescanQueued=true;requestAnimationFrame(()=>{rescanQueued=false;ensureFocus()})});
   mo.observe(d.body,{subtree:true,childList:true,attributes:true,attributeFilter:['class','hidden','disabled']});
  }catch(e){}
-});
+}
+if(directMode){
+ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',initializeResponsive,{once:true});
+ else initializeResponsive();
+}else stage.addEventListener('load',initializeResponsive);
 const handleOrientation=()=>{
  syncStageViewport();
  syncOrientationLayout();

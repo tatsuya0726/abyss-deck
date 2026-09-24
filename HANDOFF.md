@@ -28,8 +28,8 @@
 ### 正式URLの横画面を旧TV構成へ復元
 
 - 正式URLは `https://tatsuya0726.github.io/abyss-deck/` のまま。localStorage保存領域も変更しない
-- 以前正常だったTV版と同じ、外側シェル＋同一オリジンiframeの構成を正式URLへ移植
-- ルート `dist/index.html` は表示シェル、ゲーム本体は `dist/game.html`
+- iPhone Safariで横画面回転後に全画面のタップ位置がずれるため、正式URLはiframeを廃止してゲーム本体を直接描画
+- `dist/index.html` と `dist/game.html` は同じ直接描画版。正式URLは `dist/index.html` を使用
 - 縦画面では通常スマホ表示、横画面では `html.tv-mode` の旧TVレイアウトを適用
 - 回転時は `resize`、`orientationchange`、`visualViewport.resize`を監視
 - 回転後に現在の画面を再判定し、タイトル・マップ・戦闘・ボス等の正しいBGMへ強制再同期
@@ -37,12 +37,14 @@
 - 旧 `tv.html` URLは復活させず、正式URLだけを使用
 - 今後、明示がない限り横画面専用の `html.tv-mode` 配下だけを変更し、完成済みの縦画面には触れない
 - 横画面タイトルはロゴ・深海階級・開始ボタン・図鑑メニューを中央へまとめた構成
+- 「つづきから」「最初から潜る」を横並びにし、深海階級の討伐記録との間隔を確保
 - Safari回転後の全画面タップ位置ずれ対策として、横画面の画面・モーダル・タイトルに残るtransformアニメーションを停止
-- 外側iframeをvisualViewportの実表示サイズへ同期し、見た目とタップ判定座標を一致
+- iframeを完全に廃止してSafariの見た目とタップ判定を同一座標系へ統一
 - イベント画面を左に象徴画像、右に本文と選択肢を置く横長2カラムへ刷新
 - HUD、敵画像、カード、文字、マップ、報酬・ショップ画面を `clamp()` とvw/vhで自動拡大縮小
 - スマホ横画面は短い高さへ収め、TVでは固定上限による小さすぎる表示を解消
-- 現在のキャッシュ番号: `game.html?v=3`、`responsive-shell.js?v=3`、`responsive-landscape.css?v=3`、`enhance.js?v=254`
+- 横画面のカード・生物・レリック図鑑を高さ基準でコンパクト化し、本文だけを縦スクロール可能に変更
+- 現在のキャッシュ番号: `responsive-shell.js?v=4`、`responsive-landscape.css?v=4`、`enhance.js?v=254`
 
 ### レリック再調整
 
