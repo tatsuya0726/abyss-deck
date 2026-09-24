@@ -66,9 +66,9 @@ html.tv-mode .path{height:calc(100vh - 96px)!important;width:min(58vw,620px)!imp
 html.tv-mode #battle{flex-direction:row!important;flex-wrap:wrap!important;align-content:flex-start!important}
 html.tv-mode .dead-sea-timer{left:auto!important;right:16px!important}
 html.tv-mode .battlelog{top:auto!important;bottom:calc(30% + 6px)!important;font-size:11px!important}
-html.tv-mode .arena{width:100%!important;height:70%!important;align-items:center!important;padding:6px 3vw 0!important}
+html.tv-mode .arena{width:100%!important;height:63%!important;align-items:center!important;padding:6px 3vw 0!important}
 html.tv-mode .unit{width:36%!important}
-html.tv-mode .creature{height:min(32vh,340px)!important;width:auto!important;aspect-ratio:1.61!important;min-width:0!important;max-width:100%!important;margin:0 auto!important}
+html.tv-mode .creature{height:min(27vh,290px)!important;width:auto!important;aspect-ratio:1.61!important;min-width:0!important;max-width:100%!important;margin:0 auto!important}
 html.tv-mode .creature.player{--player-scale:.8!important}
 
 /* The enemy's intent panel is pinned to a fixed viewport position in the open
@@ -81,8 +81,8 @@ html.tv-mode .creature.player{--player-scale:.8!important}
    as multi-line intents add more content, instead of growing both ways from a
    vertical center. */
 html.tv-mode .enemy-unit>.intent,html.tv-mode #intent{
-  position:fixed!important;top:calc(44px + 16vh)!important;bottom:auto!important;
-  left:62%!important;right:auto!important;margin:0!important;
+  position:fixed!important;top:calc(44px + 4vh)!important;bottom:auto!important;
+  left:58%!important;right:auto!important;margin:0!important;
   transform:translateX(-50%)!important;
   width:min(148px,18vw)!important;max-height:min(40vh,180px)!important;overflow-y:auto!important;font-size:12px!important;z-index:15!important}
 
@@ -93,27 +93,32 @@ html.tv-mode .endTurn{position:fixed!important;top:57%!important;right:5vw!impor
 
 /* ---------- Hand area: end turn now lives in the arena (see above), so the hand
    row only has to share space with a small energy badge + pile-count readout,
-   both packed tight to the right to leave cards as much room as possible. ---------- */
-html.tv-mode .handArea{width:100%!important;height:30%!important;padding:8px 14px!important;
+   both packed tight to the right. Cards sit centered in the remaining space and
+   fan outward as more are added, instead of stacking from the left edge. ---------- */
+html.tv-mode .handArea{width:100%!important;height:37%!important;padding:8px 14px!important;
   display:flex!important;align-items:center!important;justify-content:flex-start!important;gap:8px!important}
-html.tv-mode .hand{order:1;width:auto!important;flex:1 1 auto!important;height:auto!important;overflow-x:auto!important;justify-content:flex-start!important;gap:8px!important;padding:4px 2px}
+html.tv-mode .hand{order:1;width:auto!important;flex:1 1 auto!important;height:auto!important;overflow-x:auto!important;justify-content:center!important;gap:10px!important;padding:4px 2px}
 html.tv-mode .energy{order:2;position:static!important;flex-shrink:0!important;width:34px!important;height:34px!important;font-size:13px!important}
 html.tv-mode .deckInfo{order:3;position:static!important;flex-shrink:0!important;flex-direction:column!important;align-items:flex-start!important;font-size:10px!important;gap:2px!important}
 html.tv-mode .deckInfo .pileBtn{padding:2px 7px!important;font-size:10px!important}
 
 /* Cards: fixed minimum size (no shrink-to-fit as hand count grows). Names wrap
    instead of overflowing the card edge when they're too long to fit on one line. */
-html.tv-mode .card{flex-shrink:0!important;width:clamp(100px,8.5vw,146px)!important;height:clamp(144px,23vh,206px)!important}
+html.tv-mode .card{flex-shrink:0!important;width:clamp(120px,10.5vw,178px)!important;height:clamp(170px,28vh,252px)!important}
 /* The base hover-lift (translateY(-20px) scale(1.05)) was tall enough to push a
-   hovered card up past the handArea/arena boundary line. Keep the lift subtle
-   here so hovering never crosses into the arena. */
-html.tv-mode .card:hover{transform:translateY(-8px) scale(1.02)!important}
+   hovered card up past the handArea/arena boundary line, and on touchscreens the
+   lift's visual shift away from the finger's actual touch point made taps feel
+   like they landed below the button. Scope it to real hover-capable pointers
+   (mouse/trackpad) only, and keep the lift subtle even there. */
+@media(hover:hover) and (pointer:fine){
+  html.tv-mode .card:hover{transform:translateY(-8px) scale(1.02)!important}
+}
 html.tv-mode .card:nth-child(n+6){display:flex!important}
-html.tv-mode .art{font-size:clamp(38px,5.2vw,64px)!important}
-html.tv-mode .cname{font-size:9.5px!important;padding:4px 2px 2px!important;white-space:normal!important;line-height:1.2!important}
-html.tv-mode .ctext{font-size:8.5px!important;line-height:1.28!important}
+html.tv-mode .art{font-size:clamp(44px,6vw,74px)!important}
+html.tv-mode .cname{font-size:10.5px!important;padding:5px 2px 3px!important;white-space:normal!important;line-height:1.2!important}
+html.tv-mode .ctext{font-size:9.5px!important;line-height:1.3!important}
 html.tv-mode .enemyName{font-size:12px!important}
-html.tv-mode .cost{width:26px!important;height:26px!important;font-size:12px!important}
+html.tv-mode .cost{width:29px!important;height:29px!important;font-size:13px!important}
 
 /* ---------- Modals: use the extra width instead of staying phone-narrow ---------- */
 html.tv-mode .panel{max-width:min(78vw,860px)!important;max-height:92vh!important}
@@ -126,25 +131,24 @@ html.tv-mode .rewards{flex-wrap:wrap!important;max-width:900px!important;margin:
   html.tv-mode .hud{height:36px!important;padding-right:96px!important}
   html.tv-mode .screen{inset:36px 0 0!important}
   html.tv-mode .quick-nav button,html.tv-mode .suspend-run,html.tv-mode #mapHelpView{padding:0 6px!important;font-size:9.5px!important}
-  html.tv-mode .handArea{height:34%!important}
-  html.tv-mode .arena{height:66%!important}
+  html.tv-mode .handArea{height:40%!important}
+  html.tv-mode .arena{height:60%!important}
   html.tv-mode .endTurn{padding:7px 12px!important;font-size:11.5px!important}
   html.tv-mode .enemy-unit>.intent,html.tv-mode #intent{
-    top:calc(36px + 14vh)!important;width:min(126px,28vw)!important;max-height:min(30vh,110px)!important;font-size:10.5px!important;padding:5px 7px!important}
-  /* .card's height:clamp(144px,23vh,206px) forces a 144px floor even when 23vh
-     is much smaller — on a short landscape viewport (a phone lying down) that
-     floor no longer fits inside the shrunken hand row, so cards poked up past
-     the arena boundary at the top and got clipped at the bottom. Uses min()
-     here instead of clamp() specifically because it has no forced floor. */
-  html.tv-mode .card{width:min(66px,14vw)!important;height:min(94px,19.5vh)!important}
-  html.tv-mode .art{font-size:clamp(22px,4.4vw,34px)!important}
-  html.tv-mode .cname{font-size:8px!important;padding:2px 2px 1px!important}
-  html.tv-mode .ctext{font-size:7px!important;line-height:1.15!important}
-  html.tv-mode .cost{width:20px!important;height:20px!important;font-size:10px!important}
+    top:calc(36px + 3vh)!important;width:min(126px,28vw)!important;max-height:min(30vh,110px)!important;font-size:10.5px!important;padding:5px 7px!important}
+  /* .card's height:clamp(...) has a floor that no longer fits inside the
+     shrunken hand row on a short landscape viewport (a phone lying down),
+     pushing cards up past the arena boundary and clipping them at the bottom.
+     min() here has no forced floor, so it shrinks to fit instead. */
+  html.tv-mode .card{width:min(78px,16.5vw)!important;height:min(110px,23vh)!important}
+  html.tv-mode .art{font-size:clamp(26px,4.8vw,38px)!important}
+  html.tv-mode .cname{font-size:8.5px!important;padding:3px 2px 1px!important}
+  html.tv-mode .ctext{font-size:7.5px!important;line-height:1.18!important}
+  html.tv-mode .cost{width:22px!important;height:22px!important;font-size:10.5px!important}
 }
 
 /* Narrow widths (phone landscape): the gap between the two units is proportionally
-   tighter here, so leaning the intent panel toward the enemy side (left:62% on
+   tighter here, so leaning the intent panel toward the enemy side (left:58% on
    wider screens) brings it too close to the enemy sprite. Center it more evenly
    and shrink it a bit instead — still a fixed position independent of the unit
    box, just tuned for less available width. The end-turn button also needs a
