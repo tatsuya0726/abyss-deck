@@ -33,7 +33,8 @@
 - 縦画面では横画面用JSを読み込まず、横向きへ変更した時だけ `adaptive-input.js` を遅延読込
 - 横画面用CSSは横向き時だけ適用
 - 既存セーブデータには触れず、同一オリジンのlocalStorageを継続使用
-- 現在のキャッシュ番号: `adaptive-input.js?v=2`、`adaptive-landscape.css?v=2`
+- iPhone Safariの回転を確実に拾うため、`resize`、`orientationchange`、`visualViewport.resize`を併用
+- 現在のキャッシュ番号: `adaptive-input.js?v=3`、`adaptive-landscape.css?v=2`
 
 ### レリック再調整
 

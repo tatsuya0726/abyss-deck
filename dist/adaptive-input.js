@@ -1,11 +1,12 @@
 (()=>{'use strict';
+const isLandscape=()=>matchMedia('(orientation:landscape)').matches||innerWidth>innerHeight;
 const controls=document.createElement('div');
 controls.id='adaptive-controls';controls.hidden=true;controls.setAttribute('aria-hidden','true');
 controls.innerHTML='<button id="sound-toggle" type="button" tabindex="-1">♫ 音楽：ON</button><button id="controller-toggle" type="button" tabindex="-1">🎮 コントローラー操作：ON</button><button id="fullscreen-btn" type="button" tabindex="-1">⛶ フルスクリーン</button>';
 document.body.appendChild(controls);
 const ring=document.createElement('div');ring.id='gp-focus-ring';ring.setAttribute('aria-hidden','true');document.body.appendChild(ring);
 const fsBtn=document.getElementById('fullscreen-btn'),ctrlBtn=document.getElementById('controller-toggle');
-let landscapeLayout=innerWidth>innerHeight;
+let landscapeLayout=isLandscape();
 const SELECTOR="#newGame,#continueGame,#titleSettingsMenu,.title-hub-grid button:not(:disabled),[data-hub-close],#titleBestiary,#titleCardCodex,#titleRelicCodex,#titleBgmGallery:not(:disabled),#titleCodex,#resetAllData,#resetCancel,#resetConfirm,#modifierClose,#strategyClose,#runModifierBadge,#mapHelpView,#mapHelpClose,#rewardGoldOption,#rewardCardOption,#rewardRelicOption,#rewardContinue,#rewardBack,#skipReward,.boss-relic-choice,.achievement-card:not(:disabled),.market-item:not(:disabled),.node.available,.choice,.card[data-i],.pileBtn,#collectionClose,button:not([disabled]),.codex-card-wrap,[data-setting],[data-filter],[data-tab],a[href]";
 
 fsBtn.onclick=()=>{if(document.fullscreenElement)document.exitFullscreen?.();else document.documentElement.requestFullscreen?.().catch(()=>{})};
@@ -38,7 +39,7 @@ function installTitleSettings(){
 }
 function syncOrientationLayout(){
  const d=doc();if(!d)return;
- landscapeLayout=innerWidth>innerHeight;
+ landscapeLayout=isLandscape();
  d.documentElement.classList.toggle('tv-mode',landscapeLayout);
  installTitleSettings();
  if(!landscapeLayout){focusEl=null;ring.style.display='none'}
@@ -184,7 +185,7 @@ function pollGamepad(frameTime=0){
 requestAnimationFrame(pollGamepad);
 
 let rescanQueued=false;
-landscapeLayout=innerWidth>innerHeight;
+landscapeLayout=isLandscape();
 try{if(landscapeLayout)localStorage.setItem('abyssA2hsSeen','1')}catch(e){}
 installTitleSettings();
 syncOrientationLayout();
