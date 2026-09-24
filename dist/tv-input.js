@@ -1,5 +1,10 @@
 (()=>{'use strict';
 const stage=document.getElementById('stage'),ring=document.getElementById('gp-focus-ring'),fsBtn=document.getElementById('fullscreen-btn'),ctrlBtn=document.getElementById('controller-toggle');
+const settingsBtn=document.getElementById('tv-settings-btn'),settingsPanel=document.getElementById('tv-settings-panel'),settingsBackdrop=document.getElementById('tv-settings-backdrop');
+function setSettingsOpen(open){settingsPanel.hidden=!open;settingsBackdrop.classList.toggle('on',open)}
+settingsBtn.onclick=e=>{e.stopPropagation();setSettingsOpen(settingsPanel.hidden)};
+settingsBackdrop.onclick=()=>setSettingsOpen(false);
+document.addEventListener('click',e=>{if(!settingsPanel.hidden&&!settingsPanel.contains(e.target)&&e.target!==settingsBtn)setSettingsOpen(false)});
 const SELECTOR="#newGame,#continueGame,#titleSettingsMenu,.title-hub-grid button:not(:disabled),[data-hub-close],#titleBestiary,#titleCardCodex,#titleRelicCodex,#titleBgmGallery:not(:disabled),#titleCodex,#resetAllData,#resetCancel,#resetConfirm,#modifierClose,#strategyClose,#runModifierBadge,#mapHelpView,#mapHelpClose,#rewardGoldOption,#rewardCardOption,#rewardRelicOption,#rewardContinue,#rewardBack,#skipReward,.boss-relic-choice,.achievement-card:not(:disabled),.market-item:not(:disabled),.node.available,.choice,.card[data-i],.pileBtn,#collectionClose,button:not([disabled]),.codex-card-wrap,[data-setting],[data-filter],[data-tab],a[href]";
 
 fsBtn.onclick=()=>{if(document.fullscreenElement)document.exitFullscreen?.();else document.documentElement.requestFullscreen?.().catch(()=>{})};
@@ -20,7 +25,7 @@ function injectLandscapeCss(){
  try{
   d.documentElement.classList.add('tv-mode');
   const link=d.createElement('link');
-  link.rel='stylesheet';link.href='tv-landscape.css?v=3';
+  link.rel='stylesheet';link.href='tv-landscape.css?v=4';
   d.head.appendChild(link);
   cssInjected=true;
  }catch(e){}
