@@ -5,7 +5,7 @@ controls.innerHTML='<button id="sound-toggle" type="button" tabindex="-1">â™« éŸ
 document.body.appendChild(controls);
 const ring=document.createElement('div');ring.id='gp-focus-ring';ring.setAttribute('aria-hidden','true');document.body.appendChild(ring);
 const fsBtn=document.getElementById('fullscreen-btn'),ctrlBtn=document.getElementById('controller-toggle');
-let landscapeLayout=matchMedia('(orientation:landscape)').matches;
+let landscapeLayout=innerWidth>innerHeight;
 const SELECTOR="#newGame,#continueGame,#titleSettingsMenu,.title-hub-grid button:not(:disabled),[data-hub-close],#titleBestiary,#titleCardCodex,#titleRelicCodex,#titleBgmGallery:not(:disabled),#titleCodex,#resetAllData,#resetCancel,#resetConfirm,#modifierClose,#strategyClose,#runModifierBadge,#mapHelpView,#mapHelpClose,#rewardGoldOption,#rewardCardOption,#rewardRelicOption,#rewardContinue,#rewardBack,#skipReward,.boss-relic-choice,.achievement-card:not(:disabled),.market-item:not(:disabled),.node.available,.choice,.card[data-i],.pileBtn,#collectionClose,button:not([disabled]),.codex-card-wrap,[data-setting],[data-filter],[data-tab],a[href]";
 
 fsBtn.onclick=()=>{if(document.fullscreenElement)document.exitFullscreen?.();else document.documentElement.requestFullscreen?.().catch(()=>{})};
@@ -38,7 +38,7 @@ function installTitleSettings(){
 }
 function syncOrientationLayout(){
  const d=doc();if(!d)return;
- landscapeLayout=matchMedia('(orientation:landscape)').matches;
+ landscapeLayout=innerWidth>innerHeight;
  d.documentElement.classList.toggle('tv-mode',landscapeLayout);
  installTitleSettings();
  if(!landscapeLayout){focusEl=null;ring.style.display='none'}
@@ -150,7 +150,8 @@ window.addEventListener('keydown',e=>{
 
 const heldSince={};
 const REPEAT_DELAY=380,REPEAT_RATE=140;
-function pollGamepad(){
+let lastLayoutSync=0;
+function pollGamepad(frameTime=0){
  if(!landscapeLayout||!enabled){ring.style.display='none';requestAnimationFrame(pollGamepad);return}
  const pads=navigator.getGamepads?navigator.getGamepads():[];
  let pad=null;
@@ -172,15 +173,18 @@ function pollGamepad(){
   if(pad.buttons[0]?.pressed){if(!heldSince.a){heldSince.a=true;doConfirm()}}else heldSince.a=false;
   if(pad.buttons[1]?.pressed){if(!heldSince.b){heldSince.b=true;doBack()}}else heldSince.b=false;
  }
- ensureFocus();
- updateRing();
- syncIntentPosition();
+ if(frameTime-lastLayoutSync>=120){
+  lastLayoutSync=frameTime;
+  ensureFocus();
+  updateRing();
+  syncIntentPosition();
+ }
  requestAnimationFrame(pollGamepad);
 }
 requestAnimationFrame(pollGamepad);
 
 let rescanQueued=false;
-landscapeLayout=matchMedia('(orientation:landscape)').matches;
+landscapeLayout=innerWidth>innerHeight;
 try{if(landscapeLayout)localStorage.setItem('abyssA2hsSeen','1')}catch(e){}
 installTitleSettings();
 syncOrientationLayout();

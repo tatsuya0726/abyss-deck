@@ -34,7 +34,9 @@
 - 旧TV URL `/abyss-deck/tv.html` は廃止。今後案内しない
 - 同一オリジンのlocalStorageを継続使用するため、既存セーブデータは保持
 - タイトル画面は横画面でHUDを非表示にし、TVでは中央配置、スマホ横画面では左右2カラムでスクロールなし
-- 現在のキャッシュ番号: `adaptive-input.js?v=1`、`adaptive-landscape.css?v=1`
+- スマホ縦画面の起動を保護するため、横画面用JSは横向き時だけ遅延読込し、CSSも横向き時だけ適用
+- 横画面のフォーカス候補・配置再計算を毎フレームから約8回/秒へ抑制し、起動時の描画停止を防止
+- 現在のキャッシュ番号: `adaptive-input.js?v=2`、`adaptive-landscape.css?v=2`
 
 ### レリック再調整
 
