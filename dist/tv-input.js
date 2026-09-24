@@ -9,6 +9,10 @@ const SELECTOR="#newGame,#continueGame,#titleSettingsMenu,.title-hub-grid button
 
 fsBtn.onclick=()=>{if(document.fullscreenElement)document.exitFullscreen?.();else document.documentElement.requestFullscreen?.().catch(()=>{})};
 
+const soundBtn=document.getElementById('sound-toggle');
+function syncSoundBtn(){try{let b=doc()?.getElementById('soundBtn');if(b)soundBtn.textContent=`♫ 音楽：${b.classList.contains('muted')?'OFF':'ON'}`}catch(e){}}
+soundBtn.onclick=()=>{try{doc()?.getElementById('soundBtn')?.click()}catch(e){}syncSoundBtn()};
+
 const CTRL_KEY='abyssTvControllerEnabled';
 let enabled=true;
 try{enabled=localStorage.getItem(CTRL_KEY)!=='0'}catch(e){}
@@ -25,7 +29,7 @@ function injectLandscapeCss(){
  try{
   d.documentElement.classList.add('tv-mode');
   const link=d.createElement('link');
-  link.rel='stylesheet';link.href='tv-landscape.css?v=6';
+  link.rel='stylesheet';link.href='tv-landscape.css?v=7';
   d.head.appendChild(link);
   cssInjected=true;
  }catch(e){}
@@ -146,10 +150,11 @@ let rescanQueued=false;
 stage.addEventListener('load',()=>{
  try{stage.contentWindow.localStorage.setItem('abyssA2hsSeen','1')}catch(e){}
  injectLandscapeCss();
+ syncSoundBtn();
  requestAnimationFrame(()=>requestAnimationFrame(()=>{stage.classList.add('ready');ensureFocus()}));
  try{
   const d=stage.contentDocument;
-  const mo=new MutationObserver(()=>{if(rescanQueued)return;rescanQueued=true;requestAnimationFrame(()=>{rescanQueued=false;ensureFocus()})});
+  const mo=new MutationObserver(()=>{syncSoundBtn();if(rescanQueued)return;rescanQueued=true;requestAnimationFrame(()=>{rescanQueued=false;ensureFocus()})});
   mo.observe(d.body,{subtree:true,childList:true,attributes:true,attributeFilter:['class','hidden','disabled']});
  }catch(e){}
 });
