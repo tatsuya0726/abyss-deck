@@ -134,6 +134,7 @@ window.applyFuri=furi;
 window.isAbyssFuriEnabled=furiEnabled;
 window.toggleAbyssFuri=()=>{let next=!furiEnabled();try{window.abyssStorageSet('abyssFuriEnabled',next?'1':'0')}catch(e){}if(next)furi(document.body);else unfuri(document.body);return next};
 function resumeCurrentBgm(){if(muted||document.hidden)return;ensureAudio();if(bgm?.paused){applyBgmVolume();bgm.play().catch(()=>{})}else if(!bgm)sync()}
+window.getAbyssAudioState=()=>({muted,mode,audioState:audio?.state||'unavailable',bgm:!bgm?null:{paused:bgm.paused,currentTime:bgm.currentTime,readyState:bgm.readyState,src:bgm.dataset.src||bgm.currentSrc||bgm.src}});
 function unlockAbyssAudio(e){if(!muted)ensureAudio();if(e.target.closest('#newGame')&&(window.abyssHasInterruptedRun?.()||window.abyssWillOfferFirstBlessing?.()))return;if(e.target.closest('#newGame,#continueGame'))music(mapMode(window.getAbyssGame?.()));else if($('#title')?.classList.contains('on')&&!galleryOpen)music('title');resumeCurrentBgm()}
 ['pointerdown','touchend','click','keydown'].forEach(evt=>document.addEventListener(evt,unlockAbyssAudio,{capture:true}));
 window.resumeAbyssAudio=()=>{if(!muted){ensureAudio();sync();resumeCurrentBgm()}};
