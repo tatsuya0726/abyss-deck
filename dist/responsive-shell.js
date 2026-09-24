@@ -3,10 +3,13 @@ const stage=document.getElementById('stage'),directMode=!stage,ring=document.get
 let landscapeLayout=matchMedia('(orientation:landscape)').matches||innerWidth>innerHeight;
 const stageWrap=document.getElementById('stage-wrap');
 function syncStageViewport(){
- if(directMode)return;
  const viewport=window.visualViewport;
  const width=Math.max(1,Math.round(viewport?.width||window.innerWidth));
  const height=Math.max(1,Math.round(viewport?.height||window.innerHeight));
+ document.documentElement.style.setProperty('--abyss-vv-width',width+'px');
+ document.documentElement.style.setProperty('--abyss-vv-height',height+'px');
+ document.documentElement.style.setProperty('--abyss-vv-offset-top',Math.max(0,Math.round(viewport?.offsetTop||0))+'px');
+ if(directMode)return;
  stageWrap.style.setProperty('width',width+'px');
  stageWrap.style.setProperty('height',height+'px');
  stageWrap.style.setProperty('right','auto');
@@ -68,7 +71,7 @@ function injectLandscapeCss(){
  const d=doc();if(!d||cssInjected)return;
  try{
   const link=d.createElement('link');
-  link.rel='stylesheet';link.href='responsive-landscape.css?v=6';
+  link.rel='stylesheet';link.href='responsive-landscape.css?v=8';
   d.head.appendChild(link);
   cssInjected=true;
  }catch(e){}
@@ -112,6 +115,44 @@ function visible(el){
  if(!modal){const screen=el.closest?.('.screen');if(screen&&!screen.classList.contains('on'))return false}
  const rect=el.getBoundingClientRect();
  return rect.width>0&&rect.height>0;
+}
+
+/* iOS Safari can keep a stale compositor hit-test map after rotating while
+   the visual viewport has already moved. Resolve short landscape taps against
+   the buttons' current painted rectangles, then dispatch the intended click.
+   Normal taps pass through untouched, and portrait is never intercepted. */
+function installLandscapeTapResolver(){
+ const d=doc();if(!d||d.__abyssTapResolverInstalled)return;
+ d.__abyssTapResolverInstalled=true;
+ let start=null;
+ const closestInteractive=el=>el?.closest?.(SELECTOR);
+ const scopeNow=()=>{let modals=[...d.querySelectorAll('.modal.on')];return modals[modals.length-1]||d.querySelector('.screen.on')||d.body};
+ const atPoint=(scope,x,y)=>{
+  let hits=[...scope.querySelectorAll(SELECTOR)].filter(el=>{
+   if(!visible(el)||el.disabled)return false;
+   let r=el.getBoundingClientRect();
+   return x>=r.left&&x<=r.right&&y>=r.top&&y<=r.bottom;
+  });
+  hits.sort((a,b)=>{let ar=a.getBoundingClientRect(),br=b.getBoundingClientRect();return ar.width*ar.height-br.width*br.height});
+  return hits[0]||null;
+ };
+ d.addEventListener('touchstart',e=>{
+  if(!d.documentElement.classList.contains('tv-mode')||e.touches.length!==1){start=null;return}
+  let t=e.touches[0];start={id:t.identifier,x:t.clientX,y:t.clientY};
+ },{capture:true,passive:true});
+ d.addEventListener('touchend',e=>{
+  if(!start||!d.documentElement.classList.contains('tv-mode'))return;
+  let began=start,t=Array.from(e.changedTouches||[]).find(v=>v.identifier===began.id);start=null;
+  if(!t||Math.hypot(t.clientX-began.x,t.clientY-began.y)>22)return;
+  let scope=scopeNow(),native=closestInteractive(e.target),vv=window.visualViewport;
+  let gap=Math.max(0,Math.round(window.innerHeight-(vv?.height||window.innerHeight)));
+  let offsets=[0,gap,-gap,Math.round(vv?.offsetTop||0),-Math.round(vv?.offsetTop||0)];
+  let intended=null;
+  for(let dy of [...new Set(offsets)]){intended=atPoint(scope,t.clientX,t.clientY+dy);if(intended)break}
+  if(!intended||intended===native)return;
+  e.preventDefault();e.stopImmediatePropagation();
+  requestAnimationFrame(()=>{if(visible(intended)&&!intended.disabled)intended.click()});
+ },{capture:true,passive:false});
 }
 
 function candidates(){
@@ -256,6 +297,7 @@ function initializeResponsive(){
  landscapeLayout=matchMedia('(orientation:landscape)').matches||innerWidth>innerHeight;
  try{if(landscapeLayout)win().localStorage.setItem('abyssA2hsSeen','1')}catch(e){}
  injectLandscapeCss();
+ installLandscapeTapResolver();
  installTitleSettings();
  syncOrientationLayout();
  syncSoundBtn();
