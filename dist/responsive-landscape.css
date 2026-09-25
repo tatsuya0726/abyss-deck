@@ -556,11 +556,11 @@ html.tv-mode #battle .state-pill{font-size:var(--tv-small)!important;padding:.2e
 }
 
 /* Slay-the-Spire-like event composition: emblem/art left, story and choices right. */
-html.tv-mode #eventModal{
+html.tv-mode :is(#eventModal,#mapChoiceModal){
   padding:clamp(18px,4vh,56px) clamp(26px,5vw,100px)!important;
   background:linear-gradient(90deg,#01050be8,#06121bd9 48%,#01050bf2)!important
 }
-html.tv-mode #eventModal>.panel{
+html.tv-mode :is(#eventModal,#mapChoiceModal)>.panel{
   display:grid!important;
   grid-template-columns:minmax(260px,.8fr) minmax(420px,1.35fr)!important;
   grid-template-rows:auto minmax(0,1fr) auto!important;
@@ -577,13 +577,13 @@ html.tv-mode #eventModal>.panel{
   border-color:#61808d!important;
   background:linear-gradient(135deg,#102734ee,#061018f4 56%,#03080df7)!important
 }
-html.tv-mode #eventModal .modal-resources{
+html.tv-mode :is(#eventModal,#mapChoiceModal) .modal-resources{
   position:absolute!important;
   top:clamp(12px,2vh,24px)!important;
   right:clamp(16px,2vw,34px)!important;
   font-size:var(--tv-small)!important
 }
-html.tv-mode #eventModal .bigicon{
+html.tv-mode :is(#eventModal,#mapChoiceModal) .bigicon{
   grid-column:1!important;
   grid-row:1/4!important;
   align-self:stretch!important;
@@ -596,14 +596,14 @@ html.tv-mode #eventModal .bigicon{
   background:radial-gradient(circle at 50% 40%,#1b536066,#07131bd9 64%,#02070cf2)!important;
   filter:drop-shadow(0 0 28px #43d8d044)!important
 }
-html.tv-mode #eventModal h2{
+html.tv-mode :is(#eventModal,#mapChoiceModal) h2{
   grid-column:2!important;grid-row:1!important;
   align-self:end!important;
   margin:0!important;
   font-size:clamp(28px,min(2.5vw,4.8vh),54px)!important;
   text-align:left!important
 }
-html.tv-mode #eventModal #eventText{
+html.tv-mode :is(#eventModal,#mapChoiceModal) :is(#eventText,#mapChoiceText){
   grid-column:2!important;grid-row:2!important;
   align-self:start!important;
   max-height:100%!important;
@@ -614,7 +614,7 @@ html.tv-mode #eventModal #eventText{
   line-height:1.8!important;
   color:#c6d9dc!important
 }
-html.tv-mode #eventModal .choices{
+html.tv-mode :is(#eventModal,#mapChoiceModal) .choices{
   grid-column:2!important;grid-row:3!important;
   display:grid!important;
   grid-template-columns:repeat(2,minmax(0,1fr))!important;
@@ -622,13 +622,13 @@ html.tv-mode #eventModal .choices{
   width:100%!important;
   margin:0!important
 }
-html.tv-mode #eventModal .choice{
+html.tv-mode :is(#eventModal,#mapChoiceModal) .choice{
   min-height:clamp(58px,8vh,92px)!important;
   padding:clamp(10px,1.4vh,18px) clamp(14px,1.2vw,24px)!important;
   font-size:clamp(13px,min(1vw,2vh),21px)!important;
   line-height:1.45!important
 }
-html.tv-mode #eventModal .choice b{font-size:1.08em!important}
+html.tv-mode :is(#eventModal,#mapChoiceModal) .choice b{font-size:1.08em!important}
 
 /* Other horizontal overlays use the extra width and readable TV sizing. */
 html.tv-mode .modal{padding:clamp(14px,2.5vh,34px)!important}
@@ -739,8 +739,8 @@ html.tv-mode .rewards{max-width:min(88vw,1380px)!important;gap:var(--tv-gap)!imp
   html.tv-mode #battle .statusRow{min-height:18px!important;max-height:44px!important;padding:1px!important}
   html.tv-mode #battle .state-pill{font-size:8px!important;padding:1px 4px!important}
 
-  html.tv-mode #eventModal{padding:8px 14px!important}
-  html.tv-mode #eventModal>.panel{
+  html.tv-mode :is(#eventModal,#mapChoiceModal){padding:8px 14px!important}
+  html.tv-mode :is(#eventModal,#mapChoiceModal)>.panel{
     grid-template-columns:minmax(150px,.68fr) minmax(0,1.32fr)!important;
     column-gap:18px!important;
     row-gap:6px!important;
@@ -748,11 +748,11 @@ html.tv-mode .rewards{max-width:min(88vw,1380px)!important;gap:var(--tv-gap)!imp
     height:92vh!important;
     padding:14px 18px!important
   }
-  html.tv-mode #eventModal .bigicon{font-size:clamp(68px,24vh,130px)!important}
-  html.tv-mode #eventModal h2{font-size:clamp(20px,6vh,30px)!important}
-  html.tv-mode #eventModal #eventText{font-size:clamp(11px,3vh,14px)!important;line-height:1.55!important}
-  html.tv-mode #eventModal .choices{gap:5px!important}
-  html.tv-mode #eventModal .choice{min-height:42px!important;padding:6px 9px!important;font-size:10px!important}
+  html.tv-mode :is(#eventModal,#mapChoiceModal) .bigicon{font-size:clamp(68px,24vh,130px)!important}
+  html.tv-mode :is(#eventModal,#mapChoiceModal) h2{font-size:clamp(20px,6vh,30px)!important}
+  html.tv-mode :is(#eventModal,#mapChoiceModal) :is(#eventText,#mapChoiceText){font-size:clamp(11px,3vh,14px)!important;line-height:1.55!important}
+  html.tv-mode :is(#eventModal,#mapChoiceModal) .choices{gap:5px!important}
+  html.tv-mode :is(#eventModal,#mapChoiceModal) .choice{min-height:42px!important;padding:6px 9px!important;font-size:10px!important}
   html.tv-mode .panel{width:96vw!important;max-height:94vh!important;padding:12px 16px!important}
 }
 
@@ -765,8 +765,8 @@ html.tv-mode .rewards{max-width:min(88vw,1380px)!important;gap:var(--tv-gap)!imp
   html.tv-mode body.scene-title #ascensionPanel{grid-row:3/5!important;max-height:30vh!important}
   html.tv-mode body.scene-title .start{min-height:38px!important}
   html.tv-mode body.scene-title .title-library-grid .title-tool{min-height:32px!important}
-  html.tv-mode #eventModal>.panel{height:95vh!important}
-  html.tv-mode #eventModal .choice{min-height:36px!important}
+  html.tv-mode :is(#eventModal,#mapChoiceModal)>.panel{height:95vh!important}
+  html.tv-mode :is(#eventModal,#mapChoiceModal) .choice{min-height:36px!important}
 }
 
 
@@ -1372,48 +1372,48 @@ html.tv-mode body.scene-title .sigil{
   display:grid!important;place-items:center!important;box-sizing:border-box!important;
   padding:0!important;text-align:center!important;text-indent:0!important;line-height:1!important
 }
-html.tv-mode #eventModal{
+html.tv-mode :is(#eventModal,#mapChoiceModal){
   box-sizing:border-box!important;align-items:flex-start!important;overflow:hidden!important;
   padding:clamp(68px,8vh,92px) clamp(14px,3vw,56px) clamp(8px,1.5vh,18px)!important
 }
-html.tv-mode #eventModal>.panel{
+html.tv-mode :is(#eventModal,#mapChoiceModal)>.panel{
   box-sizing:border-box!important;grid-template-columns:minmax(220px,.82fr) minmax(360px,1.42fr)!important;
   grid-template-rows:auto minmax(42px,1fr) auto!important;width:min(94vw,1580px)!important;
   height:min(calc(100dvh - clamp(78px,9.5vh,110px)),900px)!important;
   max-height:min(calc(100dvh - clamp(78px,9.5vh,110px)),900px)!important;
   padding:clamp(16px,2.6vh,34px)!important;row-gap:clamp(6px,1vh,12px)!important
 }
-html.tv-mode #eventModal .bigicon{overflow:hidden!important;padding:0!important}
-html.tv-mode #eventModal .event-illustration{
+html.tv-mode :is(#eventModal,#mapChoiceModal) .bigicon{overflow:hidden!important;padding:0!important}
+html.tv-mode :is(#eventModal,#mapChoiceModal) .event-illustration{
   display:block!important;width:100%!important;height:100%!important;min-width:100%!important;min-height:100%!important;
   object-fit:cover!important;object-position:center!important;border-radius:inherit!important
 }
-html.tv-mode #eventModal .choices{
+html.tv-mode :is(#eventModal,#mapChoiceModal) .choices{
   grid-template-columns:minmax(0,1fr)!important;grid-auto-flow:row!important;grid-auto-rows:minmax(0,auto)!important;
   align-content:end!important;min-height:0!important;max-height:100%!important;overflow-x:hidden!important;
   overflow-y:auto!important;padding:1px 4px 1px 1px!important;scrollbar-width:thin!important
 }
-html.tv-mode #eventModal .choice{
+html.tv-mode :is(#eventModal,#mapChoiceModal) .choice{
   box-sizing:border-box!important;min-height:clamp(48px,7vh,72px)!important;
   padding:clamp(7px,1vh,12px) clamp(12px,1vw,20px)!important;line-height:1.32!important
 }
 @media (orientation:landscape) and (max-height:600px){
-  html.tv-mode #eventModal{padding:52px max(8px,env(safe-area-inset-right)) 6px max(8px,env(safe-area-inset-left))!important}
-  html.tv-mode #eventModal>.panel{
+  html.tv-mode :is(#eventModal,#mapChoiceModal){padding:52px max(8px,env(safe-area-inset-right)) 6px max(8px,env(safe-area-inset-left))!important}
+  html.tv-mode :is(#eventModal,#mapChoiceModal)>.panel{
     grid-template-columns:minmax(150px,.7fr) minmax(0,1.3fr)!important;grid-template-rows:auto minmax(24px,1fr) auto!important;
     width:97vw!important;height:calc(100dvh - 58px)!important;max-height:calc(100dvh - 58px)!important;
     column-gap:clamp(10px,2.5vw,24px)!important;row-gap:4px!important;padding:10px 12px!important
   }
-  html.tv-mode #eventModal h2{font-size:clamp(20px,min(3.2vw,5.8vh),31px)!important;line-height:1.05!important}
-  html.tv-mode #eventModal #eventText{font-size:clamp(10px,min(1.65vw,2.9vh),15px)!important;line-height:1.42!important}
-  html.tv-mode #eventModal .choice{
+  html.tv-mode :is(#eventModal,#mapChoiceModal) h2{font-size:clamp(20px,min(3.2vw,5.8vh),31px)!important;line-height:1.05!important}
+  html.tv-mode :is(#eventModal,#mapChoiceModal) :is(#eventText,#mapChoiceText){font-size:clamp(10px,min(1.65vw,2.9vh),15px)!important;line-height:1.42!important}
+  html.tv-mode :is(#eventModal,#mapChoiceModal) .choice{
     min-height:42px!important;padding:5px 9px!important;font-size:clamp(9px,min(1.5vw,2.7vh),14px)!important;line-height:1.22!important
   }
 }
 @media (orientation:landscape) and (max-height:430px){
-  html.tv-mode #eventModal{padding-top:46px!important;padding-bottom:4px!important}
-  html.tv-mode #eventModal>.panel{height:calc(100dvh - 50px)!important;max-height:calc(100dvh - 50px)!important;padding:7px 9px!important}
-  html.tv-mode #eventModal .choice{min-height:36px!important;padding:3px 7px!important}
+  html.tv-mode :is(#eventModal,#mapChoiceModal){padding-top:46px!important;padding-bottom:4px!important}
+  html.tv-mode :is(#eventModal,#mapChoiceModal)>.panel{height:calc(100dvh - 50px)!important;max-height:calc(100dvh - 50px)!important;padding:7px 9px!important}
+  html.tv-mode :is(#eventModal,#mapChoiceModal) .choice{min-height:36px!important;padding:3px 7px!important}
 }
 
 /* Keep the friendly shopkeeper in a reserved row instead of layering him on

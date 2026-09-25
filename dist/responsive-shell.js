@@ -76,7 +76,7 @@ function injectLandscapeCss(){
  const d=doc();if(!d||cssInjected)return;
  try{
   const link=d.createElement('link');
-  link.rel='stylesheet';link.href='responsive-landscape.css?v=17';
+  link.rel='stylesheet';link.href='responsive-landscape.css?v=18';
   d.head.appendChild(link);
   cssInjected=true;
  }catch(e){}
@@ -242,10 +242,10 @@ function revealFocus(el){
 }
 function scrollActive(amount){
  const d=doc();if(!d)return false;
- let target=null,eventModal=d.getElementById('eventModal');
- if(eventModal?.classList.contains('on')){
-  const focusedRegion=focusEl?.closest?.('#eventChoices,#eventText');
-  const eventTargets=[focusedRegion,d.getElementById('eventChoices'),d.getElementById('eventText')].filter(Boolean);
+ let target=null,eventModal=d.querySelector('#eventModal.on,#mapChoiceModal.on');
+ if(eventModal){
+  const focusedRegion=focusEl?.closest?.('#eventChoices,#eventText,#mapChoiceButtons,#mapChoiceText');
+  const eventTargets=[focusedRegion,eventModal.querySelector('.choices'),eventModal.querySelector('#eventText,#mapChoiceText')].filter(Boolean);
   target=eventTargets.find(el=>el.scrollHeight>el.clientHeight+2||el.scrollWidth>el.clientWidth+2)||null;
  }
  if(!target)target=scrollParent(focusEl);
