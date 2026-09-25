@@ -1535,3 +1535,13 @@ html.tv-mode .modal.on>.panel.modal-shell{
   max-height:none!important;
   margin:0!important
 }
+html.tv-mode .touch-auto-catcher{
+  position:fixed!important;inset:0!important;z-index:100000!important;display:block!important;
+  background:#00101718!important;touch-action:none!important;pointer-events:auto!important
+}
+html.tv-mode .touch-auto-catcher[hidden]{display:none!important}
+html.tv-mode .touch-auto-catcher>span{
+  position:fixed;left:50%;top:12px;transform:translateX(-50%);max-width:90vw;padding:7px 14px;
+  border:1px solid #6ef3e7;border-radius:999px;background:#06232dec;color:#dffffc;font-size:12px;font-weight:900;
+  box-shadow:0 0 18px #4ee9df66;white-space:nowrap;pointer-events:none
+}
