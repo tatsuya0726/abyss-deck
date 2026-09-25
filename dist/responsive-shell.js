@@ -109,11 +109,15 @@ function injectLandscapeCss(){
    #battle's own viewport offset to compensate. */
 function visibleEnemyLeft(enemyLeft,nameLeft,viewportWidth){const nameInset=Math.max(34,Math.min(44,viewportWidth*.045));return Math.max(enemyLeft,nameLeft-nameInset)}
 function intentCenterBeforeEnemy(enemyLeft,intentWidth){return Math.max(intentWidth/2+8,enemyLeft-intentWidth/2)}
+function intentPlacementBetweenFighters(playerRight,enemyLeft,preferredWidth,viewportWidth){
+ const margin=Math.max(6,Math.min(10,viewportWidth*.01)),left=Math.max(margin,playerRight+margin),right=Math.min(viewportWidth-margin,enemyLeft-margin),available=Math.max(1,right-left),width=Math.min(preferredWidth,available);
+ return{center:left+available/2,width};
+}
 function syncIntentPosition(){
  const d=doc();if(!d)return;
- const nameEl=d.getElementById('enemyName'),intentEl=d.getElementById('intent'),battleEl=d.getElementById('battle'),enemyEl=d.getElementById('enemySprite');
+ const nameEl=d.getElementById('enemyName'),intentEl=d.getElementById('intent'),battleEl=d.getElementById('battle'),enemyEl=d.getElementById('enemySprite'),playerEl=d.getElementById('playerSprite');
  if(!intentEl)return;
- if(!landscapeLayout){intentEl.style.removeProperty('top');intentEl.style.removeProperty('left');intentEl.style.removeProperty('transform');return}
+ if(!landscapeLayout){intentEl.style.removeProperty('top');intentEl.style.removeProperty('left');intentEl.style.removeProperty('width');intentEl.style.removeProperty('transform');return}
  if(!nameEl||!battleEl)return;
  const r=nameEl.getBoundingClientRect();
  if(!r.height)return;
@@ -125,9 +129,17 @@ function syncIntentPosition(){
  const minCenter=Math.max(battleRect.top,hudBottom)+8+intentHeight/2;
  const maxCenter=Math.max(minCenter,Math.min(battleRect.bottom,handTop)-8-intentHeight/2);
  const center=Math.max(minCenter,Math.min(maxCenter,r.top+r.height/2));
- const enemyRect=enemyEl?.getBoundingClientRect(),intentWidth=Math.max(1,intentEl.getBoundingClientRect().width||intentEl.offsetWidth||1);
+ const enemyRect=enemyEl?.getBoundingClientRect(),playerRect=playerEl?.getBoundingClientRect(),intentWidth=Math.max(1,intentEl.getBoundingClientRect().width||intentEl.offsetWidth||1);
  if(enemyRect?.width){
-  const containerLeft=transformed?battleRect.left:0,visibleLeft=visibleEnemyLeft(enemyRect.left,r.left,innerWidth),centerX=intentCenterBeforeEnemy(visibleLeft,intentWidth,innerWidth);
+  const containerLeft=transformed?battleRect.left:0,coarse=matchMedia?.('(pointer:coarse)')?.matches||navigator.maxTouchPoints>0;
+  let centerX;
+  if(coarse&&playerRect?.width){
+   const preferredWidth=Math.min(136,innerWidth*.25),placement=intentPlacementBetweenFighters(playerRect.right,enemyRect.left,preferredWidth,innerWidth);
+   centerX=placement.center;intentEl.style.setProperty('width',placement.width+'px','important');
+  }else{
+   const visibleLeft=visibleEnemyLeft(enemyRect.left,r.left,innerWidth);centerX=intentCenterBeforeEnemy(visibleLeft,intentWidth,innerWidth);
+   intentEl.style.removeProperty('width');
+  }
   intentEl.style.setProperty('left',(centerX-containerLeft)+'px','important');
  }
  intentEl.style.setProperty('top',(center-containerTop)+'px','important');

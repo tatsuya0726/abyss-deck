@@ -193,6 +193,8 @@ assert(shellJs.includes('visibleEnemyLeft(enemyRect.left,r.left,innerWidth)'),
  'enemy forecast does not compensate for artwork whose visible body is inset');
 assert(shellJs.includes("intentEl.style.setProperty('left',(centerX-containerLeft)+'px','important')"),
  'enemy forecast is not positioned from the measured enemy edge');
+assert(shellJs.includes('intentPlacementBetweenFighters(playerRect.right,enemyRect.left,preferredWidth,innerWidth)'),
+ 'touch layout does not place the forecast between both fighters');
 assert(landscapeCss.includes('align-self:center!important;aspect-ratio:1/1!important;height:auto!important'),
  'landscape event artwork is still cropped into a tall cell');
 assert(landscapeCss.includes('object-fit:contain!important;object-position:center!important'),
@@ -216,8 +218,10 @@ assert(refinementJs.includes('assets/events/${art}.webp?v=2'),
  'corrected event illustrations are not cache-busted');
 const intentPositionSource=shellJs.split('\n').find(line=>line.startsWith('function intentCenterBeforeEnemy('));
 const visibleEnemySource=shellJs.split('\n').find(line=>line.startsWith('function visibleEnemyLeft('));
+const fighterGapSource=shellJs.match(/function intentPlacementBetweenFighters\([\s\S]*?\n\}/)?.[0];
 assert(intentPositionSource,'enemy forecast gap calculator is missing');
 assert(visibleEnemySource,'enemy visible-edge calculator is missing');
+assert(fighterGapSource,'touch fighter-gap calculator is missing');
 const intentPositionContext={};
 vm.runInNewContext(`${visibleEnemySource};${intentPositionSource};this.visibleEnemyLeft=visibleEnemyLeft;this.intentCenterBeforeEnemy=intentCenterBeforeEnemy`,intentPositionContext);
 assert(intentPositionContext.visibleEnemyLeft(532,569,844)===532,
@@ -230,10 +234,17 @@ for(const [enemyLeft,intentWidth,viewportWidth]of [[992,238,1536],[620,136,844],
  assert(Math.abs(edgeDifference)<.01,
   `enemy forecast right edge is not aligned at ${viewportWidth}px (difference ${edgeDifference})`);
 }
+const fighterGapContext={};
+vm.runInNewContext(`${fighterGapSource};this.place=intentPlacementBetweenFighters`,fighterGapContext);
+for(const [playerRight,enemyLeft,preferredWidth,viewportWidth]of [[370,540,136,844],[405,532,136,844],[720,1010,136,1536]]){
+ const placed=fighterGapContext.place(playerRight,enemyLeft,preferredWidth,viewportWidth),margin=Math.max(6,Math.min(10,viewportWidth*.01));
+ assert(placed.center-placed.width/2>=playerRight+margin-.01,'touch forecast overlaps the player');
+ assert(placed.center+placed.width/2<=enemyLeft-margin+.01,'touch forecast overlaps the enemy');
+}
 assert(enhanceJs.includes('BGM_OUTPUT_GAIN=2.540419'),
  'BGM output gain is not raised by twenty percent');
-assert(enhanceJs.includes('SFX_OUTPUT_GAIN=1.08'),
- 'sound-effect output gain is not reduced by twenty percent');
+assert(enhanceJs.includes('SFX_OUTPUT_GAIN=.864'),
+ 'sound-effect output gain is not reduced by another twenty percent');
 assert(desktopCss.includes('#map>.path{position:absolute!important;inset:12px 258px 12px 255px!important'),
  'PC map track has no explicit drawable area');
 assert(desktopCss.includes('.map-node-legend{position:fixed!important;left:auto!important;right:20px!important;top:88px!important'),
@@ -301,14 +312,14 @@ async function verifyServer(){
   assert(response?.ok,`local server did not return index.html (${response?.status||'no response'})`);
   const html=await response.text();
   assert(html.includes('id="tapStartGate"'),'served page has no TAP START gate');
-  assert(html.includes('responsive-shell.js?v=32'),'served page has a stale responsive script version');
+  assert(html.includes('responsive-shell.js?v=33'),'served page has a stale responsive script version');
   assert(html.includes('responsive-landscape.css?v=45'),'served page has a stale responsive stylesheet version');
   assert(html.includes('responsive-desktop.css?v=2'),'served page has no PC layout stylesheet');
   assert(html.includes('relics-events.js?v=155'),'served page has a stale relic event script version');
   assert(html.includes('strategy-polish.js?v=186'),'served page has a stale strategy event script version');
   assert(html.includes('economy.js?v=158'),'served page has a stale economy script version');
   assert(html.includes('refinement.js?v=70'),'served page has a stale event script version');
-  assert(html.includes('enhance.js?v=266'),'served page has a stale audio script version');
+  assert(html.includes('enhance.js?v=267'),'served page has a stale audio script version');
  }finally{
   server.kill('SIGTERM');
  }
