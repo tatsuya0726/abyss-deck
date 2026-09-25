@@ -38,6 +38,16 @@ assert(!responsive.includes("[data-touch-adjust],[data-touch-reset],#touchCalibr
  'calibration controls incorrectly prefer uncorrected touch coordinates');
 assert(!responsive.includes("||(!touchCalibration.x&&!touchCalibration.y)||"),
  'landscape visual hit testing is disabled when calibration is centered');
+assert(responsive.includes("TOUCH_CAL_BACKUP_KEY='abyssLandscapeTouchCalibrationBackupV1'"),
+ 'touch calibration does not have a persistent backup');
+assert(responsive.includes("window.addEventListener('pagehide',persistTouchCalibration"),
+ 'touch calibration is not persisted when the page closes');
+assert(responsive.includes("document.addEventListener('visibilitychange'"),
+ 'touch calibration is not restored after app suspension');
+assert(responsive.includes('restoreTouchCalibration();\n syncOrientationLayout();'),
+ 'touch calibration is not restored after orientation changes');
+assert(responsive.includes("reset.dataset.confirmReset==='1'"),
+ 'touch calibration reset can be triggered accidentally with one tap');
 
 function verifyTapStartRecovery(){
  const classList=initial=>{
@@ -81,7 +91,7 @@ async function verifyServer(){
   assert(response?.ok,`local server did not return index.html (${response?.status||'no response'})`);
   const html=await response.text();
   assert(html.includes('id="tapStartGate"'),'served page has no TAP START gate');
-  assert(html.includes('responsive-shell.js?v=17'),'served page has a stale responsive script version');
+  assert(html.includes('responsive-shell.js?v=18'),'served page has a stale responsive script version');
  }finally{
   server.kill('SIGTERM');
  }

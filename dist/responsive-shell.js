@@ -37,9 +37,20 @@ function syncSoundBtn(){try{let b=doc()?.getElementById('soundBtn');if(!b)return
 soundBtn.onclick=()=>{try{doc()?.getElementById('soundBtn')?.click()}catch(e){}syncSoundBtn()};
 
 const CTRL_KEY='abyssTvControllerEnabled';
-const TOUCH_CAL_KEY='abyssLandscapeTouchCalibrationV1',TOUCH_CAL_LIMIT=180;
+const TOUCH_CAL_KEY='abyssLandscapeTouchCalibrationV1',TOUCH_CAL_BACKUP_KEY='abyssLandscapeTouchCalibrationBackupV1',TOUCH_CAL_LIMIT=180;
 const clampTouchValue=value=>Math.max(-TOUCH_CAL_LIMIT,Math.min(TOUCH_CAL_LIMIT,Math.round(Number(value)||0)));
-let touchCalibration=(()=>{try{const saved=JSON.parse(localStorage.getItem(TOUCH_CAL_KEY)||'{}');return{x:clampTouchValue(saved.x),y:clampTouchValue(saved.y)}}catch(e){return{x:0,y:0}}})();
+function parseTouchCalibration(raw){
+ try{const saved=JSON.parse(raw||'null');if(!saved||!Number.isFinite(Number(saved.x))||!Number.isFinite(Number(saved.y)))return null;return{x:clampTouchValue(saved.x),y:clampTouchValue(saved.y)}}catch(e){return null}
+}
+function readTouchCalibration(){
+ const saved=[];
+ try{saved.push(localStorage.getItem(TOUCH_CAL_KEY),localStorage.getItem(TOUCH_CAL_BACKUP_KEY))}catch(e){}
+ try{saved.push(sessionStorage.getItem(TOUCH_CAL_KEY))}catch(e){}
+ try{const prefix=TOUCH_CAL_KEY+'=';saved.push(decodeURIComponent(document.cookie.split('; ').find(v=>v.startsWith(prefix))?.slice(prefix.length)||''))}catch(e){}
+ for(const raw of saved){const value=parseTouchCalibration(raw);if(value)return value}
+ return{x:0,y:0};
+}
+let touchCalibration=readTouchCalibration();
 function touchCalibrationText(){const signed=n=>`${n>0?'+':''}${n}px`;return`左右 ${signed(touchCalibration.x)}／上下 ${signed(touchCalibration.y)}`}
 function syncTouchCalibrationUi(){
  const d=doc();if(!d)return;
@@ -50,9 +61,20 @@ function syncTouchCalibrationUi(){
  if(x&&x.textContent!==xText)x.textContent=xText;
  if(y&&y.textContent!==yText)y.textContent=yText;
 }
+function persistTouchCalibration(){
+ const raw=JSON.stringify(touchCalibration);
+ try{localStorage.setItem(TOUCH_CAL_KEY,raw);localStorage.setItem(TOUCH_CAL_BACKUP_KEY,raw)}catch(e){}
+ try{sessionStorage.setItem(TOUCH_CAL_KEY,raw)}catch(e){}
+ try{document.cookie=`${TOUCH_CAL_KEY}=${encodeURIComponent(raw)}; path=/; max-age=31536000; SameSite=Lax`}catch(e){}
+}
+function restoreTouchCalibration(){
+ const saved=readTouchCalibration();
+ if(saved.x===touchCalibration.x&&saved.y===touchCalibration.y)return;
+ touchCalibration=saved;syncTouchCalibrationUi();
+}
 function setTouchCalibration(x,y){
  touchCalibration={x:clampTouchValue(x),y:clampTouchValue(y)};
- try{localStorage.setItem(TOUCH_CAL_KEY,JSON.stringify(touchCalibration))}catch(e){}
+ persistTouchCalibration();
  syncTouchCalibrationUi();
 }
 let enabled=true;
@@ -75,13 +97,15 @@ function win(){try{return directMode?window:stage.contentWindow}catch(e){return 
 
 function openTouchCalibration(){
  const d=doc();if(!d)return;
+ restoreTouchCalibration();
  let modal=d.getElementById('touchCalibrationModal');
  if(!modal){
   modal=d.createElement('div');modal.className='modal touch-calibration-modal';modal.id='touchCalibrationModal';
   modal.innerHTML='<div class="panel title-hub-panel touch-calibration-panel modal-shell"><header class="modal-shell-head"><div><small>LANDSCAPE TOUCH</small><h2>🎯 タッチ位置補正</h2></div></header><div class="modal-shell-body touch-calibration-body"><p>横画面で、押した場所と反応する場所がずれる端末向けの調整です。押した場所より上のボタンが反応するときは「下へ」を押してください。</p><div class="touch-calibration-readout"><span>左右 <strong id="touchCalibrationX">0px</strong></span><span>上下 <strong id="touchCalibrationY">0px</strong></span></div><div class="touch-calibration-controls"><button type="button" data-touch-adjust="0,-10">↑ 上へ</button><button type="button" data-touch-adjust="-10,0">← 左へ</button><button type="button" class="touch-calibration-reset" data-touch-reset>中央に戻す</button><button type="button" data-touch-adjust="10,0">右へ →</button><button type="button" data-touch-adjust="0,10">下へ ↓</button></div><div class="touch-calibration-test"><span>反応確認</span><button type="button" id="touchCalibrationTest">ここをタップ</button><output id="touchCalibrationResult">未確認</output></div></div><footer class="modal-shell-foot"><button type="button" class="btn" data-touch-calibration-close>設定へ戻る</button></footer></div>';
   d.body.appendChild(modal);
   modal.querySelectorAll('[data-touch-adjust]').forEach(button=>button.addEventListener('click',()=>{const [dx,dy]=button.dataset.touchAdjust.split(',').map(Number);setTouchCalibration(touchCalibration.x+dx,touchCalibration.y+dy)}));
-  modal.querySelector('[data-touch-reset]').addEventListener('click',()=>setTouchCalibration(0,0));
+  const reset=modal.querySelector('[data-touch-reset]');let resetTimer=0;
+  reset.addEventListener('click',()=>{if(reset.dataset.confirmReset==='1'){clearTimeout(resetTimer);delete reset.dataset.confirmReset;reset.textContent='中央に戻す';setTouchCalibration(0,0);return}reset.dataset.confirmReset='1';reset.textContent='もう一度押す';clearTimeout(resetTimer);resetTimer=setTimeout(()=>{delete reset.dataset.confirmReset;reset.textContent='中央に戻す'},2500)});
   modal.querySelector('[data-touch-calibration-close]').addEventListener('click',()=>modal.classList.remove('on'));
   modal.querySelector('#touchCalibrationTest').addEventListener('click',()=>{const out=modal.querySelector('#touchCalibrationResult');out.textContent='反応しました';out.classList.remove('ok');requestAnimationFrame(()=>out.classList.add('ok'))});
  }
@@ -492,6 +516,7 @@ if(directMode){
  else initializeResponsive();
 }else stage.addEventListener('load',initializeResponsive);
 const handleOrientation=()=>{
+ restoreTouchCalibration();
  syncOrientationLayout();
  syncStageViewport();
  syncIntentPosition();
@@ -502,6 +527,8 @@ syncStageViewport();
 window.addEventListener('resize',handleOrientation,{passive:true});
 window.addEventListener('pageshow',handleOrientation,{passive:true});
 window.addEventListener('orientationchange',()=>setTimeout(handleOrientation,80),{passive:true});
+window.addEventListener('pagehide',persistTouchCalibration,{passive:true});
+document.addEventListener('visibilitychange',()=>{if(document.hidden)persistTouchCalibration();else restoreTouchCalibration()},{passive:true});
 window.visualViewport?.addEventListener('resize',handleOrientation,{passive:true});
 window.visualViewport?.addEventListener('scroll',syncStageViewport,{passive:true});
 
