@@ -44,6 +44,7 @@ const landscapeCss=fs.readFileSync(path.join(dist,'responsive-landscape.css'),'u
 const shellJs=fs.readFileSync(path.join(dist,'responsive-shell.js'),'utf8');
 const enhanceJs=fs.readFileSync(path.join(dist,'enhance.js'),'utf8');
 const refinementJs=fs.readFileSync(path.join(dist,'refinement.js'),'utf8');
+const economyJs=fs.readFileSync(path.join(dist,'economy.js'),'utf8');
 assert(landscapeCss.includes('width:var(--abyss-vv-width,100%)!important'),
  'landscape root does not use the measured visual viewport width');
 assert(landscapeCss.includes('height:var(--abyss-vv-height,100%)!important'),
@@ -154,6 +155,16 @@ assert(landscapeCss.includes('justify-content:center!important;gap:8px!important
  'landscape hand spacing still changes with the number of cards');
 assert(landscapeCss.includes('flex-direction:column!important;justify-content:center!important'),
  'landscape reward labels are not contained within their rows');
+assert(landscapeCss.includes('.btn.gold ruby rt'),
+ 'gold landscape buttons do not use dark furigana');
+assert(landscapeCss.includes('grid-template-columns:15px auto!important;align-items:center!important'),
+ 'shop life and gold counters are not aligned to one grid');
+assert(!economyJs.includes('ABYSS BAZAAR'),
+ 'obsolete English shop caption is still rendered');
+assert(!economyJs.includes('深海階級：価格＋15%'),
+ 'ascension price adjustment is still exposed in the shop');
+assert(economyJs.includes("getAbyssShopPriceMultiplier?.(g)||1"),
+ 'ascension shop price adjustment is no longer applied to prices');
 assert(shellJs.includes('intentCenterBeforeEnemy(enemyRect.left,intentWidth,innerWidth)'),
  'enemy forecast does not reserve a measured gap from the enemy artwork');
 assert(shellJs.includes("intentEl.style.setProperty('left',(centerX-containerLeft)+'px','important')"),
@@ -162,10 +173,12 @@ assert(landscapeCss.includes('align-self:center!important;aspect-ratio:1/1!impor
  'landscape event artwork is still cropped into a tall cell');
 assert(landscapeCss.includes('object-fit:contain!important;object-position:center!important'),
  'landscape event artwork does not preserve its complete composition');
-assert(landscapeCss.includes('grid-template-columns:minmax(210px,34%) minmax(0,1fr)!important'),
- 'opening gift does not reserve a larger left character column');
-assert(landscapeCss.includes('left:10px!important;right:auto!important;top:auto!important;bottom:8px!important'),
- 'opening gift spirit is not placed on the left');
+assert(landscapeCss.includes('grid-template-columns:minmax(175px,31%) minmax(0,1fr)!important'),
+ 'opening gift does not place its title beside the dialogue');
+assert(landscapeCss.includes('grid-template-rows:repeat(3,58px)!important'),
+ 'opening gift choices still expand to fill the entire panel');
+assert(landscapeCss.includes('width:70px!important;height:58px!important'),
+ 'opening gift spirit is not enlarged beside the title');
 assert(refinementJs.includes('assets/events/${art}.webp?v=2'),
  'corrected event illustrations are not cache-busted');
 const intentPositionSource=shellJs.split('\n').find(line=>line.startsWith('function intentCenterBeforeEnemy('));
@@ -230,7 +243,8 @@ async function verifyServer(){
   const html=await response.text();
   assert(html.includes('id="tapStartGate"'),'served page has no TAP START gate');
   assert(html.includes('responsive-shell.js?v=28'),'served page has a stale responsive script version');
-  assert(html.includes('responsive-landscape.css?v=42'),'served page has a stale responsive stylesheet version');
+  assert(html.includes('responsive-landscape.css?v=43'),'served page has a stale responsive stylesheet version');
+  assert(html.includes('economy.js?v=158'),'served page has a stale economy script version');
   assert(html.includes('refinement.js?v=70'),'served page has a stale event script version');
   assert(html.includes('enhance.js?v=265'),'served page has a stale audio script version');
  }finally{
