@@ -42,14 +42,14 @@
 
   /* Events: illustration and choices get independent columns. */
   html.tv-mode :is(#eventModal,#mapChoiceModal){padding:76px 3vw 18px!important;align-items:center!important}
-  html.tv-mode :is(#eventModal,#mapChoiceModal)>.panel{width:min(1320px,94vw)!important;height:min(780px,calc(100vh - 96px))!important;max-width:1320px!important;max-height:780px!important;display:grid!important;grid-template-columns:minmax(300px,38%) minmax(0,1fr)!important;grid-template-rows:auto auto minmax(0,1fr)!important;column-gap:30px!important;row-gap:10px!important;padding:18px 22px!important;overflow:hidden!important}
+  html.tv-mode :is(#eventModal,#mapChoiceModal)>.panel{width:min(1400px,94vw)!important;height:min(760px,82vh)!important;max-width:1400px!important;max-height:760px!important;display:grid!important;grid-template-columns:minmax(320px,36%) minmax(0,1fr)!important;grid-template-rows:auto auto minmax(0,1fr)!important;column-gap:30px!important;row-gap:12px!important;padding:20px 24px!important;overflow:hidden!important}
   html.tv-mode :is(#eventModal,#mapChoiceModal) .bigicon{grid-column:1!important;grid-row:1/4!important;width:100%!important;height:100%!important;min-height:0!important;overflow:hidden!important}
   html.tv-mode :is(#eventModal,#mapChoiceModal) .event-illustration{width:100%!important;height:100%!important;object-fit:contain!important;object-position:center!important}
   html.tv-mode :is(#eventModal,#mapChoiceModal) h2{grid-column:2!important;grid-row:1!important;margin:6px 0 0!important;padding-right:190px!important;font-size:clamp(28px,2vw,38px)!important;line-height:1.15!important}
   html.tv-mode :is(#eventModal,#mapChoiceModal) :is(#eventText,#mapChoiceText){grid-column:2!important;grid-row:2!important;font-size:17px!important;line-height:1.55!important;margin:0!important}
-  html.tv-mode :is(#eventModal,#mapChoiceModal) .choices{grid-column:2!important;grid-row:3!important;display:grid!important;grid-auto-rows:minmax(72px,auto)!important;gap:10px!important;min-height:0!important;overflow:auto!important}
-  html.tv-mode :is(#eventModal,#mapChoiceModal) .choice{min-height:72px!important;padding:12px 16px!important;font-size:15px!important;line-height:1.4!important}
-  html.tv-mode :is(#eventModal,#mapChoiceModal) .choice b{font-size:18px!important}
+  html.tv-mode :is(#eventModal,#mapChoiceModal) .choices{grid-column:2!important;grid-row:3!important;display:grid!important;grid-template-rows:none!important;grid-auto-rows:minmax(88px,1fr)!important;align-content:stretch!important;gap:12px!important;min-height:0!important;height:100%!important;overflow:hidden!important}
+  html.tv-mode :is(#eventModal,#mapChoiceModal) .choice{height:auto!important;min-height:88px!important;padding:14px 18px!important;font-size:clamp(15px,.9vw,18px)!important;line-height:1.45!important;align-content:center!important;overflow:hidden!important}
+  html.tv-mode :is(#eventModal,#mapChoiceModal) .choice b{font-size:clamp(18px,1.1vw,22px)!important}
   html.tv-mode :is(#eventModal,#mapChoiceModal) .modal-resources{position:absolute!important;right:22px!important;top:16px!important;font-size:15px!important;z-index:2!important}
 
   /* Shop: four readable products per row with a dedicated scrolling market. */
@@ -72,22 +72,33 @@
   html.tv-mode #shopModal .unified-card .ctext{font-size:12px!important;line-height:1.35!important}
   html.tv-mode #shopModal .shop-exit{position:absolute!important;left:20px!important;right:20px!important;bottom:14px!important;width:auto!important;height:54px!important;font-size:17px!important;z-index:5!important}
 
-  /* Rewards and selection dialogs: compact home, large readable selections. */
-  html.tv-mode #rewardModal>.reward-panel{width:min(760px,72vw)!important;height:auto!important;max-height:88vh!important;padding:18px 22px!important;overflow:auto!important}
-  html.tv-mode .reward-panel>small{font-size:11px!important}
-  html.tv-mode .reward-panel>h2{font-size:30px!important;margin:5px 0 12px!important}
-  html.tv-mode .reward-panel :is(.reward-gold,.reward-row){width:100%!important;min-height:78px!important;padding:12px 18px!important}
-  html.tv-mode .reward-panel .reward-row i{font-size:32px!important}
-  html.tv-mode .reward-panel .reward-row b{font-size:18px!important}
-  html.tv-mode .reward-panel .reward-row small{font-size:13px!important;line-height:1.3!important}
-  html.tv-mode .reward-panel .reward-row em{font-size:14px!important;white-space:nowrap!important}
-  html.tv-mode .reward-panel #rewardContinue{width:min(440px,90%)!important;min-height:56px!important;margin:12px auto 0!important;font-size:16px!important}
-  html.tv-mode .reward-panel:has(#rewardPick:not([hidden])){width:min(1040px,90vw)!important}
-  html.tv-mode .reward-panel .rewards{display:flex!important;justify-content:center!important;gap:22px!important;overflow:auto!important;padding:10px!important}
-  html.tv-mode .reward-panel .rewardCard{flex:0 0 var(--pc-card-width)!important;width:var(--pc-card-width)!important;height:var(--pc-card-height)!important}
+  /* Rewards and selection dialogs: use the PC canvas instead of a phone-sized island. */
+  html.tv-mode #rewardModal{padding:4vh 3vw!important;align-items:center!important}
+  html.tv-mode #rewardModal>.reward-panel{box-sizing:border-box!important;width:min(1080px,88vw)!important;height:auto!important;min-height:0!important;max-height:92vh!important;padding:clamp(16px,2.2vh,24px) 30px!important;overflow:auto!important}
+  html.tv-mode #rewardHome:not([hidden]){box-sizing:border-box!important;width:100%!important;max-width:none!important;flex:0 0 auto!important;overflow:visible!important}
+  html.tv-mode .reward-panel>small{font-size:13px!important;letter-spacing:.18em!important}
+  html.tv-mode .reward-panel>h2{font-size:clamp(30px,4.1vh,44px)!important;margin:4px 0 clamp(10px,1.7vh,18px)!important}
+  html.tv-mode #rewardHome :is(.reward-gold,.reward-row){box-sizing:border-box!important;width:100%!important;min-height:clamp(72px,9vh,92px)!important;height:clamp(72px,9vh,92px)!important;max-height:none!important;padding:clamp(10px,1.4vh,15px) 22px!important}
+  html.tv-mode #rewardHome .reward-gold{grid-template-columns:54px minmax(0,1fr) auto auto!important;margin:clamp(5px,1vh,10px) 0!important;gap:12px!important}
+  html.tv-mode #rewardHome .reward-gold i{font-size:40px!important}
+  html.tv-mode #rewardHome .reward-gold span{font-size:18px!important}
+  html.tv-mode #rewardHome .reward-gold strong{font-size:32px!important}
+  html.tv-mode #rewardHome .reward-gold em{font-size:16px!important}
+  html.tv-mode #rewardHome .reward-row{grid-template-columns:54px minmax(0,1fr) auto!important;margin:clamp(5px,1vh,10px) 0!important;gap:12px!important}
+  html.tv-mode #rewardHome .reward-row>i{font-size:38px!important}
+  html.tv-mode #rewardHome .reward-row>span{display:flex!important;flex-direction:column!important;justify-content:center!important;overflow:visible!important}
+  html.tv-mode #rewardHome .reward-row>span>b{font-size:22px!important;line-height:1.2!important}
+  html.tv-mode #rewardHome .reward-row>span>small{font-size:15px!important;line-height:1.35!important;margin-top:5px!important}
+  html.tv-mode #rewardHome .reward-row>em{font-size:17px!important;white-space:nowrap!important}
+  html.tv-mode #rewardHome #rewardContinue{width:min(520px,62%)!important;min-height:clamp(52px,6vh,64px)!important;margin:clamp(10px,1.7vh,18px) auto 0!important;font-size:18px!important}
+  html.tv-mode .reward-panel:has(#rewardPick:not([hidden])){width:min(1220px,92vw)!important;padding-inline:34px!important}
+  html.tv-mode .reward-panel #rewardPick:not([hidden]){flex:0 0 auto!important;min-height:0!important;overflow:visible!important;text-align:center!important}
+  html.tv-mode .reward-panel #rewardPickText{font-size:17px!important;margin:0 0 10px!important}
+  html.tv-mode .reward-panel .rewards{box-sizing:border-box!important;display:grid!important;grid-template-columns:repeat(3,var(--pc-card-width))!important;justify-content:center!important;align-items:start!important;gap:clamp(20px,2vw,34px)!important;width:100%!important;height:auto!important;min-height:var(--pc-card-height)!important;max-height:none!important;margin:8px auto 16px!important;padding:6px!important;overflow:visible!important}
+  html.tv-mode .reward-panel .rewardCard{box-sizing:border-box!important;flex:0 0 var(--pc-card-width)!important;width:var(--pc-card-width)!important;min-width:var(--pc-card-width)!important;max-width:var(--pc-card-width)!important;height:var(--pc-card-height)!important;min-height:var(--pc-card-height)!important;max-height:var(--pc-card-height)!important}
   html.tv-mode .reward-panel .rewardCard .cname{font-size:14px!important}
   html.tv-mode .reward-panel .rewardCard .ctext{font-size:12px!important;line-height:1.35!important}
-  html.tv-mode .reward-panel :is(#skipReward,#rewardBack){min-height:46px!important;padding:8px 16px!important;font-size:14px!important}
+  html.tv-mode .reward-panel :is(#skipReward,#rewardBack){min-width:210px!important;min-height:52px!important;padding:10px 20px!important;font-size:16px!important}
   html.tv-mode #bossRelicModal>.boss-relic-panel{width:min(780px,76vw)!important;height:auto!important;max-height:90vh!important;padding:18px 22px!important;overflow:auto!important}
   html.tv-mode .boss-relic-panel>h2{font-size:30px!important}
   html.tv-mode .boss-relic-panel>p{font-size:14px!important}

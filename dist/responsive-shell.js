@@ -92,7 +92,7 @@ function injectLandscapeCss(){
  }
  if(!d.querySelector('link[data-abyss-desktop-layout],link[href*="responsive-desktop.css"]')){
   const desktop=d.createElement('link');
-  desktop.rel='stylesheet';desktop.href='responsive-desktop.css?v=3';
+  desktop.rel='stylesheet';desktop.href='responsive-desktop.css?v=4';
   desktop.dataset.abyssDesktopLayout='1';d.head.appendChild(desktop);
  }
 }
@@ -108,6 +108,7 @@ function injectLandscapeCss(){
    `top` ends up relative to #battle's box, not the viewport; subtract
    #battle's own viewport offset to compensate. */
 function visibleEnemyLeft(enemyLeft,nameLeft,viewportWidth){const nameInset=Math.max(34,Math.min(44,viewportWidth*.045));return Math.max(enemyLeft,nameLeft-nameInset)}
+function visiblePcEnemyLeft(enemyLeft,nameLeft,viewportWidth){const nameInset=Math.max(76,Math.min(112,viewportWidth*.055));return Math.max(enemyLeft,nameLeft-nameInset)}
 function intentCenterBeforeEnemy(enemyLeft,intentWidth){return Math.max(intentWidth/2+8,enemyLeft-intentWidth/2)}
 function intentPlacementBetweenFighters(playerRight,enemyLeft,preferredWidth,viewportWidth){
  const margin=Math.max(6,Math.min(10,viewportWidth*.01)),left=Math.max(margin,playerRight+margin),right=Math.min(viewportWidth-margin,enemyLeft-margin),available=Math.max(1,right-left),width=Math.min(preferredWidth,available);
@@ -141,7 +142,7 @@ function syncIntentPosition(){
    const preferredWidth=Math.min(136,innerWidth*.25),placement=intentPlacementBetweenFighters(playerRect.right,enemyRect.left,preferredWidth,innerWidth);
    centerX=placement.center;intentEl.style.setProperty('width',placement.width+'px','important');
   }else if(playerRect?.width){
-   const preferredWidth=Math.max(210,Math.min(260,innerWidth*.14)),placement=intentPlacementBeforeEnemy(playerRect.right,enemyRect.left,preferredWidth,innerWidth);
+   const visibleLeft=visiblePcEnemyLeft(enemyRect.left,r.left,innerWidth),preferredWidth=Math.max(210,Math.min(260,innerWidth*.14)),placement=intentPlacementBeforeEnemy(playerRect.right,visibleLeft,preferredWidth,innerWidth);
    centerX=placement.center;intentEl.style.setProperty('width',placement.width+'px','important');
   }else{
    const visibleLeft=visibleEnemyLeft(enemyRect.left,r.left,innerWidth);centerX=intentCenterBeforeEnemy(visibleLeft,intentWidth,innerWidth);
