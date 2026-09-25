@@ -175,14 +175,20 @@ function installLandscapeTouchCalibration(){
  const d=doc();if(!d||d.__abyssTouchCalibrationInstalled)return;
  d.__abyssTouchCalibrationInstalled=true;
  let gesture=null,suppressTrustedClickUntil=0,dispatchingSyntheticClick=false;
+ const RAW_PRIORITY_SELECTOR='#cardCodexClose,#collectionClose,[data-hub-close],[data-touch-calibration-close],#titleSettingsMenu,#titleTouchCalibration,[data-touch-adjust],[data-touch-reset],#touchCalibrationTest';
+ const NEVER_SHIFT_SELECTOR='#newGame,#continueGame,#restart,#resetConfirm,[data-setting="reset"]';
  const closestInteractive=el=>el?.closest?.(SELECTOR);
- const scopeNow=()=>{const modals=[...d.querySelectorAll('.modal.on')];return modals[modals.length-1]||d.querySelector('.screen.on')||d.body};
+ const scopeNow=()=>{
+  const modals=[...d.querySelectorAll('.modal.on')].filter(visible);let top=null,topZ=-Infinity;
+  modals.forEach((modal,index)=>{const z=Number.parseFloat(getComputedStyle(modal).zIndex)||0,rank=z*1000+index;if(rank>=topZ){top=modal;topZ=rank}});
+  return top||d.querySelector('.screen.on')||d.body;
+ };
  const paintedTarget=(scope,x,y)=>{
   const hits=[...scope.querySelectorAll(SELECTOR)].filter(el=>visible(el)&&!el.disabled).map(el=>({el,r:el.getBoundingClientRect()})).filter(({r})=>x>=r.left&&x<=r.right&&y>=r.top&&y<=r.bottom);
   hits.sort((a,b)=>a.r.width*a.r.height-b.r.width*b.r.height);return hits[0]?.el||null;
  };
  d.addEventListener('touchstart',e=>{
-  if(!d.documentElement.classList.contains('tv-mode')||e.touches.length!==1||(!touchCalibration.x&&!touchCalibration.y)||d.getElementById('tapStartGate')||e.target.closest?.('#tapStartGate')){gesture=null;return}
+  if(!d.documentElement.classList.contains('tv-mode')||e.touches.length!==1||d.getElementById('tapStartGate')||e.target.closest?.('#tapStartGate')){gesture=null;return}
   const t=e.touches[0];gesture={id:t.identifier,x:t.clientX,y:t.clientY,moved:false};
  },{capture:true,passive:true});
  d.addEventListener('touchmove',e=>{
@@ -193,7 +199,9 @@ function installLandscapeTouchCalibration(){
   const began=gesture;gesture=null;if(!began||began.moved||!d.documentElement.classList.contains('tv-mode'))return;
   const t=Array.from(e.changedTouches||[]).find(v=>v.identifier===began.id);
   if(!t||Math.hypot(t.clientX-began.x,t.clientY-began.y)>12)return;
-  const native=closestInteractive(e.target),intended=paintedTarget(scopeNow(),t.clientX+touchCalibration.x,t.clientY+touchCalibration.y);
+  const scope=scopeNow(),native=closestInteractive(e.target),raw=paintedTarget(scope,t.clientX,t.clientY),corrected=paintedTarget(scope,t.clientX+touchCalibration.x,t.clientY+touchCalibration.y);
+  let intended=scope.id==='touchCalibrationModal'||raw?.matches?.(RAW_PRIORITY_SELECTOR)?raw:(corrected||raw);
+  if(intended?.matches?.(NEVER_SHIFT_SELECTOR)&&raw!==intended)intended=raw;
   if(!intended||intended===native)return;
   e.preventDefault();e.stopImmediatePropagation();
   suppressTrustedClickUntil=Date.now()+700;

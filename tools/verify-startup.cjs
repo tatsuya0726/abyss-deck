@@ -30,6 +30,10 @@ for(const source of scriptSources){
 const responsive=fs.readFileSync(path.join(dist,'responsive-shell.js'),'utf8');
 assert(responsive.includes('if(el.textContent!==summary)el.textContent=summary'),
  'touch calibration can retrigger the MutationObserver continuously');
+assert(responsive.includes("const RAW_PRIORITY_SELECTOR='#cardCodexClose,#collectionClose"),
+ 'landscape close buttons are not protected from saved touch offsets');
+assert(!responsive.includes("||(!touchCalibration.x&&!touchCalibration.y)||"),
+ 'landscape visual hit testing is disabled when calibration is centered');
 
 function verifyTapStartRecovery(){
  const classList=initial=>{
@@ -73,7 +77,7 @@ async function verifyServer(){
   assert(response?.ok,`local server did not return index.html (${response?.status||'no response'})`);
   const html=await response.text();
   assert(html.includes('id="tapStartGate"'),'served page has no TAP START gate');
-  assert(html.includes('responsive-shell.js?v=15'),'served page has a stale responsive script version');
+  assert(html.includes('responsive-shell.js?v=16'),'served page has a stale responsive script version');
  }finally{
   server.kill('SIGTERM');
  }
@@ -87,6 +91,8 @@ verifyServer().then(()=>{
   inlineScripts:inlineScripts.length,
   externalScripts:scriptSources.length,
   touchObserverLoop:false,
+  protectedCloseButtons:true,
+  centeredHitRepair:true,
   localServer:true
  },null,2));
 }).catch(error=>{
