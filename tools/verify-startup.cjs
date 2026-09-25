@@ -53,6 +53,10 @@ assert(landscapeCss.includes('left:var(--abyss-safe-left)!important'),
  'landscape windows do not avoid the left-side camera safe area');
 assert(landscapeCss.includes('clamp(48px,14vh,58px)'),
  'installed iPhone landscape has no fallback when safe-area values are zero');
+assert(landscapeCss.includes(':is(#multiDeckChoiceModal,#deckChoiceModal,#markSelectModal)>.panel'),
+ 'landscape card-picking events do not reserve the viewport for cards');
+assert(landscapeCss.includes('font-size:clamp(28px,8vh,42px)!important'),
+ 'landscape card-picking event emblem is still portrait-sized');
 assert(!landscapeCss.includes('.touch-auto-catcher'),
  'obsolete touch interception overlay is still present');
 
@@ -99,7 +103,7 @@ async function verifyServer(){
   const html=await response.text();
   assert(html.includes('id="tapStartGate"'),'served page has no TAP START gate');
   assert(html.includes('responsive-shell.js?v=23'),'served page has a stale responsive script version');
-  assert(html.includes('responsive-landscape.css?v=26'),'served page has a stale responsive stylesheet version');
+  assert(html.includes('responsive-landscape.css?v=27'),'served page has a stale responsive stylesheet version');
  }finally{
   server.kill('SIGTERM');
  }
