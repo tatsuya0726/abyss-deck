@@ -216,7 +216,7 @@ html.tv-mode body.scene-title .title-hint{
 
 /* Phone landscape: retain the same clean look, but use the width so every
    control fits without vertical scrolling. */
-@media (orientation:landscape) and (max-height:600px){
+@media (orientation:landscape){
   html.tv-mode body.scene-title #title{padding:6px 18px!important}
   html.tv-mode body.scene-title .titlebox{
     display:grid!important;grid-template-columns:minmax(0,1.1fr) minmax(290px,.9fr)!important;
@@ -259,7 +259,7 @@ html.tv-mode .settings-hub-grid>button{
   min-height:88px!important;padding:9px 11px!important;gap:9px!important}
 html.tv-mode .settings-hub-grid>button b{font-size:14px!important;line-height:1.2!important}
 html.tv-mode .settings-hub-grid>button small{font-size:11px!important;line-height:1.25!important}
-@media (orientation:landscape) and (max-height:600px){
+@media (orientation:landscape){
   html.tv-mode .settings-hub-panel{width:min(820px,96vw)!important;height:96vh!important;max-height:96vh!important}
   html.tv-mode .settings-hub-panel .modal-shell-head{padding:8px 14px!important}
   html.tv-mode .settings-hub-grid{padding:7px!important;gap:6px!important}
@@ -672,7 +672,7 @@ html.tv-mode .reward-row{
 html.tv-mode .rewards{max-width:min(88vw,1380px)!important;gap:var(--tv-gap)!important}
 
 /* Phone landscape keeps the same composition, scaled to its short height. */
-@media (orientation:landscape) and (max-height:600px){
+@media (orientation:landscape){
   html.tv-mode,html.tv-mode body{
     width:var(--abyss-vv-width,100%)!important;
     height:var(--abyss-vv-height,100%)!important;
@@ -871,7 +871,7 @@ html.tv-mode body.scene-title .title-hint{
   font-size:var(--tv-small)!important
 }
 
-@media (orientation:landscape) and (max-height:600px){
+@media (orientation:landscape){
   html.tv-mode body.scene-title #title{padding:4px 10px!important}
   html.tv-mode body.scene-title .titlebox{
     gap:2px!important;
@@ -1015,7 +1015,7 @@ html.tv-mode #collectionGrid.beast-grid{
   grid-template-columns:repeat(auto-fill,minmax(clamp(220px,22vw,360px),1fr))!important
 }
 
-@media (orientation:landscape) and (max-height:600px){
+@media (orientation:landscape){
   html.tv-mode body.scene-title .title-actions{
     column-gap:5px!important;
     row-gap:4px!important;
@@ -1192,7 +1192,7 @@ html.tv-mode .card-codex-head .codex-sortbar{min-width:0!important;padding-top:3
 html.tv-mode .card-codex-head .codex-sortbar{justify-content:flex-end!important}
 html.tv-mode .card-codex-body{padding-top:3px!important}
 
-@media (orientation:landscape) and (max-height:600px){
+@media (orientation:landscape){
   html.tv-mode .map-help-list{grid-template-columns:repeat(4,minmax(0,1fr))!important;gap:5px!important;padding:5px!important}
   html.tv-mode .map-help-item{min-height:64px!important;padding:5px 6px!important;grid-template-columns:29px minmax(0,1fr)!important;gap:0 6px!important}
   html.tv-mode .map-help-item i{font-size:21px!important}
@@ -1400,7 +1400,7 @@ html.tv-mode :is(#eventModal,#mapChoiceModal) .choice{
   box-sizing:border-box!important;min-height:clamp(48px,7vh,72px)!important;
   padding:clamp(7px,1vh,12px) clamp(12px,1vw,20px)!important;line-height:1.32!important
 }
-@media (orientation:landscape) and (max-height:600px){
+@media (orientation:landscape){
   html.tv-mode :is(#eventModal,#mapChoiceModal){padding:52px max(8px,env(safe-area-inset-right)) 6px max(8px,env(safe-area-inset-left))!important}
   html.tv-mode :is(#eventModal,#mapChoiceModal)>.panel{
     grid-template-columns:minmax(150px,.7fr) minmax(0,1.3fr)!important;grid-template-rows:auto minmax(24px,1fr) auto!important;
@@ -1450,7 +1450,7 @@ html.tv-mode .guardian-reveal.story-normal-keeper>b,
 html.tv-mode .guardian-reveal.story-normal-keeper>p,
 html.tv-mode .guardian-reveal.story-normal-keeper>.story-progress,
 html.tv-mode .guardian-reveal.story-normal-keeper>.story-tap{grid-column:2!important;justify-self:start!important}
-@media (orientation:landscape) and (max-height:600px){
+@media (orientation:landscape){
   html.tv-mode #shopModal .shop-keeper{flex-basis:62px!important;height:62px!important;margin:0 0 2px!important}
   html.tv-mode #shopModal .shop-keeper img{width:66px!important}
   html.tv-mode #shopModal .keeper-speech{right:70px!important;padding:5px 9px!important;font-size:9px!important}
@@ -1492,7 +1492,7 @@ html.tv-mode{
 /* Card-picking events need the vertical space for the cards, not a portrait-
    sized emblem and heading. Keep a compact header and give the list the rest
    of the measured landscape viewport. */
-@media (orientation:landscape) and (max-height:600px){
+@media (orientation:landscape){
   html.tv-mode :is(#multiDeckChoiceModal,#deckChoiceModal,#markSelectModal){
     padding:6px 8px!important;align-items:stretch!important
   }
@@ -1544,7 +1544,7 @@ html.tv-mode .app{width:auto!important;height:auto!important;transform:none!impo
 /* Short landscape phones: size every modal from its safe-area container,
    never from the full viewport. A vw-sized child inside an inset modal was
    the reason the right edge was clipped after avoiding the camera cutout. */
-@media (orientation:landscape) and (pointer:coarse) and (max-height:600px){
+@media (orientation:landscape){
   html.tv-mode .modal{box-sizing:border-box!important;overflow:hidden!important}
   html.tv-mode .modal>.panel{box-sizing:border-box!important;width:100%!important;max-width:100%!important}
   html.tv-mode .event-quick-nav{position:absolute!important;left:8px!important;right:8px!important;width:auto!important}
@@ -1695,7 +1695,7 @@ html.tv-mode .app{width:auto!important;height:auto!important;transform:none!impo
 html.tv-mode .modal,
 html.tv-mode #tapStartGate{width:auto!important;height:auto!important}
 
-@media (orientation:landscape) and (pointer:coarse) and (max-height:600px){
+@media (orientation:landscape){
   /* Battle information hierarchy: shorter bars, smaller secondary copy and
      the forecast directly beneath the enemy label at the camera-safe edge. */
   html.tv-mode #battle .unit{width:35%!important}
@@ -1787,7 +1787,7 @@ html.tv-mode #tapStartGate{width:auto!important;height:auto!important}
   }
 }
 
-@media (orientation:landscape) and (pointer:coarse) and (max-height:600px){
+@media (orientation:landscape){
   /* Keep the complete shop inside the camera-safe modal. Every flex/grid
      child may shrink, and the card market uses four predictable columns. */
   html.tv-mode #shopModal,
@@ -1881,7 +1881,7 @@ html.tv-mode #tapStartGate{width:auto!important;height:auto!important}
   html.tv-mode .boss-relic-choice span{font-size:8px!important;line-height:1.2!important}
 }
 
-@media (orientation:landscape) and (pointer:coarse) and (max-height:600px){
+@media (orientation:landscape){
   /* Developer tools: reserve most of the short screen for the selectable
      stage/node list instead of the title, warning and exit chrome. */
   html.tv-mode .debug-panel{
@@ -1914,41 +1914,102 @@ html.tv-mode #tapStartGate{width:auto!important;height:auto!important}
   }
 }
 
-@media (orientation:landscape) and (pointer:coarse) and (max-height:600px){
-  /* During battle the six utility actions become the same kind of compact
-     side rail used by the phone layout. Removing them from the HUD gives wide
-     boss artwork an unobstructed top edge. */
+@media (orientation:landscape){
+  /* One battle composition at every landscape size: desktop uses the same
+     phone side rail and card proportions, enlarged by --abyss-phone-ui-scale. */
+  html.tv-mode body:has(#battle.on) .hud{
+    box-sizing:border-box!important;height:0!important;min-height:0!important;
+    padding:0!important;border:0!important;background:none!important;box-shadow:none!important;
+    overflow:visible!important;pointer-events:none!important
+  }
+  html.tv-mode body:has(#battle.on) .hud :is(.logo,.zone,.relics){display:none!important}
+  html.tv-mode body:has(#battle.on) #battle{inset:0!important}
   html.tv-mode body:has(#battle.on) .quick-nav{
     position:absolute!important;z-index:24!important;
-    top:48px!important;left:4px!important;right:auto!important;bottom:auto!important;
+    top:8px!important;left:4px!important;right:auto!important;bottom:auto!important;
     display:grid!important;grid-template-columns:1fr!important;grid-auto-rows:31px!important;
-    gap:3px!important;width:68px!important;max-width:68px!important;margin:0!important;padding:0!important
+    gap:3px!important;width:68px!important;max-width:68px!important;margin:0!important;padding:0!important;
+    pointer-events:auto!important
   }
   html.tv-mode body:has(#battle.on) .quick-nav :is(button,.suspend-run,#mapHelpView){
     box-sizing:border-box!important;width:68px!important;height:31px!important;min-height:31px!important;
     padding:2px 3px!important;font-size:8px!important;line-height:1.05!important;
     white-space:nowrap!important;overflow:hidden!important
   }
-  html.tv-mode body:has(#battle.on) .hud{justify-content:space-between!important}
-  html.tv-mode body:has(#battle.on) .hud .res{margin-left:auto!important}
+  html.tv-mode body:has(#battle.on) .hud .res{
+    position:absolute!important;z-index:24!important;top:212px!important;left:4px!important;right:auto!important;
+    display:grid!important;grid-template-columns:1fr!important;grid-auto-rows:31px!important;
+    gap:3px!important;width:68px!important;margin:0!important;padding:0!important;pointer-events:auto!important
+  }
+  html.tv-mode body:has(#battle.on) .hud .res>.chip{
+    box-sizing:border-box!important;width:68px!important;height:31px!important;min-height:31px!important;
+    padding:2px 3px!important;border-radius:9px!important;font-size:8px!important;line-height:1.05!important;
+    white-space:nowrap!important;overflow:hidden!important
+  }
 
   /* Leave a real column for the rail and move combatants slightly right.
      Boss art always uses contain sizing and sits below the remaining status
      chips, so large tentacles/fins cannot be cropped by the top edge. */
   html.tv-mode #battle .arena{
-    box-sizing:border-box!important;height:56%!important;
+    box-sizing:border-box!important;height:54%!important;
     justify-content:center!important;gap:clamp(26px,5vw,50px)!important;
     padding:7px 2vw 0 76px!important
   }
-  html.tv-mode #battle .handArea{height:44%!important}
+  html.tv-mode #battle .handArea{height:46%!important}
   html.tv-mode #battle #enemySprite.boss-enemy{
     box-sizing:border-box!important;height:min(29vh,148px)!important;max-height:100%!important;
     background-size:contain!important;background-position:center!important
   }
   html.tv-mode #battle .arena>.unit:first-child>.enemyName{left:19vw!important}
 
-  /* A little more vertical card face makes the illustration and effect copy
-     readable without consuming additional horizontal hand space. */
-  html.tv-mode #battle .card{height:min(126px,35vh)!important}
-  html.tv-mode #battle .card .art{height:43%!important;min-height:0!important}
+  /* Slightly larger hand cards retain the phone aspect and expose more art and
+     effect copy. Horizontal overflow remains scrollable for large hands. */
+  html.tv-mode #battle .card{width:min(120px,18vw)!important;height:min(142px,39vh)!important}
+  html.tv-mode #battle .card .art{height:45%!important;min-height:0!important}
+}
+
+/* On a mouse/trackpad landscape viewport, enlarge the unified phone geometry
+   instead of falling back to the former independent desktop composition. */
+@media (orientation:landscape) and (pointer:fine) and (min-height:601px){
+  html.tv-mode body:has(#battle.on) .quick-nav{
+    top:calc(8px * var(--abyss-phone-ui-scale,1))!important;
+    left:calc(4px * var(--abyss-phone-ui-scale,1))!important;
+    grid-auto-rows:calc(31px * var(--abyss-phone-ui-scale,1))!important;
+    gap:calc(3px * var(--abyss-phone-ui-scale,1))!important;
+    width:calc(68px * var(--abyss-phone-ui-scale,1))!important;
+    max-width:calc(68px * var(--abyss-phone-ui-scale,1))!important
+  }
+  html.tv-mode body:has(#battle.on) .quick-nav :is(button,.suspend-run,#mapHelpView),
+  html.tv-mode body:has(#battle.on) .hud .res>.chip{
+    width:calc(68px * var(--abyss-phone-ui-scale,1))!important;
+    height:calc(31px * var(--abyss-phone-ui-scale,1))!important;
+    min-height:calc(31px * var(--abyss-phone-ui-scale,1))!important;
+    padding:calc(2px * var(--abyss-phone-ui-scale,1)) calc(3px * var(--abyss-phone-ui-scale,1))!important;
+    border-radius:calc(9px * var(--abyss-phone-ui-scale,1))!important;
+    font-size:calc(8px * var(--abyss-phone-ui-scale,1))!important
+  }
+  html.tv-mode body:has(#battle.on) .hud .res{
+    top:calc(212px * var(--abyss-phone-ui-scale,1))!important;
+    left:calc(4px * var(--abyss-phone-ui-scale,1))!important;
+    grid-auto-rows:calc(31px * var(--abyss-phone-ui-scale,1))!important;
+    gap:calc(3px * var(--abyss-phone-ui-scale,1))!important;
+    width:calc(68px * var(--abyss-phone-ui-scale,1))!important
+  }
+  html.tv-mode #battle .arena{
+    gap:calc(40px * var(--abyss-phone-ui-scale,1))!important;
+    padding-left:calc(76px * var(--abyss-phone-ui-scale,1))!important
+  }
+  html.tv-mode #battle .creature{height:min(31vh,calc(175px * var(--abyss-phone-ui-scale,1)))!important}
+  html.tv-mode #battle #enemySprite.boss-enemy{height:min(29vh,calc(148px * var(--abyss-phone-ui-scale,1)))!important}
+  html.tv-mode #battle .card{
+    width:calc(120px * var(--abyss-phone-ui-scale,1))!important;
+    height:min(39vh,calc(142px * var(--abyss-phone-ui-scale,1)))!important
+  }
+  html.tv-mode #battle .card .cost{
+    width:calc(27px * var(--abyss-phone-ui-scale,1))!important;
+    height:calc(27px * var(--abyss-phone-ui-scale,1))!important;
+    font-size:calc(12px * var(--abyss-phone-ui-scale,1))!important
+  }
+  html.tv-mode #battle .card .cname{font-size:calc(9px * var(--abyss-phone-ui-scale,1))!important}
+  html.tv-mode #battle .card .ctext{font-size:calc(8px * var(--abyss-phone-ui-scale,1))!important}
 }

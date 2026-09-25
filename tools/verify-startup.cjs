@@ -39,6 +39,7 @@ assert(!responsive.includes('abyssLandscapeTouchCalibration'),
 assert(!responsive.includes('dispatchingSyntheticClick'),
  'touches can still be resent as synthetic clicks');
 const landscapeCss=fs.readFileSync(path.join(dist,'responsive-landscape.css'),'utf8');
+const shellJs=fs.readFileSync(path.join(dist,'responsive-shell.js'),'utf8');
 const enhanceJs=fs.readFileSync(path.join(dist,'enhance.js'),'utf8');
 assert(landscapeCss.includes('width:var(--abyss-vv-width,100%)!important'),
  'landscape root does not use the measured visual viewport width');
@@ -94,8 +95,14 @@ assert(landscapeCss.includes('html.tv-mode body:has(#battle.on) .quick-nav{'),
  'battle utility actions are still occupying the top HUD');
 assert(landscapeCss.includes('padding:7px 2vw 0 76px!important'),
  'battle arena does not reserve a left-side utility rail');
-assert(landscapeCss.includes('html.tv-mode #battle .card{height:min(126px,35vh)!important}'),
- 'short-landscape battle cards have not regained vertical display space');
+assert(landscapeCss.includes('html.tv-mode #battle .card{width:min(120px,18vw)!important;height:min(142px,39vh)!important}'),
+ 'unified landscape battle cards have not gained the requested display space');
+assert(landscapeCss.includes('html.tv-mode body:has(#battle.on) .hud .res{'),
+ 'battle HP and gold are not grouped into the left utility rail');
+assert(landscapeCss.includes('@media (orientation:landscape) and (pointer:fine) and (min-height:601px){'),
+ 'desktop landscape does not enlarge the shared phone composition');
+assert(shellJs.includes("root.style.setProperty('--abyss-phone-ui-scale',phoneUiScale.toFixed(4))"),
+ 'desktop phone-layout scale is not synchronized with viewport height');
 assert(landscapeCss.includes('html.tv-mode #battle #enemySprite.boss-enemy{'),
  'boss artwork has no short-landscape containment rule');
 assert(enhanceJs.includes('BGM_OUTPUT_GAIN=2.540419'),
@@ -149,8 +156,8 @@ async function verifyServer(){
   assert(response?.ok,`local server did not return index.html (${response?.status||'no response'})`);
   const html=await response.text();
   assert(html.includes('id="tapStartGate"'),'served page has no TAP START gate');
-  assert(html.includes('responsive-shell.js?v=24'),'served page has a stale responsive script version');
-  assert(html.includes('responsive-landscape.css?v=34'),'served page has a stale responsive stylesheet version');
+  assert(html.includes('responsive-shell.js?v=25'),'served page has a stale responsive script version');
+  assert(html.includes('responsive-landscape.css?v=35'),'served page has a stale responsive stylesheet version');
   assert(html.includes('enhance.js?v=265'),'served page has a stale audio script version');
  }finally{
   server.kill('SIGTERM');

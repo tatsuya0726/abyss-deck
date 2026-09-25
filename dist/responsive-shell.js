@@ -8,8 +8,10 @@ function syncStageViewport(){
  const useVisualViewport=viewport&&Math.abs(viewport.scale-1)<.01;
  const width=Math.max(1,Math.round(useVisualViewport?viewport.width:window.innerWidth));
  const height=Math.max(1,Math.round(useVisualViewport?viewport.height:window.innerHeight));
+ const phoneUiScale=Math.max(1,Math.min(1.8,height/390));
  root.style.setProperty('--abyss-vv-width',width+'px');
  root.style.setProperty('--abyss-vv-height',height+'px');
+ root.style.setProperty('--abyss-phone-ui-scale',phoneUiScale.toFixed(4));
  if(directMode&&landscapeLayout)root.style.setProperty('--abyss-event-height',height+'px');
  else root.style.removeProperty('--abyss-event-height');
  if(directMode){
@@ -77,7 +79,7 @@ function injectLandscapeCss(){
  if(!cssInjected){
   try{
    const link=d.createElement('link');
-   link.rel='stylesheet';link.href='responsive-landscape.css?v=24';
+   link.rel='stylesheet';link.href='responsive-landscape.css?v=35';
    d.head.appendChild(link);cssInjected=true;
   }catch(e){}
  }
@@ -115,8 +117,7 @@ function syncIntentPosition(){
  const maxCenter=Math.max(minCenter,Math.min(battleRect.bottom,handTop)-8-intentHeight/2);
  const center=Math.max(minCenter,Math.min(maxCenter,r.top+r.height/2));
  intentEl.style.setProperty('top',(center-containerTop)+'px','important');
- const shortPhone=matchMedia('(orientation:landscape) and (pointer:coarse) and (max-height:600px)').matches;
- intentEl.style.setProperty('transform',shortPhone?'translateY(-50%)':'translate(-50%,-50%)','important');
+ intentEl.style.setProperty('transform','translateY(-50%)','important');
 }
 
 function visible(el){
