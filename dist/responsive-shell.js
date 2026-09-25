@@ -79,7 +79,7 @@ function setTouchCalibration(x,y){
 }
 function beginAutomaticTouchCalibration(modal){
  const catcher=modal?.querySelector('[data-touch-auto-catcher]'),out=modal?.querySelector('#touchCalibrationResult');if(!catcher)return;
- catcher.hidden=false;
+ delete catcher.dataset.finishing;catcher.hidden=false;
  if(out){out.textContent='「ここをタップ」の中央を押してください';out.classList.add('ok')}
 }
 let touchTraceTimer=0,touchTraceTarget=null;
@@ -129,7 +129,8 @@ function openTouchCalibration(){
   modal.querySelector('[data-touch-calibration-close]').addEventListener('click',()=>modal.classList.remove('on'));
   modal.querySelector('#touchCalibrationTest').addEventListener('click',()=>{const out=modal.querySelector('#touchCalibrationResult');out.textContent='反応しました';out.classList.remove('ok');requestAnimationFrame(()=>out.classList.add('ok'))});
   const catcher=modal.querySelector('[data-touch-auto-catcher]');
-  catcher.addEventListener('touchend',e=>{const t=e.changedTouches?.[0],test=modal.querySelector('#touchCalibrationTest');if(!t||!test)return;e.preventDefault();e.stopPropagation();const r=test.getBoundingClientRect();setTouchCalibration(r.left+r.width/2-t.clientX,r.top+r.height/2-t.clientY);catcher.hidden=true;showTouchCalibrationTrace(t.clientX,t.clientY,test);const out=modal.querySelector('#touchCalibrationResult');out.textContent=`自動補正しました：${touchCalibrationText()}`;out.classList.add('ok')},{passive:false});
+  catcher.addEventListener('touchend',e=>{const t=e.changedTouches?.[0],test=modal.querySelector('#touchCalibrationTest');if(!t||!test||catcher.dataset.finishing==='1')return;e.preventDefault();e.stopImmediatePropagation();const r=test.getBoundingClientRect();setTouchCalibration(r.left+r.width/2-t.clientX,r.top+r.height/2-t.clientY);catcher.dataset.finishing='1';showTouchCalibrationTrace(t.clientX,t.clientY,test);const out=modal.querySelector('#touchCalibrationResult');out.textContent=`自動補正しました：${touchCalibrationText()}`;out.classList.add('ok');setTimeout(()=>{catcher.hidden=true;delete catcher.dataset.finishing},750)},{passive:false});
+  catcher.addEventListener('click',e=>{e.preventDefault();e.stopImmediatePropagation()});
  }
  syncTouchCalibrationUi();modal.classList.add('on');win()?.applyFuri?.(modal);setTimeout(()=>beginAutomaticTouchCalibration(modal),120);
 }
@@ -232,11 +233,6 @@ function installLandscapeTouchCalibration(){
   const hits=[...scope.querySelectorAll(SELECTOR)].filter(el=>visible(el)&&!el.disabled).map(el=>({el,r:el.getBoundingClientRect()})).filter(({r})=>x>=r.left&&x<=r.right&&y>=r.top&&y<=r.bottom);
   hits.sort((a,b)=>a.r.width*a.r.height-b.r.width*b.r.height);return hits[0]?.el||null;
  };
- const bottomCloseTarget=(scope,y)=>{
-  const viewport=window.visualViewport,bottom=(viewport?.offsetTop||0)+(viewport?.height||window.innerHeight),band=Math.max(72,(viewport?.height||window.innerHeight)*.15);
-  if(y<bottom-band)return null;
-  return[...scope.querySelectorAll('[data-touch-calibration-close],#cardCodexClose,#collectionClose,[data-hub-close]')].filter(el=>visible(el)&&!el.disabled).at(-1)||null;
- };
  d.addEventListener('touchstart',e=>{
   if(!d.documentElement.classList.contains('tv-mode')||e.touches.length!==1||d.getElementById('tapStartGate')||e.target.closest?.('#tapStartGate,[data-touch-auto-catcher]')){gesture=null;return}
   const t=e.touches[0];gesture={id:t.identifier,x:t.clientX,y:t.clientY,moved:false};showTouchCalibrationTrace(t.clientX,t.clientY,e.target);
@@ -249,8 +245,8 @@ function installLandscapeTouchCalibration(){
   const began=gesture;gesture=null;if(!began||began.moved||!d.documentElement.classList.contains('tv-mode'))return;
   const t=Array.from(e.changedTouches||[]).find(v=>v.identifier===began.id);
   if(!t||Math.hypot(t.clientX-began.x,t.clientY-began.y)>12)return;
-  const scope=scopeNow(),native=closestInteractive(e.target),raw=paintedTarget(scope,t.clientX,t.clientY),corrected=paintedTarget(scope,t.clientX+touchCalibration.x,t.clientY+touchCalibration.y),bottomClose=bottomCloseTarget(scope,t.clientY);
-  let intended=bottomClose||(corrected||raw);
+  const scope=scopeNow(),native=closestInteractive(e.target),raw=paintedTarget(scope,t.clientX,t.clientY),corrected=paintedTarget(scope,t.clientX+touchCalibration.x,t.clientY+touchCalibration.y);
+  let intended=corrected||raw;
   if(intended?.matches?.(NEVER_SHIFT_SELECTOR)&&raw!==intended)intended=raw;
   showTouchCalibrationTrace(t.clientX,t.clientY,intended||corrected||raw||native);
   if(!intended||intended===native)return;
