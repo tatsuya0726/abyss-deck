@@ -175,10 +175,19 @@ assert(landscapeCss.includes('object-fit:contain!important;object-position:cente
  'landscape event artwork does not preserve its complete composition');
 assert(landscapeCss.includes('grid-template-columns:minmax(175px,31%) minmax(0,1fr)!important'),
  'opening gift does not place its title beside the dialogue');
-assert(landscapeCss.includes('grid-template-rows:repeat(3,58px)!important'),
+assert(landscapeCss.includes('grid-template-rows:repeat(3,74px)!important'),
  'opening gift choices still expand to fill the entire panel');
+assert(landscapeCss.includes('grid-template-rows:auto auto!important;align-content:center!important'),
+ 'opening gift choice text is not vertically contained');
 assert(landscapeCss.includes('width:70px!important;height:58px!important'),
  'opening gift spirit is not enlarged beside the title');
+const giftLayoutHeight=58+5+74*3;
+const giftMinimumInnerHeight=320-12-14;
+assert(giftLayoutHeight<=giftMinimumInnerHeight,
+ 'opening gift rows overflow the shortest supported landscape viewport');
+const giftTwoLineRubyHeight=2*(13*1.2+13*.55)+2+14;
+assert(giftTwoLineRubyHeight<74,
+ 'opening gift ruby text cannot fit inside a choice row');
 assert(refinementJs.includes('assets/events/${art}.webp?v=2'),
  'corrected event illustrations are not cache-busted');
 const intentPositionSource=shellJs.split('\n').find(line=>line.startsWith('function intentCenterBeforeEnemy('));
@@ -243,7 +252,7 @@ async function verifyServer(){
   const html=await response.text();
   assert(html.includes('id="tapStartGate"'),'served page has no TAP START gate');
   assert(html.includes('responsive-shell.js?v=28'),'served page has a stale responsive script version');
-  assert(html.includes('responsive-landscape.css?v=43'),'served page has a stale responsive stylesheet version');
+  assert(html.includes('responsive-landscape.css?v=44'),'served page has a stale responsive stylesheet version');
   assert(html.includes('economy.js?v=158'),'served page has a stale economy script version');
   assert(html.includes('refinement.js?v=70'),'served page has a stale event script version');
   assert(html.includes('enhance.js?v=265'),'served page has a stale audio script version');

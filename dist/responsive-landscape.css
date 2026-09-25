@@ -2422,11 +2422,19 @@ html.tv-mode #shopGrid .unified-market-item.synergy-card{
   html.tv-mode #firstBlessingModal .keeper-name{display:none!important}
   html.tv-mode #firstBlessingModal .choices{
     grid-column:1/3!important;grid-row:2!important;display:grid!important;
-    grid-template-columns:1fr!important;grid-template-rows:repeat(3,58px)!important;
+    grid-template-columns:1fr!important;grid-template-rows:repeat(3,74px)!important;
     align-content:start!important;width:100%!important;min-height:0!important;gap:5px!important;
     margin:0!important;overflow:hidden!important
   }
   html.tv-mode #firstBlessingModal .choice{
-    min-height:58px!important;height:58px!important;padding:5px 10px!important
+    display:grid!important;grid-template-rows:auto auto!important;align-content:center!important;
+    justify-items:start!important;min-height:74px!important;height:74px!important;padding:7px 10px!important;
+    overflow:hidden!important
+  }
+  html.tv-mode #firstBlessingModal .choice>b{
+    margin:0 0 2px!important;line-height:1.2!important
+  }
+  html.tv-mode #firstBlessingModal .choice>span{
+    display:block!important;line-height:1.2!important
   }
 }
