@@ -135,6 +135,12 @@ assert(shellJs.includes("root.style.setProperty('--abyss-phone-ui-scale',phoneUi
  'desktop phone-layout scale is not synchronized with viewport height');
 assert(landscapeCss.includes('html.tv-mode #battle #enemySprite.boss-enemy{'),
  'boss artwork has no short-landscape containment rule');
+assert(landscapeCss.includes(':is(#multiDeckResultModal,#outcomeModal)>.panel'),
+ 'landscape result scenes are not bounded to one viewport');
+assert(landscapeCss.includes('#multiResultList .multi-result-card:only-child .unified-card'),
+ 'single-card event results do not preserve readable card dimensions');
+assert(landscapeCss.includes(':is(#multiDeckResultModal,#outcomeModal)>.panel>small{display:none!important}'),
+ 'decorative English captions still consume landscape result space');
 assert(enhanceJs.includes('BGM_OUTPUT_GAIN=2.540419'),
  'BGM output gain is not raised by twenty percent');
 assert(enhanceJs.includes('window.playAbyssBattleMusic=playBattleMusic'),
@@ -187,7 +193,7 @@ async function verifyServer(){
   const html=await response.text();
   assert(html.includes('id="tapStartGate"'),'served page has no TAP START gate');
   assert(html.includes('responsive-shell.js?v=27'),'served page has a stale responsive script version');
-  assert(html.includes('responsive-landscape.css?v=38'),'served page has a stale responsive stylesheet version');
+  assert(html.includes('responsive-landscape.css?v=39'),'served page has a stale responsive stylesheet version');
   assert(html.includes('enhance.js?v=265'),'served page has a stale audio script version');
  }finally{
   server.kill('SIGTERM');
