@@ -25,6 +25,16 @@
 
 ## 直近で完了した変更
 
+### 起動時の黒画面を防ぐ安全装置
+
+- 正式URLは引き続き `https://tatsuya0726.github.io/abyss-deck/`
+- タッチ補正追加後に起動不能の報告があったため、同変更は履歴を残したままロールバック済み
+- `TAP START` を後続JavaScriptで生成せず、HTMLから即時表示するよう変更。読み込み途中でも黒一色にならない
+- `dist/boot-recovery.js` を追加。任意機能のJavaScriptが途中で失敗しても、タップで既存タイトル画面へ戻す
+- 起動安全装置はセーブ用localStorageを読み書き・削除しない
+- `dist/index.html` と `dist/game.html` の両方へ同じ安全装置を適用
+- 現在のキャッシュ番号: `boot-recovery.js?v=1`、`enhance.js?v=259`
+
 ### PC・横画面・コントローラー修正
 
 - iPhone Safari横画面で下部ボタンの見た目とタッチ判定がずれる問題を再修正。`visualViewport` の実幅・実高をCSS変数へ同期し、短い横画面のルート／アプリ領域をブラウザの実表示範囲へ固定
