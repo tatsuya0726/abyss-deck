@@ -2288,13 +2288,47 @@ html.tv-mode #shopGrid .unified-market-item.synergy-card{
   }
   html.tv-mode #rewardRelicOption[hidden]{display:none!important}
 
-  /* Keep the forecast in the open upper lane, but visually associate it with
-     the enemy rather than the centre of the arena. */
-  html.tv-mode #battle .enemy-unit>.intent,
-  html.tv-mode #battle #intent{left:64%!important}
-}
+  /* Event art is square. Preserve that ratio instead of cropping the left and
+     right edges to fill a tall grid cell. */
+  html.tv-mode :is(#eventModal,#mapChoiceModal) .bigicon{
+    align-self:center!important;aspect-ratio:1/1!important;height:auto!important;max-height:100%!important;
+    border-radius:12px!important
+  }
+  html.tv-mode :is(#eventModal,#mapChoiceModal) .event-illustration{
+    object-fit:contain!important;object-position:center!important
+  }
 
-@media (orientation:landscape) and (pointer:fine) and (min-height:601px){
-  html.tv-mode #battle .enemy-unit>.intent,
-  html.tv-mode #battle #intent{left:66%!important}
+  /* Opening gift: a readable character-and-dialogue column on the left and
+     the three choices on the right. */
+  html.tv-mode #firstBlessingModal>.panel{
+    display:grid!important;
+    grid-template-columns:minmax(210px,34%) minmax(0,1fr)!important;
+    grid-template-rows:auto minmax(0,1fr)!important;
+    column-gap:10px!important;row-gap:4px!important
+  }
+  html.tv-mode #firstBlessingModal .blessing-keeper{
+    grid-column:1!important;grid-row:1/3!important;align-self:stretch!important;
+    position:relative!important;height:auto!important;min-height:0!important;margin:0!important;
+    border:1px solid #385965!important;border-radius:10px!important;background:#06141dcc!important
+  }
+  html.tv-mode #firstBlessingModal .blessing-keeper img{
+    left:10px!important;right:auto!important;top:auto!important;bottom:8px!important;
+    width:min(150px,62%)!important;height:auto!important;max-height:58%!important;object-fit:contain!important
+  }
+  html.tv-mode #firstBlessingModal .keeper-speech{
+    left:8px!important;right:8px!important;top:8px!important;width:auto!important;
+    min-height:60px!important;padding:8px 10px!important;transform:none!important;
+    font-size:clamp(10px,2.8vh,13px)!important;line-height:1.35!important
+  }
+  html.tv-mode #firstBlessingModal .keeper-name{
+    display:block!important;left:10px!important;right:auto!important;top:auto!important;bottom:2px!important;
+    width:150px!important;text-align:center!important;font-size:8px!important
+  }
+  html.tv-mode #firstBlessingModal h2{
+    grid-column:2!important;grid-row:1!important;text-align:left!important;
+    margin:0!important;padding:2px 7px!important
+  }
+  html.tv-mode #firstBlessingModal .choices{
+    grid-column:2!important;grid-row:2!important;width:100%!important
+  }
 }

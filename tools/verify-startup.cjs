@@ -43,6 +43,7 @@ assert(responsive.includes("if(!landscapeLayout){existingHint?.remove();return}"
 const landscapeCss=fs.readFileSync(path.join(dist,'responsive-landscape.css'),'utf8');
 const shellJs=fs.readFileSync(path.join(dist,'responsive-shell.js'),'utf8');
 const enhanceJs=fs.readFileSync(path.join(dist,'enhance.js'),'utf8');
+const refinementJs=fs.readFileSync(path.join(dist,'refinement.js'),'utf8');
 assert(landscapeCss.includes('width:var(--abyss-vv-width,100%)!important'),
  'landscape root does not use the measured visual viewport width');
 assert(landscapeCss.includes('height:var(--abyss-vv-height,100%)!important'),
@@ -147,8 +148,30 @@ assert(landscapeCss.includes('width:min(100%,520px)!important;max-width:520px!im
  'landscape reward panel is still unnecessarily wide');
 assert(landscapeCss.includes('min-height:52px!important;height:52px!important;max-height:52px!important'),
  'landscape reward rows do not share one height');
-assert(landscapeCss.includes('#battle #intent{left:64%!important}'),
- 'short-landscape enemy forecast is not shifted toward the enemy');
+assert(shellJs.includes('intentCenterBeforeEnemy(enemyRect.left,intentWidth,innerWidth)'),
+ 'enemy forecast does not reserve a measured gap from the enemy artwork');
+assert(shellJs.includes("intentEl.style.setProperty('left',(centerX-containerLeft)+'px','important')"),
+ 'enemy forecast is not positioned from the measured enemy edge');
+assert(landscapeCss.includes('align-self:center!important;aspect-ratio:1/1!important;height:auto!important'),
+ 'landscape event artwork is still cropped into a tall cell');
+assert(landscapeCss.includes('object-fit:contain!important;object-position:center!important'),
+ 'landscape event artwork does not preserve its complete composition');
+assert(landscapeCss.includes('grid-template-columns:minmax(210px,34%) minmax(0,1fr)!important'),
+ 'opening gift does not reserve a larger left character column');
+assert(landscapeCss.includes('left:10px!important;right:auto!important;top:auto!important;bottom:8px!important'),
+ 'opening gift spirit is not placed on the left');
+assert(refinementJs.includes('assets/events/${art}.webp?v=2'),
+ 'corrected event illustrations are not cache-busted');
+const intentPositionSource=shellJs.split('\n').find(line=>line.startsWith('function intentCenterBeforeEnemy('));
+assert(intentPositionSource,'enemy forecast gap calculator is missing');
+const intentPositionContext={};
+vm.runInNewContext(`${intentPositionSource};this.intentCenterBeforeEnemy=intentCenterBeforeEnemy`,intentPositionContext);
+for(const [enemyLeft,intentWidth,viewportWidth]of [[992,238,1536],[620,136,844],[1050,220,1920]]){
+ const center=intentPositionContext.intentCenterBeforeEnemy(enemyLeft,intentWidth,viewportWidth);
+ const measuredGap=enemyLeft-(center+intentWidth/2);
+ assert(measuredGap>=9.9&&measuredGap<=18.1,
+  `enemy forecast overlaps artwork at ${viewportWidth}px (gap ${measuredGap})`);
+}
 assert(enhanceJs.includes('BGM_OUTPUT_GAIN=2.540419'),
  'BGM output gain is not raised by twenty percent');
 assert(enhanceJs.includes('window.playAbyssBattleMusic=playBattleMusic'),
@@ -200,8 +223,9 @@ async function verifyServer(){
   assert(response?.ok,`local server did not return index.html (${response?.status||'no response'})`);
   const html=await response.text();
   assert(html.includes('id="tapStartGate"'),'served page has no TAP START gate');
-  assert(html.includes('responsive-shell.js?v=27'),'served page has a stale responsive script version');
-  assert(html.includes('responsive-landscape.css?v=40'),'served page has a stale responsive stylesheet version');
+  assert(html.includes('responsive-shell.js?v=28'),'served page has a stale responsive script version');
+  assert(html.includes('responsive-landscape.css?v=41'),'served page has a stale responsive stylesheet version');
+  assert(html.includes('refinement.js?v=70'),'served page has a stale event script version');
   assert(html.includes('enhance.js?v=265'),'served page has a stale audio script version');
  }finally{
   server.kill('SIGTERM');

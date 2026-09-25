@@ -81,7 +81,7 @@ function injectLandscapeCss(){
  if(!cssInjected){
   try{
    const link=d.createElement('link');
-   link.rel='stylesheet';link.href='responsive-landscape.css?v=35';
+   link.rel='stylesheet';link.href='responsive-landscape.css?v=41';
    d.head.appendChild(link);cssInjected=true;
   }catch(e){}
  }
@@ -102,11 +102,12 @@ function injectLandscapeCss(){
    position:fixed descendants instead of the real viewport. So #intent's
    `top` ends up relative to #battle's box, not the viewport; subtract
    #battle's own viewport offset to compensate. */
+function intentCenterBeforeEnemy(enemyLeft,intentWidth,viewportWidth){const horizontalGap=Math.max(10,Math.min(18,viewportWidth*.012));return Math.max(intentWidth/2+8,enemyLeft-horizontalGap-intentWidth/2)}
 function syncIntentPosition(){
  const d=doc();if(!d)return;
- const nameEl=d.getElementById('enemyName'),intentEl=d.getElementById('intent'),battleEl=d.getElementById('battle');
+ const nameEl=d.getElementById('enemyName'),intentEl=d.getElementById('intent'),battleEl=d.getElementById('battle'),enemyEl=d.getElementById('enemySprite');
  if(!intentEl)return;
- if(!landscapeLayout){intentEl.style.removeProperty('top');intentEl.style.removeProperty('transform');return}
+ if(!landscapeLayout){intentEl.style.removeProperty('top');intentEl.style.removeProperty('left');intentEl.style.removeProperty('transform');return}
  if(!nameEl||!battleEl)return;
  const r=nameEl.getBoundingClientRect();
  if(!r.height)return;
@@ -118,6 +119,11 @@ function syncIntentPosition(){
  const minCenter=Math.max(battleRect.top,hudBottom)+8+intentHeight/2;
  const maxCenter=Math.max(minCenter,Math.min(battleRect.bottom,handTop)-8-intentHeight/2);
  const center=Math.max(minCenter,Math.min(maxCenter,r.top+r.height/2));
+ const enemyRect=enemyEl?.getBoundingClientRect(),intentWidth=Math.max(1,intentEl.getBoundingClientRect().width||intentEl.offsetWidth||1);
+ if(enemyRect?.width){
+  const containerLeft=transformed?battleRect.left:0,centerX=intentCenterBeforeEnemy(enemyRect.left,intentWidth,innerWidth);
+  intentEl.style.setProperty('left',(centerX-containerLeft)+'px','important');
+ }
  intentEl.style.setProperty('top',(center-containerTop)+'px','important');
  intentEl.style.setProperty('transform','translate(-50%,-50%)','important');
 }
