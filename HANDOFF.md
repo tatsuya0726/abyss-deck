@@ -108,9 +108,10 @@
 - 根本原因は、短い横画面で全UIを包む `.app` を `position:fixed` にしていたこと。iOS Safariの回転後に表示位置だけ更新され、固定レイヤーのヒット領域が古い位置へ残る状態を作っていた
 - 横画面のルート寸法を `visualViewport.width/height` の実測ピクセルへ統一し、`.app`、タイトル、モーダル、起動ゲートを同じ絶対配置コンテキストへ戻した
 - `viewport-fit=cover` を追加し、iPhone横画面のセーフエリアを含む表示領域を明示
+- 横画面では `safe-area-inset-left/right` を使い、端末の向きに応じてインカメラ／Dynamic Island側を自動判定。全画面UIとモーダルを安全領域内へ寄せる
 - 手動／自動タッチ補正、全画面キャッチャー、タップの合成クリック再送をすべて撤去。1回のタップから別ボタンが同時発火する経路をなくした
 - 保存済みの旧補正値は参照しないため、端末側に値が残っていても動作へ影響しない
-- 現在のキャッシュ番号: `responsive-landscape.css?v=24`、`responsive-shell.js?v=23`、`enhance.js?v=263`
+- 現在のキャッシュ番号: `responsive-landscape.css?v=25`、`responsive-shell.js?v=23`、`enhance.js?v=263`
 
 ### PC・横画面・コントローラー修正
 

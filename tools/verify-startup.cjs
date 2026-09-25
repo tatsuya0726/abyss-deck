@@ -45,6 +45,12 @@ assert(landscapeCss.includes('height:var(--abyss-vv-height,100%)!important'),
  'landscape root does not use the measured visual viewport height');
 assert(landscapeCss.includes('html.tv-mode .app,\nhtml.tv-mode body.scene-title #title,\nhtml.tv-mode .modal,'),
  'full-screen landscape layers are not kept in one positioning context');
+assert(landscapeCss.includes('--abyss-safe-left:max(0px,env(safe-area-inset-left))'),
+ 'landscape layout does not detect the camera-side safe area');
+assert(landscapeCss.includes('right:var(--abyss-safe-right)!important'),
+ 'landscape windows do not avoid the right-side camera safe area');
+assert(landscapeCss.includes('left:var(--abyss-safe-left)!important'),
+ 'landscape windows do not avoid the left-side camera safe area');
 assert(!landscapeCss.includes('.touch-auto-catcher'),
  'obsolete touch interception overlay is still present');
 
@@ -91,7 +97,7 @@ async function verifyServer(){
   const html=await response.text();
   assert(html.includes('id="tapStartGate"'),'served page has no TAP START gate');
   assert(html.includes('responsive-shell.js?v=23'),'served page has a stale responsive script version');
-  assert(html.includes('responsive-landscape.css?v=24'),'served page has a stale responsive stylesheet version');
+  assert(html.includes('responsive-landscape.css?v=25'),'served page has a stale responsive stylesheet version');
  }finally{
   server.kill('SIGTERM');
  }

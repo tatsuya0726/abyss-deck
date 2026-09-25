@@ -1471,11 +1471,22 @@ html.tv-mode,html.tv-mode body{
   overflow:hidden!important
 }
 html.tv-mode body{position:relative!important}
+html.tv-mode{
+  --abyss-safe-left:max(0px,env(safe-area-inset-left));
+  --abyss-safe-right:max(0px,env(safe-area-inset-right))
+}
 html.tv-mode .app,
 html.tv-mode body.scene-title #title,
 html.tv-mode .modal,
 html.tv-mode #tapStartGate{
   position:absolute!important
 }
-html.tv-mode .app{inset:0!important;width:auto!important;height:auto!important;transform:none!important}
-html.tv-mode .modal{inset:0!important}
+html.tv-mode .app,
+html.tv-mode .modal,
+html.tv-mode #tapStartGate{
+  top:0!important;
+  right:var(--abyss-safe-right)!important;
+  bottom:0!important;
+  left:var(--abyss-safe-left)!important
+}
+html.tv-mode .app{width:auto!important;height:auto!important;transform:none!important}
