@@ -90,6 +90,14 @@ assert(landscapeCss.includes('grid-template-rows:repeat(3,minmax(0,1fr))!importa
  'boss relic choices are not kept in three vertical rows');
 assert(landscapeCss.includes('html.tv-mode .debug-panel>footer #debugDisable{'),
  'debug exit chrome is not compact on short landscape phones');
+assert(landscapeCss.includes('html.tv-mode body:has(#battle.on) .quick-nav{'),
+ 'battle utility actions are still occupying the top HUD');
+assert(landscapeCss.includes('padding:7px 2vw 0 76px!important'),
+ 'battle arena does not reserve a left-side utility rail');
+assert(landscapeCss.includes('html.tv-mode #battle .card{height:min(126px,35vh)!important}'),
+ 'short-landscape battle cards have not regained vertical display space');
+assert(landscapeCss.includes('html.tv-mode #battle #enemySprite.boss-enemy{'),
+ 'boss artwork has no short-landscape containment rule');
 assert(enhanceJs.includes('BGM_OUTPUT_GAIN=2.540419'),
  'BGM output gain is not raised by twenty percent');
 assert(enhanceJs.includes('window.playAbyssBattleMusic=playBattleMusic'),
@@ -142,7 +150,7 @@ async function verifyServer(){
   const html=await response.text();
   assert(html.includes('id="tapStartGate"'),'served page has no TAP START gate');
   assert(html.includes('responsive-shell.js?v=24'),'served page has a stale responsive script version');
-  assert(html.includes('responsive-landscape.css?v=33'),'served page has a stale responsive stylesheet version');
+  assert(html.includes('responsive-landscape.css?v=34'),'served page has a stale responsive stylesheet version');
   assert(html.includes('enhance.js?v=265'),'served page has a stale audio script version');
  }finally{
   server.kill('SIGTERM');

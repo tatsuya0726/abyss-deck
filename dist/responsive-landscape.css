@@ -1913,3 +1913,42 @@ html.tv-mode #tapStartGate{width:auto!important;height:auto!important}
     min-height:30px!important;padding:3px 8px!important;font-size:9px!important
   }
 }
+
+@media (orientation:landscape) and (pointer:coarse) and (max-height:600px){
+  /* During battle the six utility actions become the same kind of compact
+     side rail used by the phone layout. Removing them from the HUD gives wide
+     boss artwork an unobstructed top edge. */
+  html.tv-mode body:has(#battle.on) .quick-nav{
+    position:absolute!important;z-index:24!important;
+    top:48px!important;left:4px!important;right:auto!important;bottom:auto!important;
+    display:grid!important;grid-template-columns:1fr!important;grid-auto-rows:31px!important;
+    gap:3px!important;width:68px!important;max-width:68px!important;margin:0!important;padding:0!important
+  }
+  html.tv-mode body:has(#battle.on) .quick-nav :is(button,.suspend-run,#mapHelpView){
+    box-sizing:border-box!important;width:68px!important;height:31px!important;min-height:31px!important;
+    padding:2px 3px!important;font-size:8px!important;line-height:1.05!important;
+    white-space:nowrap!important;overflow:hidden!important
+  }
+  html.tv-mode body:has(#battle.on) .hud{justify-content:space-between!important}
+  html.tv-mode body:has(#battle.on) .hud .res{margin-left:auto!important}
+
+  /* Leave a real column for the rail and move combatants slightly right.
+     Boss art always uses contain sizing and sits below the remaining status
+     chips, so large tentacles/fins cannot be cropped by the top edge. */
+  html.tv-mode #battle .arena{
+    box-sizing:border-box!important;height:56%!important;
+    justify-content:center!important;gap:clamp(26px,5vw,50px)!important;
+    padding:7px 2vw 0 76px!important
+  }
+  html.tv-mode #battle .handArea{height:44%!important}
+  html.tv-mode #battle #enemySprite.boss-enemy{
+    box-sizing:border-box!important;height:min(29vh,148px)!important;max-height:100%!important;
+    background-size:contain!important;background-position:center!important
+  }
+  html.tv-mode #battle .arena>.unit:first-child>.enemyName{left:19vw!important}
+
+  /* A little more vertical card face makes the illustration and effect copy
+     readable without consuming additional horizontal hand space. */
+  html.tv-mode #battle .card{height:min(126px,35vh)!important}
+  html.tv-mode #battle .card .art{height:43%!important;min-height:0!important}
+}
