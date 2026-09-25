@@ -32,6 +32,10 @@ assert(responsive.includes('if(el.textContent!==summary)el.textContent=summary')
  'touch calibration can retrigger the MutationObserver continuously');
 assert(responsive.includes("const RAW_PRIORITY_SELECTOR='#cardCodexClose,#collectionClose"),
  'landscape close buttons are not protected from saved touch offsets');
+assert(!responsive.includes("scope.id==='touchCalibrationModal'||"),
+ 'saved correction is disabled inside the touch calibration modal');
+assert(!responsive.includes("[data-touch-adjust],[data-touch-reset],#touchCalibrationTest'"),
+ 'calibration controls incorrectly prefer uncorrected touch coordinates');
 assert(!responsive.includes("||(!touchCalibration.x&&!touchCalibration.y)||"),
  'landscape visual hit testing is disabled when calibration is centered');
 
@@ -77,7 +81,7 @@ async function verifyServer(){
   assert(response?.ok,`local server did not return index.html (${response?.status||'no response'})`);
   const html=await response.text();
   assert(html.includes('id="tapStartGate"'),'served page has no TAP START gate');
-  assert(html.includes('responsive-shell.js?v=16'),'served page has a stale responsive script version');
+  assert(html.includes('responsive-shell.js?v=17'),'served page has a stale responsive script version');
  }finally{
   server.kill('SIGTERM');
  }
@@ -92,6 +96,7 @@ verifyServer().then(()=>{
   externalScripts:scriptSources.length,
   touchObserverLoop:false,
   protectedCloseButtons:true,
+  calibratedCalibrationControls:true,
   centeredHitRepair:true,
   localServer:true
  },null,2));

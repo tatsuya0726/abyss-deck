@@ -175,7 +175,7 @@ function installLandscapeTouchCalibration(){
  const d=doc();if(!d||d.__abyssTouchCalibrationInstalled)return;
  d.__abyssTouchCalibrationInstalled=true;
  let gesture=null,suppressTrustedClickUntil=0,dispatchingSyntheticClick=false;
- const RAW_PRIORITY_SELECTOR='#cardCodexClose,#collectionClose,[data-hub-close],[data-touch-calibration-close],#titleSettingsMenu,#titleTouchCalibration,[data-touch-adjust],[data-touch-reset],#touchCalibrationTest';
+ const RAW_PRIORITY_SELECTOR='#cardCodexClose,#collectionClose,[data-hub-close],[data-touch-calibration-close],#titleSettingsMenu,#titleTouchCalibration';
  const NEVER_SHIFT_SELECTOR='#newGame,#continueGame,#restart,#resetConfirm,[data-setting="reset"]';
  const closestInteractive=el=>el?.closest?.(SELECTOR);
  const scopeNow=()=>{
@@ -200,7 +200,7 @@ function installLandscapeTouchCalibration(){
   const t=Array.from(e.changedTouches||[]).find(v=>v.identifier===began.id);
   if(!t||Math.hypot(t.clientX-began.x,t.clientY-began.y)>12)return;
   const scope=scopeNow(),native=closestInteractive(e.target),raw=paintedTarget(scope,t.clientX,t.clientY),corrected=paintedTarget(scope,t.clientX+touchCalibration.x,t.clientY+touchCalibration.y);
-  let intended=scope.id==='touchCalibrationModal'||raw?.matches?.(RAW_PRIORITY_SELECTOR)?raw:(corrected||raw);
+  let intended=raw?.matches?.(RAW_PRIORITY_SELECTOR)?raw:(corrected||raw);
   if(intended?.matches?.(NEVER_SHIFT_SELECTOR)&&raw!==intended)intended=raw;
   if(!intended||intended===native)return;
   e.preventDefault();e.stopImmediatePropagation();
