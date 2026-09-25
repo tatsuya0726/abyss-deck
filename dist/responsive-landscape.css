@@ -1072,8 +1072,13 @@ html.tv-mode #collectionGrid.beast-grid{
    Landscape reference panels v12
    Keep explanation/archive controls compact so the content remains primary.
    ========================================================================== */
-html.tv-mode .map-help-panel{width:min(94vw,1320px)!important}
+html.tv-mode .map-help-panel{
+  width:min(94vw,1320px)!important;
+  height:auto!important;
+  max-height:92dvh!important
+}
 html.tv-mode .map-help-list{
+  flex:0 1 auto!important;
   display:grid!important;
   grid-template-columns:repeat(4,minmax(0,1fr))!important;
   align-content:start!important;
