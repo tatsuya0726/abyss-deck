@@ -2013,3 +2013,106 @@ html.tv-mode #tapStartGate{width:auto!important;height:auto!important}
   html.tv-mode #battle .card .cname{font-size:calc(9px * var(--abyss-phone-ui-scale,1))!important}
   html.tv-mode #battle .card .ctext{font-size:calc(8px * var(--abyss-phone-ui-scale,1))!important}
 }
+
+/* Balanced battle grid: a two-column utility rail, a protected centre arena
+   and a dedicated right action strip. Nothing in these three regions shares
+   hit or paint space with the hand. */
+@media (orientation:landscape){
+  html.tv-mode body:has(#battle.on) .quick-nav{
+    top:8px!important;left:4px!important;
+    grid-template-columns:repeat(2,minmax(0,1fr))!important;
+    grid-template-rows:repeat(3,31px)!important;grid-auto-rows:31px!important;
+    gap:3px!important;width:148px!important;max-width:148px!important
+  }
+  html.tv-mode body:has(#battle.on) .quick-nav :is(button,.suspend-run,#mapHelpView){
+    width:72px!important;height:31px!important;min-height:31px!important
+  }
+  html.tv-mode body:has(#battle.on) .hud .res{
+    top:110px!important;left:4px!important;
+    grid-template-columns:repeat(2,minmax(0,1fr))!important;grid-template-rows:31px!important;
+    grid-auto-rows:31px!important;gap:3px!important;width:148px!important
+  }
+  html.tv-mode body:has(#battle.on) .hud .res>.chip{
+    width:72px!important;height:31px!important;min-height:31px!important
+  }
+  html.tv-mode #battle .arena{
+    height:54%!important;gap:clamp(24px,5vw,52px)!important;
+    padding:18px 118px 0 160px!important
+  }
+  html.tv-mode #battle .handArea{
+    box-sizing:border-box!important;height:46%!important;
+    padding:7px 120px 8px 158px!important;align-items:flex-end!important
+  }
+  html.tv-mode #battle .hand{
+    box-sizing:border-box!important;width:100%!important;height:100%!important;
+    flex:1 1 auto!important;justify-content:safe center!important;align-items:flex-end!important;
+    gap:7px!important;padding:2px 4px 8px!important;overflow-x:auto!important;overflow-y:hidden!important
+  }
+  html.tv-mode #battle .card{
+    box-sizing:border-box!important;flex:0 0 116px!important;
+    width:116px!important;min-width:116px!important;max-width:116px!important;height:138px!important
+  }
+  html.tv-mode #battle .card .art{height:43%!important}
+  html.tv-mode #battle .endTurn{
+    top:7px!important;right:7px!important;bottom:auto!important;left:auto!important;
+    box-sizing:border-box!important;width:108px!important;min-height:40px!important;padding:6px 8px!important
+  }
+  html.tv-mode #battle .energy{
+    position:absolute!important;top:54px!important;right:72px!important;bottom:auto!important;left:auto!important;
+    width:38px!important;height:38px!important;font-size:15px!important
+  }
+  html.tv-mode #battle .deckInfo{
+    position:absolute!important;top:53px!important;right:7px!important;bottom:auto!important;left:auto!important;
+    display:flex!important;flex-direction:column!important;align-items:stretch!important;gap:3px!important;width:62px!important
+  }
+  html.tv-mode #battle .deckInfo .pileBtn{box-sizing:border-box!important;width:62px!important;padding:2px 4px!important;font-size:8px!important}
+  html.tv-mode #battle #enemySprite.boss-enemy{
+    --enemy-scale:1.22!important;margin-top:18px!important;transform-origin:center center!important
+  }
+  html.tv-mode body:has(#battle.on) #debugKillNow,
+  html.tv-mode body:has(#battle.on) #debugLauncher{
+    box-sizing:border-box!important;left:4px!important;right:auto!important;bottom:auto!important;
+    width:148px!important;transform:none!important
+  }
+  html.tv-mode body:has(#battle.on) #debugKillNow{top:147px!important;min-height:42px!important;justify-content:center!important}
+  html.tv-mode body:has(#battle.on) #debugLauncher{top:195px!important;min-height:42px!important}
+}
+
+@media (orientation:landscape) and (pointer:fine) and (min-height:601px){
+  html.tv-mode body:has(#battle.on) .quick-nav{
+    top:14px!important;left:8px!important;
+    grid-template-rows:repeat(3,46px)!important;grid-auto-rows:46px!important;
+    gap:5px!important;width:190px!important;max-width:190px!important
+  }
+  html.tv-mode body:has(#battle.on) .quick-nav :is(button,.suspend-run,#mapHelpView){
+    width:92px!important;height:46px!important;min-height:46px!important;padding:4px 5px!important;font-size:11px!important
+  }
+  html.tv-mode body:has(#battle.on) .hud .res{
+    top:162px!important;left:8px!important;grid-template-rows:46px!important;grid-auto-rows:46px!important;
+    gap:5px!important;width:190px!important
+  }
+  html.tv-mode body:has(#battle.on) .hud .res>.chip{
+    width:92px!important;height:46px!important;min-height:46px!important;padding:4px 5px!important;font-size:11px!important
+  }
+  html.tv-mode #battle .arena{padding:28px 170px 0 210px!important}
+  html.tv-mode #battle .handArea{padding:10px 170px 10px 210px!important}
+  html.tv-mode #battle .hand{gap:12px!important;padding:4px 6px 10px!important}
+  html.tv-mode #battle .card{
+    flex-basis:190px!important;width:190px!important;min-width:190px!important;max-width:190px!important;height:250px!important
+  }
+  html.tv-mode #battle .card .cost{width:38px!important;height:38px!important;font-size:17px!important}
+  html.tv-mode #battle .card .cname{font-size:13px!important}
+  html.tv-mode #battle .card .ctext{font-size:11px!important;line-height:1.32!important}
+  html.tv-mode #battle .endTurn{
+    top:10px!important;right:12px!important;width:146px!important;min-height:50px!important;
+    padding:8px 12px!important;font-size:15px!important
+  }
+  html.tv-mode #battle .energy{top:68px!important;right:120px!important;width:44px!important;height:44px!important;font-size:18px!important}
+  html.tv-mode #battle .deckInfo{top:68px!important;right:12px!important;width:100px!important;gap:4px!important}
+  html.tv-mode #battle .deckInfo .pileBtn{width:100px!important;padding:3px 6px!important;font-size:10px!important}
+  html.tv-mode #battle #enemySprite.boss-enemy{margin-top:26px!important}
+  html.tv-mode body:has(#battle.on) #debugKillNow,
+  html.tv-mode body:has(#battle.on) #debugLauncher{left:8px!important;width:190px!important}
+  html.tv-mode body:has(#battle.on) #debugKillNow{top:216px!important;min-height:48px!important}
+  html.tv-mode body:has(#battle.on) #debugLauncher{top:272px!important;min-height:48px!important}
+}
