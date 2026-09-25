@@ -3,6 +3,12 @@ const stage=document.getElementById('stage'),directMode=!stage,ring=document.get
 let landscapeLayout=matchMedia('(orientation:landscape)').matches||innerWidth>innerHeight;
 const stageWrap=document.getElementById('stage-wrap');
 function syncStageViewport(){
+ const root=document.documentElement;
+ if(directMode&&landscapeLayout){
+  const viewport=window.visualViewport;
+  const height=viewport&&Math.abs(viewport.scale-1)<.01?viewport.height:window.innerHeight;
+  root.style.setProperty('--abyss-event-height',Math.max(1,Math.floor(height))+'px');
+ }else root.style.removeProperty('--abyss-event-height');
  if(directMode){
   document.documentElement.style.removeProperty('--abyss-vv-width');
   document.documentElement.style.removeProperty('--abyss-vv-height');
@@ -73,13 +79,19 @@ function syncOrientationLayout(){
 }
 
 function injectLandscapeCss(){
- const d=doc();if(!d||cssInjected)return;
- try{
-  const link=d.createElement('link');
-  link.rel='stylesheet';link.href='responsive-landscape.css?v=18';
-  d.head.appendChild(link);
-  cssInjected=true;
- }catch(e){}
+ const d=doc();if(!d)return;
+ if(!cssInjected){
+  try{
+   const link=d.createElement('link');
+   link.rel='stylesheet';link.href='responsive-landscape.css?v=18';
+   d.head.appendChild(link);cssInjected=true;
+  }catch(e){}
+ }
+ if(!d.querySelector('link[data-abyss-event-layout]')){
+  const events=d.createElement('link');
+  events.rel='stylesheet';events.href='responsive-events.css?v=1';
+  events.dataset.abyssEventLayout='1';d.head.appendChild(events);
+ }
 }
 
 /* The enemy's intent panel should always line up with the enemy's name label,
@@ -122,54 +134,51 @@ function visible(el){
  return rect.width>0&&rect.height>0;
 }
 
-/* iOS Safari can keep a stale compositor hit-test map after rotating while
-   the visual viewport has already moved. Resolve short landscape taps against
-   the buttons' current painted rectangles, then dispatch the intended click.
-   Normal taps pass through untouched, and portrait is never intercepted. */
-function installLandscapeTapResolver(){
- const d=doc();if(!d||d.__abyssTapResolverInstalled)return;
- d.__abyssTapResolverInstalled=true;
- let start=null;
- const closestInteractive=el=>el?.closest?.(SELECTOR);
- const scopeNow=()=>{let modals=[...d.querySelectorAll('.modal.on')];return modals[modals.length-1]||d.querySelector('.screen.on')||d.body};
- const targetRects=scope=>[...scope.querySelectorAll(SELECTOR)].filter(el=>visible(el)&&!el.disabled).map(el=>({el,r:el.getBoundingClientRect()}));
- const atPoint=(items,x,y)=>{
-  let hits=items.filter(({r})=>{
-   return x>=r.left&&x<=r.right&&y>=r.top&&y<=r.bottom;
-  });
-  hits.sort((a,b)=>a.r.width*a.r.height-b.r.width*b.r.height);
-  return hits[0]?.el||null;
- };
- const nearestAtPoint=(items,x,y)=>{
-  let maxY=Math.min(190,Math.max(72,window.innerHeight*.3)),best=null,bestScore=Infinity;
-  for(const item of items){
-   let r=item.r,dx=x<r.left?r.left-x:x>r.right?x-r.right:0,dy=y<r.top?r.top-y:y>r.bottom?y-r.bottom:0;
-   if(dx>Math.max(28,r.width*.22)||dy>maxY)continue;
-   let score=dy+dx*2.5;
-   if(score<bestScore){bestScore=score;best=item.el}
-  }
-  return best;
- };
+/* Touch input uses the browser's native hit testing. Never move a tap to a
+   nearby button: adjacent event choices may spend HP/gold or consume a reward. */
+
+
+/* Reject an imprecise native touch click; never forward it to another button.
+   Some touch browsers expand targets into the gap between adjacent choices.
+   Compare the original finger position with this button's current border box. */
+function installLandscapeTapGuard(){
+ const d=doc();if(!d||d.__abyssTapGuardInstalled)return;
+ d.__abyssTapGuardInstalled=true;
+ const scopeSelector='#eventModal.on,#mapChoiceModal.on';
+ const actionSelector='#eventModal .choice,#mapChoiceModal .choice,#eventQuickNav button';
+ let gesture=null,lastTouch=null;
  d.addEventListener('touchstart',e=>{
-  if(!d.documentElement.classList.contains('tv-mode')||e.touches.length!==1){start=null;return}
-  let t=e.touches[0];start={id:t.identifier,x:t.clientX,y:t.clientY};
+  lastTouch=null;
+  const modal=e.target.closest?.(scopeSelector);
+  if(!d.documentElement.classList.contains('tv-mode')||!modal||e.touches.length!==1){gesture=null;return}
+  const t=e.touches[0];gesture={id:t.identifier,x:t.clientX,y:t.clientY,modal,moved:false};
+ },{capture:true,passive:true});
+ d.addEventListener('touchmove',e=>{
+  if(!gesture)return;
+  const t=Array.from(e.touches).find(t=>t.identifier===gesture.id);
+  if(!t||e.touches.length!==1||Math.hypot(t.clientX-gesture.x,t.clientY-gesture.y)>10)gesture.moved=true;
  },{capture:true,passive:true});
  d.addEventListener('touchend',e=>{
-  if(!start||!d.documentElement.classList.contains('tv-mode'))return;
-  let began=start,t=Array.from(e.changedTouches||[]).find(v=>v.identifier===began.id);start=null;
-  if(!t||Math.hypot(t.clientX-began.x,t.clientY-began.y)>22)return;
-  let scope=scopeNow(),native=closestInteractive(e.target);
-  if(native)return;
-  let vv=window.visualViewport,items=targetRects(scope);
-  let gap=Math.max(0,Math.round(window.innerHeight-(vv?.height||window.innerHeight)));
-  let offset=Math.round(vv?.offsetTop||0),offsets=[0,offset,-offset,gap,-gap];
-  let intended=null;
-  for(let dy of [...new Set(offsets)]){intended=atPoint(items,t.clientX,t.clientY+dy);if(intended)break}
-  if(!intended)intended=nearestAtPoint(items,t.clientX,t.clientY);
-  if(!intended||intended===native)return;
-  e.preventDefault();e.stopImmediatePropagation();
-  requestAnimationFrame(()=>{if(visible(intended)&&!intended.disabled)intended.click()});
- },{capture:true,passive:false});
+  if(!gesture)return;
+  const t=Array.from(e.changedTouches).find(t=>t.identifier===gesture.id);
+  if(t)lastTouch={x:t.clientX,y:t.clientY,at:Date.now(),modal:gesture.modal,
+   moved:gesture.moved||Math.hypot(t.clientX-gesture.x,t.clientY-gesture.y)>10};
+  gesture=null;
+ },{capture:true,passive:true});
+ d.addEventListener('touchcancel',()=>{gesture=null;lastTouch=null},{capture:true,passive:true});
+ d.addEventListener('click',e=>{
+  const touch=lastTouch;
+  if(!e.isTrusted||!touch||e.detail===0||Date.now()-touch.at>800)return;
+  if((e.pointerType&&e.pointerType!=='touch')||e.sourceCapabilities?.firesTouchEvents===false)return;
+  lastTouch=null;
+  if(!d.documentElement.classList.contains('tv-mode'))return;
+  const button=e.target.closest?.(actionSelector);if(!button)return;
+  const r=button.getBoundingClientRect();
+  const inside=touch.x>=r.left&&touch.x<=r.right&&touch.y>=r.top&&touch.y<=r.bottom;
+  if(touch.moved||!inside||button.closest(scopeSelector)!==touch.modal){
+   e.preventDefault();e.stopImmediatePropagation();
+  }
+ },{capture:true});
 }
 
 function candidates(){
@@ -386,7 +395,7 @@ function initializeResponsive(){
  landscapeLayout=matchMedia('(orientation:landscape)').matches||innerWidth>innerHeight;
  try{if(landscapeLayout)win().localStorage.setItem('abyssA2hsSeen','1')}catch(e){}
  injectLandscapeCss();
- installLandscapeTapResolver();
+ installLandscapeTapGuard();
  installMapProgressPositioning();
  installMapNodeLegend();
  installTitleSettings();
@@ -404,14 +413,15 @@ if(directMode){
  else initializeResponsive();
 }else stage.addEventListener('load',initializeResponsive);
 const handleOrientation=()=>{
- syncStageViewport();
  syncOrientationLayout();
+ syncStageViewport();
  syncIntentPosition();
  updateRing();
  queueMapPosition();
 };
 syncStageViewport();
 window.addEventListener('resize',handleOrientation,{passive:true});
+window.addEventListener('pageshow',handleOrientation,{passive:true});
 window.addEventListener('orientationchange',()=>setTimeout(handleOrientation,80),{passive:true});
 window.visualViewport?.addEventListener('resize',handleOrientation,{passive:true});
 window.visualViewport?.addEventListener('scroll',syncStageViewport,{passive:true});

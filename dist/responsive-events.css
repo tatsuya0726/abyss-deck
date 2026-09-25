@@ -1,0 +1,110 @@
+/* Landscape events: one compact menu row and a bounded, scroll-safe panel.
+   Keep portrait rules and native browser touch targets unchanged. */
+html.tv-mode{ -webkit-text-size-adjust:100%; text-size-adjust:100% }
+html.tv-mode :is(#eventModal,#mapChoiceModal){
+  --event-copy:clamp(12px,min(1.3vw,3vh),16px);
+  --event-gap:clamp(4px,.75vh,8px);
+  box-sizing:border-box!important;
+  position:fixed!important;inset:0 0 auto!important;
+  width:100%!important;
+  height:min(100dvh,var(--abyss-event-height,100dvh))!important;
+  max-height:100dvh!important;
+  padding:max(4px,env(safe-area-inset-top)) max(8px,env(safe-area-inset-right)) max(4px,env(safe-area-inset-bottom)) max(8px,env(safe-area-inset-left))!important;
+  grid-template-columns:minmax(0,1fr)!important;
+  grid-template-rows:minmax(0,1fr)!important;
+  gap:var(--event-gap)!important;
+  align-content:stretch!important;align-items:stretch!important;justify-items:center!important;
+  overflow:hidden!important;transform:none!important;animation:none!important;
+}
+html.tv-mode #eventModal{grid-template-rows:auto minmax(0,1fr)!important}
+html.tv-mode :is(#eventModal,#mapChoiceModal).on{display:grid!important}
+html.tv-mode #eventQuickNav{
+  position:static!important;inset:auto!important;
+  box-sizing:border-box!important;width:min(100%,1580px)!important;max-width:100%!important;
+  min-width:0!important;min-height:32px!important;margin:0!important;padding:0!important;
+  display:flex!important;flex-wrap:nowrap!important;justify-content:flex-end!important;align-items:center!important;
+  gap:clamp(4px,.6vw,9px)!important;transform:none!important;
+}
+html.tv-mode #eventQuickNav button{
+  box-sizing:border-box!important;flex:0 1 auto!important;min-width:0!important;
+  height:clamp(32px,5.4vh,42px)!important;min-height:32px!important;
+  padding:2px clamp(5px,.8vw,12px)!important;
+  font-size:clamp(10px,min(1.25vw,2.8vh),16px)!important;line-height:1.2!important;
+  color:var(--ink,#e7f3f3)!important;transform:none!important;animation:none!important;
+}
+html.tv-mode :is(#eventModal,#mapChoiceModal)>.panel{
+  box-sizing:border-box!important;position:relative!important;inset:auto!important;
+  display:grid!important;grid-template-columns:minmax(0,32%) minmax(0,1fr) auto!important;
+  grid-template-rows:auto auto minmax(0,1fr)!important;
+  width:min(100%,1580px)!important;max-width:100%!important;
+  height:100%!important;max-height:100%!important;min-height:0!important;min-width:0!important;
+  margin:0!important;padding:clamp(7px,1.5vh,16px)!important;
+  column-gap:clamp(8px,1.5vw,22px)!important;row-gap:var(--event-gap)!important;
+  align-content:stretch!important;align-items:start!important;
+  overflow:hidden!important;transform:none!important;animation:none!important;
+}
+html.tv-mode :is(#eventModal,#mapChoiceModal) .bigicon{
+  grid-column:1!important;grid-row:1/4!important;
+  align-self:stretch!important;min-height:0!important;min-width:0!important;
+  width:100%!important;height:100%!important;margin:0!important;padding:0!important;
+  overflow:hidden!important;transform:none!important;
+}
+html.tv-mode :is(#eventModal,#mapChoiceModal) .event-illustration{
+  display:block!important;width:100%!important;height:100%!important;
+  min-width:0!important;min-height:0!important;object-fit:cover!important;
+}
+html.tv-mode :is(#eventModal,#mapChoiceModal) h2{
+  grid-column:2!important;grid-row:1!important;align-self:center!important;
+  min-width:0!important;margin:0!important;padding:0!important;
+  font-size:clamp(17px,min(2.35vw,4.8vh),32px)!important;line-height:1.45!important;
+  overflow-wrap:anywhere!important;
+}
+html.tv-mode :is(#eventModal,#mapChoiceModal) .modal-resources{
+  position:static!important;inset:auto!important;grid-column:3!important;grid-row:1!important;
+  display:flex!important;align-self:center!important;justify-content:flex-end!important;
+  width:auto!important;min-width:0!important;margin:0!important;padding:0!important;gap:4px!important;
+  font-size:clamp(10px,min(1.1vw,2.7vh),16px)!important;line-height:1.2!important;
+  transform:none!important;
+}
+html.tv-mode :is(#eventModal,#mapChoiceModal) .modal-resources>span{
+  min-height:26px!important;padding:4px 7px!important;font-size:inherit!important;white-space:nowrap!important;
+}
+html.tv-mode :is(#eventModal,#mapChoiceModal) :is(#eventText,#mapChoiceText){
+  grid-column:2/4!important;grid-row:2!important;
+  min-width:0!important;min-height:0!important;max-height:min(16vh,5em)!important;
+  margin:0!important;padding:1px 4px 1px 0!important;
+  font-size:var(--event-copy)!important;line-height:1.6!important;
+  overflow-x:hidden!important;overflow-y:auto!important;overscroll-behavior:contain!important;touch-action:pan-y!important;
+}
+html.tv-mode :is(#eventModal,#mapChoiceModal) .choices{
+  grid-column:2/4!important;grid-row:3!important;align-self:stretch!important;
+  display:flex!important;flex-direction:column!important;justify-content:flex-start!important;align-items:stretch!important;
+  min-height:0!important;max-height:none!important;min-width:0!important;width:100%!important;
+  margin:0!important;padding:1px 4px 3px 1px!important;gap:clamp(5px,1vh,9px)!important;
+  overflow-x:hidden!important;overflow-y:auto!important;scrollbar-width:thin!important;
+  overscroll-behavior:contain!important;touch-action:pan-y!important;scroll-padding-block:4px!important;
+}
+html.tv-mode :is(#eventModal,#mapChoiceModal) .choice{
+  box-sizing:border-box!important;flex:0 0 auto!important;min-width:0!important;min-height:44px!important;
+  width:100%!important;height:auto!important;margin:0!important;
+  padding:clamp(4px,.8vh,9px) clamp(7px,.9vw,14px)!important;
+  font-size:var(--event-copy)!important;line-height:1.5!important;text-align:left!important;
+  color:var(--ink,#e7f3f3)!important;
+  transform:none!important;animation:none!important;touch-action:manipulation!important;
+}
+html.tv-mode :is(#eventModal,#mapChoiceModal) .choice>b{
+  display:block!important;margin:0 0 2px!important;font-size:1.04em!important;line-height:1.5!important;
+}
+html.tv-mode :is(#eventModal,#mapChoiceModal) .choice>span{
+  display:block!important;margin:0!important;font-size:inherit!important;line-height:inherit!important;color:#c6d9dc!important;
+}
+html.tv-mode :is(#eventModal,#mapChoiceModal) .relic-choice-effect{
+  display:block!important;margin:3px 0 0!important;padding:3px 6px!important;
+  font-size:.94em!important;line-height:1.55!important;
+}
+html.tv-mode :is(#eventModal,#mapChoiceModal) .relic-choice-effect strong{
+  display:inline!important;margin:0 .5em 0 0!important;font-size:inherit!important;
+  line-height:inherit!important;letter-spacing:normal!important;
+}
+html.tv-mode :is(#eventModal,#mapChoiceModal) ruby{line-height:inherit!important}
+html.tv-mode :is(#eventModal,#mapChoiceModal) rt{font-size:.5em!important;line-height:1!important}
