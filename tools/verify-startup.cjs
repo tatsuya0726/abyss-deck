@@ -52,14 +52,14 @@ assert(landscapeCss.includes('width:var(--abyss-vv-width,100%)!important'),
  'landscape root does not use the measured visual viewport width');
 assert(landscapeCss.includes('height:var(--abyss-vv-height,100%)!important'),
  'landscape root does not use the measured visual viewport height');
-assert(index.includes('responsive-desktop.css?v=1'),
+assert(index.includes('responsive-desktop.css?v=2'),
  'PC layout stylesheet is not loaded after the landscape layout');
 assert(desktopCss.trim().startsWith('/* PC landscape layout.')&&desktopCss.includes('@media (orientation:landscape) and (hover:hover) and (pointer:fine) and (min-width:1000px) and (min-height:600px)'),
  'PC layout is not isolated from touch and portrait layouts');
-for(const selector of ['#battle .arena','#battle .hand','#map .path','#eventModal','#shopModal','.reward-panel','.boss-relic-choices']){
+for(const selector of ['#battle .arena','#battle .hand','#map>.path','#eventModal','#shopModal','.reward-panel','.boss-relic-choices']){
  assert(desktopCss.includes(selector),`PC layout does not cover ${selector}`);
 }
-assert(shellJs.includes("desktop.href='responsive-desktop.css?v=1'"),
+assert(shellJs.includes("desktop.href='responsive-desktop.css?v=2'"),
  'dynamically loaded game shells do not receive the PC layout');
 assert((desktopCss.match(/{/g)||[]).length===(desktopCss.match(/}/g)||[]).length,
  'PC stylesheet has unbalanced blocks');
@@ -232,6 +232,12 @@ for(const [enemyLeft,intentWidth,viewportWidth]of [[992,238,1536],[620,136,844],
 }
 assert(enhanceJs.includes('BGM_OUTPUT_GAIN=2.540419'),
  'BGM output gain is not raised by twenty percent');
+assert(enhanceJs.includes('SFX_OUTPUT_GAIN=1.08'),
+ 'sound-effect output gain is not reduced by twenty percent');
+assert(desktopCss.includes('#map>.path{position:absolute!important;inset:12px 258px 12px 255px!important'),
+ 'PC map track has no explicit drawable area');
+assert(desktopCss.includes('.map-node-legend{position:fixed!important;left:auto!important;right:20px!important;top:88px!important'),
+ 'PC map legend can still overlap the top-right HP display');
 assert(enhanceJs.includes('window.playAbyssBattleMusic=playBattleMusic'),
  'battle music has no immediate screen-entry trigger');
 assert(relicsEventsJs.includes("window.isAbyssBossRelic=name=>"),
@@ -295,14 +301,14 @@ async function verifyServer(){
   assert(response?.ok,`local server did not return index.html (${response?.status||'no response'})`);
   const html=await response.text();
   assert(html.includes('id="tapStartGate"'),'served page has no TAP START gate');
-  assert(html.includes('responsive-shell.js?v=31'),'served page has a stale responsive script version');
+  assert(html.includes('responsive-shell.js?v=32'),'served page has a stale responsive script version');
   assert(html.includes('responsive-landscape.css?v=45'),'served page has a stale responsive stylesheet version');
-  assert(html.includes('responsive-desktop.css?v=1'),'served page has no PC layout stylesheet');
+  assert(html.includes('responsive-desktop.css?v=2'),'served page has no PC layout stylesheet');
   assert(html.includes('relics-events.js?v=155'),'served page has a stale relic event script version');
   assert(html.includes('strategy-polish.js?v=186'),'served page has a stale strategy event script version');
   assert(html.includes('economy.js?v=158'),'served page has a stale economy script version');
   assert(html.includes('refinement.js?v=70'),'served page has a stale event script version');
-  assert(html.includes('enhance.js?v=265'),'served page has a stale audio script version');
+  assert(html.includes('enhance.js?v=266'),'served page has a stale audio script version');
  }finally{
   server.kill('SIGTERM');
  }
