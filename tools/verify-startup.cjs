@@ -141,6 +141,14 @@ assert(landscapeCss.includes('#multiResultList .multi-result-card:only-child .un
  'single-card event results do not preserve readable card dimensions');
 assert(landscapeCss.includes(':is(#multiDeckResultModal,#outcomeModal)>.panel>small{display:none!important}'),
  'decorative English captions still consume landscape result space');
+assert(landscapeCss.includes('#rewardRelicOption[hidden]{display:none!important}'),
+ 'landscape rewards override the hidden no-relic state');
+assert(landscapeCss.includes('width:min(100%,520px)!important;max-width:520px!important'),
+ 'landscape reward panel is still unnecessarily wide');
+assert(landscapeCss.includes('min-height:52px!important;height:52px!important;max-height:52px!important'),
+ 'landscape reward rows do not share one height');
+assert(landscapeCss.includes('#battle #intent{left:64%!important}'),
+ 'short-landscape enemy forecast is not shifted toward the enemy');
 assert(enhanceJs.includes('BGM_OUTPUT_GAIN=2.540419'),
  'BGM output gain is not raised by twenty percent');
 assert(enhanceJs.includes('window.playAbyssBattleMusic=playBattleMusic'),
@@ -193,7 +201,7 @@ async function verifyServer(){
   const html=await response.text();
   assert(html.includes('id="tapStartGate"'),'served page has no TAP START gate');
   assert(html.includes('responsive-shell.js?v=27'),'served page has a stale responsive script version');
-  assert(html.includes('responsive-landscape.css?v=39'),'served page has a stale responsive stylesheet version');
+  assert(html.includes('responsive-landscape.css?v=40'),'served page has a stale responsive stylesheet version');
   assert(html.includes('enhance.js?v=265'),'served page has a stale audio script version');
  }finally{
   server.kill('SIGTERM');

@@ -2273,3 +2273,28 @@ html.tv-mode #shopGrid .unified-market-item.synergy-card{
     height:min(33vh,232px)!important;--enemy-scale:1.4!important;margin-top:24px!important
   }
 }
+
+/* Final landscape reward sizing: hidden rewards must stay hidden, every
+   available reward row shares one height, and the panel remains compact. */
+@media (orientation:landscape){
+  html.tv-mode #rewardModal>.reward-panel{
+    width:min(100%,520px)!important;max-width:520px!important;margin:auto!important
+  }
+  html.tv-mode #rewardHome:not([hidden]){
+    width:min(100%,440px)!important
+  }
+  html.tv-mode #rewardHome :is(.reward-gold,.reward-row){
+    min-height:52px!important;height:52px!important;max-height:52px!important
+  }
+  html.tv-mode #rewardRelicOption[hidden]{display:none!important}
+
+  /* Keep the forecast in the open upper lane, but visually associate it with
+     the enemy rather than the centre of the arena. */
+  html.tv-mode #battle .enemy-unit>.intent,
+  html.tv-mode #battle #intent{left:64%!important}
+}
+
+@media (orientation:landscape) and (pointer:fine) and (min-height:601px){
+  html.tv-mode #battle .enemy-unit>.intent,
+  html.tv-mode #battle #intent{left:66%!important}
+}
