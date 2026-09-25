@@ -103,7 +103,7 @@ function injectLandscapeCss(){
    `top` ends up relative to #battle's box, not the viewport; subtract
    #battle's own viewport offset to compensate. */
 function visibleEnemyLeft(enemyLeft,nameLeft,viewportWidth){const nameInset=Math.max(34,Math.min(44,viewportWidth*.045));return Math.max(enemyLeft,nameLeft-nameInset)}
-function intentCenterBeforeEnemy(enemyLeft,intentWidth,viewportWidth){const horizontalGap=Math.max(10,Math.min(18,viewportWidth*.012));return Math.max(intentWidth/2+8,enemyLeft-horizontalGap-intentWidth/2)}
+function intentCenterBeforeEnemy(enemyLeft,intentWidth){return Math.max(intentWidth/2+8,enemyLeft-intentWidth/2)}
 function syncIntentPosition(){
  const d=doc();if(!d)return;
  const nameEl=d.getElementById('enemyName'),intentEl=d.getElementById('intent'),battleEl=d.getElementById('battle'),enemyEl=d.getElementById('enemySprite');

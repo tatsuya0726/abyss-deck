@@ -204,9 +204,9 @@ assert(intentPositionContext.visibleEnemyLeft(497,569,844)>497,
  'Oni Kinme-style inset artwork should move the forecast toward the enemy');
 for(const [enemyLeft,intentWidth,viewportWidth]of [[992,238,1536],[620,136,844],[1050,220,1920]]){
  const center=intentPositionContext.intentCenterBeforeEnemy(enemyLeft,intentWidth,viewportWidth);
- const measuredGap=enemyLeft-(center+intentWidth/2);
- assert(measuredGap>=9.9&&measuredGap<=18.1,
-  `enemy forecast overlaps artwork at ${viewportWidth}px (gap ${measuredGap})`);
+ const edgeDifference=enemyLeft-(center+intentWidth/2);
+ assert(Math.abs(edgeDifference)<.01,
+  `enemy forecast right edge is not aligned at ${viewportWidth}px (difference ${edgeDifference})`);
 }
 assert(enhanceJs.includes('BGM_OUTPUT_GAIN=2.540419'),
  'BGM output gain is not raised by twenty percent');
@@ -273,7 +273,7 @@ async function verifyServer(){
   assert(response?.ok,`local server did not return index.html (${response?.status||'no response'})`);
   const html=await response.text();
   assert(html.includes('id="tapStartGate"'),'served page has no TAP START gate');
-  assert(html.includes('responsive-shell.js?v=29'),'served page has a stale responsive script version');
+  assert(html.includes('responsive-shell.js?v=30'),'served page has a stale responsive script version');
   assert(html.includes('responsive-landscape.css?v=45'),'served page has a stale responsive stylesheet version');
   assert(html.includes('relics-events.js?v=155'),'served page has a stale relic event script version');
   assert(html.includes('strategy-polish.js?v=186'),'served page has a stale strategy event script version');
