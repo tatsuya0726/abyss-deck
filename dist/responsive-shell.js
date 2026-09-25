@@ -3,13 +3,18 @@ const stage=document.getElementById('stage'),directMode=!stage,ring=document.get
 let landscapeLayout=matchMedia('(orientation:landscape)').matches||innerWidth>innerHeight;
 const stageWrap=document.getElementById('stage-wrap');
 function syncStageViewport(){
+ if(directMode){
+  document.documentElement.style.removeProperty('--abyss-vv-width');
+  document.documentElement.style.removeProperty('--abyss-vv-height');
+  document.documentElement.style.removeProperty('--abyss-vv-offset-top');
+  return;
+ }
  const viewport=window.visualViewport;
  const width=Math.max(1,Math.round(viewport?.width||window.innerWidth));
  const height=Math.max(1,Math.round(viewport?.height||window.innerHeight));
  document.documentElement.style.setProperty('--abyss-vv-width',width+'px');
  document.documentElement.style.setProperty('--abyss-vv-height',height+'px');
  document.documentElement.style.setProperty('--abyss-vv-offset-top',Math.max(0,Math.round(viewport?.offsetTop||0))+'px');
- if(directMode)return;
  stageWrap.style.setProperty('width',width+'px');
  stageWrap.style.setProperty('height',height+'px');
  stageWrap.style.setProperty('right','auto');
@@ -71,7 +76,7 @@ function injectLandscapeCss(){
  const d=doc();if(!d||cssInjected)return;
  try{
   const link=d.createElement('link');
-  link.rel='stylesheet';link.href='responsive-landscape.css?v=9';
+  link.rel='stylesheet';link.href='responsive-landscape.css?v=10';
   d.head.appendChild(link);
   cssInjected=true;
  }catch(e){}
@@ -127,14 +132,23 @@ function installLandscapeTapResolver(){
  let start=null;
  const closestInteractive=el=>el?.closest?.(SELECTOR);
  const scopeNow=()=>{let modals=[...d.querySelectorAll('.modal.on')];return modals[modals.length-1]||d.querySelector('.screen.on')||d.body};
- const atPoint=(scope,x,y)=>{
-  let hits=[...scope.querySelectorAll(SELECTOR)].filter(el=>{
-   if(!visible(el)||el.disabled)return false;
-   let r=el.getBoundingClientRect();
+ const targetRects=scope=>[...scope.querySelectorAll(SELECTOR)].filter(el=>visible(el)&&!el.disabled).map(el=>({el,r:el.getBoundingClientRect()}));
+ const atPoint=(items,x,y)=>{
+  let hits=items.filter(({r})=>{
    return x>=r.left&&x<=r.right&&y>=r.top&&y<=r.bottom;
   });
-  hits.sort((a,b)=>{let ar=a.getBoundingClientRect(),br=b.getBoundingClientRect();return ar.width*ar.height-br.width*br.height});
-  return hits[0]||null;
+  hits.sort((a,b)=>a.r.width*a.r.height-b.r.width*b.r.height);
+  return hits[0]?.el||null;
+ };
+ const nearestAtPoint=(items,x,y)=>{
+  let maxY=Math.min(190,Math.max(72,window.innerHeight*.3)),best=null,bestScore=Infinity;
+  for(const item of items){
+   let r=item.r,dx=x<r.left?r.left-x:x>r.right?x-r.right:0,dy=y<r.top?r.top-y:y>r.bottom?y-r.bottom:0;
+   if(dx>Math.max(28,r.width*.22)||dy>maxY)continue;
+   let score=dy+dx*2.5;
+   if(score<bestScore){bestScore=score;best=item.el}
+  }
+  return best;
  };
  d.addEventListener('touchstart',e=>{
   if(!d.documentElement.classList.contains('tv-mode')||e.touches.length!==1){start=null;return}
@@ -144,11 +158,12 @@ function installLandscapeTapResolver(){
   if(!start||!d.documentElement.classList.contains('tv-mode'))return;
   let began=start,t=Array.from(e.changedTouches||[]).find(v=>v.identifier===began.id);start=null;
   if(!t||Math.hypot(t.clientX-began.x,t.clientY-began.y)>22)return;
-  let scope=scopeNow(),native=closestInteractive(e.target),vv=window.visualViewport;
+  let scope=scopeNow(),native=closestInteractive(e.target),vv=window.visualViewport,items=targetRects(scope);
   let gap=Math.max(0,Math.round(window.innerHeight-(vv?.height||window.innerHeight)));
-  let offsets=[0,gap,-gap,Math.round(vv?.offsetTop||0),-Math.round(vv?.offsetTop||0)];
+  let offset=Math.round(vv?.offsetTop||0),offsets=[0,offset,-offset,gap,-gap];
   let intended=null;
-  for(let dy of [...new Set(offsets)]){intended=atPoint(scope,t.clientX,t.clientY+dy);if(intended)break}
+  for(let dy of [...new Set(offsets)]){intended=atPoint(items,t.clientX,t.clientY+dy);if(intended)break}
+  if(!intended)intended=nearestAtPoint(items,t.clientX,t.clientY);
   if(!intended||intended===native)return;
   e.preventDefault();e.stopImmediatePropagation();
   requestAnimationFrame(()=>{if(visible(intended)&&!intended.disabled)intended.click()});

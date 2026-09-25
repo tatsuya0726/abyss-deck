@@ -589,16 +589,16 @@ html.tv-mode .rewards{max-width:min(88vw,1380px)!important;gap:var(--tv-gap)!imp
 /* Phone landscape keeps the same composition, scaled to its short height. */
 @media (orientation:landscape) and (max-height:600px){
   html.tv-mode,html.tv-mode body{
-    width:var(--abyss-vv-width,100vw)!important;
-    height:var(--abyss-vv-height,100dvh)!important;
+    width:100%!important;
+    height:100dvh!important;
     min-height:0!important;
     overflow:hidden!important
   }
   html.tv-mode .app{
     position:fixed!important;
-    top:0!important;left:0!important;right:auto!important;bottom:auto!important;
-    width:var(--abyss-vv-width,100vw)!important;
-    height:var(--abyss-vv-height,100dvh)!important;
+    inset:0!important;
+    width:auto!important;
+    height:auto!important;
     min-height:0!important;
     transform:none!important
   }
