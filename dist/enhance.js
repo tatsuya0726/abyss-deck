@@ -72,7 +72,7 @@ const dbVolumeCurve=value=>{const v=Math.max(0,Math.min(1,Number(value)||0));ret
 const MOBILE_AUDIO_DEVICE=/Android|iPhone|iPad|iPod|Mobile/i.test(navigator.userAgent)||(navigator.platform==='MacIntel'&&navigator.maxTouchPoints>1);
 const volumeGain=value=>{const v=Math.max(0,Math.min(1,Number(value)||0));return MOBILE_AUDIO_DEVICE?dbVolumeCurve(v):v<=0?0:Math.pow(10,(v-1)*1.2)};
 const sfxVolumeGain=value=>{const v=Math.max(0,Math.min(1,Number(value)||0));return v<=0?0:Math.pow(10,(v-1)*.8)};
-const SFX_OUTPUT_GAIN=.864,BGM_OUTPUT_GAIN=2.540419,AUDIO_PREFS_VERSION=5,DEFAULT_AUDIO_PREFS={version:AUDIO_PREFS_VERSION,bgm:.25,sfx:1};
+const SFX_OUTPUT_GAIN=.5,BGM_OUTPUT_GAIN=.5,AUDIO_PREFS_VERSION=6,DEFAULT_AUDIO_PREFS={version:AUDIO_PREFS_VERSION,bgm:1,sfx:1};
 let audioPrefs=(()=>{try{const saved=JSON.parse(localStorage.abyssAudioPrefs||'{}'),bgm=Number(saved.bgm),sfx=Number(saved.sfx);if(Number(saved.version)>=AUDIO_PREFS_VERSION&&Number.isFinite(bgm)&&Number.isFinite(sfx))return{version:AUDIO_PREFS_VERSION,bgm:Math.max(0,Math.min(1,bgm)),sfx:Math.max(0,Math.min(1,sfx))}}catch(e){}return{...DEFAULT_AUDIO_PREFS}})();
 function applyElementVolume(el){if(!el||el._disposed)return;const src=(el.dataset.src||'').split('?')[0],trim=BGM_NORMALIZATION[src]??1,combat=COMBAT_BGM_TRACKS.has(src)?.9:1,duck=performance.now()<bgmDuckUntil?bgmDuckLevel:1,level=el._fadeLevel??1,g=Math.max(0,Math.min(1,trim*combat*duck*level));el.volume=muted?0:Math.max(0,Math.min(1,volumeGain(audioPrefs.bgm)*g*BGM_OUTPUT_GAIN))}
 function setBusGain(bus,value){if(!bus||!audio)return;const now=audio.currentTime;bus.gain.cancelScheduledValues(now);bus.gain.setValueAtTime(value,now);bus.gain.value=value}

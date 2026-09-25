@@ -241,10 +241,10 @@ for(const [playerRight,enemyLeft,preferredWidth,viewportWidth]of [[370,540,136,8
  assert(placed.center-placed.width/2>=playerRight+margin-.01,'touch forecast overlaps the player');
  assert(placed.center+placed.width/2<=enemyLeft-margin+.01,'touch forecast overlaps the enemy');
 }
-assert(enhanceJs.includes('BGM_OUTPUT_GAIN=2.540419'),
- 'BGM output gain is not raised by twenty percent');
-assert(enhanceJs.includes('SFX_OUTPUT_GAIN=.864'),
- 'sound-effect output gain is not reduced by another twenty percent');
+assert(enhanceJs.includes('SFX_OUTPUT_GAIN=.5,BGM_OUTPUT_GAIN=.5,AUDIO_PREFS_VERSION=6'),
+ 'BGM and sound-effect master output gains are not both fifty percent');
+assert(enhanceJs.includes('DEFAULT_AUDIO_PREFS={version:AUDIO_PREFS_VERSION,bgm:1,sfx:1}'),
+ 'saved audio preference migration prevents the fifty-percent master levels');
 assert(desktopCss.includes('#map>.path{position:absolute!important;inset:12px 258px 12px 255px!important'),
  'PC map track has no explicit drawable area');
 assert(desktopCss.includes('.map-node-legend{position:fixed!important;left:auto!important;right:20px!important;top:88px!important'),
@@ -319,7 +319,7 @@ async function verifyServer(){
   assert(html.includes('strategy-polish.js?v=186'),'served page has a stale strategy event script version');
   assert(html.includes('economy.js?v=158'),'served page has a stale economy script version');
   assert(html.includes('refinement.js?v=70'),'served page has a stale event script version');
-  assert(html.includes('enhance.js?v=267'),'served page has a stale audio script version');
+  assert(html.includes('enhance.js?v=268'),'served page has a stale audio script version');
  }finally{
   server.kill('SIGTERM');
  }
