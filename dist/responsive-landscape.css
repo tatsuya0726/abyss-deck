@@ -1475,6 +1475,15 @@ html.tv-mode{
   --abyss-safe-left:max(0px,env(safe-area-inset-left));
   --abyss-safe-right:max(0px,env(safe-area-inset-right))
 }
+/* Installed iPhone web apps can report both safe-area values as 0 after a
+   rotation. Reserve the Dynamic Island/notch width on both landscape sides
+   on a short coarse-pointer display, so either physical orientation is safe. */
+@media (orientation:landscape) and (pointer:coarse) and (max-height:600px){
+  html.tv-mode{
+    --abyss-safe-left:max(env(safe-area-inset-left),clamp(48px,14vh,58px));
+    --abyss-safe-right:max(env(safe-area-inset-right),clamp(48px,14vh,58px))
+  }
+}
 html.tv-mode .app,
 html.tv-mode body.scene-title #title,
 html.tv-mode .modal,

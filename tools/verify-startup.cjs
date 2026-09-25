@@ -51,6 +51,8 @@ assert(landscapeCss.includes('right:var(--abyss-safe-right)!important'),
  'landscape windows do not avoid the right-side camera safe area');
 assert(landscapeCss.includes('left:var(--abyss-safe-left)!important'),
  'landscape windows do not avoid the left-side camera safe area');
+assert(landscapeCss.includes('clamp(48px,14vh,58px)'),
+ 'installed iPhone landscape has no fallback when safe-area values are zero');
 assert(!landscapeCss.includes('.touch-auto-catcher'),
  'obsolete touch interception overlay is still present');
 
@@ -97,7 +99,7 @@ async function verifyServer(){
   const html=await response.text();
   assert(html.includes('id="tapStartGate"'),'served page has no TAP START gate');
   assert(html.includes('responsive-shell.js?v=23'),'served page has a stale responsive script version');
-  assert(html.includes('responsive-landscape.css?v=25'),'served page has a stale responsive stylesheet version');
+  assert(html.includes('responsive-landscape.css?v=26'),'served page has a stale responsive stylesheet version');
  }finally{
   server.kill('SIGTERM');
  }
