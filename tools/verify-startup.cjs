@@ -28,43 +28,25 @@ for(const source of scriptSources){
 }
 
 const responsive=fs.readFileSync(path.join(dist,'responsive-shell.js'),'utf8');
-assert(responsive.includes('if(el.textContent!==summary)el.textContent=summary'),
- 'touch calibration can retrigger the MutationObserver continuously');
-assert(!responsive.includes('RAW_PRIORITY_SELECTOR'),
- 'some landscape controls still bypass the global correction');
-assert(!responsive.includes("scope.id==='touchCalibrationModal'||"),
- 'saved correction is disabled inside the touch calibration modal');
-assert(!responsive.includes("[data-touch-adjust],[data-touch-reset],#touchCalibrationTest'"),
- 'calibration controls incorrectly prefer uncorrected touch coordinates');
-assert(!responsive.includes("||(!touchCalibration.x&&!touchCalibration.y)||"),
- 'landscape visual hit testing is disabled when calibration is centered');
-assert(responsive.includes("TOUCH_CAL_BACKUP_KEY='abyssLandscapeTouchCalibrationBackupV1'"),
- 'touch calibration does not have a persistent backup');
-assert(responsive.includes("window.addEventListener('pagehide',persistTouchCalibration"),
- 'touch calibration is not persisted when the page closes');
-assert(responsive.includes("document.addEventListener('visibilitychange'"),
- 'touch calibration is not restored after app suspension');
-assert(responsive.includes('restoreTouchCalibration();\n syncOrientationLayout();'),
- 'touch calibration is not restored after orientation changes');
-assert(responsive.includes("reset.dataset.confirmReset==='1'"),
- 'touch calibration reset can be triggered accidentally with one tap');
-assert(responsive.includes('showTouchCalibrationTrace(t.clientX,t.clientY,intended'),
- 'touch calibration does not visualize the corrected target');
-assert(!responsive.includes('bottomCloseTarget'),
- 'a broad bottom-screen shortcut can close a modal while tapping its content');
-assert(responsive.includes('setTouchCalibration(r.left+r.width/2-t.clientX,r.top+r.height/2-t.clientY)'),
- 'automatic touch calibration does not measure Safari rectangle displacement');
-assert(responsive.includes("catcher.addEventListener('click',e=>{e.preventDefault();e.stopImmediatePropagation()})"),
- 'automatic calibration can leak a compatibility click to controls underneath');
+assert(responsive.includes("root.style.setProperty('--abyss-vv-width',width+'px')"),
+ 'visual viewport width is not synchronized to the landscape root');
+assert(responsive.includes("root.style.setProperty('--abyss-vv-height',height+'px')"),
+ 'visual viewport height is not synchronized to the landscape root');
+assert(!responsive.includes('installLandscapeTouchCalibration'),
+ 'touch remapping is still installed');
+assert(!responsive.includes('abyssLandscapeTouchCalibration'),
+ 'obsolete touch calibration storage is still active');
+assert(!responsive.includes('dispatchingSyntheticClick'),
+ 'touches can still be resent as synthetic clicks');
 const landscapeCss=fs.readFileSync(path.join(dist,'responsive-landscape.css'),'utf8');
-assert(landscapeCss.includes('-webkit-backdrop-filter:none!important'),
- 'Safari landscape modals still create a backdrop compositor layer');
-assert(landscapeCss.includes('-webkit-overflow-scrolling:auto!important'),
- 'Safari landscape modals still create a momentum-scrolling hit-test layer');
-assert(landscapeCss.includes('html.tv-mode .modal.on>.panel.modal-shell'),
- 'landscape modal shells are not fixed directly to the viewport');
-assert(landscapeCss.includes('.touch-calibration-marker.corrected'),
- 'touch calibration markers are missing');
+assert(landscapeCss.includes('width:var(--abyss-vv-width,100%)!important'),
+ 'landscape root does not use the measured visual viewport width');
+assert(landscapeCss.includes('height:var(--abyss-vv-height,100%)!important'),
+ 'landscape root does not use the measured visual viewport height');
+assert(landscapeCss.includes('html.tv-mode .app,\nhtml.tv-mode body.scene-title #title,\nhtml.tv-mode .modal,'),
+ 'full-screen landscape layers are not kept in one positioning context');
+assert(!landscapeCss.includes('.touch-auto-catcher'),
+ 'obsolete touch interception overlay is still present');
 
 function verifyTapStartRecovery(){
  const classList=initial=>{
@@ -108,8 +90,8 @@ async function verifyServer(){
   assert(response?.ok,`local server did not return index.html (${response?.status||'no response'})`);
   const html=await response.text();
   assert(html.includes('id="tapStartGate"'),'served page has no TAP START gate');
-  assert(html.includes('responsive-shell.js?v=22'),'served page has a stale responsive script version');
-  assert(html.includes('responsive-landscape.css?v=23'),'served page has a stale responsive stylesheet version');
+  assert(html.includes('responsive-shell.js?v=23'),'served page has a stale responsive script version');
+  assert(html.includes('responsive-landscape.css?v=24'),'served page has a stale responsive stylesheet version');
  }finally{
   server.kill('SIGTERM');
  }
@@ -122,10 +104,9 @@ verifyServer().then(()=>{
   titleScreen:true,
   inlineScripts:inlineScripts.length,
   externalScripts:scriptSources.length,
-  touchObserverLoop:false,
-  protectedCloseButtons:true,
-  calibratedCalibrationControls:true,
-  centeredHitRepair:true,
+  syntheticTouchRemapping:false,
+  visualViewportRoot:true,
+  absoluteFullscreenLayers:true,
   localServer:true
  },null,2));
 }).catch(error=>{

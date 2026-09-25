@@ -4,23 +4,17 @@ let landscapeLayout=matchMedia('(orientation:landscape)').matches||innerWidth>in
 const stageWrap=document.getElementById('stage-wrap');
 function syncStageViewport(){
  const root=document.documentElement;
- if(directMode&&landscapeLayout){
-  const viewport=window.visualViewport;
-  const height=viewport&&Math.abs(viewport.scale-1)<.01?viewport.height:window.innerHeight;
-  root.style.setProperty('--abyss-event-height',Math.max(1,Math.floor(height))+'px');
- }else root.style.removeProperty('--abyss-event-height');
+ const viewport=window.visualViewport;
+ const useVisualViewport=viewport&&Math.abs(viewport.scale-1)<.01;
+ const width=Math.max(1,Math.round(useVisualViewport?viewport.width:window.innerWidth));
+ const height=Math.max(1,Math.round(useVisualViewport?viewport.height:window.innerHeight));
+ root.style.setProperty('--abyss-vv-width',width+'px');
+ root.style.setProperty('--abyss-vv-height',height+'px');
+ if(directMode&&landscapeLayout)root.style.setProperty('--abyss-event-height',height+'px');
+ else root.style.removeProperty('--abyss-event-height');
  if(directMode){
-  document.documentElement.style.removeProperty('--abyss-vv-width');
-  document.documentElement.style.removeProperty('--abyss-vv-height');
-  document.documentElement.style.removeProperty('--abyss-vv-offset-top');
   return;
  }
- const viewport=window.visualViewport;
- const width=Math.max(1,Math.round(viewport?.width||window.innerWidth));
- const height=Math.max(1,Math.round(viewport?.height||window.innerHeight));
- document.documentElement.style.setProperty('--abyss-vv-width',width+'px');
- document.documentElement.style.setProperty('--abyss-vv-height',height+'px');
- document.documentElement.style.setProperty('--abyss-vv-offset-top',Math.max(0,Math.round(viewport?.offsetTop||0))+'px');
  stageWrap.style.setProperty('width',width+'px');
  stageWrap.style.setProperty('height',height+'px');
  stageWrap.style.setProperty('right','auto');
@@ -37,66 +31,6 @@ function syncSoundBtn(){try{let b=doc()?.getElementById('soundBtn');if(!b)return
 soundBtn.onclick=()=>{try{doc()?.getElementById('soundBtn')?.click()}catch(e){}syncSoundBtn()};
 
 const CTRL_KEY='abyssTvControllerEnabled';
-const TOUCH_CAL_KEY='abyssLandscapeTouchCalibrationV1',TOUCH_CAL_BACKUP_KEY='abyssLandscapeTouchCalibrationBackupV1',TOUCH_CAL_LIMIT=180;
-const clampTouchValue=value=>Math.max(-TOUCH_CAL_LIMIT,Math.min(TOUCH_CAL_LIMIT,Math.round(Number(value)||0)));
-function parseTouchCalibration(raw){
- try{const saved=JSON.parse(raw||'null');if(!saved||!Number.isFinite(Number(saved.x))||!Number.isFinite(Number(saved.y)))return null;return{x:clampTouchValue(saved.x),y:clampTouchValue(saved.y)}}catch(e){return null}
-}
-function readTouchCalibration(){
- const saved=[];
- try{saved.push(localStorage.getItem(TOUCH_CAL_KEY),localStorage.getItem(TOUCH_CAL_BACKUP_KEY))}catch(e){}
- try{saved.push(sessionStorage.getItem(TOUCH_CAL_KEY))}catch(e){}
- try{const prefix=TOUCH_CAL_KEY+'=';saved.push(decodeURIComponent(document.cookie.split('; ').find(v=>v.startsWith(prefix))?.slice(prefix.length)||''))}catch(e){}
- for(const raw of saved){const value=parseTouchCalibration(raw);if(value)return value}
- return{x:0,y:0};
-}
-let touchCalibration=readTouchCalibration();
-function touchCalibrationText(){const signed=n=>`${n>0?'+':''}${n}px`;return`左右 ${signed(touchCalibration.x)}／上下 ${signed(touchCalibration.y)}`}
-function syncTouchCalibrationUi(){
- const d=doc();if(!d)return;
- const summary=touchCalibrationText();
- d.querySelectorAll('[data-touch-calibration-value]').forEach(el=>{if(el.textContent!==summary)el.textContent=summary});
- const x=d.getElementById('touchCalibrationX'),y=d.getElementById('touchCalibrationY');
- const xText=`${touchCalibration.x>0?'+':''}${touchCalibration.x}px`,yText=`${touchCalibration.y>0?'+':''}${touchCalibration.y}px`;
- if(x&&x.textContent!==xText)x.textContent=xText;
- if(y&&y.textContent!==yText)y.textContent=yText;
-}
-function persistTouchCalibration(){
- const raw=JSON.stringify(touchCalibration);
- try{localStorage.setItem(TOUCH_CAL_KEY,raw);localStorage.setItem(TOUCH_CAL_BACKUP_KEY,raw)}catch(e){}
- try{sessionStorage.setItem(TOUCH_CAL_KEY,raw)}catch(e){}
- try{document.cookie=`${TOUCH_CAL_KEY}=${encodeURIComponent(raw)}; path=/; max-age=31536000; SameSite=Lax`}catch(e){}
-}
-function restoreTouchCalibration(){
- const saved=readTouchCalibration();
- if(saved.x===touchCalibration.x&&saved.y===touchCalibration.y)return;
- touchCalibration=saved;syncTouchCalibrationUi();
-}
-function setTouchCalibration(x,y){
- touchCalibration={x:clampTouchValue(x),y:clampTouchValue(y)};
- persistTouchCalibration();
- syncTouchCalibrationUi();
-}
-function beginAutomaticTouchCalibration(modal){
- const catcher=modal?.querySelector('[data-touch-auto-catcher]'),out=modal?.querySelector('#touchCalibrationResult');if(!catcher)return;
- delete catcher.dataset.finishing;catcher.hidden=false;
- if(out){out.textContent='「ここをタップ」の中央を押してください';out.classList.add('ok')}
-}
-let touchTraceTimer=0,touchTraceTarget=null;
-function showTouchCalibrationTrace(x,y,target){
- const d=doc(),modal=d?.getElementById('touchCalibrationModal');if(!modal?.classList.contains('on'))return;
- const raw=modal.querySelector('[data-touch-trace="raw"]'),corrected=modal.querySelector('[data-touch-trace="corrected"]');
- if(!raw||!corrected)return;
- raw.style.left=x+'px';raw.style.top=y+'px';
- corrected.style.left=(x+touchCalibration.x)+'px';corrected.style.top=(y+touchCalibration.y)+'px';
- raw.classList.remove('show');corrected.classList.remove('show');void raw.offsetWidth;raw.classList.add('show');corrected.classList.add('show');
- if(touchTraceTarget)touchTraceTarget.classList.remove('touch-calibration-hit');
- touchTraceTarget=target?.closest?.('button');
- if(touchTraceTarget)touchTraceTarget.classList.add('touch-calibration-hit');
- const out=modal.querySelector('#touchCalibrationResult');
- if(out){const labelNode=touchTraceTarget?.cloneNode?.(true);labelNode?.querySelectorAll?.('rt').forEach(rt=>rt.remove());const label=labelNode?.textContent?.trim().replace(/\s+/g,' ')||'ボタン以外';out.textContent=`判定：${label}`;out.classList.add('ok')}
- clearTimeout(touchTraceTimer);touchTraceTimer=setTimeout(()=>{raw.classList.remove('show');corrected.classList.remove('show');touchTraceTarget?.classList.remove('touch-calibration-hit');touchTraceTarget=null},1300);
-}
 let enabled=true;
 try{enabled=localStorage.getItem(CTRL_KEY)!=='0'}catch(e){}
 function syncControllerUi(){
@@ -115,26 +49,6 @@ let focusEl=null,cssInjected=directMode&&!!document.querySelector('link[href*="r
 function doc(){try{return directMode?document:stage.contentDocument}catch(e){return null}}
 function win(){try{return directMode?window:stage.contentWindow}catch(e){return null}}
 
-function openTouchCalibration(){
- const d=doc();if(!d)return;
- restoreTouchCalibration();
- let modal=d.getElementById('touchCalibrationModal');
- if(!modal){
-  modal=d.createElement('div');modal.className='modal touch-calibration-modal';modal.id='touchCalibrationModal';
-  modal.innerHTML='<div class="panel title-hub-panel touch-calibration-panel modal-shell"><header class="modal-shell-head"><div><small>LANDSCAPE TOUCH</small><h2>🎯 タッチ位置補正</h2></div></header><div class="modal-shell-body touch-calibration-body"><p>横画面で、押した場所と反応する場所がずれる端末向けの調整です。自動測定では「ここをタップ」の見た目の中央を押してください。</p><div class="touch-calibration-readout"><span>左右 <strong id="touchCalibrationX">0px</strong></span><span>上下 <strong id="touchCalibrationY">0px</strong></span></div><div class="touch-calibration-controls"><button type="button" data-touch-adjust="0,-10">↑ 上へ</button><button type="button" data-touch-adjust="-10,0">← 左へ</button><button type="button" class="touch-calibration-reset" data-touch-reset>中央に戻す</button><button type="button" data-touch-adjust="10,0">右へ →</button><button type="button" data-touch-adjust="0,10">下へ ↓</button></div><div class="touch-calibration-test"><span>自動補正</span><button type="button" id="touchCalibrationTest">ここをタップ</button><div class="touch-calibration-legend"><i></i>指の位置　<b></b>補正後</div><output id="touchCalibrationResult">未確認</output></div></div><footer class="modal-shell-foot"><button type="button" class="btn" data-touch-calibration-close>設定へ戻る</button></footer></div><i class="touch-calibration-marker raw" data-touch-trace="raw"></i><i class="touch-calibration-marker corrected" data-touch-trace="corrected"></i><div class="touch-auto-catcher" data-touch-auto-catcher hidden><span>「ここをタップ」の中央を押してください</span></div>';
-  d.body.appendChild(modal);
-  modal.querySelectorAll('[data-touch-adjust]').forEach(button=>button.addEventListener('click',()=>{const [dx,dy]=button.dataset.touchAdjust.split(',').map(Number);setTouchCalibration(touchCalibration.x+dx,touchCalibration.y+dy)}));
-  const reset=modal.querySelector('[data-touch-reset]');let resetTimer=0;
-  reset.addEventListener('click',()=>{if(reset.dataset.confirmReset==='1'){clearTimeout(resetTimer);delete reset.dataset.confirmReset;reset.textContent='中央に戻す';setTouchCalibration(0,0);return}reset.dataset.confirmReset='1';reset.textContent='もう一度押す';clearTimeout(resetTimer);resetTimer=setTimeout(()=>{delete reset.dataset.confirmReset;reset.textContent='中央に戻す'},2500)});
-  modal.querySelector('[data-touch-calibration-close]').addEventListener('click',()=>modal.classList.remove('on'));
-  modal.querySelector('#touchCalibrationTest').addEventListener('click',()=>{const out=modal.querySelector('#touchCalibrationResult');out.textContent='反応しました';out.classList.remove('ok');requestAnimationFrame(()=>out.classList.add('ok'))});
-  const catcher=modal.querySelector('[data-touch-auto-catcher]');
-  catcher.addEventListener('touchend',e=>{const t=e.changedTouches?.[0],test=modal.querySelector('#touchCalibrationTest');if(!t||!test||catcher.dataset.finishing==='1')return;e.preventDefault();e.stopImmediatePropagation();const r=test.getBoundingClientRect();setTouchCalibration(r.left+r.width/2-t.clientX,r.top+r.height/2-t.clientY);catcher.dataset.finishing='1';showTouchCalibrationTrace(t.clientX,t.clientY,test);const out=modal.querySelector('#touchCalibrationResult');out.textContent=`自動補正しました：${touchCalibrationText()}`;out.classList.add('ok');setTimeout(()=>{catcher.hidden=true;delete catcher.dataset.finishing},750)},{passive:false});
-  catcher.addEventListener('click',e=>{e.preventDefault();e.stopImmediatePropagation()});
- }
- syncTouchCalibrationUi();modal.classList.add('on');win()?.applyFuri?.(modal);setTimeout(()=>beginAutomaticTouchCalibration(modal),120);
-}
-
 function installTitleSettings(){
  const d=doc(),grid=d?.querySelector('#titleSettingsModal .settings-hub-grid');if(!grid)return;
  const add=(id,icon,title,detail,action)=>{let b=d.createElement('button');b.id=id;b.type='button';b.className='tv-title-setting';b.innerHTML=`<i>${icon}</i><span><b>${title}</b><small>${detail}</small></span>`;b.addEventListener('click',e=>{e.preventDefault();e.stopPropagation();action()});grid.appendChild(b);return b};
@@ -143,9 +57,8 @@ function installTitleSettings(){
   add('titleTvController','🎮','コントローラー','コントローラー ON',()=>ctrlBtn.click());
   add('titleTvFullscreen','⛶','フルスクリーン','画面いっぱいに表示',()=>fsBtn.click());
  }
- if(!d.getElementById('titleTouchCalibration')){const button=add('titleTouchCalibration','🎯','タッチ位置補正',touchCalibrationText(),openTouchCalibration);button.querySelector('small').dataset.touchCalibrationValue='1'}
  const hide=!landscapeLayout;d.querySelectorAll('.tv-title-setting').forEach(b=>{if(b.hidden!==hide)b.hidden=hide});
- syncSoundBtn();syncCtrlBtn();syncTouchCalibrationUi();
+ syncSoundBtn();syncCtrlBtn();
 }
 function syncOrientationLayout(){
  const d=doc();if(!d)return;
@@ -153,7 +66,7 @@ function syncOrientationLayout(){
  d.documentElement.classList.toggle('tv-mode',landscapeLayout);
  syncControllerUi();
  installTitleSettings();
- if(!landscapeLayout){d.getElementById('touchCalibrationModal')?.classList.remove('on');focusEl=null;ring.style.display='none'}
+ if(!landscapeLayout){focusEl=null;ring.style.display='none'}
  else ensureFocus();
  clearTimeout(syncOrientationLayout._bgmTimer);
  syncOrientationLayout._bgmTimer=setTimeout(()=>win()?.resyncAbyssBgmForCurrentScreen?.(),140);
@@ -164,7 +77,7 @@ function injectLandscapeCss(){
  if(!cssInjected){
   try{
    const link=d.createElement('link');
-   link.rel='stylesheet';link.href='responsive-landscape.css?v=19';
+   link.rel='stylesheet';link.href='responsive-landscape.css?v=24';
    d.head.appendChild(link);cssInjected=true;
   }catch(e){}
  }
@@ -215,53 +128,6 @@ function visible(el){
  return rect.width>0&&rect.height>0;
 }
 
-/* Apply a saved, user-controlled correction only in landscape. Resolve the
-   corrected point against the currently painted controls so Safari's stale
-   post-rotation hit map cannot activate an adjacent control. */
-function installLandscapeTouchCalibration(){
- const d=doc();if(!d||d.__abyssTouchCalibrationInstalled)return;
- d.__abyssTouchCalibrationInstalled=true;
- let gesture=null,suppressTrustedClickUntil=0,dispatchingSyntheticClick=false;
- const NEVER_SHIFT_SELECTOR='#resetConfirm,[data-setting="reset"]';
- const closestInteractive=el=>el?.closest?.(SELECTOR);
- const scopeNow=()=>{
-  const modals=[...d.querySelectorAll('.modal.on')].filter(visible);let top=null,topZ=-Infinity;
-  modals.forEach((modal,index)=>{const z=Number.parseFloat(getComputedStyle(modal).zIndex)||0,rank=z*1000+index;if(rank>=topZ){top=modal;topZ=rank}});
-  return top||d.querySelector('.screen.on')||d.body;
- };
- const paintedTarget=(scope,x,y)=>{
-  const hits=[...scope.querySelectorAll(SELECTOR)].filter(el=>visible(el)&&!el.disabled).map(el=>({el,r:el.getBoundingClientRect()})).filter(({r})=>x>=r.left&&x<=r.right&&y>=r.top&&y<=r.bottom);
-  hits.sort((a,b)=>a.r.width*a.r.height-b.r.width*b.r.height);return hits[0]?.el||null;
- };
- d.addEventListener('touchstart',e=>{
-  if(!d.documentElement.classList.contains('tv-mode')||e.touches.length!==1||d.getElementById('tapStartGate')||e.target.closest?.('#tapStartGate,[data-touch-auto-catcher]')){gesture=null;return}
-  const t=e.touches[0];gesture={id:t.identifier,x:t.clientX,y:t.clientY,moved:false};showTouchCalibrationTrace(t.clientX,t.clientY,e.target);
- },{capture:true,passive:true});
- d.addEventListener('touchmove',e=>{
-  if(!gesture)return;const t=Array.from(e.touches).find(v=>v.identifier===gesture.id);
-  if(!t||e.touches.length!==1||Math.hypot(t.clientX-gesture.x,t.clientY-gesture.y)>12)gesture.moved=true;
- },{capture:true,passive:true});
- d.addEventListener('touchend',e=>{
-  const began=gesture;gesture=null;if(!began||began.moved||!d.documentElement.classList.contains('tv-mode'))return;
-  const t=Array.from(e.changedTouches||[]).find(v=>v.identifier===began.id);
-  if(!t||Math.hypot(t.clientX-began.x,t.clientY-began.y)>12)return;
-  const scope=scopeNow(),native=closestInteractive(e.target),raw=paintedTarget(scope,t.clientX,t.clientY),corrected=paintedTarget(scope,t.clientX+touchCalibration.x,t.clientY+touchCalibration.y);
-  let intended=corrected||raw;
-  if(intended?.matches?.(NEVER_SHIFT_SELECTOR)&&raw!==intended)intended=raw;
-  showTouchCalibrationTrace(t.clientX,t.clientY,intended||corrected||raw||native);
-  if(!intended||intended===native)return;
-  e.preventDefault();e.stopImmediatePropagation();
-  suppressTrustedClickUntil=Date.now()+700;
-  requestAnimationFrame(()=>{if(!visible(intended)||intended.disabled)return;dispatchingSyntheticClick=true;try{intended.click()}finally{dispatchingSyntheticClick=false}});
- },{capture:true,passive:false});
- d.addEventListener('touchcancel',()=>{gesture=null},{capture:true,passive:true});
- d.addEventListener('click',e=>{
-  if(dispatchingSyntheticClick||!e.isTrusted||Date.now()>suppressTrustedClickUntil)return;
-  e.preventDefault();e.stopImmediatePropagation();
- },{capture:true});
-}
-
-
 /* Reject an imprecise native touch click; never forward it to another button.
    Some touch browsers expand targets into the gap between adjacent choices.
    Compare the original finger position with this button's current border box. */
@@ -298,7 +164,7 @@ function installLandscapeTapGuard(){
   if(!d.documentElement.classList.contains('tv-mode'))return;
   const button=e.target.closest?.(actionSelector);if(!button)return;
   const r=button.getBoundingClientRect();
-  const x=touch.x+touchCalibration.x,y=touch.y+touchCalibration.y;
+  const x=touch.x,y=touch.y;
   const inside=x>=r.left&&x<=r.right&&y>=r.top&&y<=r.bottom;
   if(touch.moved||!inside||button.closest(scopeSelector)!==touch.modal){
    e.preventDefault();e.stopImmediatePropagation();
@@ -520,7 +386,6 @@ function initializeResponsive(){
  landscapeLayout=matchMedia('(orientation:landscape)').matches||innerWidth>innerHeight;
  try{if(landscapeLayout)win().localStorage.setItem('abyssA2hsSeen','1')}catch(e){}
  injectLandscapeCss();
- installLandscapeTouchCalibration();
  installLandscapeTapGuard();
  installMapProgressPositioning();
  installMapNodeLegend();
@@ -539,7 +404,6 @@ if(directMode){
  else initializeResponsive();
 }else stage.addEventListener('load',initializeResponsive);
 const handleOrientation=()=>{
- restoreTouchCalibration();
  syncOrientationLayout();
  syncStageViewport();
  syncIntentPosition();
@@ -550,10 +414,8 @@ syncStageViewport();
 window.addEventListener('resize',handleOrientation,{passive:true});
 window.addEventListener('pageshow',handleOrientation,{passive:true});
 window.addEventListener('orientationchange',()=>setTimeout(handleOrientation,80),{passive:true});
-window.addEventListener('pagehide',persistTouchCalibration,{passive:true});
-document.addEventListener('visibilitychange',()=>{if(document.hidden)persistTouchCalibration();else restoreTouchCalibration()},{passive:true});
 window.visualViewport?.addEventListener('resize',handleOrientation,{passive:true});
 window.visualViewport?.addEventListener('scroll',syncStageViewport,{passive:true});
 
-window.abyssResponsiveDebug={candidates,moveFocus,toggleFocusBand,doConfirm,doBack,doEndTurn,scrollActive,positionMapByProgress,ensureFocus,get focusEl(){return focusEl},get enabled(){return enabled},get touchCalibration(){return{...touchCalibration}},setTouchCalibration:(x,y)=>setTouchCalibration(x,y),setEnabled(v){enabled=v;syncCtrlBtn();if(enabled)ensureFocus();else updateRing()}};
+window.abyssResponsiveDebug={candidates,moveFocus,toggleFocusBand,doConfirm,doBack,doEndTurn,scrollActive,positionMapByProgress,ensureFocus,get focusEl(){return focusEl},get enabled(){return enabled},setEnabled(v){enabled=v;syncCtrlBtn();if(enabled)ensureFocus();else updateRing()}};
 })();

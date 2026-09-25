@@ -88,7 +88,7 @@ html.tv-mode .enemy-unit>.intent,html.tv-mode #intent{
 
 /* End turn moves out of the hand row entirely, to sit just below-right of the
    enemy's HP bar — freeing the whole hand row for cards. */
-html.tv-mode .endTurn{position:fixed!important;top:57%!important;right:5vw!important;left:auto!important;bottom:auto!important;
+html.tv-mode .endTurn{position:absolute!important;top:57%!important;right:5vw!important;left:auto!important;bottom:auto!important;
   flex-shrink:0!important;padding:9px 16px!important;font-size:13px!important;z-index:20!important}
 
 /* ---------- Hand area: end turn now lives in the arena (see above), so the hand
@@ -248,51 +248,6 @@ html.tv-mode body.scene-title .title-hint{
 
 /* TV controls now live inside the ordinary title-screen settings modal. */
 html.tv-mode .settings-hub-grid .tv-title-setting{border-color:#3e6d72!important}
-
-/* Saved manual touch calibration. This modal and its setting exist only in
-   landscape, leaving the completed portrait settings screen untouched. */
-html.tv-mode .touch-calibration-modal{z-index:92!important;padding:max(6px,env(safe-area-inset-top)) max(8px,env(safe-area-inset-right)) max(6px,env(safe-area-inset-bottom)) max(8px,env(safe-area-inset-left))!important}
-html.tv-mode .touch-calibration-panel{width:min(680px,94vw)!important;max-height:94dvh!important;padding:0!important;overflow:hidden!important}
-html.tv-mode .touch-calibration-body{display:grid!important;grid-template-columns:minmax(0,1fr) minmax(210px,.8fr)!important;grid-template-rows:auto auto minmax(0,1fr)!important;gap:clamp(8px,1.5vh,16px)!important;padding:clamp(10px,2vh,20px)!important;overflow:auto!important}
-html.tv-mode .touch-calibration-body>p{grid-column:1/3;margin:0!important;color:#c8dadd!important;font-size:clamp(11px,min(1.15vw,2.35vh),16px)!important;line-height:1.55!important}
-html.tv-mode .touch-calibration-readout{grid-column:1/3;display:flex;justify-content:center;gap:clamp(12px,3vw,34px);padding:7px 10px;border:1px solid #45656d;border-radius:9px;background:#07171ee6}
-html.tv-mode .touch-calibration-readout span{color:#9ebfc2;font-size:clamp(12px,min(1.25vw,2.6vh),17px)!important}
-html.tv-mode .touch-calibration-readout strong{margin-left:.35em;color:#ffe09a;font-size:1.1em}
-html.tv-mode .touch-calibration-controls{grid-column:1;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));grid-template-rows:repeat(3,minmax(42px,1fr));gap:7px;align-items:stretch}
-html.tv-mode .touch-calibration-controls button{min-width:0;min-height:42px;padding:6px;border:1px solid #4c7780;border-radius:9px;background:linear-gradient(145deg,#12313a,#07171e);color:#e2f3f2;font-weight:800;font-size:clamp(11px,min(1.15vw,2.5vh),16px)!important;touch-action:manipulation}
-html.tv-mode .touch-calibration-controls button[data-touch-adjust="0,-10"]{grid-column:2;grid-row:1}
-html.tv-mode .touch-calibration-controls button[data-touch-adjust="-10,0"]{grid-column:1;grid-row:2}
-html.tv-mode .touch-calibration-controls .touch-calibration-reset{grid-column:2;grid-row:2;border-color:#a88945;color:#ffe4a4}
-html.tv-mode .touch-calibration-controls button[data-touch-adjust="10,0"]{grid-column:3;grid-row:2}
-html.tv-mode .touch-calibration-controls button[data-touch-adjust="0,10"]{grid-column:2;grid-row:3}
-html.tv-mode .touch-calibration-test{grid-column:2;display:grid;grid-template-rows:auto minmax(54px,1fr) auto;gap:7px;align-items:stretch;padding:10px;border:1px solid #345861;border-radius:11px;background:#06141be6;text-align:center}
-html.tv-mode .touch-calibration-test>span{color:#8fc8c7;font-size:clamp(11px,min(1.05vw,2.25vh),15px)!important}
-html.tv-mode #touchCalibrationTest{min-height:54px;padding:8px;border:2px solid #68dcd2;border-radius:10px;background:linear-gradient(180deg,#174e54,#0a252c);color:#ecffff;font-weight:900;font-size:clamp(13px,min(1.35vw,2.8vh),18px)!important;touch-action:manipulation}
-html.tv-mode #touchCalibrationResult{color:#7f9da0;font-size:clamp(10px,min(.95vw,2.1vh),14px)!important}
-html.tv-mode #touchCalibrationResult.ok{color:#8dfff3;text-shadow:0 0 12px #48fff0}
-html.tv-mode .touch-calibration-legend{color:#8aa8aa;font-size:10px;font-weight:800;white-space:nowrap}
-html.tv-mode .touch-calibration-legend i,html.tv-mode .touch-calibration-legend b{display:inline-block;width:11px;height:11px;margin:0 4px -1px 0;border-radius:50%}
-html.tv-mode .touch-calibration-legend i{border:2px solid #ffd979;background:#ffd97955}
-html.tv-mode .touch-calibration-legend b{margin-left:8px;border:2px solid #69fff2;background:#69fff255}
-html.tv-mode .touch-calibration-marker{position:fixed;z-index:99998;display:block;width:30px;height:30px;border-radius:50%;pointer-events:none;opacity:0;transform:translate(-50%,-50%);transition:opacity .12s ease}
-html.tv-mode .touch-calibration-marker.raw{border:3px solid #ffd979;background:#ffd97933;box-shadow:0 0 0 5px #ffd97920,0 0 18px #ffd979}
-html.tv-mode .touch-calibration-marker.corrected{width:20px;height:20px;border:3px solid #69fff2;background:#69fff244;box-shadow:0 0 0 5px #69fff220,0 0 18px #69fff2}
-html.tv-mode .touch-calibration-marker.show{opacity:1;animation:touchCalibrationPulse .65s ease-out 2}
-html.tv-mode .touch-calibration-hit{position:relative;z-index:1;border-color:#7affef!important;box-shadow:0 0 0 4px #63f5e93d,0 0 24px #63f5e9!important;filter:brightness(1.3)!important}
-@keyframes touchCalibrationPulse{50%{transform:translate(-50%,-50%) scale(1.35)}}
-@media (orientation:landscape) and (max-height:520px){
-  html.tv-mode .touch-calibration-panel>.modal-shell-head{padding:7px 13px!important}
-  html.tv-mode .touch-calibration-panel>.modal-shell-head h2{font-size:clamp(18px,4.8vh,25px)!important}
-  html.tv-mode .touch-calibration-body{grid-template-columns:minmax(0,1.15fr) minmax(180px,.85fr)!important;gap:6px!important;padding:7px 10px!important}
-  html.tv-mode .touch-calibration-body>p{line-height:1.35!important}
-  html.tv-mode .touch-calibration-controls{grid-template-rows:repeat(3,minmax(34px,1fr));gap:5px}
-  html.tv-mode .touch-calibration-controls button{min-height:34px!important;padding:3px!important}
-  html.tv-mode .touch-calibration-test{grid-template-rows:auto minmax(42px,1fr) auto;padding:6px!important}
-  html.tv-mode #touchCalibrationTest{min-height:42px!important;padding:4px!important}
-  html.tv-mode .touch-calibration-panel>.modal-shell-foot{padding:0 8px 7px!important}
-  html.tv-mode .touch-calibration-panel>.modal-shell-foot .btn{min-height:34px!important}
-}
-
 
 /* Keep all nine title settings readable without a tall, narrow panel. */
 html.tv-mode .settings-hub-panel{
@@ -716,13 +671,13 @@ html.tv-mode .rewards{max-width:min(88vw,1380px)!important;gap:var(--tv-gap)!imp
 /* Phone landscape keeps the same composition, scaled to its short height. */
 @media (orientation:landscape) and (max-height:600px){
   html.tv-mode,html.tv-mode body{
-    width:100%!important;
-    height:100dvh!important;
+    width:var(--abyss-vv-width,100%)!important;
+    height:var(--abyss-vv-height,100%)!important;
     min-height:0!important;
     overflow:hidden!important
   }
   html.tv-mode .app{
-    position:fixed!important;
+    position:absolute!important;
     inset:0!important;
     width:auto!important;
     height:auto!important;
@@ -731,7 +686,7 @@ html.tv-mode .rewards{max-width:min(88vw,1380px)!important;gap:var(--tv-gap)!imp
   }
   html.tv-mode .hud{position:absolute!important;top:0!important;left:0!important;right:0!important}
   html.tv-mode .screen{position:absolute!important;top:44px!important;right:0!important;bottom:0!important;left:0!important}
-  html.tv-mode body.scene-title #title{position:fixed!important;top:0!important;right:0!important;bottom:0!important;left:0!important}
+  html.tv-mode body.scene-title #title{position:absolute!important;top:0!important;right:0!important;bottom:0!important;left:0!important}
   html.tv-mode{
     --tv-text:clamp(11px,2.8vh,15px);
     --tv-small:clamp(9px,2.2vh,12px)
@@ -1505,43 +1460,22 @@ html.tv-mode .guardian-reveal.story-normal-keeper>.story-tap{grid-column:2!impor
   html.tv-mode .guardian-reveal.story-normal-keeper>.story-tap{margin-top:4px!important;padding:5px 11px!important;font-size:9px!important}
 }
 
-/* iOS Safari can paint a backdrop-filter or momentum-scrolling layer at its
-   new landscape position while retaining the old hit-test geometry. Keep
-   horizontal modal controls in the root layer so paint and touch rectangles
-   are calculated by the same compositor surface. */
-html.tv-mode .modal.on,
-html.tv-mode .modal.on>.panel,
-html.tv-mode .modal.on .modal-shell-body{
-  transform:none!important;
-  filter:none!important;
-  backdrop-filter:none!important;
-  -webkit-backdrop-filter:none!important;
-  -webkit-overflow-scrolling:auto!important;
-  will-change:auto!important;
-  contain:none!important
+/* One landscape coordinate space. iOS can keep stale hit-test geometry for a
+   full-page fixed layer after rotation, even while repainting it correctly.
+   Size the document from VisualViewport pixels and keep every full-screen
+   interactive layer in the document's absolute positioning context. */
+html.tv-mode,html.tv-mode body{
+  width:var(--abyss-vv-width,100%)!important;
+  height:var(--abyss-vv-height,100%)!important;
+  min-height:0!important;
+  overflow:hidden!important
 }
-
-/* Do not let Safari's centered-grid layout paint a modal shell at a different
-   position from its DOM hit rectangles. Shells use viewport edges directly. */
-html.tv-mode .modal.on>.panel.modal-shell{
-  position:fixed!important;
-  top:max(6px,env(safe-area-inset-top))!important;
-  right:max(8px,env(safe-area-inset-right))!important;
-  bottom:max(6px,env(safe-area-inset-bottom))!important;
-  left:max(8px,env(safe-area-inset-left))!important;
-  width:auto!important;
-  height:auto!important;
-  max-width:none!important;
-  max-height:none!important;
-  margin:0!important
+html.tv-mode body{position:relative!important}
+html.tv-mode .app,
+html.tv-mode body.scene-title #title,
+html.tv-mode .modal,
+html.tv-mode #tapStartGate{
+  position:absolute!important
 }
-html.tv-mode .touch-auto-catcher{
-  position:fixed!important;inset:0!important;z-index:100000!important;display:block!important;
-  background:#00101718!important;touch-action:none!important;pointer-events:auto!important
-}
-html.tv-mode .touch-auto-catcher[hidden]{display:none!important}
-html.tv-mode .touch-auto-catcher>span{
-  position:fixed;left:50%;top:12px;transform:translateX(-50%);max-width:90vw;padding:7px 14px;
-  border:1px solid #6ef3e7;border-radius:999px;background:#06232dec;color:#dffffc;font-size:12px;font-weight:900;
-  box-shadow:0 0 18px #4ee9df66;white-space:nowrap;pointer-events:none
-}
+html.tv-mode .app{inset:0!important;width:auto!important;height:auto!important;transform:none!important}
+html.tv-mode .modal{inset:0!important}
