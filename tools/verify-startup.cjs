@@ -38,6 +38,8 @@ assert(!responsive.includes('abyssLandscapeTouchCalibration'),
  'obsolete touch calibration storage is still active');
 assert(!responsive.includes('dispatchingSyntheticClick'),
  'touches can still be resent as synthetic clicks');
+assert(responsive.includes("if(!landscapeLayout){existingHint?.remove();return}"),
+ 'portrait end-turn still receives the controller X hint');
 const landscapeCss=fs.readFileSync(path.join(dist,'responsive-landscape.css'),'utf8');
 const shellJs=fs.readFileSync(path.join(dist,'responsive-shell.js'),'utf8');
 const enhanceJs=fs.readFileSync(path.join(dist,'enhance.js'),'utf8');
@@ -184,7 +186,7 @@ async function verifyServer(){
   assert(response?.ok,`local server did not return index.html (${response?.status||'no response'})`);
   const html=await response.text();
   assert(html.includes('id="tapStartGate"'),'served page has no TAP START gate');
-  assert(html.includes('responsive-shell.js?v=26'),'served page has a stale responsive script version');
+  assert(html.includes('responsive-shell.js?v=27'),'served page has a stale responsive script version');
   assert(html.includes('responsive-landscape.css?v=38'),'served page has a stale responsive stylesheet version');
   assert(html.includes('enhance.js?v=265'),'served page has a stale audio script version');
  }finally{

@@ -39,7 +39,9 @@ function syncControllerUi(){
  const d=doc();if(!d)return;
  d.documentElement.classList.toggle('controller-mode',enabled&&landscapeLayout);
  const end=d.getElementById('endTurn');
- if(end&&!end.querySelector('.controller-end-hint')){
+ const existingHint=end?.querySelector('.controller-end-hint');
+ if(!landscapeLayout){existingHint?.remove();return}
+ if(end&&!existingHint){
   const hint=d.createElement('span');hint.className='controller-end-hint';hint.setAttribute('aria-hidden','true');hint.textContent='X';end.prepend(hint);
  }
 }
