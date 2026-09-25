@@ -1,0 +1,106 @@
+/* PC landscape layout. Kept separate so phone portrait/landscape remains unchanged. */
+@media (orientation:landscape) and (hover:hover) and (pointer:fine) and (min-width:1000px) and (min-height:600px){
+  html.tv-mode{--pc-rail:216px;--pc-actions:180px;--pc-gap:clamp(16px,1.7vw,30px);--pc-ui:clamp(14px,.86vw,18px);--pc-small:clamp(12px,.72vw,15px)}
+  html.tv-mode body{font-size:var(--pc-ui)!important}
+
+  /* Battle: fixed utility rail, roomy arena and stable card spacing. */
+  html.tv-mode body:has(#battle.on) .quick-nav{position:fixed!important;inset:18px auto auto 18px!important;width:198px!important;max-width:198px!important;height:auto!important;display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;grid-template-rows:repeat(3,48px)!important;grid-auto-rows:48px!important;gap:7px!important;padding:0!important;transform:none!important;z-index:75!important;background:none!important}
+  html.tv-mode body:has(#battle.on) .quick-nav button{width:auto!important;min-width:0!important;height:48px!important;min-height:48px!important;padding:5px 7px!important;font-size:14px!important;line-height:1.12!important}
+  html.tv-mode body:has(#battle.on) .hud .res{position:fixed!important;inset:181px auto auto 18px!important;width:198px!important;display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;grid-template-rows:46px!important;grid-auto-rows:46px!important;gap:7px!important;padding:0!important;transform:none!important;z-index:74!important}
+  html.tv-mode body:has(#battle.on) .hud .res>*{width:auto!important;min-width:0!important;height:46px!important;font-size:14px!important}
+  html.tv-mode body:has(#battle.on) :is(#debugKillNow,#debugLauncher){position:fixed!important;top:234px!important;width:95px!important;height:36px!important;min-height:36px!important;padding:3px 5px!important;font-size:11px!important;line-height:1!important;z-index:76!important;transform:none!important}
+  html.tv-mode body:has(#battle.on) #debugKillNow{left:18px!important}
+  html.tv-mode body:has(#battle.on) #debugLauncher{left:121px!important;right:auto!important}
+  html.tv-mode #battle .arena{height:58%!important;min-height:0!important;padding:24px var(--pc-actions) 8px calc(var(--pc-rail) + 24px)!important;gap:var(--pc-gap)!important;align-items:flex-end!important;justify-content:space-between!important}
+  html.tv-mode #battle .unit{flex:0 1 39%!important;width:39%!important;max-width:470px!important;min-width:250px!important}
+  html.tv-mode #battle .creature{width:100%!important;height:min(34vh,315px)!important;max-height:315px!important;background-size:contain!important;background-position:center bottom!important}
+  html.tv-mode #battle .enemy-unit .creature{height:min(37vh,345px)!important;max-height:345px!important}
+  html.tv-mode #battle .name{font-size:clamp(17px,1.05vw,22px)!important;line-height:1.15!important;margin-bottom:4px!important}
+  html.tv-mode #battle .hpbar{width:82%!important;max-width:390px!important;height:20px!important;margin-inline:auto!important;font-size:14px!important}
+  html.tv-mode #battle :is(#playerStatus,#enemyStatus){font-size:var(--pc-small)!important;line-height:1.35!important;min-height:22px!important}
+  html.tv-mode #battle .intent{width:clamp(210px,14vw,260px)!important;min-width:210px!important;max-width:260px!important;padding:11px 14px!important;font-size:15px!important;line-height:1.35!important}
+  html.tv-mode #battle .handArea{height:42%!important;min-height:0!important;padding:14px calc(var(--pc-actions) + 12px) 14px 22px!important;align-items:stretch!important;overflow:visible!important}
+  html.tv-mode #battle .hand{width:100%!important;height:100%!important;display:flex!important;justify-content:center!important;align-items:flex-end!important;gap:14px!important;overflow-x:auto!important;overflow-y:hidden!important;padding:0 8px!important;scrollbar-width:thin}
+  html.tv-mode #battle .hand .card{flex:0 0 clamp(168px,11.5vw,206px)!important;width:clamp(168px,11.5vw,206px)!important;height:min(38vh,300px)!important;min-height:210px!important;margin:0!important;transform:none!important}
+  html.tv-mode #battle .hand .card .art{height:43%!important;min-height:96px!important}
+  html.tv-mode #battle .hand .card .cname{font-size:clamp(14px,.86vw,17px)!important;line-height:1.2!important}
+  html.tv-mode #battle .hand .card .ctext{font-size:clamp(12px,.72vw,15px)!important;line-height:1.42!important}
+  html.tv-mode #battle .hand .card .cost{width:42px!important;height:42px!important;font-size:20px!important}
+  html.tv-mode #battle :is(#endTurn,.endTurn){right:18px!important;top:14px!important;width:154px!important;height:66px!important;font-size:18px!important}
+  html.tv-mode #battle :is(.energy,#energy){right:122px!important;top:92px!important;width:54px!important;height:54px!important;font-size:23px!important}
+  html.tv-mode #battle :is(.deckInfo,#deckInfo){right:18px!important;top:92px!important;width:96px!important;font-size:13px!important;line-height:1.5!important}
+
+  /* Map: reserve readable side columns instead of shrinking labels. */
+  html.tv-mode #map>.mapHead{left:20px!important;top:20px!important;width:220px!important;max-width:220px!important;padding:14px!important}
+  html.tv-mode #map>.mapHead h2{font-size:30px!important;line-height:1.15!important}
+  html.tv-mode #map>.mapHead p{font-size:14px!important;line-height:1.45!important}
+  html.tv-mode #map .path{inset:12px 258px 12px 255px!important;width:auto!important;height:auto!important;max-width:none!important}
+  html.tv-mode #map>.mapHead .map-node-legend{position:fixed!important;left:auto!important;right:20px!important;top:20px!important;width:220px!important;display:grid!important;gap:6px!important;padding:12px!important}
+  html.tv-mode #map>.mapHead .map-node-legend span{grid-template-columns:28px minmax(0,1fr)!important;min-height:42px!important;padding:6px 8px!important;gap:8px!important}
+  html.tv-mode #map>.mapHead .map-node-legend i{font-size:20px!important}
+  html.tv-mode #map>.mapHead .map-node-legend b{font-size:14px!important;line-height:1.25!important;white-space:normal!important}
+
+  /* Events: illustration and choices get independent columns. */
+  html.tv-mode :is(#eventModal,#mapChoiceModal){padding:76px 3vw 18px!important;align-items:center!important}
+  html.tv-mode :is(#eventModal,#mapChoiceModal)>.panel{width:min(1320px,94vw)!important;height:min(780px,calc(100vh - 96px))!important;max-width:1320px!important;max-height:780px!important;display:grid!important;grid-template-columns:minmax(300px,38%) minmax(0,1fr)!important;grid-template-rows:auto auto minmax(0,1fr)!important;column-gap:30px!important;row-gap:10px!important;padding:18px 22px!important;overflow:hidden!important}
+  html.tv-mode :is(#eventModal,#mapChoiceModal) .bigicon{grid-column:1!important;grid-row:1/4!important;width:100%!important;height:100%!important;min-height:0!important;overflow:hidden!important}
+  html.tv-mode :is(#eventModal,#mapChoiceModal) .event-illustration{width:100%!important;height:100%!important;object-fit:contain!important;object-position:center!important}
+  html.tv-mode :is(#eventModal,#mapChoiceModal) h2{grid-column:2!important;grid-row:1!important;margin:6px 0 0!important;padding-right:190px!important;font-size:clamp(28px,2vw,38px)!important;line-height:1.15!important}
+  html.tv-mode :is(#eventModal,#mapChoiceModal) :is(#eventText,#mapChoiceText){grid-column:2!important;grid-row:2!important;font-size:17px!important;line-height:1.55!important;margin:0!important}
+  html.tv-mode :is(#eventModal,#mapChoiceModal) .choices{grid-column:2!important;grid-row:3!important;display:grid!important;grid-auto-rows:minmax(72px,auto)!important;gap:10px!important;min-height:0!important;overflow:auto!important}
+  html.tv-mode :is(#eventModal,#mapChoiceModal) .choice{min-height:72px!important;padding:12px 16px!important;font-size:15px!important;line-height:1.4!important}
+  html.tv-mode :is(#eventModal,#mapChoiceModal) .choice b{font-size:18px!important}
+  html.tv-mode :is(#eventModal,#mapChoiceModal) .modal-resources{position:absolute!important;right:22px!important;top:16px!important;font-size:15px!important;z-index:2!important}
+
+  /* Shop: four readable products per row with a dedicated scrolling market. */
+  html.tv-mode #shopModal{padding:2vh 2vw!important}
+  html.tv-mode #shopModal>.shop-panel{width:min(1500px,96vw)!important;height:min(900px,96vh)!important;max-width:1500px!important;padding:14px 20px!important;overflow:hidden!important}
+  html.tv-mode #shopModal .shop-head{min-height:66px!important;padding-right:0!important}
+  html.tv-mode #shopModal .shop-head h2{font-size:34px!important;line-height:1.1!important}
+  html.tv-mode #shopModal .shop-resources{gap:10px!important;font-size:15px!important}
+  html.tv-mode #shopModal .shop-keeper{position:absolute!important;top:10px!important;left:300px!important;right:415px!important;height:62px!important;display:flex!important;align-items:center!important;gap:10px!important;z-index:3!important}
+  html.tv-mode #shopModal .shop-keeper img{width:72px!important;height:72px!important;object-fit:contain!important;order:2!important}
+  html.tv-mode #shopModal .keeper-speech{flex:1!important;min-width:0!important;min-height:48px!important;padding:10px 16px!important;font-size:14px!important;line-height:1.35!important}
+  html.tv-mode #shopModal .shop-tabs{height:52px!important;min-height:52px!important;gap:10px!important;margin:7px 0!important}
+  html.tv-mode #shopModal .shop-tabs button{font-size:16px!important}
+  html.tv-mode #shopModal .shop-grid{flex:1!important;min-height:0!important;overflow:auto!important;padding:10px 12px 72px!important;scrollbar-width:thin!important}
+  html.tv-mode #shopModal .shop-section{padding:12px 16px!important}
+  html.tv-mode #shopModal .shop-section h3{font-size:24px!important}
+  html.tv-mode #shopModal .shop-card-grid{display:grid!important;grid-template-columns:repeat(4,minmax(0,1fr))!important;gap:22px!important;justify-items:center!important}
+  html.tv-mode #shopModal .unified-card{width:clamp(170px,11.5vw,200px)!important;height:clamp(255px,17vw,292px)!important}
+  html.tv-mode #shopModal .unified-card .cname{font-size:14px!important}
+  html.tv-mode #shopModal .unified-card .ctext{font-size:12px!important;line-height:1.35!important}
+  html.tv-mode #shopModal .shop-exit{position:absolute!important;left:20px!important;right:20px!important;bottom:14px!important;width:auto!important;height:54px!important;font-size:17px!important;z-index:5!important}
+
+  /* Rewards and selection dialogs: compact home, large readable selections. */
+  html.tv-mode #rewardModal>.reward-panel{width:min(760px,72vw)!important;height:auto!important;max-height:88vh!important;padding:18px 22px!important;overflow:auto!important}
+  html.tv-mode .reward-panel>small{font-size:11px!important}
+  html.tv-mode .reward-panel>h2{font-size:30px!important;margin:5px 0 12px!important}
+  html.tv-mode .reward-panel :is(.reward-gold,.reward-row){width:100%!important;min-height:78px!important;padding:12px 18px!important}
+  html.tv-mode .reward-panel .reward-row i{font-size:32px!important}
+  html.tv-mode .reward-panel .reward-row b{font-size:18px!important}
+  html.tv-mode .reward-panel .reward-row small{font-size:13px!important;line-height:1.3!important}
+  html.tv-mode .reward-panel .reward-row em{font-size:14px!important;white-space:nowrap!important}
+  html.tv-mode .reward-panel #rewardContinue{width:min(440px,90%)!important;min-height:56px!important;margin:12px auto 0!important;font-size:16px!important}
+  html.tv-mode .reward-panel:has(#rewardPick:not([hidden])){width:min(1040px,90vw)!important}
+  html.tv-mode .reward-panel .rewards{display:flex!important;justify-content:center!important;gap:22px!important;overflow:auto!important;padding:10px!important}
+  html.tv-mode .reward-panel .rewardCard{flex:0 0 190px!important;width:190px!important;height:278px!important}
+  html.tv-mode .reward-panel .rewardCard .cname{font-size:14px!important}
+  html.tv-mode .reward-panel .rewardCard .ctext{font-size:12px!important;line-height:1.35!important}
+  html.tv-mode .reward-panel :is(#skipReward,#rewardBack){min-height:46px!important;padding:8px 16px!important;font-size:14px!important}
+  html.tv-mode #bossRelicModal>.boss-relic-panel{width:min(780px,76vw)!important;height:auto!important;max-height:90vh!important;padding:18px 22px!important;overflow:auto!important}
+  html.tv-mode .boss-relic-panel>h2{font-size:30px!important}
+  html.tv-mode .boss-relic-panel>p{font-size:14px!important}
+  html.tv-mode .boss-relic-choices{display:grid!important;grid-template-columns:1fr!important;gap:10px!important}
+  html.tv-mode .boss-relic-choice{min-height:104px!important;padding:12px 16px!important;grid-template-columns:58px minmax(0,1fr)!important}
+  html.tv-mode .boss-relic-choice i{font-size:42px!important}
+  html.tv-mode .boss-relic-choice b{font-size:18px!important}
+  html.tv-mode .boss-relic-choice span{font-size:13px!important;line-height:1.4!important}
+  html.tv-mode :is(#cardRevealModal,#multiDeckResultModal,#outcomeModal)>.panel{width:min(720px,72vw)!important;max-height:90vh!important;padding:18px 24px!important;overflow:auto!important}
+  html.tv-mode :is(#cardRevealModal,#multiDeckResultModal,#outcomeModal) h2{font-size:30px!important;line-height:1.2!important}
+  html.tv-mode :is(#cardRevealModal,#multiDeckResultModal,#outcomeModal) .btn.gold{width:min(360px,80%)!important;min-height:52px!important;margin-inline:auto!important;font-size:16px!important}
+  html.tv-mode #firstBlessingModal>.panel{width:min(1080px,90vw)!important;height:auto!important;max-height:90vh!important;padding:18px 22px!important;overflow:auto!important}
+  html.tv-mode #firstBlessingModal h2{font-size:30px!important}
+  html.tv-mode #firstBlessingModal .choice{min-height:82px!important;padding:12px 16px!important;font-size:14px!important}
+  html.tv-mode #firstBlessingModal .choice>b{font-size:18px!important}
+}

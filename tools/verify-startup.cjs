@@ -41,6 +41,7 @@ assert(!responsive.includes('dispatchingSyntheticClick'),
 assert(responsive.includes("if(!landscapeLayout){existingHint?.remove();return}"),
  'portrait end-turn still receives the controller X hint');
 const landscapeCss=fs.readFileSync(path.join(dist,'responsive-landscape.css'),'utf8');
+const desktopCss=fs.readFileSync(path.join(dist,'responsive-desktop.css'),'utf8');
 const shellJs=fs.readFileSync(path.join(dist,'responsive-shell.js'),'utf8');
 const enhanceJs=fs.readFileSync(path.join(dist,'enhance.js'),'utf8');
 const refinementJs=fs.readFileSync(path.join(dist,'refinement.js'),'utf8');
@@ -51,6 +52,27 @@ assert(landscapeCss.includes('width:var(--abyss-vv-width,100%)!important'),
  'landscape root does not use the measured visual viewport width');
 assert(landscapeCss.includes('height:var(--abyss-vv-height,100%)!important'),
  'landscape root does not use the measured visual viewport height');
+assert(index.includes('responsive-desktop.css?v=1'),
+ 'PC layout stylesheet is not loaded after the landscape layout');
+assert(desktopCss.trim().startsWith('/* PC landscape layout.')&&desktopCss.includes('@media (orientation:landscape) and (hover:hover) and (pointer:fine) and (min-width:1000px) and (min-height:600px)'),
+ 'PC layout is not isolated from touch and portrait layouts');
+for(const selector of ['#battle .arena','#battle .hand','#map .path','#eventModal','#shopModal','.reward-panel','.boss-relic-choices']){
+ assert(desktopCss.includes(selector),`PC layout does not cover ${selector}`);
+}
+assert(shellJs.includes("desktop.href='responsive-desktop.css?v=1'"),
+ 'dynamically loaded game shells do not receive the PC layout');
+assert((desktopCss.match(/{/g)||[]).length===(desktopCss.match(/}/g)||[]).length,
+ 'PC stylesheet has unbalanced blocks');
+for(const [width,height]of [[1000,600],[1366,768],[1920,1080]]){
+ const mapCenter=width-255-258;
+ assert(mapCenter>=487,`PC map center is too narrow at ${width}x${height}`);
+ const battleCenter=width-216-180-48;
+ assert(battleCenter>=556,`PC battle center is too narrow at ${width}x${height}`);
+ const shopContent=Math.min(1500,width*.96)-64;
+ const cardWidth=Math.min(200,Math.max(170,width*.115));
+ assert(cardWidth*4+22*3<=shopContent,`four PC shop cards do not fit at ${width}x${height}`);
+ assert(height-96>=504,`PC event panel is too short at ${width}x${height}`);
+}
 assert(landscapeCss.includes('html.tv-mode .app,\nhtml.tv-mode body.scene-title #title,\nhtml.tv-mode .modal,'),
  'full-screen landscape layers are not kept in one positioning context');
 assert(landscapeCss.includes('--abyss-safe-left:max(0px,env(safe-area-inset-left))'),
@@ -273,8 +295,9 @@ async function verifyServer(){
   assert(response?.ok,`local server did not return index.html (${response?.status||'no response'})`);
   const html=await response.text();
   assert(html.includes('id="tapStartGate"'),'served page has no TAP START gate');
-  assert(html.includes('responsive-shell.js?v=30'),'served page has a stale responsive script version');
+  assert(html.includes('responsive-shell.js?v=31'),'served page has a stale responsive script version');
   assert(html.includes('responsive-landscape.css?v=45'),'served page has a stale responsive stylesheet version');
+  assert(html.includes('responsive-desktop.css?v=1'),'served page has no PC layout stylesheet');
   assert(html.includes('relics-events.js?v=155'),'served page has a stale relic event script version');
   assert(html.includes('strategy-polish.js?v=186'),'served page has a stale strategy event script version');
   assert(html.includes('economy.js?v=158'),'served page has a stale economy script version');
