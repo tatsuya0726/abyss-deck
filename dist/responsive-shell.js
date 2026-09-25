@@ -81,7 +81,7 @@ function injectLandscapeCss(){
  if(!cssInjected){
   try{
    const link=d.createElement('link');
-   link.rel='stylesheet';link.href='responsive-landscape.css?v=41';
+   link.rel='stylesheet';link.href='responsive-landscape.css?v=45';
    d.head.appendChild(link);cssInjected=true;
   }catch(e){}
  }
@@ -102,6 +102,7 @@ function injectLandscapeCss(){
    position:fixed descendants instead of the real viewport. So #intent's
    `top` ends up relative to #battle's box, not the viewport; subtract
    #battle's own viewport offset to compensate. */
+function visibleEnemyLeft(enemyLeft,nameLeft,viewportWidth){const nameInset=Math.max(34,Math.min(44,viewportWidth*.045));return Math.max(enemyLeft,nameLeft-nameInset)}
 function intentCenterBeforeEnemy(enemyLeft,intentWidth,viewportWidth){const horizontalGap=Math.max(10,Math.min(18,viewportWidth*.012));return Math.max(intentWidth/2+8,enemyLeft-horizontalGap-intentWidth/2)}
 function syncIntentPosition(){
  const d=doc();if(!d)return;
@@ -121,7 +122,7 @@ function syncIntentPosition(){
  const center=Math.max(minCenter,Math.min(maxCenter,r.top+r.height/2));
  const enemyRect=enemyEl?.getBoundingClientRect(),intentWidth=Math.max(1,intentEl.getBoundingClientRect().width||intentEl.offsetWidth||1);
  if(enemyRect?.width){
-  const containerLeft=transformed?battleRect.left:0,centerX=intentCenterBeforeEnemy(enemyRect.left,intentWidth,innerWidth);
+  const containerLeft=transformed?battleRect.left:0,visibleLeft=visibleEnemyLeft(enemyRect.left,r.left,innerWidth),centerX=intentCenterBeforeEnemy(visibleLeft,intentWidth,innerWidth);
   intentEl.style.setProperty('left',(centerX-containerLeft)+'px','important');
  }
  intentEl.style.setProperty('top',(center-containerTop)+'px','important');

@@ -45,6 +45,8 @@ const shellJs=fs.readFileSync(path.join(dist,'responsive-shell.js'),'utf8');
 const enhanceJs=fs.readFileSync(path.join(dist,'enhance.js'),'utf8');
 const refinementJs=fs.readFileSync(path.join(dist,'refinement.js'),'utf8');
 const economyJs=fs.readFileSync(path.join(dist,'economy.js'),'utf8');
+const relicsEventsJs=fs.readFileSync(path.join(dist,'relics-events.js'),'utf8');
+const strategyPolishJs=fs.readFileSync(path.join(dist,'strategy-polish.js'),'utf8');
 assert(landscapeCss.includes('width:var(--abyss-vv-width,100%)!important'),
  'landscape root does not use the measured visual viewport width');
 assert(landscapeCss.includes('height:var(--abyss-vv-height,100%)!important'),
@@ -165,8 +167,8 @@ assert(!economyJs.includes('深海階級：価格＋15%'),
  'ascension price adjustment is still exposed in the shop');
 assert(economyJs.includes("getAbyssShopPriceMultiplier?.(g)||1"),
  'ascension shop price adjustment is no longer applied to prices');
-assert(shellJs.includes('intentCenterBeforeEnemy(enemyRect.left,intentWidth,innerWidth)'),
- 'enemy forecast does not reserve a measured gap from the enemy artwork');
+assert(shellJs.includes('visibleEnemyLeft(enemyRect.left,r.left,innerWidth)'),
+ 'enemy forecast does not compensate for artwork whose visible body is inset');
 assert(shellJs.includes("intentEl.style.setProperty('left',(centerX-containerLeft)+'px','important')"),
  'enemy forecast is not positioned from the measured enemy edge');
 assert(landscapeCss.includes('align-self:center!important;aspect-ratio:1/1!important;height:auto!important'),
@@ -191,9 +193,15 @@ assert(giftTwoLineRubyHeight<74,
 assert(refinementJs.includes('assets/events/${art}.webp?v=2'),
  'corrected event illustrations are not cache-busted');
 const intentPositionSource=shellJs.split('\n').find(line=>line.startsWith('function intentCenterBeforeEnemy('));
+const visibleEnemySource=shellJs.split('\n').find(line=>line.startsWith('function visibleEnemyLeft('));
 assert(intentPositionSource,'enemy forecast gap calculator is missing');
+assert(visibleEnemySource,'enemy visible-edge calculator is missing');
 const intentPositionContext={};
-vm.runInNewContext(`${intentPositionSource};this.intentCenterBeforeEnemy=intentCenterBeforeEnemy`,intentPositionContext);
+vm.runInNewContext(`${visibleEnemySource};${intentPositionSource};this.visibleEnemyLeft=visibleEnemyLeft;this.intentCenterBeforeEnemy=intentCenterBeforeEnemy`,intentPositionContext);
+assert(intentPositionContext.visibleEnemyLeft(532,569,844)===532,
+ 'Mordigan-style artwork should keep its existing forecast anchor');
+assert(intentPositionContext.visibleEnemyLeft(497,569,844)>497,
+ 'Oni Kinme-style inset artwork should move the forecast toward the enemy');
 for(const [enemyLeft,intentWidth,viewportWidth]of [[992,238,1536],[620,136,844],[1050,220,1920]]){
  const center=intentPositionContext.intentCenterBeforeEnemy(enemyLeft,intentWidth,viewportWidth);
  const measuredGap=enemyLeft-(center+intentWidth/2);
@@ -204,6 +212,20 @@ assert(enhanceJs.includes('BGM_OUTPUT_GAIN=2.540419'),
  'BGM output gain is not raised by twenty percent');
 assert(enhanceJs.includes('window.playAbyssBattleMusic=playBattleMusic'),
  'battle music has no immediate screen-entry trigger');
+assert(relicsEventsJs.includes("window.isAbyssBossRelic=name=>"),
+ 'events have no authoritative boss-relic exclusion check');
+assert(!relicsEventsJs.includes('遺物「深淵の瞳」を得る'),
+ 'a normal event still grants the boss-only Abyss Eye relic');
+assert(!strategyPolishJs.includes("addRelic('竜の逆鱗')"),
+ 'a story event still grants the boss-only Dragon Scale relic');
+assert(index.includes('window.isAbyssBossRelic?.(n)&&c[1].includes(n)'),
+ 'event choices do not reject future boss-relic rewards');
+assert(landscapeCss.includes('html.tv-mode #outcomeText ruby{display:inline!important'),
+ 'event outcome ruby can still split a sentence into separate grid rows');
+assert(landscapeCss.includes('width:min(14vw,230px)!important'),
+ 'desktop map explanations do not grow with the phone-layout scale');
+assert(landscapeCss.includes('font-size:calc(8px * var(--abyss-phone-ui-scale,1))!important'),
+ 'desktop battle secondary text is not tied to the viewport scale');
 assert(index.includes("if(id==='battle'&&G?.enemy)window.playAbyssBattleMusic?.(G.enemy)"),
  'battle screen still waits for DOM observation before changing music');
 assert(!landscapeCss.includes('.touch-auto-catcher'),
@@ -251,8 +273,10 @@ async function verifyServer(){
   assert(response?.ok,`local server did not return index.html (${response?.status||'no response'})`);
   const html=await response.text();
   assert(html.includes('id="tapStartGate"'),'served page has no TAP START gate');
-  assert(html.includes('responsive-shell.js?v=28'),'served page has a stale responsive script version');
-  assert(html.includes('responsive-landscape.css?v=44'),'served page has a stale responsive stylesheet version');
+  assert(html.includes('responsive-shell.js?v=29'),'served page has a stale responsive script version');
+  assert(html.includes('responsive-landscape.css?v=45'),'served page has a stale responsive stylesheet version');
+  assert(html.includes('relics-events.js?v=155'),'served page has a stale relic event script version');
+  assert(html.includes('strategy-polish.js?v=186'),'served page has a stale strategy event script version');
   assert(html.includes('economy.js?v=158'),'served page has a stale economy script version');
   assert(html.includes('refinement.js?v=70'),'served page has a stale event script version');
   assert(html.includes('enhance.js?v=265'),'served page has a stale audio script version');

@@ -51,6 +51,7 @@ const NORMAL_RELICS=Object.keys(RELICS).filter(n=>n!=='深海の血脈');
 const REWARD_BLOCKED=new Set(['深海の鍵','深海の紋章']);
 Object.assign(RELICS,BOSS_RELICS);
 window.ABYSS_RELICS=RELICS;
+window.isAbyssBossRelic=name=>Object.prototype.hasOwnProperty.call(BOSS_RELICS,name);
 function game(){return window.getAbyssGame?.()}
 function addRelic(name,announce=true){let g=game(),r=RELICS[name];if(!g||!r||g.relic.some(x=>x[1]===name))return false;g.relic.push([r[0],name]);if(name==='皇帝の骨片'){g.max+=7;g.hp+=7}if(announce)window.showRelicAcquired?.(name);return true}window.acquireAbyssRelic=addRelic;
 function addCard(pool,title='イベントで獲得'){pool=window.extendAbyssCardPool(pool,pool===rare?'rare':'abyss');let g=game();if(g){let k=pool[Math.random()*pool.length|0];g.deck.push(k);window.showCardAcquired?.(k,title)}}
@@ -74,7 +75,7 @@ window.ABYSS_EVENTS?.push(
  ['🦴','鯨骨の墓場','巨大な鯨の骨が海底に横たわり、その内側で古い力が脈打っている。',[['骨の中へ入る','HPを10失い、遺物「古代の盾」を得る',()=>{let g=game();g.hp=Math.max(1,g.hp-10);addRelic('古代の盾')}],['ゴールドだけ拾う','ゴールドを61得る',()=>game().pearl+=61],['静かに祈る','HPを10回復',()=>{let g=game();g.hp=Math.min(g.max,g.hp+10)}]]],
  ['🪼','月光クラゲの群れ','青白いクラゲたちが、傷を癒す光の輪を作っている。',[['光に包まれる','遺物「珊瑚の護符」を得る',()=>addRelic('珊瑚の護符')],['群れと泳ぐ','HPを16回復',()=>{let g=game();g.hp=Math.min(g.max,g.hp+16)}],['光を結晶化する','ゴールド35を払い、レアカードを得る',()=>{let g=game();if(g.pearl>=35){g.pearl-=35;addCard(rare)}}]]],
  ['🧪','沈んだ研究所','割れた水槽と機械の中に、カードを作り変える装置が残っている。',[['装置を動かす','指定した未強化カードを1枚強化する',()=>window.chooseAbyssUpgrades?.(1,'装置で強化するカードを選ぶ')],['古いカードを溶かす','指定した基本カードを1枚削除する',()=>window.chooseAbyssRemovals?.(1,'溶かす基本カードを選ぶ',k=>['fin','scale'].includes(k.replace(/[+*]+$/,'')))],['部品を売る','HPを6失い、ゴールド50を得る',()=>{let g=game();g.hp=Math.max(1,g.hp-6);g.pearl+=50}]]],
- ['🥚','リヴァイアサンの卵','鼓動する巨大な卵。殻の奥から、深海の力が呼びかけてくる。',[['力を受け取る','HPを12失い、レアカードを得る',()=>{let g=game();g.hp=Math.max(1,g.hp-12);addCard(rare)}],['殻を身につける','最大HPが5増え、HPを5回復',()=>{let g=game();g.max+=5;g.hp+=5}],['瞳を抉る','最大HPを4失い、遺物「深淵の瞳」を得る',()=>{let g=game();g.max=Math.max(20,g.max-4);g.hp=Math.min(g.hp,g.max);addRelic('深淵の瞳')}]]],
+ ['🥚','リヴァイアサンの卵','鼓動する巨大な卵。殻の奥から、深海の力が呼びかけてくる。',[['力を受け取る','HPを12失い、レアカードを得る',()=>{let g=game();g.hp=Math.max(1,g.hp-12);addCard(rare)}],['殻を身につける','最大HPが5増え、HPを5回復',()=>{let g=game();g.max+=5;g.hp+=5}],['牙を削り出す','最大HPを4失い、遺物「巨獣の顎」を得る',()=>{let g=game();g.max=Math.max(20,g.max-4);g.hp=Math.min(g.hp,g.max);addRelic('巨獣の顎')}]]],
  ['🔥','黄金炉の祭壇','ゴールドを炎に変える古代の炉。熱い泡が周囲を包んでいる。',[['炉にゴールドを捧げる','ゴールド45を払い、遺物「黄金炉」を得る',()=>{let g=game();if(g.pearl>=45){g.pearl-=45;addRelic('黄金炉')}}],['命の炎を浴びる','HPを全回復するが、最大HPを5失う',()=>{let g=game();g.max=Math.max(20,g.max-5);g.hp=g.max}],['立ち去る','何も起こらない',()=>{}]]],
  ['👻','幽霊船の航路','霧の中から幽霊船が現れた。船長は三つの航路を指し示す。',[['安全な航路','遺物「防毒ジャケット」を得る',()=>addRelic('防毒ジャケット')],['宝の航路','HPを9失い、ゴールド77を得る',()=>{let g=game();g.hp=Math.max(1,g.hp-9);g.pearl+=77}],['禁じられた航路','HPを12失い、深海カードを得る',()=>{let g=game();g.hp=Math.max(1,g.hp-12);addCard(abyss)}]]],
  ['⏱️','沈んだ観測所','壊れた時計だけが、海底でまだ正確に時を刻んでいる。',[['時計を持ち帰る','HPを8失い、遺物「深海時計」を得る',()=>{let g=game();g.hp=Math.max(1,g.hp-8);addRelic('深海時計')}],['黒い鱗を拾う','ゴールド35を払い、遺物「黒潮の鱗」を得る',()=>{let g=game();if(g.pearl>=35){g.pearl-=35;addRelic('黒潮の鱗')}}],['時間を乱さない','何も起こらない',()=>{}]]],
