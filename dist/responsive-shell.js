@@ -71,7 +71,7 @@ function injectLandscapeCss(){
  const d=doc();if(!d||cssInjected)return;
  try{
   const link=d.createElement('link');
-  link.rel='stylesheet';link.href='responsive-landscape.css?v=8';
+  link.rel='stylesheet';link.href='responsive-landscape.css?v=9';
   d.head.appendChild(link);
   cssInjected=true;
  }catch(e){}
@@ -169,10 +169,15 @@ function rectOf(el){
 }
 
 function updateRing(){
- if(!landscapeLayout||!enabled||!focusEl||!visible(focusEl)){ring.style.display='none';return}
+ if(!landscapeLayout||!enabled||activeAdvanceOverlay()||!focusEl||!visible(focusEl)){ring.style.display='none';return}
  const r=rectOf(focusEl);
  ring.style.display='block';
  ring.style.left=(r.left-4)+'px';ring.style.top=(r.top-4)+'px';ring.style.width=(r.width+8)+'px';ring.style.height=(r.height+8)+'px';
+}
+
+function activeAdvanceOverlay(){
+ const d=doc();if(!d)return null;
+ return d.querySelector('#tapStartGate,.story-reveal.on,.abyss-gate-reveal.on');
 }
 
 const PRIORITY_GROUPS=['.node.available','.card[data-i]','.choice,.boss-relic-choice','#newGame,#continueGame','.achievement-card:not(:disabled),.market-item:not(:disabled)'];
@@ -182,10 +187,30 @@ function pickDefault(list){
 }
 function ensureFocus(){
  if(!landscapeLayout||!enabled){focusEl=null;updateRing();return}
+ if(activeAdvanceOverlay()){focusEl=null;updateRing();return}
  const list=candidates();
  if(!list.length){focusEl=null;updateRing();return}
  if(focusEl&&list.includes(focusEl))return;
  focusEl=pickDefault(list);updateRing();
+}
+
+let bandMemory={top:null,bottom:null};
+function focusBand(el){return el?.closest?.('.hud')||el?.matches?.('.quick-nav button,.suspend-run,#mapHelpView')?'top':'bottom'}
+function toggleFocusBand(){
+ if(!enabled||activeAdvanceOverlay())return;
+ const list=candidates(),top=list.filter(el=>focusBand(el)==='top'),bottom=list.filter(el=>focusBand(el)==='bottom');
+ if(!top.length||!bottom.length)return;
+ const from=focusEl&&list.includes(focusEl)?focusEl:null,fromBand=focusBand(from),nextBand=fromBand==='top'?'bottom':'top',pool=nextBand==='top'?top:bottom;
+ if(from)bandMemory[fromBand]=from;
+ let target=bandMemory[nextBand];
+ if(!target||!pool.includes(target)){
+  const fromRect=from?rectOf(from):null;
+  target=pool.slice().sort((a,b)=>{
+   if(!fromRect)return 0;
+   return Math.abs(rectOf(a).cx-fromRect.cx)-Math.abs(rectOf(b).cx-fromRect.cx);
+  })[0];
+ }
+ if(target){focusEl=target;bandMemory[nextBand]=target;revealFocus(target);updateRing()}
 }
 
 function scrollParent(el){
@@ -230,7 +255,7 @@ function moveFocus(dir){
  else if(dir==='up'||dir==='down')scrollActive(dir==='up'?-110:110);
 }
 
-function doConfirm(){if(!enabled||!focusEl)return;focusEl.click()}
+function doConfirm(){if(!enabled)return;const overlay=activeAdvanceOverlay();if(overlay){ring.style.display='none';overlay.click();return}if(focusEl)focusEl.click()}
 function doBack(){
  if(!enabled)return;
  const d=doc();if(!d)return;
@@ -251,6 +276,7 @@ window.addEventListener('keydown',e=>{
  else if(e.key==='Enter'){e.preventDefault();doConfirm()}
  else if(e.key==='Escape'||e.key==='Backspace'){e.preventDefault();doBack()}
  else if(e.key.toLowerCase()==='x'){e.preventDefault();doEndTurn()}
+ else if(e.key.toLowerCase()==='y'){e.preventDefault();toggleFocusBand()}
 });
 
 const heldSince={};
@@ -278,6 +304,7 @@ function pollGamepad(frameTime=0){
   if(pad.buttons[0]?.pressed){if(!heldSince.a){heldSince.a=true;doConfirm()}}else heldSince.a=false;
   if(pad.buttons[1]?.pressed){if(!heldSince.b){heldSince.b=true;doBack()}}else heldSince.b=false;
   if(pad.buttons[2]?.pressed){if(!heldSince.x){heldSince.x=true;doEndTurn()}}else heldSince.x=false;
+  if(pad.buttons[3]?.pressed){if(!heldSince.y){heldSince.y=true;toggleFocusBand()}}else heldSince.y=false;
   const scrollAxis=Math.abs(pad.axes[3]||0)>.32?(pad.axes[3]||0):0;
   const scrollButtons=(pad.buttons[5]?.pressed?1:0)-(pad.buttons[4]?.pressed?1:0);
   if(scrollAxis||scrollButtons)scrollActive((scrollAxis||scrollButtons)*12);
@@ -324,5 +351,5 @@ window.addEventListener('orientationchange',()=>setTimeout(handleOrientation,80)
 window.visualViewport?.addEventListener('resize',handleOrientation,{passive:true});
 window.visualViewport?.addEventListener('scroll',syncStageViewport,{passive:true});
 
-window.abyssResponsiveDebug={candidates,moveFocus,doConfirm,doBack,doEndTurn,scrollActive,ensureFocus,get focusEl(){return focusEl},get enabled(){return enabled},setEnabled(v){enabled=v;syncCtrlBtn();if(enabled)ensureFocus();else updateRing()}};
+window.abyssResponsiveDebug={candidates,moveFocus,toggleFocusBand,doConfirm,doBack,doEndTurn,scrollActive,ensureFocus,get focusEl(){return focusEl},get enabled(){return enabled},setEnabled(v){enabled=v;syncCtrlBtn();if(enabled)ensureFocus();else updateRing()}};
 })();

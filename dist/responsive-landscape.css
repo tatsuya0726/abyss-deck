@@ -393,6 +393,24 @@ html.tv-mode .enemyName{
   font-size:clamp(13px,min(1.15vw,2.25vh),24px)!important;
   margin-bottom:clamp(5px,1vh,12px)!important
 }
+html.tv-mode #battle .arena>.unit:first-child>.enemyName,
+html.tv-mode #battle .arena>.enemy-unit>.enemyName{
+  position:fixed!important;
+  top:calc(clamp(48px,6.3vh,74px) + clamp(9px,1.4vh,20px))!important;
+  width:min(32vw,520px)!important;
+  margin:0!important;
+  z-index:9!important;
+  pointer-events:none!important
+}
+html.tv-mode #battle .arena>.unit:first-child>.enemyName{
+  left:max(clamp(14px,2vw,42px),calc(env(safe-area-inset-left) + 8px))!important;
+  text-align:left!important
+}
+html.tv-mode #battle .arena>.enemy-unit>.enemyName{
+  right:max(clamp(14px,2vw,42px),calc(env(safe-area-inset-right) + 8px))!important;
+  left:auto!important;
+  text-align:right!important
+}
 html.tv-mode .hpbar{height:clamp(18px,2.6vh,34px)!important}
 html.tv-mode .hptext{font-size:clamp(11px,min(.9vw,1.8vh),19px)!important}
 html.tv-mode .statusRow{font-size:var(--tv-small)!important;height:clamp(24px,3.2vh,38px)!important}
@@ -614,6 +632,8 @@ html.tv-mode .rewards{max-width:min(88vw,1380px)!important;gap:var(--tv-gap)!imp
   html.tv-mode .handArea{height:40%!important;padding:4px 7px!important}
   html.tv-mode .creature{height:clamp(105px,31vh,175px)!important}
   html.tv-mode .enemyName{font-size:11px!important}
+  html.tv-mode #battle .arena>.unit:first-child>.enemyName,
+  html.tv-mode #battle .arena>.enemy-unit>.enemyName{top:49px!important;width:34vw!important}
   html.tv-mode .card{width:min(112px,16vw)!important;height:min(150px,31vh)!important}
   html.tv-mode .art{font-size:clamp(32px,8vh,48px)!important}
   html.tv-mode .cname{font-size:9px!important}
