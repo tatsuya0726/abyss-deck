@@ -43,10 +43,12 @@ let touchCalibration=(()=>{try{const saved=JSON.parse(localStorage.getItem(TOUCH
 function touchCalibrationText(){const signed=n=>`${n>0?'+':''}${n}px`;return`左右 ${signed(touchCalibration.x)}／上下 ${signed(touchCalibration.y)}`}
 function syncTouchCalibrationUi(){
  const d=doc();if(!d)return;
- d.querySelectorAll('[data-touch-calibration-value]').forEach(el=>{el.textContent=touchCalibrationText()});
+ const summary=touchCalibrationText();
+ d.querySelectorAll('[data-touch-calibration-value]').forEach(el=>{if(el.textContent!==summary)el.textContent=summary});
  const x=d.getElementById('touchCalibrationX'),y=d.getElementById('touchCalibrationY');
- if(x)x.textContent=`${touchCalibration.x>0?'+':''}${touchCalibration.x}px`;
- if(y)y.textContent=`${touchCalibration.y>0?'+':''}${touchCalibration.y}px`;
+ const xText=`${touchCalibration.x>0?'+':''}${touchCalibration.x}px`,yText=`${touchCalibration.y>0?'+':''}${touchCalibration.y}px`;
+ if(x&&x.textContent!==xText)x.textContent=xText;
+ if(y&&y.textContent!==yText)y.textContent=yText;
 }
 function setTouchCalibration(x,y){
  touchCalibration={x:clampTouchValue(x),y:clampTouchValue(y)};

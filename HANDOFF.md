@@ -13,17 +13,25 @@
 
 - ビルド不要の静的サイト。ゲーム本体は `dist/` 配下
 - ローカル起動: `node tools/local-server.cjs`
-- 検証: `node tools/verify-project.cjs`
+- 起動確認: `node tools/verify-startup.cjs`
+- 全体検証: `node tools/verify-project.cjs`
 - 検証後に変更される `verify-report.json` はコミットせず元へ戻す
 - JavaScript/CSSを変更したら `dist/index.html` の該当 `?v=` を更新する
 - 日本語UIを変更したら `dist/enhance.js` のふりがな辞書も確認する
-- 変更後は検証、コミット、作業ブランチへプッシュし、`main`をfast-forwardする
+- 変更後は起動確認と全体検証の両方が成功した場合だけコミット・プッシュし、`main`をfast-forwardする
 - 公開先はGitHub Pagesのみ。Sitesへはアップロード・公開しない
 - `.openai/hosting.json` は削除済み。今後追加しない
 - デバッグUIはプレイヤー名が「達也0726」の場合だけ設定に表示する
 - 名称変更時は既存セーブデータと図鑑の撃破記録に移行処理を入れる
 
 ## 直近で完了した変更
+
+### タッチ補正導入後の起動停止を修正
+
+- タッチ補正値の表示更新が `MutationObserver` を連続発火させ、特にiPhone Safariでメイン処理を詰まらせる可能性があった
+- 表示内容が実際に変わった場合だけDOMを書き換えるよう修正し、監視処理の自己再発火を停止
+- `tools/verify-startup.cjs` を追加。今後は通常検証に加えて、TAP START、タイトル画面、全起動スクリプトの構文、ローカル配信、監視ループ防止を確認してからプッシュする
+- 現在のキャッシュ番号: `responsive-shell.js?v=15`
 
 ### 起動時の黒画面を防ぐ安全装置
 
