@@ -1068,6 +1068,106 @@ html.tv-mode #collectionGrid.beast-grid{
   html.tv-mode #collectionGrid.collection-grid{grid-template-columns:repeat(auto-fill,minmax(116px,1fr))!important}
 }
 
+/* ==========================================================================
+   Landscape reference panels v12
+   Keep explanation/archive controls compact so the content remains primary.
+   ========================================================================== */
+html.tv-mode .map-help-panel{width:min(94vw,1320px)!important}
+html.tv-mode .map-help-list{
+  display:grid!important;
+  grid-template-columns:repeat(4,minmax(0,1fr))!important;
+  align-content:start!important;
+  gap:clamp(6px,.8vw,12px)!important;
+  padding:clamp(8px,1.2vw,16px)!important
+}
+html.tv-mode .map-help-item{
+  box-sizing:border-box!important;
+  display:grid!important;
+  grid-template-columns:clamp(32px,3vw,46px) minmax(0,1fr)!important;
+  grid-template-areas:"icon name" "icon copy"!important;
+  align-items:center!important;
+  gap:1px 9px!important;
+  min-width:0!important;
+  min-height:clamp(78px,11vh,112px)!important;
+  padding:clamp(7px,1vw,12px)!important;
+  border:1px solid #35535e!important;
+  border-radius:10px!important;
+  background:linear-gradient(135deg,#0b1d26,#07131b)!important;
+  text-align:left!important
+}
+html.tv-mode .map-help-item i{grid-area:icon!important;font-style:normal!important;font-size:clamp(23px,3vw,34px)!important;text-align:center!important}
+html.tv-mode .map-help-item b{grid-area:name!important;color:#ecd491!important;font-size:clamp(13px,1.25vw,18px)!important;line-height:1.2!important}
+html.tv-mode .map-help-item span{grid-area:copy!important;font-size:clamp(10px,.9vw,14px)!important;line-height:1.4!important;color:#bfd0d2!important}
+
+html.tv-mode #collectionGrid.beast-legacy-grid{
+  grid-template-columns:repeat(auto-fill,minmax(clamp(280px,22vw,390px),1fr))!important;
+  grid-auto-rows:max-content!important;
+  align-items:start!important;
+  gap:clamp(7px,.8vw,12px)!important
+}
+html.tv-mode .beast-legacy-grid .beast-layer-heading{margin:6px 0 0!important;padding:6px 10px 5px!important}
+html.tv-mode .beast-legacy-grid .beast-card{
+  box-sizing:border-box!important;
+  display:grid!important;
+  grid-template-columns:minmax(112px,40%) minmax(0,1fr)!important;
+  grid-template-rows:auto auto auto 1fr!important;
+  column-gap:0!important;
+  align-items:start!important;
+  height:clamp(132px,19vh,178px)!important;
+  min-height:0!important;
+  overflow:hidden!important
+}
+html.tv-mode .beast-legacy-grid .beast-img{
+  grid-column:1!important;
+  grid-row:1/-1!important;
+  align-self:stretch!important;
+  width:100%!important;
+  height:100%!important;
+  min-height:0!important;
+  background-size:contain!important;
+  background-position:center!important
+}
+html.tv-mode .beast-legacy-grid .beast-card h3{grid-column:2!important;margin:8px 9px 2px!important;font-size:clamp(12px,1vw,16px)!important;line-height:1.25!important}
+html.tv-mode .beast-legacy-grid .beast-card p{grid-column:2!important;margin:2px 9px 4px!important;font-size:clamp(9px,.78vw,12px)!important;line-height:1.35!important}
+html.tv-mode .beast-legacy-grid .beast-count{align-self:end!important;margin-bottom:8px!important}
+
+html.tv-mode .card-codex-head{padding-bottom:6px!important}
+html.tv-mode .card-codex-head>div{min-width:0!important}
+html.tv-mode .card-codex-head .codex-controls{
+  display:grid!important;
+  grid-template-columns:minmax(0,1fr) auto!important;
+  align-items:end!important;
+  gap:clamp(8px,1.2vw,18px)!important;
+  min-width:0!important;
+  margin-top:4px!important
+}
+html.tv-mode .card-codex-head .codex-filters,
+html.tv-mode .card-codex-head .codex-sortbar{min-width:0!important;padding-top:3px!important}
+html.tv-mode .card-codex-head .codex-sortbar{justify-content:flex-end!important}
+html.tv-mode .card-codex-body{padding-top:3px!important}
+
+@media (orientation:landscape) and (max-height:600px){
+  html.tv-mode .map-help-list{grid-template-columns:repeat(4,minmax(0,1fr))!important;gap:5px!important;padding:5px!important}
+  html.tv-mode .map-help-item{min-height:64px!important;padding:5px 6px!important;grid-template-columns:29px minmax(0,1fr)!important;gap:0 6px!important}
+  html.tv-mode .map-help-item i{font-size:21px!important}
+  html.tv-mode .map-help-item b{font-size:11px!important}
+  html.tv-mode .map-help-item span{font-size:8.5px!important;line-height:1.25!important}
+  html.tv-mode #collectionGrid.beast-legacy-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:5px!important}
+  html.tv-mode .beast-legacy-grid .beast-card{height:118px!important;grid-template-columns:minmax(104px,34%) minmax(0,1fr)!important}
+  html.tv-mode .beast-legacy-grid .beast-card h3{margin:6px 7px 1px!important;font-size:11px!important}
+  html.tv-mode .beast-legacy-grid .beast-card p{margin:1px 7px 3px!important;font-size:8.5px!important;line-height:1.25!important}
+  html.tv-mode .beast-legacy-grid .beast-layer-heading{margin:3px 0 0!important;padding:4px 7px 3px!important}
+  html.tv-mode .card-codex-head .codex-controls{gap:6px!important;margin-top:2px!important}
+  html.tv-mode .card-codex-head .codex-filters,
+  html.tv-mode .card-codex-head .codex-sortbar{padding-top:1px!important}
+}
+
+@media (orientation:landscape) and (max-width:900px){
+  html.tv-mode .map-help-list{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+  html.tv-mode .card-codex-head .codex-controls{grid-template-columns:minmax(0,1fr)!important;gap:1px!important}
+  html.tv-mode .card-codex-head .codex-sortbar{justify-content:flex-start!important}
+}
+
 
 /* ==========================================================================
    Landscape title scale v5
