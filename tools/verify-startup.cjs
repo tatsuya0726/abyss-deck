@@ -78,6 +78,12 @@ assert(landscapeCss.includes('html.tv-mode #rewardHome:not([hidden]){'),
  'reward actions are still rendered as full-width banners');
 assert(landscapeCss.includes('right:calc(min(126px,25vw) + 20px)!important'),
  'enemy name is not separated from the fixed forecast panel');
+assert(landscapeCss.includes('top:52px!important;bottom:auto!important;left:auto!important;right:8px!important'),
+ 'short-landscape enemy forecast is not anchored below the HUD');
+assert(landscapeCss.includes('transform:none!important;justify-content:flex-start!important;overflow-y:auto!important'),
+ 'enemy forecast cannot grow downward from its top edge');
+assert(landscapeCss.includes('top:5px!important;left:clamp(155px,22vw,310px)!important;right:clamp(245px,32vw,480px)!important'),
+ 'shopkeeper is not placed in the landscape shop header gap');
 assert(enhanceJs.includes('window.playAbyssBattleMusic=playBattleMusic'),
  'battle music has no immediate screen-entry trigger');
 assert(index.includes("if(id==='battle'&&G?.enemy)window.playAbyssBattleMusic?.(G.enemy)"),
@@ -128,7 +134,7 @@ async function verifyServer(){
   const html=await response.text();
   assert(html.includes('id="tapStartGate"'),'served page has no TAP START gate');
   assert(html.includes('responsive-shell.js?v=24'),'served page has a stale responsive script version');
-  assert(html.includes('responsive-landscape.css?v=30'),'served page has a stale responsive stylesheet version');
+  assert(html.includes('responsive-landscape.css?v=32'),'served page has a stale responsive stylesheet version');
   assert(html.includes('enhance.js?v=264'),'served page has a stale audio script version');
  }finally{
   server.kill('SIGTERM');
