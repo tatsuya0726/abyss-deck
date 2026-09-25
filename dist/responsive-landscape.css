@@ -3,9 +3,6 @@
    (index.html opened directly) is completely unaffected. */
 
 html.tv-mode, html.tv-mode body{width:100%;height:100%}
-/* Safari can retain the old hit-test surface for a transformed fixed modal
-   after rotating. Keep landscape modals in the document's native layer. */
-html.tv-mode .modal.on{transform:none!important}
 
 /* ---------- Header ---------- */
 /* Right padding on .hud reserves room for the ⚙設定 button, which lives in the
@@ -1506,4 +1503,20 @@ html.tv-mode .guardian-reveal.story-normal-keeper>.story-tap{grid-column:2!impor
   html.tv-mode .guardian-reveal.story-normal-keeper>p{font-size:clamp(10px,2.5vh,14px)!important;line-height:1.55!important}
   html.tv-mode .guardian-reveal.story-normal-keeper>.story-progress{margin-top:5px!important}
   html.tv-mode .guardian-reveal.story-normal-keeper>.story-tap{margin-top:4px!important;padding:5px 11px!important;font-size:9px!important}
+}
+
+/* iOS Safari can paint a backdrop-filter or momentum-scrolling layer at its
+   new landscape position while retaining the old hit-test geometry. Keep
+   horizontal modal controls in the root layer so paint and touch rectangles
+   are calculated by the same compositor surface. */
+html.tv-mode .modal.on,
+html.tv-mode .modal.on>.panel,
+html.tv-mode .modal.on .modal-shell-body{
+  transform:none!important;
+  filter:none!important;
+  backdrop-filter:none!important;
+  -webkit-backdrop-filter:none!important;
+  -webkit-overflow-scrolling:auto!important;
+  will-change:auto!important;
+  contain:none!important
 }
