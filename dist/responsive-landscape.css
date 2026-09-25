@@ -2116,3 +2116,48 @@ html.tv-mode #tapStartGate{width:auto!important;height:auto!important}
   html.tv-mode body:has(#battle.on) #debugKillNow{top:216px!important;min-height:48px!important}
   html.tv-mode body:has(#battle.on) #debugLauncher{top:272px!important;min-height:48px!important}
 }
+
+/* Final battle balance pass: the utility rail ends above the hand, so the
+   entire lower-left width belongs to cards just as it does in portrait. */
+@media (orientation:landscape){
+  html.tv-mode body:has(#battle.on) #debugKillNow,
+  html.tv-mode body:has(#battle.on) #debugLauncher{
+    top:145px!important;bottom:auto!important;min-height:26px!important;height:26px!important;
+    width:72px!important;padding:2px 3px!important;gap:2px!important;border-radius:7px!important;
+    font-size:7px!important;line-height:1!important;letter-spacing:0!important;justify-content:center!important
+  }
+  html.tv-mode body:has(#battle.on) #debugKillNow{left:4px!important}
+  html.tv-mode body:has(#battle.on) #debugLauncher{left:80px!important}
+  html.tv-mode body:has(#battle.on) :is(#debugKillNow,#debugLauncher) span{font-size:10px!important}
+  html.tv-mode #battle .handArea{padding-left:6px!important}
+  html.tv-mode #battle .hand{justify-content:space-evenly!important;gap:6px!important}
+  html.tv-mode #battle .hand:has(.card:nth-child(7)){justify-content:flex-start!important}
+  html.tv-mode #battle .card{
+    flex-basis:112px!important;width:112px!important;min-width:112px!important;max-width:112px!important;height:160px!important
+  }
+  html.tv-mode #battle .card .art{height:45%!important}
+  html.tv-mode #battle .creature{height:min(34vh,185px)!important}
+  html.tv-mode #battle #enemySprite.boss-enemy{
+    height:min(30vh,160px)!important;--enemy-scale:1.25!important;margin-top:20px!important
+  }
+}
+
+@media (orientation:landscape) and (pointer:fine) and (min-height:601px){
+  html.tv-mode body:has(#battle.on) #debugKillNow,
+  html.tv-mode body:has(#battle.on) #debugLauncher{
+    top:214px!important;min-height:30px!important;height:30px!important;
+    width:92px!important;padding:3px 4px!important;font-size:8px!important
+  }
+  html.tv-mode body:has(#battle.on) #debugKillNow{left:8px!important}
+  html.tv-mode body:has(#battle.on) #debugLauncher{left:106px!important}
+  html.tv-mode body:has(#battle.on) :is(#debugKillNow,#debugLauncher) span{font-size:12px!important}
+  html.tv-mode #battle .handArea{padding-left:10px!important}
+  html.tv-mode #battle .hand{gap:12px!important}
+  html.tv-mode #battle .card{
+    flex-basis:180px!important;width:180px!important;min-width:180px!important;max-width:180px!important;height:270px!important
+  }
+  html.tv-mode #battle .creature{height:min(34vh,240px)!important}
+  html.tv-mode #battle #enemySprite.boss-enemy{
+    height:min(31vh,220px)!important;--enemy-scale:1.28!important;margin-top:24px!important
+  }
+}

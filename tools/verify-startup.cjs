@@ -103,12 +103,18 @@ assert(landscapeCss.includes('grid-template-columns:repeat(2,minmax(0,1fr))!impo
  'battle utility rail is not arranged in two columns');
 assert(landscapeCss.includes('padding:10px 170px 10px 210px!important'),
  'desktop hand does not reserve independent left and right control regions');
-assert(landscapeCss.includes('flex-basis:190px!important;width:190px!important;min-width:190px!important;max-width:190px!important;height:250px!important'),
- 'desktop hand cards do not have stable non-overlapping dimensions');
+assert(landscapeCss.includes('flex-basis:180px!important;width:180px!important;min-width:180px!important;max-width:180px!important;height:270px!important'),
+ 'desktop hand cards do not use stable portrait-like dimensions');
 assert(landscapeCss.includes('top:10px!important;right:12px!important;width:146px!important'),
  'desktop end-turn action is not anchored at the upper right of the hand region');
 assert(landscapeCss.includes('--enemy-scale:1.22!important;margin-top:18px!important'),
  'landscape boss artwork is not protected from upper-edge clipping');
+assert(landscapeCss.includes('html.tv-mode #battle .handArea{padding-left:10px!important}'),
+ 'desktop card area does not reclaim the lower-left viewport');
+assert(landscapeCss.includes('top:214px!important;min-height:30px!important;height:30px!important'),
+ 'desktop debug actions do not fit beneath the left utility group');
+assert(landscapeCss.includes('height:min(31vh,220px)!important;--enemy-scale:1.28!important;margin-top:24px!important'),
+ 'desktop characters were not enlarged within the protected arena');
 assert(landscapeCss.includes('@media (orientation:landscape) and (pointer:fine) and (min-height:601px){'),
  'desktop landscape does not enlarge the shared phone composition');
 assert(shellJs.includes("root.style.setProperty('--abyss-phone-ui-scale',phoneUiScale.toFixed(4))"),
@@ -167,7 +173,7 @@ async function verifyServer(){
   const html=await response.text();
   assert(html.includes('id="tapStartGate"'),'served page has no TAP START gate');
   assert(html.includes('responsive-shell.js?v=25'),'served page has a stale responsive script version');
-  assert(html.includes('responsive-landscape.css?v=36'),'served page has a stale responsive stylesheet version');
+  assert(html.includes('responsive-landscape.css?v=37'),'served page has a stale responsive stylesheet version');
   assert(html.includes('enhance.js?v=265'),'served page has a stale audio script version');
  }finally{
   server.kill('SIGTERM');
