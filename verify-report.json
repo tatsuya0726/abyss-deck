@@ -1,9 +1,9 @@
 {
-  "root": "C:\\Users\\god03\\ABYSS-DECK-v126\\dist",
-  "files": 159,
-  "images": 76,
-  "audio": 40,
-  "uniqueReferences": 104,
+  "root": "/workspace/scratch/813fcd9e8112/abyss-deck/dist",
+  "files": 339,
+  "images": 243,
+  "audio": 43,
+  "uniqueReferences": 184,
   "missing": [],
   "empty": [],
   "syntaxErrors": []

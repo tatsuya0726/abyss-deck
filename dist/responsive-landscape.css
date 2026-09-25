@@ -1536,3 +1536,141 @@ html.tv-mode #tapStartGate{
   left:var(--abyss-safe-left)!important
 }
 html.tv-mode .app{width:auto!important;height:auto!important;transform:none!important}
+
+/* Short landscape phones: size every modal from its safe-area container,
+   never from the full viewport. A vw-sized child inside an inset modal was
+   the reason the right edge was clipped after avoiding the camera cutout. */
+@media (orientation:landscape) and (pointer:coarse) and (max-height:600px){
+  html.tv-mode .modal{box-sizing:border-box!important;overflow:hidden!important}
+  html.tv-mode .modal>.panel{box-sizing:border-box!important;width:100%!important;max-width:100%!important}
+  html.tv-mode .event-quick-nav{position:absolute!important;left:8px!important;right:8px!important;width:auto!important}
+  html.tv-mode :is(#eventModal,#mapChoiceModal){padding-right:8px!important;padding-left:8px!important}
+  html.tv-mode :is(#eventModal,#mapChoiceModal)>.panel{width:100%!important;max-width:100%!important}
+
+  /* Opening gift / one-off reward event. */
+  html.tv-mode #firstBlessingModal{align-items:stretch!important;padding:6px 8px!important}
+  html.tv-mode #firstBlessingModal>.panel{
+    display:flex!important;flex-direction:column!important;
+    height:calc(var(--abyss-vv-height,100dvh) - 12px)!important;max-height:none!important;
+    padding:7px 10px!important;overflow:hidden!important
+  }
+  html.tv-mode #firstBlessingModal .blessing-keeper{
+    flex:0 0 48px!important;height:48px!important;min-height:0!important;margin:0!important
+  }
+  html.tv-mode #firstBlessingModal .blessing-keeper img{
+    top:0!important;right:2px!important;width:52px!important;height:48px!important;object-fit:contain!important
+  }
+  html.tv-mode #firstBlessingModal .keeper-speech{
+    left:0!important;right:56px!important;top:50%!important;width:auto!important;min-height:0!important;
+    padding:5px 9px!important;transform:translateY(-50%)!important;font-size:9px!important;line-height:1.25!important
+  }
+  html.tv-mode #firstBlessingModal .keeper-name{display:none!important}
+  html.tv-mode #firstBlessingModal h2{
+    flex:0 0 auto!important;margin:2px 0 3px!important;font-size:clamp(18px,5.5vh,25px)!important;line-height:1!important
+  }
+  html.tv-mode #firstBlessingModal .choices{
+    display:grid!important;grid-template-columns:1fr!important;grid-template-rows:repeat(3,minmax(0,1fr))!important;
+    flex:1 1 auto!important;min-height:0!important;gap:5px!important;margin:0!important;overflow-y:auto!important
+  }
+  html.tv-mode #firstBlessingModal .choice{
+    box-sizing:border-box!important;min-height:0!important;padding:5px 9px!important;
+    font-size:clamp(9px,2.7vh,13px)!important;line-height:1.25!important
+  }
+
+  /* Combat rewards and boss relics use the same bounded stage. */
+  html.tv-mode #rewardModal{align-items:stretch!important;padding:6px 8px!important}
+  html.tv-mode #rewardModal>.reward-panel{
+    display:flex!important;flex-direction:column!important;
+    height:calc(var(--abyss-vv-height,100dvh) - 12px)!important;max-height:none!important;
+    padding:8px 11px!important;overflow:hidden!important
+  }
+  html.tv-mode .reward-panel>small{font-size:7px!important;line-height:1!important}
+  html.tv-mode .reward-panel>h2{margin:2px 0 3px!important;font-size:clamp(18px,5vh,24px)!important;line-height:1!important}
+  html.tv-mode #rewardHome,
+  html.tv-mode #rewardPick{flex:1 1 auto!important;min-height:0!important;overflow-y:auto!important}
+  html.tv-mode .reward-gold{
+    grid-template-columns:32px 1fr auto auto!important;gap:6px!important;
+    min-height:44px!important;margin:3px 0!important;padding:6px 9px!important
+  }
+  html.tv-mode .reward-gold i{font-size:25px!important}
+  html.tv-mode .reward-gold span,
+  html.tv-mode .reward-gold em{font-size:9px!important}
+  html.tv-mode .reward-gold strong{font-size:20px!important}
+  html.tv-mode .reward-row{
+    grid-template-columns:32px 1fr auto!important;gap:6px!important;
+    min-height:48px!important;margin:4px 0!important;padding:6px 9px!important
+  }
+  html.tv-mode .reward-row>i{font-size:23px!important}
+  html.tv-mode .reward-row span b{font-size:11px!important}
+  html.tv-mode .reward-row span small,
+  html.tv-mode .reward-row em{font-size:8px!important;line-height:1.25!important}
+  html.tv-mode .reward-panel #rewardContinue{
+    min-height:36px!important;margin-top:5px!important;padding:5px 9px!important;font-size:11px!important
+  }
+  html.tv-mode #rewardPick>p{margin:2px 0 4px!important;font-size:10px!important}
+  html.tv-mode .reward-panel .rewards{max-height:none!important;min-height:0!important;margin:2px 0 4px!important;overflow-x:auto!important}
+  html.tv-mode .reward-panel :is(#skipReward,#rewardBack){min-height:34px!important;padding:5px 8px!important;font-size:10px!important}
+  html.tv-mode #bossRelicModal{align-items:stretch!important;padding:6px 8px!important}
+  html.tv-mode #bossRelicModal>.boss-relic-panel{
+    height:calc(var(--abyss-vv-height,100dvh) - 12px)!important;max-height:none!important;
+    padding:9px 11px!important;overflow:hidden!important
+  }
+  html.tv-mode .boss-relic-panel>small{font-size:7px!important}
+  html.tv-mode .boss-relic-panel>h2{margin:2px 0!important;font-size:21px!important}
+  html.tv-mode .boss-relic-panel>p{margin:2px 0 5px!important;font-size:9px!important;line-height:1.3!important}
+  html.tv-mode .boss-relic-choices{
+    grid-template-columns:repeat(3,minmax(0,1fr))!important;gap:6px!important;
+    min-height:0!important;max-height:none!important;margin-top:3px!important;overflow-y:auto!important
+  }
+  html.tv-mode .boss-relic-choice{min-height:0!important;padding:7px!important;gap:3px!important}
+  html.tv-mode .boss-relic-choice i{font-size:30px!important}
+  html.tv-mode .boss-relic-choice b{font-size:11px!important}
+  html.tv-mode .boss-relic-choice span{font-size:8px!important;line-height:1.3!important}
+
+  /* Shop: compact fixed chrome with one independent stock scroller. */
+  html.tv-mode #shopModal{align-items:stretch!important;padding:6px 8px!important}
+  html.tv-mode #shopModal>.shop-panel{
+    height:calc(var(--abyss-vv-height,100dvh) - 12px)!important;max-height:none!important;
+    padding:7px 10px!important;overflow:hidden!important
+  }
+  html.tv-mode #shopModal .shop-head{flex:0 0 38px!important;min-height:38px!important;padding:0 0 3px!important}
+  html.tv-mode #shopModal .shop-head small{font-size:6px!important;line-height:1!important}
+  html.tv-mode #shopModal .shop-head h2{margin:1px 0 0!important;font-size:18px!important;line-height:1!important}
+  html.tv-mode #shopModal .shop-resources{gap:4px!important;max-width:none!important;flex-wrap:nowrap!important}
+  html.tv-mode #shopModal :is(.shop-wallet,.shop-deck-view){
+    min-height:28px!important;padding:3px 7px!important;font-size:9px!important;line-height:1!important
+  }
+  html.tv-mode #shopModal .shop-keeper{flex:0 0 42px!important;height:42px!important;margin:0 0 2px!important}
+  html.tv-mode #shopModal .shop-keeper img{right:2px!important;width:48px!important;height:42px!important}
+  html.tv-mode #shopModal .keeper-speech{right:52px!important;padding:4px 8px!important;font-size:8px!important;line-height:1.2!important}
+  html.tv-mode #shopModal .shop-panel>#shopMessage{display:none!important;min-height:0!important}
+  html.tv-mode #shopModal .shop-tabs{flex:0 0 34px!important;gap:4px!important;padding:2px 0!important}
+  html.tv-mode #shopModal .shop-tabs button{min-height:29px!important;padding:3px!important;border-radius:6px!important;font-size:9px!important}
+  html.tv-mode #shopGrid{
+    display:block!important;flex:1 1 auto!important;min-height:0!important;max-height:none!important;
+    margin:2px 0 4px!important;padding:2px 3px 8px!important;overflow-x:hidden!important;overflow-y:auto!important
+  }
+  html.tv-mode #shopGrid .shop-stock-section{padding:5px!important;border-radius:7px!important}
+  html.tv-mode #shopGrid .shop-section-title{padding:3px 0!important;font-size:9px!important}
+  html.tv-mode #shopGrid .shop-stock-section>p{margin:1px 0 4px!important;font-size:7px!important;line-height:1.3!important}
+  html.tv-mode #shopGrid .shop-market{gap:5px!important}
+  html.tv-mode #shopGrid .relic-market{grid-template-columns:repeat(3,minmax(0,1fr))!important}
+  html.tv-mode #shopGrid .market-item{min-height:62px!important;padding:5px!important;gap:3px 5px!important;border-radius:7px!important}
+  html.tv-mode #shopGrid .market-item b{font-size:10px!important;line-height:1.25!important}
+  html.tv-mode #shopGrid .market-item span{font-size:8px!important;line-height:1.3!important}
+  html.tv-mode #shopGrid .market-item small{margin-top:2px!important;padding:2px 4px!important;font-size:8px!important;line-height:1.2!important}
+  html.tv-mode #shopGrid .shop-item{
+    box-sizing:border-box!important;width:100%!important;min-height:44px!important;margin:4px 0!important;padding:6px 8px!important
+  }
+  html.tv-mode #shopGrid .shop-item i{font-size:22px!important}
+  html.tv-mode #shopGrid .shop-item b,
+  html.tv-mode #shopGrid .shop-item strong{font-size:10px!important}
+  html.tv-mode #shopGrid .shop-item span{font-size:8px!important}
+  html.tv-mode #shopModal .shop-exit{
+    flex:0 0 36px!important;min-height:36px!important;height:36px!important;
+    padding:4px 8px!important;font-size:11px!important;box-shadow:0 -3px 10px #03070dcc!important
+  }
+  html.tv-mode body:has(#shopModal.on) #debugLauncher,
+  html.tv-mode body:has(#rewardModal.on) #debugLauncher,
+  html.tv-mode body:has(#firstBlessingModal.on) #debugLauncher{display:none!important}
+}

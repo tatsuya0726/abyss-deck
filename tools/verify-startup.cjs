@@ -57,6 +57,14 @@ assert(landscapeCss.includes(':is(#multiDeckChoiceModal,#deckChoiceModal,#markSe
  'landscape card-picking events do not reserve the viewport for cards');
 assert(landscapeCss.includes('font-size:clamp(28px,8vh,42px)!important'),
  'landscape card-picking event emblem is still portrait-sized');
+assert(landscapeCss.includes('html.tv-mode .modal>.panel{box-sizing:border-box!important;width:100%!important;max-width:100%!important}'),
+ 'landscape modal panels can still overflow the camera-safe container');
+assert(landscapeCss.includes('html.tv-mode #shopGrid{'),
+ 'landscape shop has no bounded stock scroller');
+assert(landscapeCss.includes('html.tv-mode #firstBlessingModal>.panel{'),
+ 'first blessing has no short-landscape layout');
+assert(landscapeCss.includes('html.tv-mode #rewardModal>.reward-panel{'),
+ 'combat rewards have no short-landscape layout');
 assert(!landscapeCss.includes('.touch-auto-catcher'),
  'obsolete touch interception overlay is still present');
 
@@ -103,7 +111,7 @@ async function verifyServer(){
   const html=await response.text();
   assert(html.includes('id="tapStartGate"'),'served page has no TAP START gate');
   assert(html.includes('responsive-shell.js?v=23'),'served page has a stale responsive script version');
-  assert(html.includes('responsive-landscape.css?v=27'),'served page has a stale responsive stylesheet version');
+  assert(html.includes('responsive-landscape.css?v=28'),'served page has a stale responsive stylesheet version');
  }finally{
   server.kill('SIGTERM');
  }
