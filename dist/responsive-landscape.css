@@ -239,6 +239,7 @@ html.tv-mode body.scene-title .title-hint{
   html.tv-mode body.scene-title .title-library-grid .title-tool{min-height:36px!important;padding:4px 7px!important;font-size:11px!important}
   html.tv-mode body.scene-title .title-hint{display:none!important}
 }
+
 @media (orientation:landscape) and (max-height:430px){
   html.tv-mode body.scene-title .sigil{display:none!important}
   html.tv-mode body.scene-title .titlebox h1{grid-row:1/3!important}
@@ -2331,4 +2332,41 @@ html.tv-mode #shopGrid .unified-market-item.synergy-card{
   html.tv-mode #firstBlessingModal .choices{
     grid-column:2!important;grid-row:2!important;width:100%!important
   }
+}
+
+/* Compact landscape actions and keep dense content inside its own bounds. */
+@media (orientation:landscape){
+  html.tv-mode :is(#cardRevealClose,#multiResultClose,#outcomeClose){
+    width:180px!important;max-width:48%!important
+  }
+  html.tv-mode #rewardHome #rewardContinue{
+    width:min(260px,70%)!important
+  }
+
+  /* A fixed gap keeps the hand stable as cards are played. */
+  html.tv-mode #battle .hand{
+    justify-content:center!important;gap:8px!important
+  }
+  html.tv-mode #battle .hand:has(.card:nth-child(7)){
+    justify-content:flex-start!important
+  }
+
+  /* Ruby annotations need a little more vertical room than plain two-line text. */
+  html.tv-mode #rewardHome :is(.reward-gold,.reward-row){
+    min-height:64px!important;height:64px!important;max-height:64px!important
+  }
+  html.tv-mode #rewardHome .reward-row>span{
+    display:flex!important;flex-direction:column!important;justify-content:center!important;
+    align-self:stretch!important;min-height:0!important;overflow:hidden!important
+  }
+  html.tv-mode #rewardHome .reward-row>span>b{
+    flex:0 0 auto!important;font-size:10px!important;line-height:1.1!important
+  }
+  html.tv-mode #rewardHome .reward-row>span>small{
+    flex:0 0 auto!important;margin:2px 0 0!important;font-size:7px!important;line-height:1.15!important
+  }
+}
+
+@media (orientation:landscape) and (pointer:fine) and (min-height:601px){
+  html.tv-mode #battle .hand{gap:12px!important}
 }

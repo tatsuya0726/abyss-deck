@@ -146,8 +146,14 @@ assert(landscapeCss.includes('#rewardRelicOption[hidden]{display:none!important}
  'landscape rewards override the hidden no-relic state');
 assert(landscapeCss.includes('width:min(100%,520px)!important;max-width:520px!important'),
  'landscape reward panel is still unnecessarily wide');
-assert(landscapeCss.includes('min-height:52px!important;height:52px!important;max-height:52px!important'),
+assert(landscapeCss.includes('min-height:64px!important;height:64px!important;max-height:64px!important'),
  'landscape reward rows do not share one height');
+assert(landscapeCss.includes('width:180px!important;max-width:48%!important'),
+ 'landscape confirmation buttons are still unnecessarily wide');
+assert(landscapeCss.includes('justify-content:center!important;gap:8px!important'),
+ 'landscape hand spacing still changes with the number of cards');
+assert(landscapeCss.includes('flex-direction:column!important;justify-content:center!important'),
+ 'landscape reward labels are not contained within their rows');
 assert(shellJs.includes('intentCenterBeforeEnemy(enemyRect.left,intentWidth,innerWidth)'),
  'enemy forecast does not reserve a measured gap from the enemy artwork');
 assert(shellJs.includes("intentEl.style.setProperty('left',(centerX-containerLeft)+'px','important')"),
@@ -224,7 +230,7 @@ async function verifyServer(){
   const html=await response.text();
   assert(html.includes('id="tapStartGate"'),'served page has no TAP START gate');
   assert(html.includes('responsive-shell.js?v=28'),'served page has a stale responsive script version');
-  assert(html.includes('responsive-landscape.css?v=41'),'served page has a stale responsive stylesheet version');
+  assert(html.includes('responsive-landscape.css?v=42'),'served page has a stale responsive stylesheet version');
   assert(html.includes('refinement.js?v=70'),'served page has a stale event script version');
   assert(html.includes('enhance.js?v=265'),'served page has a stale audio script version');
  }finally{
