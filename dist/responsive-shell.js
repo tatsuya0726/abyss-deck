@@ -76,7 +76,7 @@ function injectLandscapeCss(){
  const d=doc();if(!d||cssInjected)return;
  try{
   const link=d.createElement('link');
-  link.rel='stylesheet';link.href='responsive-landscape.css?v=10';
+  link.rel='stylesheet';link.href='responsive-landscape.css?v=11';
   d.head.appendChild(link);
   cssInjected=true;
  }catch(e){}
@@ -158,7 +158,9 @@ function installLandscapeTapResolver(){
   if(!start||!d.documentElement.classList.contains('tv-mode'))return;
   let began=start,t=Array.from(e.changedTouches||[]).find(v=>v.identifier===began.id);start=null;
   if(!t||Math.hypot(t.clientX-began.x,t.clientY-began.y)>22)return;
-  let scope=scopeNow(),native=closestInteractive(e.target),vv=window.visualViewport,items=targetRects(scope);
+  let scope=scopeNow(),native=closestInteractive(e.target);
+  if(native)return;
+  let vv=window.visualViewport,items=targetRects(scope);
   let gap=Math.max(0,Math.round(window.innerHeight-(vv?.height||window.innerHeight)));
   let offset=Math.round(vv?.offsetTop||0),offsets=[0,offset,-offset,gap,-gap];
   let intended=null;
@@ -246,6 +248,28 @@ function scrollActive(amount){
  const vertical=target.scrollHeight>target.clientHeight+2;
  if(vertical)target.scrollBy({top:amount,behavior:'auto'});else if(target.scrollWidth>target.clientWidth+2)target.scrollBy({left:amount,behavior:'auto'});else return false;
  requestAnimationFrame(updateRing);return true;
+}
+
+let mapPositionQueued=false;
+function positionMapByProgress(){
+ const d=doc(),map=d?.getElementById('map'),path=d?.getElementById('path'),track=d?.getElementById('pathTrack');
+ if(!landscapeLayout||!map?.classList.contains('on')||!path||!track)return;
+ track.style.marginTop='0px';track.style.marginBottom='0px';
+ const current=track.querySelector('.node.current');
+ if(!current){path.scrollTop=0;return}
+ const topPercent=Math.max(0,Math.min(100,parseFloat(current.style.top)||0))/100;
+ const maxScroll=Math.max(0,track.scrollHeight-path.clientHeight);
+ const progress=topPercent<=.12?0:topPercent>=.88?1:topPercent;
+ path.scrollTop=Math.round(maxScroll*progress);
+}
+function queueMapPosition(){
+ if(mapPositionQueued)return;mapPositionQueued=true;
+ requestAnimationFrame(()=>requestAnimationFrame(()=>{mapPositionQueued=false;positionMapByProgress()}));
+}
+function installMapProgressPositioning(){
+ const d=doc(),track=d?.getElementById('pathTrack');if(!track||track.__abyssProgressPositioning)return;
+ track.__abyssProgressPositioning=true;
+ new MutationObserver(queueMapPosition).observe(track,{childList:true});
 }
 function moveFocus(dir){
  if(!enabled)return;
@@ -340,6 +364,7 @@ function initializeResponsive(){
  try{if(landscapeLayout)win().localStorage.setItem('abyssA2hsSeen','1')}catch(e){}
  injectLandscapeCss();
  installLandscapeTapResolver();
+ installMapProgressPositioning();
  installTitleSettings();
  syncOrientationLayout();
  syncSoundBtn();
@@ -359,6 +384,7 @@ const handleOrientation=()=>{
  syncOrientationLayout();
  syncIntentPosition();
  updateRing();
+ queueMapPosition();
 };
 syncStageViewport();
 window.addEventListener('resize',handleOrientation,{passive:true});
@@ -366,5 +392,5 @@ window.addEventListener('orientationchange',()=>setTimeout(handleOrientation,80)
 window.visualViewport?.addEventListener('resize',handleOrientation,{passive:true});
 window.visualViewport?.addEventListener('scroll',syncStageViewport,{passive:true});
 
-window.abyssResponsiveDebug={candidates,moveFocus,toggleFocusBand,doConfirm,doBack,doEndTurn,scrollActive,ensureFocus,get focusEl(){return focusEl},get enabled(){return enabled},setEnabled(v){enabled=v;syncCtrlBtn();if(enabled)ensureFocus();else updateRing()}};
+window.abyssResponsiveDebug={candidates,moveFocus,toggleFocusBand,doConfirm,doBack,doEndTurn,scrollActive,positionMapByProgress,ensureFocus,get focusEl(){return focusEl},get enabled(){return enabled},setEnabled(v){enabled=v;syncCtrlBtn();if(enabled)ensureFocus();else updateRing()}};
 })();

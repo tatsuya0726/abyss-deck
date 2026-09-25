@@ -472,6 +472,56 @@ html.tv-mode .node{
   font-size:clamp(22px,2.1vw,38px)!important
 }
 
+/* Keep the vertical map lane clear: layer information uses the free left
+   gutter and shard progress uses the free right gutter. */
+html.tv-mode #map{position:absolute!important;justify-content:flex-start!important}
+html.tv-mode #map>.mapHead{
+  position:absolute!important;inset:0!important;z-index:4!important;
+  width:100%!important;height:100%!important;margin:0!important;
+  pointer-events:none!important
+}
+html.tv-mode #map>.mapHead h2,
+html.tv-mode #map>.mapHead p{
+  position:absolute!important;left:clamp(8px,1.2vw,24px)!important;
+  width:min(12vw,210px)!important;text-align:center!important
+}
+html.tv-mode #map>.mapHead h2{top:clamp(12px,2.4vh,30px)!important;margin:0!important}
+html.tv-mode #map>.mapHead p{top:clamp(58px,8.5vh,98px)!important;margin:0!important;line-height:1.55!important}
+html.tv-mode #map>.mapHead #abyssShardHud{
+  position:absolute!important;top:clamp(12px,2.4vh,30px)!important;
+  right:clamp(8px,1.2vw,24px)!important;width:min(12vw,210px)!important;
+  margin:0!important;display:flex!important;flex-direction:column!important;
+  align-items:stretch!important;gap:clamp(4px,.7vh,9px)!important
+}
+html.tv-mode #map>.mapHead #abyssShardHud span{justify-content:center!important}
+html.tv-mode #map>.mapHead #runModifierBadge{
+  position:absolute!important;left:clamp(8px,1.2vw,24px)!important;
+  top:clamp(118px,18vh,190px)!important;width:min(12vw,210px)!important;
+  margin:0!important;pointer-events:auto!important
+}
+html.tv-mode #map>.path{
+  flex:1 1 auto!important;height:100%!important;max-height:none!important;
+  margin:0 auto!important
+}
+
+/* Status effects may span several rows. Keep every effect inside the unit and
+   scroll only this compact strip when an extreme build exceeds the available area. */
+html.tv-mode #battle .statusRow{
+  box-sizing:border-box!important;width:100%!important;height:auto!important;
+  min-height:clamp(22px,3vh,34px)!important;max-height:clamp(48px,8vh,86px)!important;
+  padding:clamp(2px,.35vh,5px)!important;gap:clamp(2px,.3vw,6px)!important;
+  align-content:flex-start!important;overflow-x:hidden!important;overflow-y:auto!important;
+  scrollbar-width:thin!important
+}
+html.tv-mode #battle .state-pill{font-size:var(--tv-small)!important;padding:.2em .5em!important}
+
+@media (hover:none) and (pointer:coarse){
+  html.tv-mode #battle .card,
+  html.tv-mode #battle .card:hover{
+    transform:none!important;transition:filter .12s ease,opacity .12s ease!important
+  }
+}
+
 /* Slay-the-Spire-like event composition: emblem/art left, story and choices right. */
 html.tv-mode #eventModal{
   padding:clamp(18px,4vh,56px) clamp(26px,5vw,100px)!important;
@@ -639,6 +689,17 @@ html.tv-mode .rewards{max-width:min(88vw,1380px)!important;gap:var(--tv-gap)!imp
   html.tv-mode .cname{font-size:9px!important}
   html.tv-mode .ctext{font-size:8px!important}
   html.tv-mode .endTurn{font-size:11px!important;padding:7px 11px!important}
+  html.tv-mode #map>.mapHead h2,
+  html.tv-mode #map>.mapHead p,
+  html.tv-mode #map>.mapHead #abyssShardHud,
+  html.tv-mode #map>.mapHead #runModifierBadge{width:13vw!important}
+  html.tv-mode #map>.mapHead h2{top:6px!important;font-size:14px!important}
+  html.tv-mode #map>.mapHead p{top:35px!important;font-size:9px!important}
+  html.tv-mode #map>.mapHead #abyssShardHud{top:6px!important;gap:3px!important}
+  html.tv-mode #map>.mapHead #abyssShardHud span{padding:2px 4px!important;font-size:9px!important}
+  html.tv-mode #map>.mapHead #runModifierBadge{top:84px!important;font-size:9px!important}
+  html.tv-mode #battle .statusRow{min-height:18px!important;max-height:44px!important;padding:1px!important}
+  html.tv-mode #battle .state-pill{font-size:8px!important;padding:1px 4px!important}
 
   html.tv-mode #eventModal{padding:8px 14px!important}
   html.tv-mode #eventModal>.panel{
