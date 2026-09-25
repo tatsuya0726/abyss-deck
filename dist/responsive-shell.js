@@ -37,6 +37,22 @@ function syncSoundBtn(){try{let b=doc()?.getElementById('soundBtn');if(!b)return
 soundBtn.onclick=()=>{try{doc()?.getElementById('soundBtn')?.click()}catch(e){}syncSoundBtn()};
 
 const CTRL_KEY='abyssTvControllerEnabled';
+const TOUCH_CAL_KEY='abyssLandscapeTouchCalibrationV1',TOUCH_CAL_LIMIT=180;
+const clampTouchValue=value=>Math.max(-TOUCH_CAL_LIMIT,Math.min(TOUCH_CAL_LIMIT,Math.round(Number(value)||0)));
+let touchCalibration=(()=>{try{const saved=JSON.parse(localStorage.getItem(TOUCH_CAL_KEY)||'{}');return{x:clampTouchValue(saved.x),y:clampTouchValue(saved.y)}}catch(e){return{x:0,y:0}}})();
+function touchCalibrationText(){const signed=n=>`${n>0?'+':''}${n}px`;return`左右 ${signed(touchCalibration.x)}／上下 ${signed(touchCalibration.y)}`}
+function syncTouchCalibrationUi(){
+ const d=doc();if(!d)return;
+ d.querySelectorAll('[data-touch-calibration-value]').forEach(el=>{el.textContent=touchCalibrationText()});
+ const x=d.getElementById('touchCalibrationX'),y=d.getElementById('touchCalibrationY');
+ if(x)x.textContent=`${touchCalibration.x>0?'+':''}${touchCalibration.x}px`;
+ if(y)y.textContent=`${touchCalibration.y>0?'+':''}${touchCalibration.y}px`;
+}
+function setTouchCalibration(x,y){
+ touchCalibration={x:clampTouchValue(x),y:clampTouchValue(y)};
+ try{localStorage.setItem(TOUCH_CAL_KEY,JSON.stringify(touchCalibration))}catch(e){}
+ syncTouchCalibrationUi();
+}
 let enabled=true;
 try{enabled=localStorage.getItem(CTRL_KEY)!=='0'}catch(e){}
 function syncControllerUi(){
@@ -55,16 +71,32 @@ let focusEl=null,cssInjected=directMode&&!!document.querySelector('link[href*="r
 function doc(){try{return directMode?document:stage.contentDocument}catch(e){return null}}
 function win(){try{return directMode?window:stage.contentWindow}catch(e){return null}}
 
+function openTouchCalibration(){
+ const d=doc();if(!d)return;
+ let modal=d.getElementById('touchCalibrationModal');
+ if(!modal){
+  modal=d.createElement('div');modal.className='modal touch-calibration-modal';modal.id='touchCalibrationModal';
+  modal.innerHTML='<div class="panel title-hub-panel touch-calibration-panel modal-shell"><header class="modal-shell-head"><div><small>LANDSCAPE TOUCH</small><h2>🎯 タッチ位置補正</h2></div></header><div class="modal-shell-body touch-calibration-body"><p>横画面で、押した場所と反応する場所がずれる端末向けの調整です。押した場所より上のボタンが反応するときは「下へ」を押してください。</p><div class="touch-calibration-readout"><span>左右 <strong id="touchCalibrationX">0px</strong></span><span>上下 <strong id="touchCalibrationY">0px</strong></span></div><div class="touch-calibration-controls"><button type="button" data-touch-adjust="0,-10">↑ 上へ</button><button type="button" data-touch-adjust="-10,0">← 左へ</button><button type="button" class="touch-calibration-reset" data-touch-reset>中央に戻す</button><button type="button" data-touch-adjust="10,0">右へ →</button><button type="button" data-touch-adjust="0,10">下へ ↓</button></div><div class="touch-calibration-test"><span>反応確認</span><button type="button" id="touchCalibrationTest">ここをタップ</button><output id="touchCalibrationResult">未確認</output></div></div><footer class="modal-shell-foot"><button type="button" class="btn" data-touch-calibration-close>設定へ戻る</button></footer></div>';
+  d.body.appendChild(modal);
+  modal.querySelectorAll('[data-touch-adjust]').forEach(button=>button.addEventListener('click',()=>{const [dx,dy]=button.dataset.touchAdjust.split(',').map(Number);setTouchCalibration(touchCalibration.x+dx,touchCalibration.y+dy)}));
+  modal.querySelector('[data-touch-reset]').addEventListener('click',()=>setTouchCalibration(0,0));
+  modal.querySelector('[data-touch-calibration-close]').addEventListener('click',()=>modal.classList.remove('on'));
+  modal.querySelector('#touchCalibrationTest').addEventListener('click',()=>{const out=modal.querySelector('#touchCalibrationResult');out.textContent='反応しました';out.classList.remove('ok');requestAnimationFrame(()=>out.classList.add('ok'))});
+ }
+ syncTouchCalibrationUi();modal.classList.add('on');win()?.applyFuri?.(modal);
+}
+
 function installTitleSettings(){
  const d=doc(),grid=d?.querySelector('#titleSettingsModal .settings-hub-grid');if(!grid)return;
+ const add=(id,icon,title,detail,action)=>{let b=d.createElement('button');b.id=id;b.type='button';b.className='tv-title-setting';b.innerHTML=`<i>${icon}</i><span><b>${title}</b><small>${detail}</small></span>`;b.addEventListener('click',e=>{e.preventDefault();e.stopPropagation();action()});grid.appendChild(b);return b};
  if(!d.getElementById('titleTvSound')){
-  const add=(id,icon,title,detail,action)=>{let b=d.createElement('button');b.id=id;b.type='button';b.className='tv-title-setting';b.innerHTML=`<i>${icon}</i><span><b>${title}</b><small>${detail}</small></span>`;b.addEventListener('click',e=>{e.preventDefault();e.stopPropagation();action()});grid.appendChild(b);return b};
   add('titleTvSound','♫','音楽','音楽 ON',()=>soundBtn.click());
   add('titleTvController','🎮','コントローラー','コントローラー ON',()=>ctrlBtn.click());
   add('titleTvFullscreen','⛶','フルスクリーン','画面いっぱいに表示',()=>fsBtn.click());
  }
+ if(!d.getElementById('titleTouchCalibration')){const button=add('titleTouchCalibration','🎯','タッチ位置補正',touchCalibrationText(),openTouchCalibration);button.querySelector('small').dataset.touchCalibrationValue='1'}
  const hide=!landscapeLayout;d.querySelectorAll('.tv-title-setting').forEach(b=>{if(b.hidden!==hide)b.hidden=hide});
- syncSoundBtn();syncCtrlBtn();
+ syncSoundBtn();syncCtrlBtn();syncTouchCalibrationUi();
 }
 function syncOrientationLayout(){
  const d=doc();if(!d)return;
@@ -72,7 +104,7 @@ function syncOrientationLayout(){
  d.documentElement.classList.toggle('tv-mode',landscapeLayout);
  syncControllerUi();
  installTitleSettings();
- if(!landscapeLayout){focusEl=null;ring.style.display='none'}
+ if(!landscapeLayout){d.getElementById('touchCalibrationModal')?.classList.remove('on');focusEl=null;ring.style.display='none'}
  else ensureFocus();
  clearTimeout(syncOrientationLayout._bgmTimer);
  syncOrientationLayout._bgmTimer=setTimeout(()=>win()?.resyncAbyssBgmForCurrentScreen?.(),140);
@@ -83,7 +115,7 @@ function injectLandscapeCss(){
  if(!cssInjected){
   try{
    const link=d.createElement('link');
-   link.rel='stylesheet';link.href='responsive-landscape.css?v=18';
+   link.rel='stylesheet';link.href='responsive-landscape.css?v=19';
    d.head.appendChild(link);cssInjected=true;
   }catch(e){}
  }
@@ -134,8 +166,43 @@ function visible(el){
  return rect.width>0&&rect.height>0;
 }
 
-/* Touch input uses the browser's native hit testing. Never move a tap to a
-   nearby button: adjacent event choices may spend HP/gold or consume a reward. */
+/* Apply a saved, user-controlled correction only in landscape. Resolve the
+   corrected point against the currently painted controls so Safari's stale
+   post-rotation hit map cannot activate an adjacent control. */
+function installLandscapeTouchCalibration(){
+ const d=doc();if(!d||d.__abyssTouchCalibrationInstalled)return;
+ d.__abyssTouchCalibrationInstalled=true;
+ let gesture=null,suppressTrustedClickUntil=0,dispatchingSyntheticClick=false;
+ const closestInteractive=el=>el?.closest?.(SELECTOR);
+ const scopeNow=()=>{const modals=[...d.querySelectorAll('.modal.on')];return modals[modals.length-1]||d.querySelector('.screen.on')||d.body};
+ const paintedTarget=(scope,x,y)=>{
+  const hits=[...scope.querySelectorAll(SELECTOR)].filter(el=>visible(el)&&!el.disabled).map(el=>({el,r:el.getBoundingClientRect()})).filter(({r})=>x>=r.left&&x<=r.right&&y>=r.top&&y<=r.bottom);
+  hits.sort((a,b)=>a.r.width*a.r.height-b.r.width*b.r.height);return hits[0]?.el||null;
+ };
+ d.addEventListener('touchstart',e=>{
+  if(!d.documentElement.classList.contains('tv-mode')||e.touches.length!==1||(!touchCalibration.x&&!touchCalibration.y)||d.getElementById('tapStartGate')||e.target.closest?.('#tapStartGate')){gesture=null;return}
+  const t=e.touches[0];gesture={id:t.identifier,x:t.clientX,y:t.clientY,moved:false};
+ },{capture:true,passive:true});
+ d.addEventListener('touchmove',e=>{
+  if(!gesture)return;const t=Array.from(e.touches).find(v=>v.identifier===gesture.id);
+  if(!t||e.touches.length!==1||Math.hypot(t.clientX-gesture.x,t.clientY-gesture.y)>12)gesture.moved=true;
+ },{capture:true,passive:true});
+ d.addEventListener('touchend',e=>{
+  const began=gesture;gesture=null;if(!began||began.moved||!d.documentElement.classList.contains('tv-mode'))return;
+  const t=Array.from(e.changedTouches||[]).find(v=>v.identifier===began.id);
+  if(!t||Math.hypot(t.clientX-began.x,t.clientY-began.y)>12)return;
+  const native=closestInteractive(e.target),intended=paintedTarget(scopeNow(),t.clientX+touchCalibration.x,t.clientY+touchCalibration.y);
+  if(!intended||intended===native)return;
+  e.preventDefault();e.stopImmediatePropagation();
+  suppressTrustedClickUntil=Date.now()+700;
+  requestAnimationFrame(()=>{if(!visible(intended)||intended.disabled)return;dispatchingSyntheticClick=true;try{intended.click()}finally{dispatchingSyntheticClick=false}});
+ },{capture:true,passive:false});
+ d.addEventListener('touchcancel',()=>{gesture=null},{capture:true,passive:true});
+ d.addEventListener('click',e=>{
+  if(dispatchingSyntheticClick||!e.isTrusted||Date.now()>suppressTrustedClickUntil)return;
+  e.preventDefault();e.stopImmediatePropagation();
+ },{capture:true});
+}
 
 
 /* Reject an imprecise native touch click; never forward it to another button.
@@ -174,7 +241,8 @@ function installLandscapeTapGuard(){
   if(!d.documentElement.classList.contains('tv-mode'))return;
   const button=e.target.closest?.(actionSelector);if(!button)return;
   const r=button.getBoundingClientRect();
-  const inside=touch.x>=r.left&&touch.x<=r.right&&touch.y>=r.top&&touch.y<=r.bottom;
+  const x=touch.x+touchCalibration.x,y=touch.y+touchCalibration.y;
+  const inside=x>=r.left&&x<=r.right&&y>=r.top&&y<=r.bottom;
   if(touch.moved||!inside||button.closest(scopeSelector)!==touch.modal){
    e.preventDefault();e.stopImmediatePropagation();
   }
@@ -395,6 +463,7 @@ function initializeResponsive(){
  landscapeLayout=matchMedia('(orientation:landscape)').matches||innerWidth>innerHeight;
  try{if(landscapeLayout)win().localStorage.setItem('abyssA2hsSeen','1')}catch(e){}
  injectLandscapeCss();
+ installLandscapeTouchCalibration();
  installLandscapeTapGuard();
  installMapProgressPositioning();
  installMapNodeLegend();
@@ -426,5 +495,5 @@ window.addEventListener('orientationchange',()=>setTimeout(handleOrientation,80)
 window.visualViewport?.addEventListener('resize',handleOrientation,{passive:true});
 window.visualViewport?.addEventListener('scroll',syncStageViewport,{passive:true});
 
-window.abyssResponsiveDebug={candidates,moveFocus,toggleFocusBand,doConfirm,doBack,doEndTurn,scrollActive,positionMapByProgress,ensureFocus,get focusEl(){return focusEl},get enabled(){return enabled},setEnabled(v){enabled=v;syncCtrlBtn();if(enabled)ensureFocus();else updateRing()}};
+window.abyssResponsiveDebug={candidates,moveFocus,toggleFocusBand,doConfirm,doBack,doEndTurn,scrollActive,positionMapByProgress,ensureFocus,get focusEl(){return focusEl},get enabled(){return enabled},get touchCalibration(){return{...touchCalibration}},setTouchCalibration:(x,y)=>setTouchCalibration(x,y),setEnabled(v){enabled=v;syncCtrlBtn();if(enabled)ensureFocus();else updateRing()}};
 })();

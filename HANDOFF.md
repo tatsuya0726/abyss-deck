@@ -33,7 +33,19 @@
 - `dist/boot-recovery.js` を追加。任意機能のJavaScriptが途中で失敗しても、タップで既存タイトル画面へ戻す
 - 起動安全装置はセーブ用localStorageを読み書き・削除しない
 - `dist/index.html` と `dist/game.html` の両方へ同じ安全装置を適用
-- 現在のキャッシュ番号: `boot-recovery.js?v=1`、`enhance.js?v=259`
+- 現在のキャッシュ番号: `boot-recovery.js?v=1`、`enhance.js?v=260`
+
+### 横画面タッチ位置の手動補正
+
+- タイトルの設定へ、横画面専用の「タッチ位置補正」を追加
+- 左右・上下を10pxずつ、最大±180pxまで調整可能。「中央に戻す」と反応確認ボタンも追加
+- 補正値は `abyssLandscapeTouchCalibrationV1` として端末のlocalStorageへ保存し、次回起動時から自動適用
+- 短いタップだけを補正後の座標で現在描画中の操作要素へ照合し、スクロールや縦画面には適用しない
+- 補正値が0ならブラウザ標準のタッチ処理だけを使用する
+- 起動時の `TAP START` は補正対象外とし、起動不能を再発させない
+- 補正で合成クリックを行った直後の互換クリックを抑止し、カードの二重選択を防止
+- イベント選択肢の誤操作防止判定も保存済み補正値を使用
+- 現在のキャッシュ番号: `responsive-landscape.css?v=19`、`responsive-shell.js?v=14`、`enhance.js?v=260`
 
 ### PC・横画面・コントローラー修正
 
