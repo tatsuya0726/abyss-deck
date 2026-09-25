@@ -76,7 +76,7 @@ function injectLandscapeCss(){
  const d=doc();if(!d||cssInjected)return;
  try{
   const link=d.createElement('link');
-  link.rel='stylesheet';link.href='responsive-landscape.css?v=15';
+  link.rel='stylesheet';link.href='responsive-landscape.css?v=17';
   d.head.appendChild(link);
   cssInjected=true;
  }catch(e){}
@@ -242,7 +242,13 @@ function revealFocus(el){
 }
 function scrollActive(amount){
  const d=doc();if(!d)return false;
- let target=scrollParent(focusEl);
+ let target=null,eventModal=d.getElementById('eventModal');
+ if(eventModal?.classList.contains('on')){
+  const focusedRegion=focusEl?.closest?.('#eventChoices,#eventText');
+  const eventTargets=[focusedRegion,d.getElementById('eventChoices'),d.getElementById('eventText')].filter(Boolean);
+  target=eventTargets.find(el=>el.scrollHeight>el.clientHeight+2||el.scrollWidth>el.clientWidth+2)||null;
+ }
+ if(!target)target=scrollParent(focusEl);
  if(!target){const modal=[...d.querySelectorAll('.modal.on')].pop();target=modal?.querySelector('.modal-shell-body,.panel')||d.querySelector('#map.on .path,#battle.on .hand,.screen.on')}
  if(!target)return false;
  const vertical=target.scrollHeight>target.clientHeight+2;
@@ -307,11 +313,22 @@ function doBack(){
  const modals=[...d.querySelectorAll('.modal.on')];
  if(modals.length)modals[modals.length-1].dispatchEvent(new MouseEvent('click',{bubbles:true,cancelable:true,view:win()}));
 }
+let returnToFirstCardAfterTurn=false;
+function settleTurnFocus(){
+ if(!returnToFirstCardAfterTurn)return false;
+ const d=doc(),battle=d?.getElementById('battle'),end=d?.getElementById('endTurn');
+ if(!battle?.classList.contains('on')){returnToFirstCardAfterTurn=false;return false}
+ if(end?.disabled){focusEl=null;ring.style.display='none';return true}
+ const first=d.querySelector('#battle.on #hand .card[data-i]');
+ if(!first)return true;
+ returnToFirstCardAfterTurn=false;focusEl=first;bandMemory.bottom=first;revealFocus(first);updateRing();return true;
+}
 function doEndTurn(){
  if(!enabled)return;
  const d=doc(),battle=d?.getElementById('battle'),end=d?.getElementById('endTurn');
  if(!battle?.classList.contains('on')||!end||end.disabled||d.querySelector('.modal.on'))return;
- end.click();
+ focusEl=end;bandMemory.bottom=end;revealFocus(end);updateRing();returnToFirstCardAfterTurn=true;
+ requestAnimationFrame(()=>{if(!end.disabled)end.click()});
 }
 
 window.addEventListener('keydown',e=>{
@@ -356,7 +373,7 @@ function pollGamepad(frameTime=0){
  }
  if(frameTime-lastLayoutSync>=120){
   lastLayoutSync=frameTime;
-  ensureFocus();
+  if(!settleTurnFocus())ensureFocus();
   updateRing();
   syncIntentPosition();
  }
