@@ -115,6 +115,18 @@ assert(landscapeCss.includes('top:214px!important;min-height:30px!important;heig
  'desktop debug actions do not fit beneath the left utility group');
 assert(landscapeCss.includes('height:min(31vh,220px)!important;--enemy-scale:1.28!important;margin-top:24px!important'),
  'desktop characters were not enlarged within the protected arena');
+assert(landscapeCss.includes('html.tv-mode #shopGrid .unified-market-item.sale-card,'),
+ 'shop sale and synergy frames are not explicitly removed');
+assert(landscapeCss.includes('left:calc(var(--abyss-safe-left,0px) + 106px)!important'),
+ 'debug actions are not aligned to the camera-safe utility columns');
+assert(landscapeCss.includes('justify-content:space-between!important;gap:0!important;padding-left:160px!important;padding-right:82px!important'),
+ 'landscape fighters are not separated into left and right regions');
+assert(landscapeCss.includes('left:50%!important;right:auto!important;top:50px!important'),
+ 'enemy forecast is not anchored in the upper centre gap');
+assert(shellJs.includes("intentEl.style.setProperty('transform','translate(-50%,-50%)','important')"),
+ 'dynamic enemy forecast positioning does not preserve horizontal centring');
+assert(landscapeCss.includes('height:min(33vh,232px)!important;--enemy-scale:1.4!important;margin-top:24px!important'),
+ 'desktop boss artwork does not use the larger protected size');
 assert(landscapeCss.includes('@media (orientation:landscape) and (pointer:fine) and (min-height:601px){'),
  'desktop landscape does not enlarge the shared phone composition');
 assert(shellJs.includes("root.style.setProperty('--abyss-phone-ui-scale',phoneUiScale.toFixed(4))"),
@@ -172,8 +184,8 @@ async function verifyServer(){
   assert(response?.ok,`local server did not return index.html (${response?.status||'no response'})`);
   const html=await response.text();
   assert(html.includes('id="tapStartGate"'),'served page has no TAP START gate');
-  assert(html.includes('responsive-shell.js?v=25'),'served page has a stale responsive script version');
-  assert(html.includes('responsive-landscape.css?v=37'),'served page has a stale responsive stylesheet version');
+  assert(html.includes('responsive-shell.js?v=26'),'served page has a stale responsive script version');
+  assert(html.includes('responsive-landscape.css?v=38'),'served page has a stale responsive stylesheet version');
   assert(html.includes('enhance.js?v=265'),'served page has a stale audio script version');
  }finally{
   server.kill('SIGTERM');

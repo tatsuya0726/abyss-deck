@@ -2161,3 +2161,49 @@ html.tv-mode #tapStartGate{width:auto!important;height:auto!important}
     height:min(31vh,220px)!important;--enemy-scale:1.28!important;margin-top:24px!important
   }
 }
+
+/* Shop labels already communicate discounts and deck synergy. Keep the
+   sticker tags and remove the duplicate full-item colour frames. */
+html.tv-mode #shopGrid .unified-market-item.sale-card,
+html.tv-mode #shopGrid .unified-market-item.synergy-card{
+  border:0!important;background:transparent!important;box-shadow:none!important
+}
+
+/* Fighter composition: controls stay in their two-column rail, fighters take
+   the left/right thirds, and the forecast owns the open upper centre. */
+@media (orientation:landscape){
+  html.tv-mode body:has(#battle.on) #debugKillNow{left:calc(var(--abyss-safe-left,0px) + 4px)!important}
+  html.tv-mode body:has(#battle.on) #debugLauncher{left:calc(var(--abyss-safe-left,0px) + 80px)!important}
+  html.tv-mode #battle .arena{
+    justify-content:space-between!important;gap:0!important;padding-left:160px!important;padding-right:82px!important
+  }
+  html.tv-mode #battle .arena>.unit:first-child>.enemyName,
+  html.tv-mode #battle .arena>.enemy-unit>.enemyName{
+    position:absolute!important;top:2px!important;left:0!important;right:0!important;
+    width:100%!important;text-align:center!important
+  }
+  html.tv-mode #battle .enemy-unit>.intent,
+  html.tv-mode #battle #intent{
+    left:50%!important;right:auto!important;top:50px!important;
+    width:min(136px,25vw)!important;transform:translate(-50%,-50%)!important
+  }
+  html.tv-mode #battle #playerSprite{--player-scale:.95!important}
+  html.tv-mode #battle .creature{height:min(35vh,195px)!important}
+  html.tv-mode #battle #enemySprite.boss-enemy{
+    height:min(32vh,172px)!important;--enemy-scale:1.34!important;margin-top:21px!important
+  }
+}
+
+@media (orientation:landscape) and (pointer:fine) and (min-height:601px){
+  html.tv-mode body:has(#battle.on) #debugKillNow{left:calc(var(--abyss-safe-left,0px) + 8px)!important}
+  html.tv-mode body:has(#battle.on) #debugLauncher{left:calc(var(--abyss-safe-left,0px) + 106px)!important}
+  html.tv-mode #battle .arena{padding-left:260px!important;padding-right:118px!important}
+  html.tv-mode #battle .arena>.unit:first-child>.enemyName,
+  html.tv-mode #battle .arena>.enemy-unit>.enemyName{top:4px!important;font-size:13px!important}
+  html.tv-mode #battle .enemy-unit>.intent,
+  html.tv-mode #battle #intent{top:58px!important;width:220px!important;font-size:12px!important}
+  html.tv-mode #battle .creature{height:min(36vh,250px)!important}
+  html.tv-mode #battle #enemySprite.boss-enemy{
+    height:min(33vh,232px)!important;--enemy-scale:1.4!important;margin-top:24px!important
+  }
+}

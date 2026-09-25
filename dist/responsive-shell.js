@@ -117,7 +117,7 @@ function syncIntentPosition(){
  const maxCenter=Math.max(minCenter,Math.min(battleRect.bottom,handTop)-8-intentHeight/2);
  const center=Math.max(minCenter,Math.min(maxCenter,r.top+r.height/2));
  intentEl.style.setProperty('top',(center-containerTop)+'px','important');
- intentEl.style.setProperty('transform','translateY(-50%)','important');
+ intentEl.style.setProperty('transform','translate(-50%,-50%)','important');
 }
 
 function visible(el){
