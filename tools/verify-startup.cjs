@@ -50,11 +50,15 @@ assert(responsive.includes("reset.dataset.confirmReset==='1'"),
  'touch calibration reset can be triggered accidentally with one tap');
 assert(responsive.includes('showTouchCalibrationTrace(t.clientX,t.clientY,intended'),
  'touch calibration does not visualize the corrected target');
+assert(responsive.includes('bottomCloseTarget(scope,t.clientY)'),
+ 'landscape close buttons still depend on Safari hit-test rectangles');
 const landscapeCss=fs.readFileSync(path.join(dist,'responsive-landscape.css'),'utf8');
 assert(landscapeCss.includes('-webkit-backdrop-filter:none!important'),
  'Safari landscape modals still create a backdrop compositor layer');
 assert(landscapeCss.includes('-webkit-overflow-scrolling:auto!important'),
  'Safari landscape modals still create a momentum-scrolling hit-test layer');
+assert(landscapeCss.includes('html.tv-mode .modal.on>.panel.modal-shell'),
+ 'landscape modal shells are not fixed directly to the viewport');
 assert(landscapeCss.includes('.touch-calibration-marker.corrected'),
  'touch calibration markers are missing');
 
@@ -100,8 +104,8 @@ async function verifyServer(){
   assert(response?.ok,`local server did not return index.html (${response?.status||'no response'})`);
   const html=await response.text();
   assert(html.includes('id="tapStartGate"'),'served page has no TAP START gate');
-  assert(html.includes('responsive-shell.js?v=19'),'served page has a stale responsive script version');
-  assert(html.includes('responsive-landscape.css?v=21'),'served page has a stale responsive stylesheet version');
+  assert(html.includes('responsive-shell.js?v=20'),'served page has a stale responsive script version');
+  assert(html.includes('responsive-landscape.css?v=22'),'served page has a stale responsive stylesheet version');
  }finally{
   server.kill('SIGTERM');
  }
