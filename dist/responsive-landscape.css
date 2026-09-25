@@ -1674,3 +1674,101 @@ html.tv-mode .app{width:auto!important;height:auto!important;transform:none!impo
   html.tv-mode body:has(#rewardModal.on) #debugLauncher,
   html.tv-mode body:has(#firstBlessingModal.on) #debugLauncher{display:none!important}
 }
+
+/* Safe-area insets and a retained width:100% over-constrain an absolutely
+   positioned modal. Let left/right define its real width so neither physical
+   phone orientation can clip the far edge. */
+html.tv-mode .modal,
+html.tv-mode #tapStartGate{width:auto!important;height:auto!important}
+
+@media (orientation:landscape) and (pointer:coarse) and (max-height:600px){
+  /* Battle information hierarchy: shorter bars, smaller secondary copy and
+     the forecast directly beneath the enemy label at the camera-safe edge. */
+  html.tv-mode #battle .unit{width:35%!important}
+  html.tv-mode #battle .arena{justify-content:space-between!important;padding-inline:4vw!important}
+  html.tv-mode #battle .arena>.unit:first-child #playerSprite{
+    position:relative!important;left:-2.5vw!important
+  }
+  html.tv-mode #battle .hpbar{width:74%!important;height:12px!important;margin-inline:auto!important}
+  html.tv-mode #battle .arena>.unit:first-child .hpbar{margin-left:0!important}
+  html.tv-mode #battle .arena>.enemy-unit .hpbar{margin-right:0!important}
+  html.tv-mode #battle .hptext{font-size:9px!important;line-height:10px!important}
+  html.tv-mode #battle .enemyName{font-size:9px!important;line-height:1.12!important}
+  html.tv-mode #battle .arena>.unit:first-child>.enemyName,
+  html.tv-mode #battle .arena>.enemy-unit>.enemyName{width:31vw!important}
+  html.tv-mode #battle .enemy-unit>.intent,
+  html.tv-mode #battle #intent{
+    left:auto!important;right:8px!important;
+    width:min(126px,25vw)!important;max-height:112px!important;
+    padding:5px 7px!important;font-size:8.5px!important;line-height:1.22!important;
+    transform:translateY(-50%)!important
+  }
+  html.tv-mode #battle .enemy-unit>.intent span,
+  html.tv-mode #battle #intent span{line-height:1.22!important}
+  html.tv-mode #battle .statusRow{
+    width:74%!important;min-height:14px!important;max-height:30px!important;
+    margin:2px auto 0!important;padding:1px!important;gap:2px!important
+  }
+  html.tv-mode #battle .arena>.unit:first-child .statusRow{margin-left:0!important}
+  html.tv-mode #battle .arena>.enemy-unit .statusRow{margin-right:0!important}
+  html.tv-mode #battle .state-pill{padding:1px 3px!important;font-size:7px!important;line-height:1.15!important}
+  html.tv-mode #battle .state-none{font-size:7px!important;line-height:1.15!important}
+  html.tv-mode #battle .battlelog{font-size:8px!important;padding:3px 8px!important}
+
+  /* A single acquired card fits without scrolling: the card stays readable
+     while the decorative icon and title use only one compact header row. */
+  html.tv-mode #cardRevealModal{align-items:stretch!important;padding:6px 8px!important}
+  html.tv-mode #cardRevealModal>.panel{
+    display:flex!important;flex-direction:column!important;align-items:center!important;
+    width:min(100%,540px)!important;height:calc(var(--abyss-vv-height,100dvh) - 12px)!important;
+    max-width:540px!important;max-height:none!important;margin:auto!important;
+    padding:7px 10px!important;overflow:hidden!important
+  }
+  html.tv-mode #cardRevealModal .bigicon{
+    flex:0 0 auto!important;height:auto!important;min-height:0!important;
+    margin:0!important;font-size:22px!important;line-height:1!important
+  }
+  html.tv-mode #cardRevealModal h2{
+    flex:0 0 auto!important;margin:1px 0 2px!important;font-size:18px!important;line-height:1!important
+  }
+  html.tv-mode #cardRevealBody{
+    display:grid!important;place-items:center!important;flex:1 1 auto!important;
+    width:100%!important;min-height:0!important;overflow:hidden!important
+  }
+  html.tv-mode #cardRevealModal .unified-reveal-card{margin:1px auto!important}
+  html.tv-mode #cardRevealModal .unified-card{
+    width:138px!important;height:200px!important
+  }
+  html.tv-mode #cardRevealClose{
+    flex:0 0 34px!important;min-height:34px!important;width:min(100%,360px)!important;
+    margin:2px 0 0!important;padding:4px 8px!important;font-size:10px!important
+  }
+
+  /* Reward chrome stays compact so the three selectable cards can regain
+     their normal aspect ratio. No horizontal or vertical scrolling. */
+  html.tv-mode #rewardModal>.reward-panel{
+    width:min(100%,760px)!important;max-width:760px!important;margin:auto!important;
+    padding:7px 10px!important
+  }
+  html.tv-mode .reward-panel>small{font-size:6px!important}
+  html.tv-mode .reward-panel>h2{margin:1px 0 2px!important;font-size:17px!important}
+  html.tv-mode #rewardPick{overflow:hidden!important;text-align:center!important}
+  html.tv-mode #rewardPick>p{margin:1px 0 3px!important;font-size:8px!important;line-height:1.15!important}
+  html.tv-mode .reward-panel .rewards{
+    display:flex!important;flex-wrap:nowrap!important;justify-content:center!important;align-items:center!important;
+    width:100%!important;height:204px!important;max-width:100%!important;gap:8px!important;
+    margin:1px auto 3px!important;padding:0!important;overflow:visible!important
+  }
+  html.tv-mode .reward-panel .rewardCard{
+    flex:0 0 138px!important;width:138px!important;height:200px!important;
+    min-width:138px!important;max-width:138px!important
+  }
+  html.tv-mode .reward-panel .rewardCard .art{font-size:38px!important}
+  html.tv-mode .reward-panel .rewardCard .cname{font-size:10px!important;padding:3px 2px!important}
+  html.tv-mode .reward-panel .rewardCard .ctext{font-size:8.5px!important;line-height:1.28!important}
+  html.tv-mode .reward-panel .rewardCard .cost{width:27px!important;height:27px!important;font-size:12px!important}
+  html.tv-mode .reward-panel :is(#skipReward,#rewardBack){
+    display:inline-block!important;width:auto!important;min-width:132px!important;
+    min-height:32px!important;margin:2px 3px 0!important;padding:4px 8px!important;font-size:9px!important
+  }
+}

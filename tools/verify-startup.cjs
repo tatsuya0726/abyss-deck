@@ -39,6 +39,7 @@ assert(!responsive.includes('abyssLandscapeTouchCalibration'),
 assert(!responsive.includes('dispatchingSyntheticClick'),
  'touches can still be resent as synthetic clicks');
 const landscapeCss=fs.readFileSync(path.join(dist,'responsive-landscape.css'),'utf8');
+const enhanceJs=fs.readFileSync(path.join(dist,'enhance.js'),'utf8');
 assert(landscapeCss.includes('width:var(--abyss-vv-width,100%)!important'),
  'landscape root does not use the measured visual viewport width');
 assert(landscapeCss.includes('height:var(--abyss-vv-height,100%)!important'),
@@ -65,6 +66,16 @@ assert(landscapeCss.includes('html.tv-mode #firstBlessingModal>.panel{'),
  'first blessing has no short-landscape layout');
 assert(landscapeCss.includes('html.tv-mode #rewardModal>.reward-panel{'),
  'combat rewards have no short-landscape layout');
+assert(landscapeCss.includes('html.tv-mode .modal,\nhtml.tv-mode #tapStartGate{width:auto!important;height:auto!important}'),
+ 'safe-area landscape modals still retain a conflicting full viewport width');
+assert(landscapeCss.includes('html.tv-mode #cardRevealModal>.panel{'),
+ 'card reveal has no non-scrolling short-landscape layout');
+assert(landscapeCss.includes('html.tv-mode .reward-panel .rewardCard{'),
+ 'reward cards have no readable short-landscape dimensions');
+assert(enhanceJs.includes('window.playAbyssBattleMusic=playBattleMusic'),
+ 'battle music has no immediate screen-entry trigger');
+assert(index.includes("if(id==='battle'&&G?.enemy)window.playAbyssBattleMusic?.(G.enemy)"),
+ 'battle screen still waits for DOM observation before changing music');
 assert(!landscapeCss.includes('.touch-auto-catcher'),
  'obsolete touch interception overlay is still present');
 
@@ -110,8 +121,9 @@ async function verifyServer(){
   assert(response?.ok,`local server did not return index.html (${response?.status||'no response'})`);
   const html=await response.text();
   assert(html.includes('id="tapStartGate"'),'served page has no TAP START gate');
-  assert(html.includes('responsive-shell.js?v=23'),'served page has a stale responsive script version');
-  assert(html.includes('responsive-landscape.css?v=28'),'served page has a stale responsive stylesheet version');
+  assert(html.includes('responsive-shell.js?v=24'),'served page has a stale responsive script version');
+  assert(html.includes('responsive-landscape.css?v=29'),'served page has a stale responsive stylesheet version');
+  assert(html.includes('enhance.js?v=264'),'served page has a stale audio script version');
  }finally{
   server.kill('SIGTERM');
  }
