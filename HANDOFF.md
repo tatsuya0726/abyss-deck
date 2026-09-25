@@ -26,6 +26,13 @@
 
 ## 直近で完了した変更
 
+### タップ位置の可視化とSafariの判定レイヤー修正
+
+- タッチ補正画面で、指の位置を黄色、補正後の判定位置を水色の光で表示
+- 実際に反応対象となったボタンも水色に発光し、判定名を画面内に表示
+- Safari用の `transform: translateZ(0)` が横画面回転後も古いモーダル判定面を残す可能性があるため、横画面のモーダルはネイティブレイヤーへ戻した
+- 現在のキャッシュ番号: `responsive-landscape.css?v=20`、`responsive-shell.js?v=19`、`enhance.js?v=261`
+
 ### タッチ補正を画面回転・再起動後も保持
 
 - 補正値をlocalStorageの本体・予備、sessionStorage、Cookieへ冗長保存し、iPhone Safariがページを破棄・復元した場合にも保持

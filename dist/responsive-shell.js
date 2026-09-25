@@ -77,6 +77,21 @@ function setTouchCalibration(x,y){
  persistTouchCalibration();
  syncTouchCalibrationUi();
 }
+let touchTraceTimer=0,touchTraceTarget=null;
+function showTouchCalibrationTrace(x,y,target){
+ const d=doc(),modal=d?.getElementById('touchCalibrationModal');if(!modal?.classList.contains('on'))return;
+ const raw=modal.querySelector('[data-touch-trace="raw"]'),corrected=modal.querySelector('[data-touch-trace="corrected"]');
+ if(!raw||!corrected)return;
+ raw.style.left=x+'px';raw.style.top=y+'px';
+ corrected.style.left=(x+touchCalibration.x)+'px';corrected.style.top=(y+touchCalibration.y)+'px';
+ raw.classList.remove('show');corrected.classList.remove('show');void raw.offsetWidth;raw.classList.add('show');corrected.classList.add('show');
+ if(touchTraceTarget)touchTraceTarget.classList.remove('touch-calibration-hit');
+ touchTraceTarget=target?.closest?.('button');
+ if(touchTraceTarget)touchTraceTarget.classList.add('touch-calibration-hit');
+ const out=modal.querySelector('#touchCalibrationResult');
+ if(out){const labelNode=touchTraceTarget?.cloneNode?.(true);labelNode?.querySelectorAll?.('rt').forEach(rt=>rt.remove());const label=labelNode?.textContent?.trim().replace(/\s+/g,' ')||'ボタン以外';out.textContent=`判定：${label}`;out.classList.add('ok')}
+ clearTimeout(touchTraceTimer);touchTraceTimer=setTimeout(()=>{raw.classList.remove('show');corrected.classList.remove('show');touchTraceTarget?.classList.remove('touch-calibration-hit');touchTraceTarget=null},1300);
+}
 let enabled=true;
 try{enabled=localStorage.getItem(CTRL_KEY)!=='0'}catch(e){}
 function syncControllerUi(){
@@ -101,7 +116,7 @@ function openTouchCalibration(){
  let modal=d.getElementById('touchCalibrationModal');
  if(!modal){
   modal=d.createElement('div');modal.className='modal touch-calibration-modal';modal.id='touchCalibrationModal';
-  modal.innerHTML='<div class="panel title-hub-panel touch-calibration-panel modal-shell"><header class="modal-shell-head"><div><small>LANDSCAPE TOUCH</small><h2>🎯 タッチ位置補正</h2></div></header><div class="modal-shell-body touch-calibration-body"><p>横画面で、押した場所と反応する場所がずれる端末向けの調整です。押した場所より上のボタンが反応するときは「下へ」を押してください。</p><div class="touch-calibration-readout"><span>左右 <strong id="touchCalibrationX">0px</strong></span><span>上下 <strong id="touchCalibrationY">0px</strong></span></div><div class="touch-calibration-controls"><button type="button" data-touch-adjust="0,-10">↑ 上へ</button><button type="button" data-touch-adjust="-10,0">← 左へ</button><button type="button" class="touch-calibration-reset" data-touch-reset>中央に戻す</button><button type="button" data-touch-adjust="10,0">右へ →</button><button type="button" data-touch-adjust="0,10">下へ ↓</button></div><div class="touch-calibration-test"><span>反応確認</span><button type="button" id="touchCalibrationTest">ここをタップ</button><output id="touchCalibrationResult">未確認</output></div></div><footer class="modal-shell-foot"><button type="button" class="btn" data-touch-calibration-close>設定へ戻る</button></footer></div>';
+  modal.innerHTML='<div class="panel title-hub-panel touch-calibration-panel modal-shell"><header class="modal-shell-head"><div><small>LANDSCAPE TOUCH</small><h2>🎯 タッチ位置補正</h2></div></header><div class="modal-shell-body touch-calibration-body"><p>横画面で、押した場所と反応する場所がずれる端末向けの調整です。押した場所より上のボタンが反応するときは「下へ」を押してください。</p><div class="touch-calibration-readout"><span>左右 <strong id="touchCalibrationX">0px</strong></span><span>上下 <strong id="touchCalibrationY">0px</strong></span></div><div class="touch-calibration-controls"><button type="button" data-touch-adjust="0,-10">↑ 上へ</button><button type="button" data-touch-adjust="-10,0">← 左へ</button><button type="button" class="touch-calibration-reset" data-touch-reset>中央に戻す</button><button type="button" data-touch-adjust="10,0">右へ →</button><button type="button" data-touch-adjust="0,10">下へ ↓</button></div><div class="touch-calibration-test"><span>反応確認</span><button type="button" id="touchCalibrationTest">ここをタップ</button><div class="touch-calibration-legend"><i></i>指の位置　<b></b>補正後</div><output id="touchCalibrationResult">未確認</output></div></div><footer class="modal-shell-foot"><button type="button" class="btn" data-touch-calibration-close>設定へ戻る</button></footer></div><i class="touch-calibration-marker raw" data-touch-trace="raw"></i><i class="touch-calibration-marker corrected" data-touch-trace="corrected"></i>';
   d.body.appendChild(modal);
   modal.querySelectorAll('[data-touch-adjust]').forEach(button=>button.addEventListener('click',()=>{const [dx,dy]=button.dataset.touchAdjust.split(',').map(Number);setTouchCalibration(touchCalibration.x+dx,touchCalibration.y+dy)}));
   const reset=modal.querySelector('[data-touch-reset]');let resetTimer=0;
@@ -213,7 +228,7 @@ function installLandscapeTouchCalibration(){
  };
  d.addEventListener('touchstart',e=>{
   if(!d.documentElement.classList.contains('tv-mode')||e.touches.length!==1||d.getElementById('tapStartGate')||e.target.closest?.('#tapStartGate')){gesture=null;return}
-  const t=e.touches[0];gesture={id:t.identifier,x:t.clientX,y:t.clientY,moved:false};
+  const t=e.touches[0];gesture={id:t.identifier,x:t.clientX,y:t.clientY,moved:false};showTouchCalibrationTrace(t.clientX,t.clientY,e.target);
  },{capture:true,passive:true});
  d.addEventListener('touchmove',e=>{
   if(!gesture)return;const t=Array.from(e.touches).find(v=>v.identifier===gesture.id);
@@ -226,6 +241,7 @@ function installLandscapeTouchCalibration(){
   const scope=scopeNow(),native=closestInteractive(e.target),raw=paintedTarget(scope,t.clientX,t.clientY),corrected=paintedTarget(scope,t.clientX+touchCalibration.x,t.clientY+touchCalibration.y);
   let intended=raw?.matches?.(RAW_PRIORITY_SELECTOR)?raw:(corrected||raw);
   if(intended?.matches?.(NEVER_SHIFT_SELECTOR)&&raw!==intended)intended=raw;
+  showTouchCalibrationTrace(t.clientX,t.clientY,intended||corrected||raw||native);
   if(!intended||intended===native)return;
   e.preventDefault();e.stopImmediatePropagation();
   suppressTrustedClickUntil=Date.now()+700;

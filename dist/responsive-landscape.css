@@ -3,6 +3,9 @@
    (index.html opened directly) is completely unaffected. */
 
 html.tv-mode, html.tv-mode body{width:100%;height:100%}
+/* Safari can retain the old hit-test surface for a transformed fixed modal
+   after rotating. Keep landscape modals in the document's native layer. */
+html.tv-mode .modal.on{transform:none!important}
 
 /* ---------- Header ---------- */
 /* Right padding on .hud reserves room for the ⚙設定 button, which lives in the
@@ -270,6 +273,16 @@ html.tv-mode .touch-calibration-test>span{color:#8fc8c7;font-size:clamp(11px,min
 html.tv-mode #touchCalibrationTest{min-height:54px;padding:8px;border:2px solid #68dcd2;border-radius:10px;background:linear-gradient(180deg,#174e54,#0a252c);color:#ecffff;font-weight:900;font-size:clamp(13px,min(1.35vw,2.8vh),18px)!important;touch-action:manipulation}
 html.tv-mode #touchCalibrationResult{color:#7f9da0;font-size:clamp(10px,min(.95vw,2.1vh),14px)!important}
 html.tv-mode #touchCalibrationResult.ok{color:#8dfff3;text-shadow:0 0 12px #48fff0}
+html.tv-mode .touch-calibration-legend{color:#8aa8aa;font-size:10px;font-weight:800;white-space:nowrap}
+html.tv-mode .touch-calibration-legend i,html.tv-mode .touch-calibration-legend b{display:inline-block;width:11px;height:11px;margin:0 4px -1px 0;border-radius:50%}
+html.tv-mode .touch-calibration-legend i{border:2px solid #ffd979;background:#ffd97955}
+html.tv-mode .touch-calibration-legend b{margin-left:8px;border:2px solid #69fff2;background:#69fff255}
+html.tv-mode .touch-calibration-marker{position:fixed;z-index:99998;display:block;width:30px;height:30px;border-radius:50%;pointer-events:none;opacity:0;transform:translate(-50%,-50%);transition:opacity .12s ease}
+html.tv-mode .touch-calibration-marker.raw{border:3px solid #ffd979;background:#ffd97933;box-shadow:0 0 0 5px #ffd97920,0 0 18px #ffd979}
+html.tv-mode .touch-calibration-marker.corrected{width:20px;height:20px;border:3px solid #69fff2;background:#69fff244;box-shadow:0 0 0 5px #69fff220,0 0 18px #69fff2}
+html.tv-mode .touch-calibration-marker.show{opacity:1;animation:touchCalibrationPulse .65s ease-out 2}
+html.tv-mode .touch-calibration-hit{position:relative;z-index:1;border-color:#7affef!important;box-shadow:0 0 0 4px #63f5e93d,0 0 24px #63f5e9!important;filter:brightness(1.3)!important}
+@keyframes touchCalibrationPulse{50%{transform:translate(-50%,-50%) scale(1.35)}}
 @media (orientation:landscape) and (max-height:520px){
   html.tv-mode .touch-calibration-panel>.modal-shell-head{padding:7px 13px!important}
   html.tv-mode .touch-calibration-panel>.modal-shell-head h2{font-size:clamp(18px,4.8vh,25px)!important}
