@@ -113,6 +113,7 @@ html.tv-mode .card{flex-shrink:0!important;width:clamp(136px,12vw,200px)!importa
 @media(hover:hover) and (pointer:fine){
   html.tv-mode .card:hover{transform:translateY(-8px) scale(1.02)!important}
 }
+
 html.tv-mode .card:nth-child(n+6){display:flex!important}
 html.tv-mode .art{font-size:clamp(50px,6.8vw,84px)!important}
 html.tv-mode .cname{font-size:12px!important;padding:6px 3px 3px!important;white-space:normal!important;line-height:1.2!important}
@@ -1770,5 +1771,83 @@ html.tv-mode #tapStartGate{width:auto!important;height:auto!important}
   html.tv-mode .reward-panel :is(#skipReward,#rewardBack){
     display:inline-block!important;width:auto!important;min-width:132px!important;
     min-height:32px!important;margin:2px 3px 0!important;padding:4px 8px!important;font-size:9px!important
+  }
+}
+
+@media (orientation:landscape) and (pointer:coarse) and (max-height:600px){
+  /* Keep the complete shop inside the camera-safe modal. Every flex/grid
+     child may shrink, and the card market uses four predictable columns. */
+  html.tv-mode #shopModal,
+  html.tv-mode #shopModal>.shop-panel,
+  html.tv-mode #shopModal .shop-head,
+  html.tv-mode #shopModal .shop-resources,
+  html.tv-mode #shopModal .shop-tabs,
+  html.tv-mode #shopGrid,
+  html.tv-mode #shopGrid .shop-stock-section,
+  html.tv-mode #shopGrid .shop-market{
+    box-sizing:border-box!important;min-width:0!important;max-width:100%!important
+  }
+  html.tv-mode #shopModal>.shop-panel{width:100%!important}
+  html.tv-mode #shopModal .shop-head>*{min-width:0!important}
+  html.tv-mode #shopModal .shop-resources{flex:0 1 auto!important}
+  html.tv-mode #shopModal :is(.shop-wallet,.shop-deck-view){min-width:0!important;white-space:nowrap!important}
+  html.tv-mode #shopModal .shop-tabs{
+    display:grid!important;grid-template-columns:repeat(4,minmax(0,1fr))!important;width:100%!important
+  }
+  html.tv-mode #shopModal .shop-tabs button{min-width:0!important;width:100%!important}
+  html.tv-mode #shopGrid .unified-shop-market{
+    display:grid!important;grid-template-columns:repeat(4,minmax(0,1fr))!important;
+    justify-items:center!important;align-items:start!important;gap:5px!important;width:100%!important
+  }
+  html.tv-mode #shopGrid .unified-market-item{
+    box-sizing:border-box!important;width:100%!important;min-width:0!important;padding:2px!important
+  }
+  html.tv-mode #shopGrid .unified-market-item>.unified-card{
+    width:min(112px,100%)!important;height:164px!important
+  }
+
+  /* Preserve the forecast at the right edge while bringing both fighters
+     toward the centre. The enemy label ends before the forecast begins. */
+  html.tv-mode #battle .arena{
+    justify-content:center!important;gap:clamp(32px,7vw,70px)!important;padding-inline:3vw!important
+  }
+  html.tv-mode #battle .arena>.unit:first-child #playerSprite{left:0!important}
+  html.tv-mode #battle .arena>.unit:first-child .hpbar,
+  html.tv-mode #battle .arena>.enemy-unit .hpbar,
+  html.tv-mode #battle .arena>.unit:first-child .statusRow,
+  html.tv-mode #battle .arena>.enemy-unit .statusRow{margin-left:auto!important;margin-right:auto!important}
+  html.tv-mode #battle .arena>.unit:first-child>.enemyName{
+    left:16vw!important;right:auto!important;width:28vw!important;text-align:center!important
+  }
+  html.tv-mode #battle .arena>.enemy-unit>.enemyName{
+    left:auto!important;right:calc(min(126px,25vw) + 20px)!important;
+    width:25vw!important;text-align:right!important
+  }
+
+  /* Reward choices are actions, not full-width banners. Lay them out as a
+     centred, auto-fitting row and keep the continue action below them. */
+  html.tv-mode #rewardHome:not([hidden]){
+    display:grid!important;grid-template-columns:repeat(auto-fit,minmax(150px,1fr))!important;
+    align-content:start!important;gap:7px!important;width:min(100%,640px)!important;
+    margin:3px auto 0!important;padding:0!important;overflow:hidden!important
+  }
+  html.tv-mode #rewardHome :is(.reward-gold,.reward-row){
+    box-sizing:border-box!important;display:grid!important;
+    grid-template-columns:30px minmax(0,1fr)!important;grid-template-rows:auto auto auto!important;
+    align-content:center!important;gap:1px 7px!important;width:100%!important;min-width:0!important;
+    min-height:76px!important;margin:0!important;padding:7px 9px!important;text-align:left!important
+  }
+  html.tv-mode #rewardHome :is(.reward-gold,.reward-row)>i{
+    grid-column:1!important;grid-row:1/4!important;align-self:center!important;font-size:22px!important
+  }
+  html.tv-mode #rewardHome :is(.reward-gold,.reward-row)>span,
+  html.tv-mode #rewardHome .reward-gold>strong,
+  html.tv-mode #rewardHome :is(.reward-gold,.reward-row)>em{
+    grid-column:2!important;min-width:0!important;text-align:left!important
+  }
+  html.tv-mode #rewardHome .reward-gold>strong{grid-row:2!important;font-size:17px!important}
+  html.tv-mode #rewardHome :is(.reward-gold,.reward-row)>em{grid-row:3!important}
+  html.tv-mode #rewardHome #rewardContinue{
+    grid-column:1/-1!important;width:min(100%,420px)!important;justify-self:center!important;margin-top:1px!important
   }
 }

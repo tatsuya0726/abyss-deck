@@ -72,6 +72,12 @@ assert(landscapeCss.includes('html.tv-mode #cardRevealModal>.panel{'),
  'card reveal has no non-scrolling short-landscape layout');
 assert(landscapeCss.includes('html.tv-mode .reward-panel .rewardCard{'),
  'reward cards have no readable short-landscape dimensions');
+assert(landscapeCss.includes('grid-template-columns:repeat(4,minmax(0,1fr))!important'),
+ 'short-landscape shop does not keep four products within the safe width');
+assert(landscapeCss.includes('html.tv-mode #rewardHome:not([hidden]){'),
+ 'reward actions are still rendered as full-width banners');
+assert(landscapeCss.includes('right:calc(min(126px,25vw) + 20px)!important'),
+ 'enemy name is not separated from the fixed forecast panel');
 assert(enhanceJs.includes('window.playAbyssBattleMusic=playBattleMusic'),
  'battle music has no immediate screen-entry trigger');
 assert(index.includes("if(id==='battle'&&G?.enemy)window.playAbyssBattleMusic?.(G.enemy)"),
@@ -122,7 +128,7 @@ async function verifyServer(){
   const html=await response.text();
   assert(html.includes('id="tapStartGate"'),'served page has no TAP START gate');
   assert(html.includes('responsive-shell.js?v=24'),'served page has a stale responsive script version');
-  assert(html.includes('responsive-landscape.css?v=29'),'served page has a stale responsive stylesheet version');
+  assert(html.includes('responsive-landscape.css?v=30'),'served page has a stale responsive stylesheet version');
   assert(html.includes('enhance.js?v=264'),'served page has a stale audio script version');
  }finally{
   server.kill('SIGTERM');
