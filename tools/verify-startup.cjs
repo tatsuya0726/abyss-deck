@@ -52,14 +52,14 @@ assert(landscapeCss.includes('width:var(--abyss-vv-width,100%)!important'),
  'landscape root does not use the measured visual viewport width');
 assert(landscapeCss.includes('height:var(--abyss-vv-height,100%)!important'),
  'landscape root does not use the measured visual viewport height');
-assert(index.includes('responsive-desktop.css?v=2'),
+assert(index.includes('responsive-desktop.css?v=3'),
  'PC layout stylesheet is not loaded after the landscape layout');
 assert(desktopCss.trim().startsWith('/* PC landscape layout.')&&desktopCss.includes('@media (orientation:landscape) and (hover:hover) and (pointer:fine) and (min-width:1000px) and (min-height:600px)'),
  'PC layout is not isolated from touch and portrait layouts');
 for(const selector of ['#battle .arena','#battle .hand','#map>.path','#eventModal','#shopModal','.reward-panel','.boss-relic-choices']){
  assert(desktopCss.includes(selector),`PC layout does not cover ${selector}`);
 }
-assert(shellJs.includes("desktop.href='responsive-desktop.css?v=2'"),
+assert(shellJs.includes("desktop.href='responsive-desktop.css?v=3'"),
  'dynamically loaded game shells do not receive the PC layout');
 assert((desktopCss.match(/{/g)||[]).length===(desktopCss.match(/}/g)||[]).length,
  'PC stylesheet has unbalanced blocks');
@@ -195,6 +195,8 @@ assert(shellJs.includes("intentEl.style.setProperty('left',(centerX-containerLef
  'enemy forecast is not positioned from the measured enemy edge');
 assert(shellJs.includes('intentPlacementBetweenFighters(playerRect.right,enemyRect.left,preferredWidth,innerWidth)'),
  'touch layout does not place the forecast between both fighters');
+assert(shellJs.includes('intentPlacementBeforeEnemy(playerRect.right,enemyRect.left,preferredWidth,innerWidth)'),
+ 'PC layout does not place the forecast beside the enemy');
 assert(landscapeCss.includes('align-self:center!important;aspect-ratio:1/1!important;height:auto!important'),
  'landscape event artwork is still cropped into a tall cell');
 assert(landscapeCss.includes('object-fit:contain!important;object-position:center!important'),
@@ -219,9 +221,11 @@ assert(refinementJs.includes('assets/events/${art}.webp?v=2'),
 const intentPositionSource=shellJs.split('\n').find(line=>line.startsWith('function intentCenterBeforeEnemy('));
 const visibleEnemySource=shellJs.split('\n').find(line=>line.startsWith('function visibleEnemyLeft('));
 const fighterGapSource=shellJs.match(/function intentPlacementBetweenFighters\([\s\S]*?\n\}/)?.[0];
+const enemySideSource=shellJs.match(/function intentPlacementBeforeEnemy\([\s\S]*?\n\}/)?.[0];
 assert(intentPositionSource,'enemy forecast gap calculator is missing');
 assert(visibleEnemySource,'enemy visible-edge calculator is missing');
 assert(fighterGapSource,'touch fighter-gap calculator is missing');
+assert(enemySideSource,'PC enemy-side forecast calculator is missing');
 const intentPositionContext={};
 vm.runInNewContext(`${visibleEnemySource};${intentPositionSource};this.visibleEnemyLeft=visibleEnemyLeft;this.intentCenterBeforeEnemy=intentCenterBeforeEnemy`,intentPositionContext);
 assert(intentPositionContext.visibleEnemyLeft(532,569,844)===532,
@@ -241,6 +245,22 @@ for(const [playerRight,enemyLeft,preferredWidth,viewportWidth]of [[370,540,136,8
  assert(placed.center-placed.width/2>=playerRight+margin-.01,'touch forecast overlaps the player');
  assert(placed.center+placed.width/2<=enemyLeft-margin+.01,'touch forecast overlaps the enemy');
 }
+const enemySideContext={};
+vm.runInNewContext(`${enemySideSource};this.place=intentPlacementBeforeEnemy`,enemySideContext);
+for(const [playerRight,enemyLeft,preferredWidth,viewportWidth]of [[610,980,230,1366],[760,1150,260,1920],[450,760,210,1000]]){
+ const placed=enemySideContext.place(playerRight,enemyLeft,preferredWidth,viewportWidth),margin=Math.max(10,Math.min(16,viewportWidth*.01));
+ assert(placed.center+placed.width/2<=enemyLeft-margin+.01,'PC forecast overlaps the enemy');
+ assert(placed.center-placed.width/2>=playerRight+margin-.01,'PC forecast overlaps the player');
+ assert(Math.abs(placed.center+placed.width/2-(enemyLeft-margin))<.01,'PC forecast is not aligned to the enemy side');
+}
+assert(desktopCss.includes('--pc-card-width:clamp(168px,11.5vw,206px)')&&desktopCss.includes('--pc-card-height:clamp(210px,38vh,300px)'),
+ 'PC card size does not share one battle-based scale');
+assert(desktopCss.includes('.modal .card:not(.card-use-ghost)')&&desktopCss.includes('width:var(--pc-card-width)!important'),
+ 'PC modal cards do not use the battle card size');
+assert(desktopCss.includes('#cardRevealModal .unified-card')&&desktopCss.includes('#multiResultList .unified-card'),
+ 'legacy reveal/result card sizes still override the unified PC card size');
+assert(desktopCss.includes('#battle .intent{width:clamp(210px,14vw,260px)!important;min-width:0!important'),
+ 'PC forecast cannot shrink to remain between the fighters');
 assert(enhanceJs.includes('SFX_OUTPUT_GAIN=.5,BGM_OUTPUT_GAIN=.5,AUDIO_PREFS_VERSION=6'),
  'BGM and sound-effect master output gains are not both fifty percent');
 assert(enhanceJs.includes('DEFAULT_AUDIO_PREFS={version:AUDIO_PREFS_VERSION,bgm:1,sfx:1}'),
@@ -312,9 +332,9 @@ async function verifyServer(){
   assert(response?.ok,`local server did not return index.html (${response?.status||'no response'})`);
   const html=await response.text();
   assert(html.includes('id="tapStartGate"'),'served page has no TAP START gate');
-  assert(html.includes('responsive-shell.js?v=33'),'served page has a stale responsive script version');
+  assert(html.includes('responsive-shell.js?v=34'),'served page has a stale responsive script version');
   assert(html.includes('responsive-landscape.css?v=45'),'served page has a stale responsive stylesheet version');
-  assert(html.includes('responsive-desktop.css?v=2'),'served page has no PC layout stylesheet');
+  assert(html.includes('responsive-desktop.css?v=3'),'served page has no PC layout stylesheet');
   assert(html.includes('relics-events.js?v=155'),'served page has a stale relic event script version');
   assert(html.includes('strategy-polish.js?v=186'),'served page has a stale strategy event script version');
   assert(html.includes('economy.js?v=158'),'served page has a stale economy script version');

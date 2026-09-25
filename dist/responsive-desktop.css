@@ -1,6 +1,6 @@
 /* PC landscape layout. Kept separate so phone portrait/landscape remains unchanged. */
 @media (orientation:landscape) and (hover:hover) and (pointer:fine) and (min-width:1000px) and (min-height:600px){
-  html.tv-mode{--pc-rail:216px;--pc-actions:180px;--pc-gap:clamp(16px,1.7vw,30px);--pc-ui:clamp(14px,.86vw,18px);--pc-small:clamp(12px,.72vw,15px)}
+  html.tv-mode{--pc-rail:216px;--pc-actions:180px;--pc-gap:clamp(16px,1.7vw,30px);--pc-ui:clamp(14px,.86vw,18px);--pc-small:clamp(12px,.72vw,15px);--pc-card-width:clamp(168px,11.5vw,206px);--pc-card-height:clamp(210px,38vh,300px)}
   html.tv-mode body{font-size:var(--pc-ui)!important}
 
   /* Battle: fixed utility rail, roomy arena and stable card spacing. */
@@ -18,10 +18,10 @@
   html.tv-mode #battle .name{font-size:clamp(17px,1.05vw,22px)!important;line-height:1.15!important;margin-bottom:4px!important}
   html.tv-mode #battle .hpbar{width:82%!important;max-width:390px!important;height:20px!important;margin-inline:auto!important;font-size:14px!important}
   html.tv-mode #battle :is(#playerStatus,#enemyStatus){font-size:var(--pc-small)!important;line-height:1.35!important;min-height:22px!important}
-  html.tv-mode #battle .intent{width:clamp(210px,14vw,260px)!important;min-width:210px!important;max-width:260px!important;padding:11px 14px!important;font-size:15px!important;line-height:1.35!important}
+  html.tv-mode #battle .intent{width:clamp(210px,14vw,260px)!important;min-width:0!important;max-width:260px!important;padding:11px 14px!important;font-size:15px!important;line-height:1.35!important}
   html.tv-mode #battle .handArea{height:42%!important;min-height:0!important;padding:14px calc(var(--pc-actions) + 12px) 14px 22px!important;align-items:stretch!important;overflow:visible!important}
   html.tv-mode #battle .hand{width:100%!important;height:100%!important;display:flex!important;justify-content:center!important;align-items:flex-end!important;gap:14px!important;overflow-x:auto!important;overflow-y:hidden!important;padding:0 8px!important;scrollbar-width:thin}
-  html.tv-mode #battle .hand .card{flex:0 0 clamp(168px,11.5vw,206px)!important;width:clamp(168px,11.5vw,206px)!important;height:min(38vh,300px)!important;min-height:210px!important;margin:0!important;transform:none!important}
+  html.tv-mode #battle .hand .card{flex:0 0 var(--pc-card-width)!important;width:var(--pc-card-width)!important;height:var(--pc-card-height)!important;min-height:210px!important;margin:0!important;transform:none!important}
   html.tv-mode #battle .hand .card .art{height:43%!important;min-height:96px!important}
   html.tv-mode #battle .hand .card .cname{font-size:clamp(14px,.86vw,17px)!important;line-height:1.2!important}
   html.tv-mode #battle .hand .card .ctext{font-size:clamp(12px,.72vw,15px)!important;line-height:1.42!important}
@@ -67,7 +67,7 @@
   html.tv-mode #shopModal .shop-section{padding:12px 16px!important}
   html.tv-mode #shopModal .shop-section h3{font-size:24px!important}
   html.tv-mode #shopModal .shop-card-grid{display:grid!important;grid-template-columns:repeat(4,minmax(0,1fr))!important;gap:22px!important;justify-items:center!important}
-  html.tv-mode #shopModal .unified-card{width:clamp(170px,11.5vw,200px)!important;height:clamp(255px,17vw,292px)!important}
+  html.tv-mode #shopModal .unified-card{width:var(--pc-card-width)!important;height:var(--pc-card-height)!important}
   html.tv-mode #shopModal .unified-card .cname{font-size:14px!important}
   html.tv-mode #shopModal .unified-card .ctext{font-size:12px!important;line-height:1.35!important}
   html.tv-mode #shopModal .shop-exit{position:absolute!important;left:20px!important;right:20px!important;bottom:14px!important;width:auto!important;height:54px!important;font-size:17px!important;z-index:5!important}
@@ -84,7 +84,7 @@
   html.tv-mode .reward-panel #rewardContinue{width:min(440px,90%)!important;min-height:56px!important;margin:12px auto 0!important;font-size:16px!important}
   html.tv-mode .reward-panel:has(#rewardPick:not([hidden])){width:min(1040px,90vw)!important}
   html.tv-mode .reward-panel .rewards{display:flex!important;justify-content:center!important;gap:22px!important;overflow:auto!important;padding:10px!important}
-  html.tv-mode .reward-panel .rewardCard{flex:0 0 190px!important;width:190px!important;height:278px!important}
+  html.tv-mode .reward-panel .rewardCard{flex:0 0 var(--pc-card-width)!important;width:var(--pc-card-width)!important;height:var(--pc-card-height)!important}
   html.tv-mode .reward-panel .rewardCard .cname{font-size:14px!important}
   html.tv-mode .reward-panel .rewardCard .ctext{font-size:12px!important;line-height:1.35!important}
   html.tv-mode .reward-panel :is(#skipReward,#rewardBack){min-height:46px!important;padding:8px 16px!important;font-size:14px!important}
@@ -103,4 +103,49 @@
   html.tv-mode #firstBlessingModal h2{font-size:30px!important}
   html.tv-mode #firstBlessingModal .choice{min-height:82px!important;padding:12px 16px!important;font-size:14px!important}
   html.tv-mode #firstBlessingModal .choice>b{font-size:18px!important}
+
+  /* One card scale throughout the PC UI. Battle is the source of truth. */
+  html.tv-mode .modal .card:not(.card-use-ghost),html.tv-mode .madness-cast .card{box-sizing:border-box!important;flex:0 0 var(--pc-card-width)!important;width:var(--pc-card-width)!important;min-width:var(--pc-card-width)!important;max-width:var(--pc-card-width)!important;height:var(--pc-card-height)!important;min-height:var(--pc-card-height)!important;max-height:var(--pc-card-height)!important;margin:0!important;transform:none!important}
+  html.tv-mode .modal .card :is(.art,.card-art),html.tv-mode .madness-cast .card :is(.art,.card-art){height:43%!important;min-height:96px!important}
+  html.tv-mode .modal .card .cname,html.tv-mode .madness-cast .card .cname{font-size:clamp(14px,.86vw,17px)!important;line-height:1.2!important;padding:5px 4px!important}
+  html.tv-mode .modal .card .ctext,html.tv-mode .madness-cast .card .ctext{font-size:clamp(12px,.72vw,15px)!important;line-height:1.42!important}
+  html.tv-mode .modal .card .cost,html.tv-mode .madness-cast .card .cost{width:42px!important;height:42px!important;font-size:20px!important}
+  html.tv-mode #cardRevealModal .unified-card,
+  html.tv-mode #multiResultList .unified-card,
+  html.tv-mode #multiResultList .multi-result-card:only-child .unified-card{flex:0 0 var(--pc-card-width)!important;width:var(--pc-card-width)!important;min-width:var(--pc-card-width)!important;max-width:var(--pc-card-width)!important;height:var(--pc-card-height)!important;min-height:var(--pc-card-height)!important;max-height:var(--pc-card-height)!important}
+
+  /* Card archives fill the window evenly; only their content area scrolls. */
+  html.tv-mode :is(#collectionModal,#cardCodexModal)>.panel{width:min(1420px,96vw)!important;height:min(900px,92vh)!important;max-width:1420px!important;max-height:92vh!important;padding:0!important;overflow:hidden!important}
+  html.tv-mode :is(#collectionModal,#cardCodexModal) .modal-shell-head{padding:12px 18px 9px!important}
+  html.tv-mode :is(#collectionModal,#cardCodexModal) .modal-shell-body{padding:12px 18px!important}
+  html.tv-mode :is(#collectionModal,#cardCodexModal) .modal-shell-foot{padding:9px 18px!important}
+  html.tv-mode :is(#collectionGrid,#cardCodexGrid).unified-card-grid{grid-template-columns:repeat(auto-fill,minmax(var(--pc-card-width),1fr))!important;align-content:start!important;gap:18px 14px!important}
+
+  /* Card choices use three balanced columns without full-screen empty space. */
+  html.tv-mode :is(#deckChoiceModal,#multiDeckChoiceModal,#markSelectModal,#pathCardChoiceModal){padding:4vh 3vw!important;align-items:center!important}
+  html.tv-mode :is(#deckChoiceModal,#multiDeckChoiceModal,#markSelectModal,#pathCardChoiceModal)>.panel{width:min(900px,90vw)!important;height:auto!important;max-height:92vh!important;padding:16px 20px!important;overflow:auto!important}
+  html.tv-mode :is(#deckChoiceModal,#multiDeckChoiceModal,#markSelectModal,#pathCardChoiceModal) .bigicon{font-size:34px!important;line-height:1!important;margin:0 0 4px!important}
+  html.tv-mode :is(#deckChoiceModal,#multiDeckChoiceModal,#markSelectModal,#pathCardChoiceModal) h2{font-size:27px!important;line-height:1.15!important;margin:3px 0 6px!important}
+  html.tv-mode :is(#deckChoiceModal,#multiDeckChoiceModal,#markSelectModal,#pathCardChoiceModal) .map-choice-note{font-size:14px!important;line-height:1.45!important;margin:0 0 10px!important}
+  html.tv-mode :is(#deckChoiceList,#multiDeckList,#markCardList,#pathCardChoiceList){display:grid!important;grid-template-columns:repeat(3,minmax(var(--pc-card-width),1fr))!important;justify-items:center!important;align-items:start!important;gap:16px!important;width:100%!important;max-height:none!important;padding:4px!important;overflow:visible!important}
+  html.tv-mode :is(#deckChoiceList,#multiDeckList,#markCardList,#pathCardChoiceList)>.choice{width:auto!important;min-height:0!important;padding:3px!important}
+
+  /* Reveal/result dialogs size themselves to their real content. */
+  html.tv-mode #cardRevealModal{align-items:center!important;padding:4vh 3vw!important}
+  html.tv-mode #cardRevealModal>.panel{width:min(520px,88vw)!important;height:auto!important;max-height:92vh!important;padding:14px 20px!important;overflow:auto!important}
+  html.tv-mode #cardRevealModal .bigicon{font-size:30px!important;margin:0!important}
+  html.tv-mode #cardRevealModal h2{font-size:26px!important;margin:3px 0 8px!important}
+  html.tv-mode #cardRevealBody{display:grid!important;place-items:center!important;min-height:0!important;overflow:visible!important}
+  html.tv-mode #cardRevealClose{width:min(320px,80%)!important;min-height:48px!important;margin:10px auto 0!important;font-size:15px!important}
+  html.tv-mode #multiDeckResultModal>.panel{width:min(940px,90vw)!important;height:auto!important;max-height:92vh!important;padding:15px 20px!important;overflow:auto!important}
+  html.tv-mode #multiResultList{display:grid!important;grid-template-columns:repeat(auto-fit,minmax(var(--pc-card-width),1fr))!important;align-content:start!important;gap:16px!important;width:100%!important;min-height:0!important;padding:8px!important;overflow:visible!important}
+  html.tv-mode #multiResultList .multi-result-card{width:auto!important;max-width:none!important;max-height:none!important;overflow:visible!important}
+  html.tv-mode #outcomeModal>.panel{width:min(680px,86vw)!important;height:auto!important;max-height:88vh!important;padding:18px 24px!important;overflow:auto!important}
+  html.tv-mode #outcomeModal .bigicon{font-size:34px!important;margin:0 0 5px!important}
+  html.tv-mode #outcomeModal h2{font-size:28px!important;margin:4px 0 8px!important}
+  html.tv-mode #outcomeModal p{font-size:16px!important;line-height:1.55!important;margin:6px 0 14px!important}
+  html.tv-mode :is(.shop-action-confirm,.shop-upgrade-confirm-modal)>.panel{width:min(760px,86vw)!important;height:auto!important;max-height:92vh!important;padding:16px 20px!important;overflow:auto!important}
+  html.tv-mode .shop-upgrade-card-pair{grid-template-columns:var(--pc-card-width) 36px var(--pc-card-width)!important;justify-content:center!important;gap:12px!important}
+  html.tv-mode .madness-cast-shell{width:calc(var(--pc-card-width) + 70px)!important;gap:8px!important;padding:14px 18px!important}
+  html.tv-mode .madness-card-preview{width:var(--pc-card-width)!important;max-height:var(--pc-card-height)!important}
 }
