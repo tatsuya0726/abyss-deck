@@ -728,16 +728,17 @@ html.tv-mode .rewards{max-width:min(88vw,1380px)!important;gap:var(--tv-gap)!imp
   html.tv-mode #map>.mapHead p,
   html.tv-mode #map>.mapHead #abyssShardHud,
   html.tv-mode #map>.mapHead #runModifierBadge,
-  html.tv-mode #map>.mapHead .map-node-legend{width:10.5vw!important}
+  html.tv-mode #map>.mapHead .map-node-legend{width:8.8vw!important}
   html.tv-mode #map>.mapHead h2{top:6px!important;font-size:18px!important}
   html.tv-mode #map>.mapHead p{display:none!important}
-  html.tv-mode #map>.mapHead #abyssShardHud{top:42px!important;gap:3px!important}
-  html.tv-mode #map>.mapHead #abyssShardHud span{padding:2px 4px!important;font-size:9px!important}
+  html.tv-mode #map>.mapHead #abyssShardHud{top:42px!important;gap:2px!important}
+  html.tv-mode #map>.mapHead #abyssShardHud span{padding:1px 2px!important;font-size:8px!important}
   html.tv-mode #map>.mapHead #runModifierBadge{top:150px!important;font-size:9px!important}
-  html.tv-mode #map>.mapHead .map-node-legend{top:6px!important;gap:2px!important}
-  html.tv-mode #map>.mapHead .map-node-legend span{grid-template-columns:19px minmax(0,1fr)!important;min-height:21px!important;padding:1px 3px!important}
-  html.tv-mode #map>.mapHead .map-node-legend i{font-size:11px!important}
-  html.tv-mode #map>.mapHead .map-node-legend b{font-size:8px!important}
+  html.tv-mode #map>.mapHead .map-node-legend{top:6px!important;gap:1px!important}
+  html.tv-mode #map>.mapHead .map-node-legend span{grid-template-columns:16px minmax(0,1fr)!important;min-height:19px!important;padding:1px 2px!important}
+  html.tv-mode #map>.mapHead .map-node-legend i{font-size:10px!important}
+  html.tv-mode #map>.mapHead .map-node-legend b{font-size:7px!important}
+  html.tv-mode #map>.path{width:68vw!important}
   html.tv-mode #battle .statusRow{min-height:18px!important;max-height:44px!important;padding:1px!important}
   html.tv-mode #battle .state-pill{font-size:8px!important;padding:1px 4px!important}
 
@@ -1878,4 +1879,37 @@ html.tv-mode #tapStartGate{width:auto!important;height:auto!important}
   html.tv-mode .boss-relic-choice .boss-power{grid-area:power!important}
   html.tv-mode .boss-relic-choice .boss-cost{grid-area:cost!important;margin:0!important;padding-top:2px!important}
   html.tv-mode .boss-relic-choice span{font-size:8px!important;line-height:1.2!important}
+}
+
+@media (orientation:landscape) and (pointer:coarse) and (max-height:600px){
+  /* Developer tools: reserve most of the short screen for the selectable
+     stage/node list instead of the title, warning and exit chrome. */
+  html.tv-mode .debug-panel{
+    width:100%!important;height:calc(var(--abyss-vv-height,100dvh) - 12px)!important;
+    max-width:100%!important;max-height:none!important
+  }
+  html.tv-mode .debug-panel>header{padding:6px 10px 5px!important}
+  html.tv-mode .debug-panel header small{font-size:6px!important;line-height:1!important}
+  html.tv-mode .debug-panel h2{margin:1px 0 0!important;font-size:15px!important;line-height:1!important}
+  html.tv-mode .debug-panel #debugClose{
+    width:31px!important;height:31px!important;min-height:31px!important;font-size:20px!important
+  }
+  html.tv-mode .debug-warning{
+    margin:4px 10px 0!important;padding:4px 7px!important;font-size:8px!important;line-height:1.25!important
+  }
+  html.tv-mode .debug-panel #debugTools{padding:1px 10px 8px!important}
+  html.tv-mode .debug-panel section{margin-top:5px!important}
+  html.tv-mode .debug-panel h3{margin:0 0 3px!important;font-size:10px!important}
+  html.tv-mode .debug-panel h3 small,
+  html.tv-mode .debug-panel section>p{font-size:8px!important}
+  html.tv-mode :is(.debug-grid,.debug-node-list){gap:4px!important}
+  html.tv-mode .debug-panel button{min-height:32px!important;font-size:9px!important}
+  html.tv-mode .debug-node{min-height:38px!important;padding:4px!important}
+  html.tv-mode .debug-node i{flex-basis:22px!important;width:22px!important;height:22px!important}
+  html.tv-mode .debug-node b{font-size:9px!important}
+  html.tv-mode .debug-node small{font-size:7px!important}
+  html.tv-mode .debug-panel>footer{padding:4px 10px!important}
+  html.tv-mode .debug-panel>footer #debugDisable{
+    min-height:30px!important;padding:3px 8px!important;font-size:9px!important
+  }
 }

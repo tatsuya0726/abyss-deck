@@ -84,6 +84,14 @@ assert(landscapeCss.includes('transform:none!important;justify-content:flex-star
  'enemy forecast cannot grow downward from its top edge');
 assert(landscapeCss.includes('top:5px!important;left:clamp(155px,22vw,310px)!important;right:clamp(245px,32vw,480px)!important'),
  'shopkeeper is not placed in the landscape shop header gap');
+assert(landscapeCss.includes('html.tv-mode #map>.mapHead .map-node-legend{width:8.8vw!important}'),
+ 'map side tabs still consume too much horizontal space');
+assert(landscapeCss.includes('grid-template-rows:repeat(3,minmax(0,1fr))!important'),
+ 'boss relic choices are not kept in three vertical rows');
+assert(landscapeCss.includes('html.tv-mode .debug-panel>footer #debugDisable{'),
+ 'debug exit chrome is not compact on short landscape phones');
+assert(enhanceJs.includes('BGM_OUTPUT_GAIN=2.540419'),
+ 'BGM output gain is not raised by twenty percent');
 assert(enhanceJs.includes('window.playAbyssBattleMusic=playBattleMusic'),
  'battle music has no immediate screen-entry trigger');
 assert(index.includes("if(id==='battle'&&G?.enemy)window.playAbyssBattleMusic?.(G.enemy)"),
@@ -134,8 +142,8 @@ async function verifyServer(){
   const html=await response.text();
   assert(html.includes('id="tapStartGate"'),'served page has no TAP START gate');
   assert(html.includes('responsive-shell.js?v=24'),'served page has a stale responsive script version');
-  assert(html.includes('responsive-landscape.css?v=32'),'served page has a stale responsive stylesheet version');
-  assert(html.includes('enhance.js?v=264'),'served page has a stale audio script version');
+  assert(html.includes('responsive-landscape.css?v=33'),'served page has a stale responsive stylesheet version');
+  assert(html.includes('enhance.js?v=265'),'served page has a stale audio script version');
  }finally{
   server.kill('SIGTERM');
  }
