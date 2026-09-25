@@ -76,7 +76,7 @@ function injectLandscapeCss(){
  const d=doc();if(!d||cssInjected)return;
  try{
   const link=d.createElement('link');
-  link.rel='stylesheet';link.href='responsive-landscape.css?v=11';
+  link.rel='stylesheet';link.href='responsive-landscape.css?v=15';
   d.head.appendChild(link);
   cssInjected=true;
  }catch(e){}
@@ -271,6 +271,12 @@ function installMapProgressPositioning(){
  track.__abyssProgressPositioning=true;
  new MutationObserver(queueMapPosition).observe(track,{childList:true});
 }
+function installMapNodeLegend(){
+ const d=doc(),head=d?.querySelector('#map>.mapHead');if(!head||d.getElementById('mapNodeLegend'))return;
+ const legend=d.createElement('div');legend.id='mapNodeLegend';legend.className='map-node-legend';legend.setAttribute('aria-label','マスの種類');
+ legend.innerHTML='<span><i>⚔️</i><b>通常戦</b></span><span><i>💀</i><b>エリート</b></span><span><i>?</i><b>イベント</b></span><span><i class="legend-abyss"><em></em></i><b>深海異変</b></span><span><i>🪸</i><b>休憩</b></span><span><i>🎁</i><b>宝箱</b></span><span><i>🐚</i><b>ショップ</b></span><span><i>👑</i><b>ボス</b></span>';
+ head.appendChild(legend);
+}
 function moveFocus(dir){
  if(!enabled)return;
  const list=candidates();
@@ -365,6 +371,7 @@ function initializeResponsive(){
  injectLandscapeCss();
  installLandscapeTapResolver();
  installMapProgressPositioning();
+ installMapNodeLegend();
  installTitleSettings();
  syncOrientationLayout();
  syncSoundBtn();

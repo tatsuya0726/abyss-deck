@@ -485,19 +485,52 @@ html.tv-mode #map>.mapHead p{
   position:absolute!important;left:clamp(8px,1.2vw,24px)!important;
   width:min(12vw,210px)!important;text-align:center!important
 }
-html.tv-mode #map>.mapHead h2{top:clamp(12px,2.4vh,30px)!important;margin:0!important}
-html.tv-mode #map>.mapHead p{top:clamp(58px,8.5vh,98px)!important;margin:0!important;line-height:1.55!important}
+html.tv-mode #map>.mapHead h2{
+  top:clamp(12px,2.4vh,30px)!important;margin:0!important;
+  font-size:clamp(25px,min(2.35vw,4.2vh),46px)!important;
+  line-height:1.15!important
+}
+html.tv-mode #map>.mapHead p{display:none!important}
 html.tv-mode #map>.mapHead #abyssShardHud{
-  position:absolute!important;top:clamp(12px,2.4vh,30px)!important;
-  right:clamp(8px,1.2vw,24px)!important;width:min(12vw,210px)!important;
+  position:absolute!important;top:clamp(64px,10vh,112px)!important;
+  left:clamp(8px,1.2vw,24px)!important;right:auto!important;width:min(12vw,210px)!important;
   margin:0!important;display:flex!important;flex-direction:column!important;
   align-items:stretch!important;gap:clamp(4px,.7vh,9px)!important
 }
 html.tv-mode #map>.mapHead #abyssShardHud span{justify-content:center!important}
 html.tv-mode #map>.mapHead #runModifierBadge{
   position:absolute!important;left:clamp(8px,1.2vw,24px)!important;
-  top:clamp(118px,18vh,190px)!important;width:min(12vw,210px)!important;
+  top:clamp(232px,35vh,360px)!important;width:min(12vw,210px)!important;
   margin:0!important;pointer-events:auto!important
+}
+.map-node-legend{display:none}
+html.tv-mode #map>.mapHead .map-node-legend{
+  position:absolute!important;top:clamp(12px,2.4vh,30px)!important;
+  right:clamp(8px,1.2vw,24px)!important;width:min(12vw,210px)!important;
+  display:grid!important;grid-template-columns:1fr!important;
+  gap:clamp(3px,.55vh,7px)!important;margin:0!important
+}
+html.tv-mode #map>.mapHead .map-node-legend span{
+  box-sizing:border-box!important;display:grid!important;
+  grid-template-columns:clamp(22px,2vw,36px) minmax(0,1fr)!important;
+  align-items:center!important;min-height:clamp(24px,3.6vh,38px)!important;
+  padding:clamp(2px,.35vh,5px) clamp(4px,.55vw,9px)!important;
+  border:1px solid #46646e!important;border-radius:999px!important;
+  background:#07141dcc!important;color:#c8d9db!important;text-align:left!important
+}
+html.tv-mode #map>.mapHead .map-node-legend i{
+  display:grid!important;place-items:center!important;font-style:normal!important;
+  font-size:clamp(13px,min(1.15vw,2.2vh),22px)!important
+}
+html.tv-mode #map>.mapHead .map-node-legend b{
+  overflow:hidden!important;font-size:clamp(9px,min(.78vw,1.45vh),15px)!important;
+  line-height:1.1!important;white-space:nowrap!important;text-overflow:ellipsis!important
+}
+html.tv-mode #map>.mapHead .map-node-legend .legend-abyss em{
+  width:clamp(12px,1.1vw,20px)!important;height:clamp(16px,1.45vw,26px)!important;
+  background:linear-gradient(145deg,#eab7ff,#7542cb 55%,#321665)!important;
+  clip-path:polygon(50% 0,90% 28%,78% 100%,22% 100%,10% 28%)!important;
+  filter:drop-shadow(0 0 5px #b969ff)!important
 }
 html.tv-mode #map>.path{
   flex:1 1 auto!important;height:100%!important;max-height:none!important;
@@ -692,12 +725,17 @@ html.tv-mode .rewards{max-width:min(88vw,1380px)!important;gap:var(--tv-gap)!imp
   html.tv-mode #map>.mapHead h2,
   html.tv-mode #map>.mapHead p,
   html.tv-mode #map>.mapHead #abyssShardHud,
-  html.tv-mode #map>.mapHead #runModifierBadge{width:13vw!important}
-  html.tv-mode #map>.mapHead h2{top:6px!important;font-size:14px!important}
-  html.tv-mode #map>.mapHead p{top:35px!important;font-size:9px!important}
-  html.tv-mode #map>.mapHead #abyssShardHud{top:6px!important;gap:3px!important}
+  html.tv-mode #map>.mapHead #runModifierBadge,
+  html.tv-mode #map>.mapHead .map-node-legend{width:13vw!important}
+  html.tv-mode #map>.mapHead h2{top:6px!important;font-size:18px!important}
+  html.tv-mode #map>.mapHead p{display:none!important}
+  html.tv-mode #map>.mapHead #abyssShardHud{top:42px!important;gap:3px!important}
   html.tv-mode #map>.mapHead #abyssShardHud span{padding:2px 4px!important;font-size:9px!important}
-  html.tv-mode #map>.mapHead #runModifierBadge{top:84px!important;font-size:9px!important}
+  html.tv-mode #map>.mapHead #runModifierBadge{top:150px!important;font-size:9px!important}
+  html.tv-mode #map>.mapHead .map-node-legend{top:6px!important;gap:2px!important}
+  html.tv-mode #map>.mapHead .map-node-legend span{grid-template-columns:19px minmax(0,1fr)!important;min-height:21px!important;padding:1px 3px!important}
+  html.tv-mode #map>.mapHead .map-node-legend i{font-size:11px!important}
+  html.tv-mode #map>.mapHead .map-node-legend b{font-size:8px!important}
   html.tv-mode #battle .statusRow{min-height:18px!important;max-height:44px!important;padding:1px!important}
   html.tv-mode #battle .state-pill{font-size:8px!important;padding:1px 4px!important}
 
