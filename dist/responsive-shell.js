@@ -97,10 +97,9 @@ function injectLandscapeCss(){
  }
 }
 
-/* The enemy's intent panel should always line up with the enemy's name label,
-   whatever the viewport size or creature art does to the surrounding layout.
-   Rather than keep guessing a static top offset in CSS, read the name's real
-   position every frame and pin the panel's vertical center to it directly.
+/* The enemy's intent panel should stay beside the enemy without losing its top
+   edge. Read the real layout every frame, anchor the panel by its top edge and
+   let multi-line forecasts grow downward instead of expanding upward offscreen.
    #battle picks up a residual (identity) transform matrix from motion.css's
    screen-transition animation even once it's finished — and any transform,
    even a no-op one, makes that element the containing block for its
@@ -128,12 +127,12 @@ function syncIntentPosition(){
  if(!r.height)return;
  const battleRect=battleEl.getBoundingClientRect(),transformed=getComputedStyle(battleEl).transform!=='none';
  const containerTop=transformed?battleRect.top:0;
- const hudBottom=d.querySelector('.hud')?.getBoundingClientRect().bottom||0;
  const handTop=d.querySelector('.handArea')?.getBoundingClientRect().top||innerHeight;
  const intentHeight=Math.max(1,intentEl.getBoundingClientRect().height||intentEl.offsetHeight||1);
- const minCenter=Math.max(battleRect.top,hudBottom)+8+intentHeight/2;
- const maxCenter=Math.max(minCenter,Math.min(battleRect.bottom,handTop)-8-intentHeight/2);
- const center=Math.max(minCenter,Math.min(maxCenter,r.top+r.height/2));
+ const safeTop=Math.max(0,battleRect.top)+10;
+ const bottomLimit=Math.min(battleRect.bottom,handTop)-8;
+ const preferredTop=Math.max(safeTop,r.top-10);
+ const top=Math.max(safeTop,Math.min(preferredTop,bottomLimit-intentHeight));
  const enemyRect=enemyEl?.getBoundingClientRect(),playerRect=playerEl?.getBoundingClientRect(),intentWidth=Math.max(1,intentEl.getBoundingClientRect().width||intentEl.offsetWidth||1);
  if(enemyRect?.width){
   const containerLeft=transformed?battleRect.left:0,coarse=matchMedia?.('(pointer:coarse)')?.matches||navigator.maxTouchPoints>0;
@@ -150,8 +149,8 @@ function syncIntentPosition(){
   }
   intentEl.style.setProperty('left',(centerX-containerLeft)+'px','important');
  }
- intentEl.style.setProperty('top',(center-containerTop)+'px','important');
- intentEl.style.setProperty('transform','translate(-50%,-50%)','important');
+ intentEl.style.setProperty('top',(top-containerTop)+'px','important');
+ intentEl.style.setProperty('transform','translateX(-50%)','important');
 }
 
 function visible(el){

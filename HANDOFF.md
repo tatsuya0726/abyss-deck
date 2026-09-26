@@ -33,7 +33,8 @@
 - 「深海からの贈り物」は吹き出しを2行分へ拡大し、精霊画像を拡大
 - 3つの贈り物候補を残りの高さへ均等配置し、下側の余白を解消
 - 行動予測の基準位置を画面中央から敵側へ移動し、実測配置が使えない場合も中央敵寄りに表示
-- 現在のキャッシュ番号: `responsive-landscape.css?v=46`、`responsive-desktop.css?v=5`、`responsive-shell.js?v=36`
+- 複数行の行動予測は上端を安全範囲内へ固定し、下方向だけへ伸びるようにして上切れを防止
+- 現在のキャッシュ番号: `responsive-landscape.css?v=46`、`responsive-desktop.css?v=5`、`responsive-shell.js?v=37`
 
 ### タップと閉じるが同時発火する問題を修正
 

@@ -151,8 +151,10 @@ assert(landscapeCss.includes('justify-content:space-between!important;gap:0!impo
  'landscape fighters are not separated into left and right regions');
 assert(landscapeCss.includes('left:58%!important;right:auto!important;top:50px!important'),
  'enemy forecast is not anchored in the enemy-side centre gap');
-assert(shellJs.includes("intentEl.style.setProperty('transform','translate(-50%,-50%)','important')"),
+assert(shellJs.includes("intentEl.style.setProperty('transform','translateX(-50%)','important')"),
  'dynamic enemy forecast positioning does not preserve horizontal centring');
+assert(shellJs.includes('const safeTop=Math.max(0,battleRect.top)+10')&&shellJs.includes('bottomLimit-intentHeight'),
+ 'enemy forecast is not top-anchored inside the visible battle area');
 assert(landscapeCss.includes('height:min(33vh,232px)!important;--enemy-scale:1.4!important;margin-top:24px!important'),
  'desktop boss artwork does not use the larger protected size');
 assert(landscapeCss.includes('@media (orientation:landscape) and (pointer:fine) and (min-height:601px){'),
@@ -346,7 +348,7 @@ async function verifyServer(){
   assert(response?.ok,`local server did not return index.html (${response?.status||'no response'})`);
   const html=await response.text();
   assert(html.includes('id="tapStartGate"'),'served page has no TAP START gate');
-  assert(html.includes('responsive-shell.js?v=36'),'served page has a stale responsive script version');
+  assert(html.includes('responsive-shell.js?v=37'),'served page has a stale responsive script version');
   assert(html.includes('responsive-landscape.css?v=46'),'served page has a stale responsive stylesheet version');
   assert(html.includes('responsive-desktop.css?v=5'),'served page has no PC layout stylesheet');
   assert(html.includes('relics-events.js?v=155'),'served page has a stale relic event script version');
