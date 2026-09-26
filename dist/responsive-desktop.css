@@ -23,6 +23,11 @@
   html.tv-mode #battle .state-pill{padding:3px 7px!important}
   html.tv-mode #battle .battlelog{font-size:clamp(13px,.82vw,16px)!important;line-height:1.3!important}
   html.tv-mode #battle .intent{width:clamp(210px,14vw,260px)!important;min-width:0!important;max-width:260px!important;padding:12px 15px!important;font-size:clamp(16px,.95vw,19px)!important;line-height:1.4!important}
+  html.tv-mode #battle .enemy-unit.boss-unit{flex-basis:46%!important;width:46%!important;max-width:560px!important;padding-top:28px!important}
+  html.tv-mode #battle .boss-unit>.enemyName{top:0!important;margin:0 0 12px!important;font-size:clamp(18px,1.15vw,23px)!important;line-height:1.25!important}
+  html.tv-mode #battle .boss-unit>#enemySprite.boss-enemy{box-sizing:border-box!important;width:100%!important;min-width:0!important;height:min(41vh,390px)!important;max-height:390px!important;margin:8px auto 12px!important;background-size:contain!important;background-position:center bottom!important;--enemy-scale:1.08!important;transform-origin:center bottom!important}
+  html.tv-mode #battle .boss-unit>.hpbar{margin-top:10px!important}
+  html.tv-mode #battle .boss-unit>.intent{position:absolute!important;left:clamp(-230px,-15vw,-175px)!important;right:auto!important;top:auto!important;bottom:calc(100% - 172px)!important;height:auto!important;max-height:none!important;overflow:visible!important;transform:none!important;transform-origin:left bottom!important;justify-content:flex-end!important}
   html.tv-mode #battle .handArea{height:42%!important;min-height:0!important;padding:14px calc(var(--pc-actions) + 12px) 14px 22px!important;align-items:stretch!important;overflow:visible!important}
   html.tv-mode #battle .hand{width:100%!important;height:100%!important;display:flex!important;justify-content:center!important;align-items:flex-end!important;gap:14px!important;overflow-x:auto!important;overflow-y:hidden!important;padding:0 8px!important;scrollbar-width:thin}
   html.tv-mode #battle .hand .card{flex:0 0 var(--pc-card-width)!important;width:var(--pc-card-width)!important;height:var(--pc-card-height)!important;min-height:210px!important;margin:0!important;transform:none!important}
@@ -43,6 +48,26 @@
   html.tv-mode #map>.mapHead .map-node-legend span{grid-template-columns:28px minmax(0,1fr)!important;min-height:42px!important;padding:6px 8px!important;gap:8px!important}
   html.tv-mode #map>.mapHead .map-node-legend i{font-size:20px!important}
   html.tv-mode #map>.mapHead .map-node-legend b{font-size:14px!important;line-height:1.25!important;white-space:normal!important}
+
+  /* Developer tools must remain readable from a PC viewing distance. */
+  html.tv-mode .debug-panel{box-sizing:border-box!important;width:min(1050px,90vw)!important;height:min(840px,90vh)!important;max-width:1050px!important;max-height:90vh!important}
+  html.tv-mode .debug-panel>header{padding:17px 22px 13px!important}
+  html.tv-mode .debug-panel header small{font-size:12px!important;line-height:1.15!important}
+  html.tv-mode .debug-panel h2{margin:4px 0 0!important;font-size:32px!important;line-height:1.15!important}
+  html.tv-mode .debug-panel #debugClose{width:48px!important;height:48px!important;min-height:48px!important;font-size:30px!important}
+  html.tv-mode .debug-warning{margin:12px 22px 0!important;padding:10px 13px!important;font-size:14px!important;line-height:1.45!important}
+  html.tv-mode .debug-panel #debugTools{padding:6px 22px 28px!important}
+  html.tv-mode .debug-panel section{margin-top:18px!important}
+  html.tv-mode .debug-panel h3{margin:0 0 9px!important;font-size:20px!important}
+  html.tv-mode .debug-panel h3 small,html.tv-mode .debug-panel section>p{font-size:14px!important;line-height:1.4!important}
+  html.tv-mode :is(.debug-grid,.debug-node-list){gap:9px!important}
+  html.tv-mode .debug-panel button{min-height:52px!important;font-size:15px!important}
+  html.tv-mode .debug-node{min-height:58px!important;padding:9px!important}
+  html.tv-mode .debug-node i{flex-basis:34px!important;width:34px!important;height:34px!important;font-size:18px!important}
+  html.tv-mode .debug-node b{font-size:15px!important}
+  html.tv-mode .debug-node small{font-size:12px!important}
+  html.tv-mode .debug-panel>footer{padding:11px 22px!important}
+  html.tv-mode .debug-panel>footer #debugDisable{min-height:48px!important;padding:8px 12px!important;font-size:15px!important}
 
   /* Events: illustration and choices get independent columns. */
   html.tv-mode :is(#eventModal,#mapChoiceModal){padding:76px 3vw 18px!important;align-items:center!important}
