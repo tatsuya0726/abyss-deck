@@ -92,8 +92,12 @@ assert(shellJs.includes("const fixedPcForecast=matchMedia?.('(hover:hover) and (
  'PC enemy forecast still follows animated enemy geometry');
 assert(desktopCss.includes('.enemy-unit>#intent{position:fixed!important;left:65vw!important')&&desktopCss.includes('.enemy-unit.elite-unit>#intent{left:63vw!important}')&&desktopCss.includes('.enemy-unit.boss-unit>#intent{left:59vw!important}')&&desktopCss.includes('top:32vh!important')&&desktopCss.includes('transform:translate(-100%,-100%)!important'),
  'PC enemy forecast is not fixed in the marked space immediately left of the enemy');
-assert(desktopCss.includes('.enemy-unit>.enemyName{position:relative!important;top:auto!important')&&desktopCss.includes('.enemy-unit>#enemySprite{margin-top:0!important}'),
- 'PC enemy name can still overlap the enemy artwork');
+assert(desktopCss.includes('.unit>.enemyName{position:relative!important;top:auto!important')&&desktopCss.includes('.unit>.creature{margin-top:0!important}'),
+ 'PC combatant names can still overlap their artwork');
+assert(index.indexOf('id="enemySprite"')<index.indexOf('id="enemyName"')&&index.indexOf('id="enemyName"')<index.indexOf('id="enemyHpFill"'),
+ 'enemy name is not positioned between the artwork and HP bar');
+assert(index.indexOf('id="playerSprite"')<index.indexOf('潮騎士・アオ')&&index.indexOf('潮騎士・アオ')<index.indexOf('id="playerHpFill"'),
+ 'player name is not positioned between the artwork and HP bar');
 assert(desktopCss.includes(':is(#playerStatus,#enemyStatus){box-sizing:border-box!important')&&desktopCss.includes('height:clamp(78px,9vh,96px)!important')&&desktopCss.includes('min-height:78px!important;max-height:96px!important'),
  'PC status area does not reserve enough room for three effect rows');
 assert(desktopCss.includes('#shopModal:has(.shop-choose) .shop-card-list')&&desktopCss.includes('overflow-y:scroll!important')&&desktopCss.includes('flex:1 1 0!important'),

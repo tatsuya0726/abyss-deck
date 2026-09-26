@@ -27,8 +27,8 @@
   html.tv-mode #battle .boss-unit>.enemyName{top:0!important;margin:0 0 12px!important;font-size:clamp(18px,1.15vw,23px)!important;line-height:1.25!important}
   html.tv-mode #battle .boss-unit>#enemySprite.boss-enemy{box-sizing:border-box!important;width:100%!important;min-width:0!important;height:min(41vh,390px)!important;max-height:390px!important;margin:8px auto 12px!important;background-size:contain!important;background-position:center bottom!important;--enemy-scale:1.08!important;transform-origin:center bottom!important}
   html.tv-mode #battle .boss-unit>.hpbar{margin-top:10px!important}
-  html.tv-mode #battle .enemy-unit>.enemyName{position:relative!important;top:auto!important;left:auto!important;right:auto!important;box-sizing:border-box!important;display:flex!important;align-items:flex-end!important;justify-content:center!important;width:100%!important;min-height:clamp(30px,3.8vh,44px)!important;margin:0 0 10px!important;transform:none!important;z-index:30!important;pointer-events:none!important}
-  html.tv-mode #battle .enemy-unit>#enemySprite{margin-top:0!important}
+  html.tv-mode #battle .unit>.enemyName{position:relative!important;top:auto!important;left:auto!important;right:auto!important;box-sizing:border-box!important;display:flex!important;align-items:flex-end!important;justify-content:center!important;width:100%!important;min-height:clamp(30px,3.8vh,44px)!important;margin:0 0 10px!important;transform:none!important;z-index:30!important;pointer-events:none!important}
+  html.tv-mode #battle .unit>.creature{margin-top:0!important}
   html.tv-mode #battle .enemy-unit>.intent,
   html.tv-mode #battle .enemy-unit>#intent{position:fixed!important;left:65vw!important;right:auto!important;top:32vh!important;bottom:auto!important;height:auto!important;max-height:none!important;overflow:visible!important;transform:translate(-100%,-100%)!important;transform-origin:right bottom!important;justify-content:flex-end!important}
   html.tv-mode #battle .enemy-unit.elite-unit>#intent{left:63vw!important}
