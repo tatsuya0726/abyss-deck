@@ -24,7 +24,7 @@ function syncStageViewport(){
  stage.style.setProperty('width','100%');
  stage.style.setProperty('height','100%');
 }
-const SELECTOR="#newGame,#continueGame,#titleSettingsMenu,.title-hub-grid button:not(:disabled),[data-hub-close],#titleBestiary,#titleCardCodex,#titleRelicCodex,#titleBgmGallery:not(:disabled),#titleCodex,#resetAllData,#resetCancel,#resetConfirm,#modifierClose,#strategyClose,#runModifierBadge,#mapHelpView,#mapHelpClose,#rewardGoldOption,#rewardCardOption,#rewardRelicOption,#rewardContinue,#rewardBack,#skipReward,.boss-relic-choice,.achievement-card:not(:disabled),.market-item:not(:disabled),.node.available,.choice,.card[data-i],.pileBtn,#collectionClose,button:not([disabled]),.codex-card-wrap,[data-setting],[data-filter],[data-tab],a[href]";
+const SELECTOR="#newGame,#continueGame,#titleSettingsMenu,.title-hub-grid button:not(:disabled),[data-hub-close],#titleBestiary,#titleCardCodex,#titleRelicCodex,#titleBgmGallery:not(:disabled),#titleCodex,#resetAllData,#resetCancel,#resetConfirm,#modifierClose,#strategyClose,#runModifierBadge,#mapHelpView,#mapHelpClose,#rewardGoldOption,#rewardCardOption,#rewardRelicOption,#rewardContinue,#rewardBack,#skipReward,.boss-relic-choice,.achievement-card:not(:disabled),.market-item:not(:disabled),.node.available,.choice,.card[data-i],.pileBtn,#collectionClose,.relic-grid .relic-card,.beast-legacy-grid .beast-card,button:not([disabled]),.codex-card-wrap,[data-setting],[data-filter],[data-tab],a[href]";
 
 fsBtn.onclick=()=>{if(document.fullscreenElement)document.exitFullscreen?.();else document.documentElement.requestFullscreen?.().catch(()=>{})};
 
@@ -92,7 +92,7 @@ function injectLandscapeCss(){
  }
  if(!d.querySelector('link[data-abyss-desktop-layout],link[href*="responsive-desktop.css"]')){
   const desktop=d.createElement('link');
-  desktop.rel='stylesheet';desktop.href='responsive-desktop.css?v=4';
+  desktop.rel='stylesheet';desktop.href='responsive-desktop.css?v=7';
   desktop.dataset.abyssDesktopLayout='1';d.head.appendChild(desktop);
  }
 }
@@ -123,6 +123,8 @@ function syncIntentPosition(){
  const nameEl=d.getElementById('enemyName'),intentEl=d.getElementById('intent'),battleEl=d.getElementById('battle'),enemyEl=d.getElementById('enemySprite'),playerEl=d.getElementById('playerSprite');
  if(!intentEl)return;
  if(!landscapeLayout){intentEl.style.removeProperty('top');intentEl.style.removeProperty('left');intentEl.style.removeProperty('width');intentEl.style.removeProperty('transform');return}
+ const fixedPcForecast=matchMedia?.('(hover:hover) and (pointer:fine) and (min-width:1000px) and (min-height:600px)')?.matches;
+ if(fixedPcForecast){intentEl.style.removeProperty('top');intentEl.style.removeProperty('left');intentEl.style.removeProperty('width');intentEl.style.removeProperty('transform');return}
  if(!nameEl||!battleEl)return;
  const r=nameEl.getBoundingClientRect();
  if(!r.height)return;
@@ -156,6 +158,7 @@ function syncIntentPosition(){
 
 function visible(el){
  if(!el)return false;
+ if(el.matches?.(':disabled,[hidden]'))return false;
  if(!el.offsetParent&&getComputedStyle(el).position!=='fixed')return false;
  const modal=el.closest?.('.modal');
  if(modal&&!modal.classList.contains('on'))return false;
@@ -269,7 +272,8 @@ function toggleFocusBand(){
 function scrollParent(el){
  const d=doc();
  for(let p=el?.parentElement;p&&p!==d?.body;p=p.parentElement){const s=getComputedStyle(p);if(/auto|scroll/.test(s.overflowY+s.overflowX)&&(p.scrollHeight>p.clientHeight+2||p.scrollWidth>p.clientWidth+2))return p}
- return d?.querySelector('.modal.on .modal-shell-body,.modal.on .panel,#map.on .path,#battle.on .hand');
+ const modals=[...(d?.querySelectorAll('.modal.on')||[])],activeModal=modals[modals.length-1];
+ return activeModal?.querySelector('.modal-shell-body,.panel')||d?.querySelector('#map.on .path,#battle.on .hand');
 }
 function revealFocus(el){
  if(!el)return;
@@ -283,6 +287,11 @@ function scrollActive(amount){
   const focusedRegion=focusEl?.closest?.('#eventChoices,#eventText,#mapChoiceButtons,#mapChoiceText');
   const eventTargets=[focusedRegion,eventModal.querySelector('.choices'),eventModal.querySelector('#eventText,#mapChoiceText')].filter(Boolean);
   target=eventTargets.find(el=>el.scrollHeight>el.clientHeight+2||el.scrollWidth>el.clientWidth+2)||null;
+ }
+ if(!target){
+  const modals=[...d.querySelectorAll('.modal.on')],activeModal=modals[modals.length-1];
+  const modalTargets=[focusEl?.closest?.('.modal-shell-body'),activeModal?.querySelector('.modal-shell-body'),activeModal?.querySelector('.panel')].filter(Boolean);
+  target=modalTargets.find(el=>el.scrollHeight>el.clientHeight+2||el.scrollWidth>el.clientWidth+2)||null;
  }
  if(!target)target=scrollParent(focusEl);
  if(!target){const modal=[...d.querySelectorAll('.modal.on')].pop();target=modal?.querySelector('.modal-shell-body,.panel')||d.querySelector('#map.on .path,#battle.on .hand,.screen.on')}
@@ -342,11 +351,31 @@ function moveFocus(dir){
  else if(dir==='up'||dir==='down')scrollActive(dir==='up'?-110:110);
 }
 
-function doConfirm(){if(!enabled)return;const overlay=activeAdvanceOverlay();if(overlay){ring.style.display='none';overlay.click();return}if(focusEl)focusEl.click()}
+let pendingHandFocusIndex=null;
+function settleCardPlayFocus(){
+ if(pendingHandFocusIndex==null)return false;
+ const d=doc();if(!d)return false;
+ if(d.querySelector('.modal.on'))return false;
+ const battle=d.getElementById('battle');
+ if(!battle?.classList.contains('on')){pendingHandFocusIndex=null;return false}
+ const cards=[...d.querySelectorAll('#battle.on #hand .card[data-i]')];
+ if(!cards.length){pendingHandFocusIndex=null;return false}
+ const target=cards[Math.min(pendingHandFocusIndex,cards.length-1)];
+ pendingHandFocusIndex=null;focusEl=target;bandMemory.bottom=target;revealFocus(target);updateRing();return true;
+}
+function doConfirm(){
+ if(!enabled)return;
+ const overlay=activeAdvanceOverlay();if(overlay){ring.style.display='none';overlay.click();return}
+ if(focusEl?.matches?.('#hand .card[data-i]'))pendingHandFocusIndex=Math.max(0,(Number(focusEl.dataset.i)||0)-1);
+ if(focusEl)focusEl.click();
+}
 function doBack(){
  if(!enabled)return;
  const d=doc();if(!d)return;
  const modals=[...d.querySelectorAll('.modal.on')];
+ const topModal=modals[modals.length-1];
+ const shopBack=topModal?.matches?.('#shopModal')?topModal.querySelector('.shop-choose #shopBack'):null;
+ if(shopBack&&visible(shopBack)){focusEl=shopBack;shopBack.click();requestAnimationFrame(()=>{ensureFocus();updateRing()});return}
  if(modals.length)modals[modals.length-1].dispatchEvent(new MouseEvent('click',{bubbles:true,cancelable:true,view:win()}));
 }
 let returnToFirstCardAfterTurn=false;
@@ -409,7 +438,7 @@ function pollGamepad(frameTime=0){
  }
  if(frameTime-lastLayoutSync>=120){
   lastLayoutSync=frameTime;
-  if(!settleTurnFocus())ensureFocus();
+  if(!settleCardPlayFocus()&&!settleTurnFocus())ensureFocus();
   updateRing();
   syncIntentPosition();
  }
