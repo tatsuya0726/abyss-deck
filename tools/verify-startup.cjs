@@ -71,6 +71,16 @@ assert(upgradeJs.includes('視界妨害：次のターンの手札−${m.denyDra
  'the bestiary does not explain the replacement enemy actions');
 assert(!upgradeJs.includes('m.stealBlock')&&!upgradeJs.includes('m.randomizeTop'),
  'the bestiary still advertises ineffective enemy actions');
+for(const combatHtml of [index,fs.readFileSync(path.join(dist,'game.html'),'utf8')]){
+ assert(combatHtml.includes("['THE SEA FALLS SILENT','静けさが戻る','守護者は崩れ、黒い糸も消えた。")&&combatHtml.includes("['THANK YOU','また会う日まで','「ありがとう。"),
+  'the concise four-page abyss ending is missing');
+ assert(combatHtml.includes("[['THE DEEP LORD FALLS','深海の主、沈む','最後の一撃で深海の主は沈み")&&combatHtml.includes("['A VOICE FROM THE DARK','闇の底からの声','亡骸の下で巨大な瞳が開く。"),
+  'the concise two-page layer-three ending is missing');
+ assert(!combatHtml.includes("['THE SPIRIT RETURNS'")&&!combatHtml.includes("['SOMETHING STIRS BELOW'"),
+  'obsolete long ending pages are still present');
+}
+assert(!strategyPolishJs.includes("steps.length===3&&steps[0]?.[0]==='THE DEEP LORD FALLS'"),
+ 'strategy polish still replaces the concise ending with long copy');
 assert(desktopCss.includes('.quick-nav .pc-battle-settings{display:block!important}')&&desktopCss.includes('.pc-audio-settings'),
  'PC layout does not reveal the battle settings button and audio mixer');
 assert(landscapeCss.includes('width:var(--abyss-vv-width,100%)!important'),
@@ -463,7 +473,7 @@ async function verifyServer(){
   assert(html.includes('responsive-landscape.css?v=46'),'served page has a stale responsive stylesheet version');
   assert(html.includes('responsive-desktop.css?v=27'),'served page has no PC layout stylesheet');
   assert(html.includes('relics-events.js?v=155'),'served page has a stale relic event script version');
-  assert(html.includes('strategy-polish.js?v=187'),'served page has a stale strategy event script version');
+  assert(html.includes('strategy-polish.js?v=188'),'served page has a stale strategy event script version');
   assert(html.includes('economy.js?v=158'),'served page has a stale economy script version');
   assert(html.includes('refinement.css?v=69'),'served page has a stale event stylesheet version');
   assert(html.includes('refinement.js?v=73'),'served page has a stale event script version');
