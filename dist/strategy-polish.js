@@ -1,5 +1,6 @@
 (()=>{'use strict';
 const game=()=>window.getAbyssGame?.();
+const normalKeeperPortrait=new Image();normalKeeperPortrait.decoding='async';normalKeeperPortrait.fetchPriority='low';normalKeeperPortrait.src='assets/ui/puffer-shopkeeper-v2.webp?v=73';
 Object.assign(window.ABYSS_RELICS||{}, {
  '群泳の旗':['🐟','多段攻撃の1発ごとのダメージが1増える。','common'],
  '竜の逆鱗':['🐉','強化した攻撃カードのダメージが3増える。','boss'],

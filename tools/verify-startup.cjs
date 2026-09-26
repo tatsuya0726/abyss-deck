@@ -55,7 +55,7 @@ assert(landscapeCss.includes('width:var(--abyss-vv-width,100%)!important'),
  'landscape root does not use the measured visual viewport width');
 assert(landscapeCss.includes('height:var(--abyss-vv-height,100%)!important'),
  'landscape root does not use the measured visual viewport height');
-assert(index.includes('responsive-desktop.css?v=25'),
+assert(index.includes('responsive-desktop.css?v=26'),
  'PC layout stylesheet is not loaded after the landscape layout');
 assert(desktopCss.trim().startsWith('/* PC landscape layout.')&&desktopCss.includes('@media (orientation:landscape) and (hover:hover) and (pointer:fine) and (min-width:1000px) and (min-height:600px)'),
  'PC layout is not isolated from touch and portrait layouts');
@@ -66,7 +66,7 @@ assert(desktopCss.includes("grid-template-areas:'icon name power' 'icon name cos
  'PC boss relic choices do not use the available horizontal space');
 assert(desktopCss.includes('#outcomeModal #outcomeText ruby{display:ruby!important'),
  'PC result furigana can still split the outcome sentence');
-assert(shellJs.includes("desktop.href='responsive-desktop.css?v=25'"),
+assert(shellJs.includes("desktop.href='responsive-desktop.css?v=26'"),
  'dynamically loaded game shells do not receive the PC layout');
 assert(shellJs.includes('.relic-grid .relic-card,.beast-legacy-grid .beast-card'),
  'controller focus cannot traverse creature and relic archive entries');
@@ -90,7 +90,7 @@ assert(shellJs.includes("track.querySelectorAll('svg .route')"),
  'PC map routes are not kept aligned with padded map nodes');
 assert(shellJs.includes("const fixedPcForecast=matchMedia?.('(hover:hover) and (pointer:fine) and (min-width:1000px) and (min-height:600px)')?.matches"),
  'PC enemy forecast still follows animated enemy geometry');
-assert(desktopCss.includes('.enemy-unit>#intent{position:fixed!important;left:65vw!important')&&desktopCss.includes('.enemy-unit.elite-unit>#intent{left:63vw!important}')&&desktopCss.includes('.enemy-unit.boss-unit>#intent{left:59vw!important}')&&desktopCss.includes('top:32vh!important')&&desktopCss.includes('transform:translate(-100%,-100%)!important'),
+assert(desktopCss.includes('.enemy-unit>#intent{position:fixed!important;left:67vw!important')&&desktopCss.includes('.enemy-unit.elite-unit>#intent{left:65vw!important}')&&desktopCss.includes('.enemy-unit.boss-unit>#intent{left:61vw!important}')&&desktopCss.includes('top:29vh!important')&&desktopCss.includes('transform:translate(-100%,-100%)!important'),
  'PC enemy forecast is not fixed in the marked space immediately left of the enemy');
 assert(desktopCss.includes('.arena>.unit:first-child>.enemyName,')&&desktopCss.includes('.arena>.enemy-unit>.enemyName{position:relative!important;top:auto!important')&&desktopCss.includes('.unit>.creature{margin-top:0!important}'),
  'PC combatant names can still overlap their artwork');
@@ -106,6 +106,16 @@ assert(desktopCss.includes('#relicRevealModal>.relic-reveal')&&desktopCss.includ
  'PC relic reward reveal is still stretched across the screen');
 assert(desktopCss.includes('.boss-unit>#enemySprite.boss-enemy')&&desktopCss.includes('height:min(41vh,390px)!important'),
  'PC boss artwork is not enlarged independently from ordinary enemies');
+assert(desktopCss.includes('#collectionGrid.beast-legacy-grid{grid-template-columns:repeat(auto-fill,minmax(clamp(340px,24vw,440px),1fr))')&&desktopCss.includes('#beastDetailModal .beast-detail-portrait')&&desktopCss.includes('width:min(520px,58vw)!important;height:min(300px,34vh)!important'),
+ 'PC bestiary cards or the centred detail portrait are still too small');
+assert(strategyPolishJs.includes("normalKeeperPortrait.src='assets/ui/puffer-shopkeeper-v2.webp?v=73'"),
+ 'the normal puffer shopkeeper portrait is not preloaded before the first abyss story');
+assert(refinementJs.includes('assets/events/${art}.webp?v=3'),
+ 'event illustrations do not use the refreshed high-resolution assets');
+for(const name of ['black-threads.webp','memory-vault.webp','void-scales.webp']){
+ const image=fs.readFileSync(path.join(dist,'assets/events',name));
+ assert(image.length>100000,`high-resolution abyss event art is unexpectedly small: ${name}`);
+}
 assert(desktopCss.includes('.debug-panel h2{margin:4px 0 0!important;font-size:32px!important'),
  'PC debug panel text is still using the compact landscape scale');
 assert((desktopCss.match(/{/g)||[]).length===(desktopCss.match(/}/g)||[]).length,
@@ -291,7 +301,7 @@ assert(giftLayoutHeight<=giftMinimumInnerHeight,
 const giftTwoLineRubyHeight=2*(13*1.2+13*.55)+2+14;
 assert(giftTwoLineRubyHeight<74,
  'opening gift ruby text cannot fit inside a choice row');
-assert(refinementJs.includes('assets/events/${art}.webp?v=2'),
+assert(refinementJs.includes('assets/events/${art}.webp?v=3'),
  'corrected event illustrations are not cache-busted');
 const intentPositionSource=shellJs.split('\n').find(line=>line.startsWith('function intentCenterBeforeEnemy('));
 const visibleEnemySource=shellJs.split('\n').find(line=>line.startsWith('function visibleEnemyLeft('));
@@ -423,11 +433,11 @@ async function verifyServer(){
   assert(html.includes('id="tapStartGate"'),'served page has no TAP START gate');
   assert(html.includes('responsive-shell.js?v=44'),'served page has a stale responsive script version');
   assert(html.includes('responsive-landscape.css?v=46'),'served page has a stale responsive stylesheet version');
-  assert(html.includes('responsive-desktop.css?v=25'),'served page has no PC layout stylesheet');
+  assert(html.includes('responsive-desktop.css?v=26'),'served page has no PC layout stylesheet');
   assert(html.includes('relics-events.js?v=155'),'served page has a stale relic event script version');
-  assert(html.includes('strategy-polish.js?v=186'),'served page has a stale strategy event script version');
+  assert(html.includes('strategy-polish.js?v=187'),'served page has a stale strategy event script version');
   assert(html.includes('economy.js?v=158'),'served page has a stale economy script version');
-  assert(html.includes('refinement.js?v=70'),'served page has a stale event script version');
+  assert(html.includes('refinement.js?v=71'),'served page has a stale event script version');
   assert(html.includes('enhance.js?v=269'),'served page has a stale audio script version');
  }finally{
   server.kill('SIGTERM');
