@@ -46,6 +46,7 @@ const shellJs=fs.readFileSync(path.join(dist,'responsive-shell.js'),'utf8');
 const enhanceJs=fs.readFileSync(path.join(dist,'enhance.js'),'utf8');
 const refinementJs=fs.readFileSync(path.join(dist,'refinement.js'),'utf8');
 const economyJs=fs.readFileSync(path.join(dist,'economy.js'),'utf8');
+const gamePolishJs=fs.readFileSync(path.join(dist,'game-polish.js'),'utf8');
 const relicsEventsJs=fs.readFileSync(path.join(dist,'relics-events.js'),'utf8');
 const strategyPolishJs=fs.readFileSync(path.join(dist,'strategy-polish.js'),'utf8');
 assert(landscapeCss.includes('width:var(--abyss-vv-width,100%)!important'),
@@ -223,6 +224,12 @@ assert(landscapeCss.includes('.enemy-unit>.enemyName ruby rt')&&landscapeCss.inc
  'enemy-name furigana is not fixed to black in landscape');
 assert(landscapeCss.includes('width:116px!important;height:108px!important'),
  'opening gift spirit is not enlarged beside the title');
+assert(gamePolishJs.includes('blessingKeeperSay();window.applyFuri?.(blessingModal);blessingModal.classList.add(\'on\')'),
+ 'opening gift is shown before its furigana layout is complete');
+assert(!gamePolishJs.includes("classList.add('pop')")&&!gamePolishJs.includes('void e.offsetWidth'),
+ 'opening gift still forces a second speech-bubble layout');
+assert((index.match(/textContent=(?:G\.enemy|e)\.n;window\.applyFuri\?\.\(\$\('#enemyName'\)\)/g)||[]).length===3,
+ 'enemy names are not finalized with the standard furigana pass');
 assert(landscapeCss.includes('font-size:clamp(20px,min(1.55vw,3.2vh),32px)!important'),
  'gold/stat result text remains too small');
 const giftMinimumInnerHeight=320-12-14;
