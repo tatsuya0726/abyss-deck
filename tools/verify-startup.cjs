@@ -115,6 +115,8 @@ assert(refinementJs.includes('assets/events/${art}.webp?v=3'),
  'event illustrations do not use the refreshed high-resolution assets');
 assert(refinementJs.includes('const art=eventArt[title];if(art)return `<img class="event-illustration"'),
  'portrait events still fall back to small seal icons instead of illustrations');
+assert(refinementJs.includes('function syncPortraitEventArt()')&&refinementJs.includes("const portraitEventObserver=new MutationObserver(syncPortraitEventArt)")&&refinementJs.includes("['eventIcon','eventTitle','mapChoiceIcon','mapChoiceTitle','deckChoiceIcon','deckChoiceTitle']"),
+ 'portrait event artwork has no fallback when a stale seal icon is rendered');
 assert(refinementCss.includes('@media (orientation:portrait) and (max-width:700px)')&&refinementCss.includes('.bigicon:has(.event-illustration)')&&refinementCss.includes('height:clamp(150px,24dvh,220px)')&&refinementCss.includes('object-fit:cover'),
  'portrait event illustrations do not have a bounded mobile layout');
 for(const name of ['black-threads.webp','memory-vault.webp','void-scales.webp']){
@@ -442,8 +444,8 @@ async function verifyServer(){
   assert(html.includes('relics-events.js?v=155'),'served page has a stale relic event script version');
   assert(html.includes('strategy-polish.js?v=187'),'served page has a stale strategy event script version');
   assert(html.includes('economy.js?v=158'),'served page has a stale economy script version');
-  assert(html.includes('refinement.css?v=68'),'served page has a stale event stylesheet version');
-  assert(html.includes('refinement.js?v=72'),'served page has a stale event script version');
+  assert(html.includes('refinement.css?v=69'),'served page has a stale event stylesheet version');
+  assert(html.includes('refinement.js?v=73'),'served page has a stale event script version');
   assert(html.includes('enhance.js?v=269'),'served page has a stale audio script version');
  }finally{
   server.kill('SIGTERM');
