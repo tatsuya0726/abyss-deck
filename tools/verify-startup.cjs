@@ -54,7 +54,7 @@ assert(landscapeCss.includes('width:var(--abyss-vv-width,100%)!important'),
  'landscape root does not use the measured visual viewport width');
 assert(landscapeCss.includes('height:var(--abyss-vv-height,100%)!important'),
  'landscape root does not use the measured visual viewport height');
-assert(index.includes('responsive-desktop.css?v=10'),
+assert(index.includes('responsive-desktop.css?v=11'),
  'PC layout stylesheet is not loaded after the landscape layout');
 assert(desktopCss.trim().startsWith('/* PC landscape layout.')&&desktopCss.includes('@media (orientation:landscape) and (hover:hover) and (pointer:fine) and (min-width:1000px) and (min-height:600px)'),
  'PC layout is not isolated from touch and portrait layouts');
@@ -65,7 +65,7 @@ assert(desktopCss.includes("grid-template-areas:'icon name power' 'icon name cos
  'PC boss relic choices do not use the available horizontal space');
 assert(desktopCss.includes('#outcomeModal #outcomeText ruby{display:ruby!important'),
  'PC result furigana can still split the outcome sentence');
-assert(shellJs.includes("desktop.href='responsive-desktop.css?v=10'"),
+assert(shellJs.includes("desktop.href='responsive-desktop.css?v=11'"),
  'dynamically loaded game shells do not receive the PC layout');
 assert(shellJs.includes('.relic-grid .relic-card,.beast-legacy-grid .beast-card'),
  'controller focus cannot traverse creature and relic archive entries');
@@ -181,6 +181,10 @@ assert(desktopCss.includes('#battle .enemyName{font-size:clamp(16px,1vw,20px)!im
  'PC battle names and status text were not enlarged');
 assert(desktopCss.includes('#shopModal:has(.shop-choose) .shop-card-list')&&desktopCss.includes('grid-template-columns:repeat(4,minmax(0,1fr))!important'),
  'PC shop upgrade choices are not arranged four cards per row');
+assert(desktopCss.includes('#shopGrid .shop-item b{font-size:17px!important')&&desktopCss.includes('#shopGrid .shop-item span{font-size:14px!important'),
+ 'PC shop service text still inherits the compact landscape scale');
+assert(desktopCss.includes('.shop-tabs button{min-height:48px!important')&&desktopCss.includes('font-size:18px!important'),
+ 'PC shop tabs remain too small to read from a monitor');
 assert(desktopCss.includes('min-height:calc(var(--pc-card-height) + 54px)!important'),
  'PC shop card rows can overlap each other');
 assert(desktopCss.includes('max-width:1220px!important')&&desktopCss.includes('grid-auto-rows:max-content!important'),
@@ -392,9 +396,9 @@ async function verifyServer(){
   assert(response?.ok,`local server did not return index.html (${response?.status||'no response'})`);
   const html=await response.text();
   assert(html.includes('id="tapStartGate"'),'served page has no TAP START gate');
-  assert(html.includes('responsive-shell.js?v=39'),'served page has a stale responsive script version');
+  assert(html.includes('responsive-shell.js?v=40'),'served page has a stale responsive script version');
   assert(html.includes('responsive-landscape.css?v=46'),'served page has a stale responsive stylesheet version');
-  assert(html.includes('responsive-desktop.css?v=10'),'served page has no PC layout stylesheet');
+  assert(html.includes('responsive-desktop.css?v=11'),'served page has no PC layout stylesheet');
   assert(html.includes('relics-events.js?v=155'),'served page has a stale relic event script version');
   assert(html.includes('strategy-polish.js?v=186'),'served page has a stale strategy event script version');
   assert(html.includes('economy.js?v=158'),'served page has a stale economy script version');
