@@ -1437,32 +1437,10 @@ html.tv-mode #shopModal .keeper-speech{
   width:auto!important;min-height:0!important;transform:translateY(-50%)!important
 }
 html.tv-mode #shopModal .shop-panel>p{display:none!important;min-height:0!important;margin:0!important}
-html.tv-mode .guardian-reveal.story-normal-keeper{
-  grid-template-columns:minmax(170px,.72fr) minmax(340px,1.28fr)!important;
-  grid-template-rows:auto auto auto auto auto!important;align-content:center!important;justify-content:center!important;
-  column-gap:clamp(18px,4vw,72px)!important;text-align:left!important
-}
-html.tv-mode .guardian-reveal.story-normal-keeper .keeper-shadow{
-  grid-column:1!important;grid-row:1/6!important;align-self:center!important;justify-self:center!important;
-  width:min(32vw,360px)!important;height:min(68vh,380px)!important
-}
-html.tv-mode .guardian-reveal.story-normal-keeper>small,
-html.tv-mode .guardian-reveal.story-normal-keeper>b,
-html.tv-mode .guardian-reveal.story-normal-keeper>p,
-html.tv-mode .guardian-reveal.story-normal-keeper>.story-progress,
-html.tv-mode .guardian-reveal.story-normal-keeper>.story-tap{grid-column:2!important;justify-self:start!important}
 @media (orientation:landscape){
   html.tv-mode #shopModal .shop-keeper{flex-basis:62px!important;height:62px!important;margin:0 0 2px!important}
   html.tv-mode #shopModal .shop-keeper img{width:66px!important}
   html.tv-mode #shopModal .keeper-speech{right:70px!important;padding:5px 9px!important;font-size:9px!important}
-  html.tv-mode .guardian-reveal.story-normal-keeper{
-    grid-template-columns:minmax(130px,.62fr) minmax(0,1.38fr)!important;column-gap:14px!important;padding:12px 7vw!important
-  }
-  html.tv-mode .guardian-reveal.story-normal-keeper .keeper-shadow{width:min(28vw,220px)!important;height:min(72vh,250px)!important}
-  html.tv-mode .guardian-reveal.story-normal-keeper>b{margin:4px 0!important;font-size:clamp(17px,4vh,25px)!important}
-  html.tv-mode .guardian-reveal.story-normal-keeper>p{font-size:clamp(10px,2.5vh,14px)!important;line-height:1.55!important}
-  html.tv-mode .guardian-reveal.story-normal-keeper>.story-progress{margin-top:5px!important}
-  html.tv-mode .guardian-reveal.story-normal-keeper>.story-tap{margin-top:4px!important;padding:5px 11px!important;font-size:9px!important}
 }
 
 /* One landscape coordinate space. iOS can keep stale hit-test geometry for a

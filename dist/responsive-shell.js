@@ -24,7 +24,7 @@ function syncStageViewport(){
  stage.style.setProperty('width','100%');
  stage.style.setProperty('height','100%');
 }
-const SELECTOR="#newGame,#continueGame,#titleSettingsMenu,.title-hub-grid button:not(:disabled),[data-hub-close],#titleBestiary,#titleCardCodex,#titleRelicCodex,#titleBgmGallery:not(:disabled),#titleCodex,#resetAllData,#resetCancel,#resetConfirm,#modifierClose,#strategyClose,#runModifierBadge,#mapHelpView,#mapHelpClose,#rewardGoldOption,#rewardCardOption,#rewardRelicOption,#rewardContinue,#rewardBack,#skipReward,.boss-relic-choice,.achievement-card:not(:disabled),.market-item:not(:disabled),.node.available,.choice,.card[data-i],.pileBtn,#collectionClose,.relic-grid .relic-card,.beast-legacy-grid .beast-card,button:not([disabled]),.codex-card-wrap,[data-setting],[data-filter],[data-tab],a[href]";
+const SELECTOR="#newGame,#continueGame,#titleSettingsMenu,.title-hub-grid button:not(:disabled),[data-hub-close],#titleBestiary,#titleCardCodex,#titleRelicCodex,#titleBgmGallery:not(:disabled),#titleCodex,#resetAllData,#resetCancel,#resetConfirm,#modifierClose,#strategyClose,#runModifierBadge,#mapHelpView,#mapHelpClose,#rewardGoldOption,#rewardCardOption,#rewardRelicOption,#rewardContinue,#rewardBack,#skipReward,.boss-relic-choice,.achievement-card:not(:disabled),.market-item:not(:disabled),.node.available,.choice,.card[data-i],.pileBtn,#collectionClose,.relic-grid .relic-card,.beast-legacy-grid .beast-card,input[type=range]:not([disabled]),button:not([disabled]),.codex-card-wrap,[data-setting],[data-filter],[data-tab],a[href]";
 
 fsBtn.onclick=()=>{if(document.fullscreenElement)document.exitFullscreen?.();else document.documentElement.requestFullscreen?.().catch(()=>{})};
 
@@ -81,7 +81,7 @@ function injectLandscapeCss(){
  if(!cssInjected){
   try{
    const link=d.createElement('link');
-   link.rel='stylesheet';link.href='responsive-landscape.css?v=45';
+   link.rel='stylesheet';link.href='responsive-landscape.css?v=47';
    d.head.appendChild(link);cssInjected=true;
   }catch(e){}
  }
@@ -92,7 +92,7 @@ function injectLandscapeCss(){
  }
  if(!d.querySelector('link[data-abyss-desktop-layout],link[href*="responsive-desktop.css"]')){
   const desktop=d.createElement('link');
-  desktop.rel='stylesheet';desktop.href='responsive-desktop.css?v=28';
+  desktop.rel='stylesheet';desktop.href='responsive-desktop.css?v=29';
   desktop.dataset.abyssDesktopLayout='1';d.head.appendChild(desktop);
  }
 }
@@ -359,7 +359,15 @@ function installMapNodeLegend(){
  legend.innerHTML='<span><i>⚔️</i><b>通常戦</b></span><span><i>💀</i><b>エリート</b></span><span><i>?</i><b>イベント</b></span><span><i class="legend-abyss"><em></em></i><b>深海異変</b></span><span><i>🪸</i><b>休憩</b></span><span><i>🎁</i><b>宝箱</b></span><span><i>🐚</i><b>ショップ</b></span><span><i>👑</i><b>ボス</b></span>';
  head.appendChild(legend);
 }
+function adjustFocusedRange(dir){
+ if((dir!=='left'&&dir!=='right')||!focusEl?.matches?.('input[type=range]'))return false;
+ const step=Number(focusEl.step)||1,min=Number(focusEl.min)||0,max=Number(focusEl.max)||100;
+ focusEl.value=String(Math.max(min,Math.min(max,Number(focusEl.value)+(dir==='right'?step:-step))));
+ focusEl.dispatchEvent(new Event('input',{bubbles:true}));
+ revealFocus(focusEl);updateRing();return true;
+}
 function moveFocus(dir){
+ if(adjustFocusedRange(dir))return;
  if(!enabled)return;
  const list=candidates();
  if(!list.length){focusEl=null;return}

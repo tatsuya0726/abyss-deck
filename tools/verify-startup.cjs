@@ -51,10 +51,13 @@ const refinementJs=fs.readFileSync(path.join(dist,'refinement.js'),'utf8');
 const economyJs=fs.readFileSync(path.join(dist,'economy.js'),'utf8');
 const relicsEventsJs=fs.readFileSync(path.join(dist,'relics-events.js'),'utf8');
 const strategyPolishJs=fs.readFileSync(path.join(dist,'strategy-polish.js'),'utf8');
+const gamePolishCss=fs.readFileSync(path.join(dist,'game-polish.css'),'utf8');
 assert(enhanceJs.includes("document.getElementById('battle')?.classList.contains('on')&&window.getAbyssGame?.()?.enemy"),
  'combat sound effects still lower the active battle BGM');
 assert(titleToolsJs.includes('id="pcBgmVolume"')&&titleToolsJs.includes('id="pcSfxVolume"')&&titleToolsJs.includes('setAbyssAudioPrefs'),
  'PC settings do not expose persistent BGM and sound-effect volume controls');
+assert(titleToolsJs.includes('value="50"')&&titleToolsJs.includes('{bgm:.5,sfx:.5}')&&enhanceJs.includes('DEFAULT_AUDIO_PREFS={version:AUDIO_PREFS_VERSION,bgm:.5,sfx:.5}'),
+ 'BGM and sound-effect settings do not default to 50 percent');
 assert(upgradeJs.includes('id="battleSettingsView"')&&titleToolsJs.includes("$('#battleSettingsView')?.addEventListener('click',openSettings)"),
  'battle quick navigation cannot open the settings menu');
 for(const combatHtml of [index,fs.readFileSync(path.join(dist,'game.html'),'utf8')]){
@@ -87,7 +90,7 @@ assert(landscapeCss.includes('width:var(--abyss-vv-width,100%)!important'),
  'landscape root does not use the measured visual viewport width');
 assert(landscapeCss.includes('height:var(--abyss-vv-height,100%)!important'),
  'landscape root does not use the measured visual viewport height');
-assert(index.includes('responsive-desktop.css?v=28'),
+assert(index.includes('responsive-desktop.css?v=29'),
  'PC layout stylesheet is not loaded after the landscape layout');
 assert(desktopCss.trim().startsWith('/* PC landscape layout.')&&desktopCss.includes('@media (orientation:landscape) and (hover:hover) and (pointer:fine) and (min-width:1000px) and (min-height:600px)'),
  'PC layout is not isolated from touch and portrait layouts');
@@ -98,8 +101,10 @@ assert(desktopCss.includes("grid-template-areas:'icon name power' 'icon name cos
  'PC boss relic choices do not use the available horizontal space');
 assert(desktopCss.includes('#outcomeModal #outcomeText ruby{display:ruby!important'),
  'PC result furigana can still split the outcome sentence');
-assert(shellJs.includes("desktop.href='responsive-desktop.css?v=28'"),
+assert(shellJs.includes("desktop.href='responsive-desktop.css?v=29'")&&shellJs.includes("link.href='responsive-landscape.css?v=47'"),
  'dynamically loaded game shells do not receive the PC layout');
+assert(shellJs.includes('input[type=range]:not([disabled])')&&shellJs.includes('function adjustFocusedRange(dir)')&&shellJs.includes("focusEl.dispatchEvent(new Event('input',{bubbles:true}))"),
+ 'controller navigation cannot focus and adjust the audio sliders');
 assert(shellJs.includes('.relic-grid .relic-card,.beast-legacy-grid .beast-card'),
  'controller focus cannot traverse creature and relic archive entries');
 assert(shellJs.includes("activeModal?.querySelector('.modal-shell-body')"),
@@ -150,8 +155,14 @@ assert(refinementJs.includes('function syncPortraitEventArt()')&&refinementJs.in
  'portrait event artwork has no fallback when a stale seal icon is rendered');
 assert(refinementCss.includes('@media (orientation:portrait) and (max-width:700px)')&&refinementCss.includes('.bigicon:has(.event-illustration)')&&refinementCss.includes('height:clamp(150px,24dvh,220px)')&&refinementCss.includes('object-fit:cover'),
  'portrait event illustrations do not have a bounded mobile layout');
-assert(desktopCss.includes('grid-template-columns:minmax(420px,50%) minmax(0,1fr)!important')&&desktopCss.includes('.event-illustration{width:100%!important;height:100%!important;object-fit:cover!important'),
- 'PC event illustrations do not use the widened half-panel layout');
+assert(desktopCss.includes('width:min(1500px,94vw)!important;height:min(700px,78vh)!important')&&desktopCss.includes('grid-template-columns:minmax(460px,52%) minmax(0,1fr)!important')&&desktopCss.includes('.event-illustration{width:100%!important;height:100%!important;object-fit:contain!important'),
+ 'PC event illustrations are cropped or do not use the widened short-panel layout');
+assert(desktopCss.includes('#strategyModal .achievement-card b{font-size:18px!important')&&desktopCss.includes('#strategyModal .achievement-card p{margin:7px 0!important;font-size:15px!important')&&desktopCss.includes('.achievement-card.locked{opacity:.68!important'),
+ 'PC achievements are still too small or faint to read');
+assert(!landscapeCss.includes('.guardian-reveal.story-normal-keeper{'),
+ 'the first puffer shopkeeper story page still uses a different side-by-side layout');
+assert(gamePolishCss.includes('top:max(72px,12dvh);bottom:auto;width:min(760px,84vw)')&&gamePolishCss.includes('background:linear-gradient(180deg,#170712ed,#09040ceb)'),
+ 'the guardian half-HP dialogue is not positioned in its readable upper overlay');
 for(const name of ['black-threads.webp','memory-vault.webp','void-scales.webp']){
  const image=fs.readFileSync(path.join(dist,'assets/events',name));
  assert(image.length>100000,`high-resolution abyss event art is unexpectedly small: ${name}`);
@@ -402,8 +413,8 @@ assert(desktopCss.includes('grid-template-rows:none!important;grid-auto-rows:min
  'PC event choices do not distribute over the available content column');
 assert(enhanceJs.includes('SFX_OUTPUT_GAIN=.5,BGM_OUTPUT_GAIN=.5,AUDIO_PREFS_VERSION=6'),
  'BGM and sound-effect master output gains are not both fifty percent');
-assert(enhanceJs.includes('DEFAULT_AUDIO_PREFS={version:AUDIO_PREFS_VERSION,bgm:1,sfx:1}'),
- 'saved audio preference migration prevents the fifty-percent master levels');
+assert(enhanceJs.includes('DEFAULT_AUDIO_PREFS={version:AUDIO_PREFS_VERSION,bgm:.5,sfx:.5}'),
+ 'audio preference defaults are not both fifty percent');
 assert(desktopCss.includes('#map>.path{position:absolute!important;inset:12px 258px 12px 255px!important'),
  'PC map track has no explicit drawable area');
 assert(desktopCss.includes('.map-node-legend{position:fixed!important;left:auto!important;right:20px!important;top:88px!important'),
@@ -471,15 +482,17 @@ async function verifyServer(){
   assert(response?.ok,`local server did not return index.html (${response?.status||'no response'})`);
   const html=await response.text();
   assert(html.includes('id="tapStartGate"'),'served page has no TAP START gate');
-  assert(html.includes('responsive-shell.js?v=45'),'served page has a stale responsive script version');
-  assert(html.includes('responsive-landscape.css?v=46'),'served page has a stale responsive stylesheet version');
-  assert(html.includes('responsive-desktop.css?v=28'),'served page has no PC layout stylesheet');
+  assert(html.includes('responsive-shell.js?v=46'),'served page has a stale responsive script version');
+  assert(html.includes('responsive-landscape.css?v=47'),'served page has a stale responsive stylesheet version');
+  assert(html.includes('responsive-desktop.css?v=29'),'served page has no PC layout stylesheet');
   assert(html.includes('relics-events.js?v=155'),'served page has a stale relic event script version');
   assert(html.includes('strategy-polish.js?v=188'),'served page has a stale strategy event script version');
   assert(html.includes('economy.js?v=158'),'served page has a stale economy script version');
   assert(html.includes('refinement.css?v=69'),'served page has a stale event stylesheet version');
   assert(html.includes('refinement.js?v=73'),'served page has a stale event script version');
-  assert(html.includes('enhance.js?v=269'),'served page has a stale audio script version');
+  assert(html.includes('enhance.js?v=270'),'served page has a stale audio script version');
+  assert(html.includes('title-tools.js?v=114'),'served page has a stale settings script version');
+  assert(html.includes('game-polish.css?v=153'),'served page has a stale game polish stylesheet version');
  }finally{
   server.kill('SIGTERM');
  }

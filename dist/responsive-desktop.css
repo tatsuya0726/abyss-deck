@@ -16,6 +16,20 @@
   html.tv-mode .pc-audio-settings input[type=range]{width:100%;height:28px;margin:0;cursor:pointer;accent-color:#73e5dc}
   html.tv-mode .pc-audio-settings output{color:#ffe19a;font:800 15px/1.2 sans-serif;text-align:right;font-variant-numeric:tabular-nums}
 
+  /* Achievements: readable at monitor distance, including locked entries. */
+  html.tv-mode #strategyModal>.strategy-panel{width:min(1080px,92vw)!important;height:min(820px,90vh)!important;max-width:1080px!important;max-height:90vh!important}
+  html.tv-mode #strategyModal .archive-tabs button{min-height:48px!important;font-size:16px!important}
+  html.tv-mode #strategyModal #strategyContent{padding:12px 18px 24px!important}
+  html.tv-mode #strategyModal .archive-heading{font-size:22px!important;line-height:1.3!important;margin:10px 0 14px!important}
+  html.tv-mode #strategyModal .archive-heading small{font-size:15px!important}
+  html.tv-mode #strategyModal .achievement-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:14px!important}
+  html.tv-mode #strategyModal .achievement-card{grid-template-columns:62px minmax(0,1fr)!important;gap:13px!important;min-height:126px!important;padding:16px!important;align-items:center!important}
+  html.tv-mode #strategyModal .achievement-card>i{font-size:40px!important}
+  html.tv-mode #strategyModal .achievement-card b{font-size:18px!important;line-height:1.3!important}
+  html.tv-mode #strategyModal .achievement-card p{margin:7px 0!important;font-size:15px!important;line-height:1.5!important}
+  html.tv-mode #strategyModal .achievement-card small{font-size:13px!important;line-height:1.35!important}
+  html.tv-mode #strategyModal .achievement-card.locked{opacity:.68!important;filter:grayscale(.55)!important}
+
   /* Battle: fixed utility rail, roomy arena and stable card spacing. */
   html.tv-mode body:has(#battle.on) .quick-nav{position:fixed!important;inset:18px auto auto 18px!important;width:198px!important;max-width:198px!important;height:auto!important;display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;grid-template-rows:repeat(4,48px)!important;grid-auto-rows:48px!important;gap:7px!important;padding:0!important;transform:none!important;z-index:75!important;background:none!important}
   html.tv-mode body:has(#battle.on) .quick-nav button{width:auto!important;min-width:0!important;height:48px!important;min-height:48px!important;padding:5px 7px!important;font-size:14px!important;line-height:1.12!important}
@@ -104,9 +118,9 @@
 
   /* Events: illustration and choices get independent columns. */
   html.tv-mode :is(#eventModal,#mapChoiceModal){padding:76px 3vw 18px!important;align-items:center!important}
-  html.tv-mode :is(#eventModal,#mapChoiceModal)>.panel{width:min(1400px,94vw)!important;height:min(760px,82vh)!important;max-width:1400px!important;max-height:760px!important;display:grid!important;grid-template-columns:minmax(420px,50%) minmax(0,1fr)!important;grid-template-rows:auto auto minmax(0,1fr)!important;column-gap:24px!important;row-gap:12px!important;padding:20px 24px!important;overflow:hidden!important}
+  html.tv-mode :is(#eventModal,#mapChoiceModal)>.panel{width:min(1500px,94vw)!important;height:min(700px,78vh)!important;max-width:1500px!important;max-height:700px!important;display:grid!important;grid-template-columns:minmax(460px,52%) minmax(0,1fr)!important;grid-template-rows:auto auto minmax(0,1fr)!important;column-gap:24px!important;row-gap:12px!important;padding:20px 24px!important;overflow:hidden!important}
   html.tv-mode :is(#eventModal,#mapChoiceModal) .bigicon{grid-column:1!important;grid-row:1/4!important;width:100%!important;height:100%!important;min-height:0!important;aspect-ratio:auto!important;overflow:hidden!important}
-  html.tv-mode :is(#eventModal,#mapChoiceModal) .event-illustration{width:100%!important;height:100%!important;object-fit:cover!important;object-position:center!important}
+  html.tv-mode :is(#eventModal,#mapChoiceModal) .event-illustration{width:100%!important;height:100%!important;object-fit:contain!important;object-position:center!important}
   html.tv-mode :is(#eventModal,#mapChoiceModal) h2{grid-column:2!important;grid-row:1!important;margin:6px 0 0!important;padding-right:190px!important;font-size:clamp(28px,2vw,38px)!important;line-height:1.15!important}
   html.tv-mode :is(#eventModal,#mapChoiceModal) :is(#eventText,#mapChoiceText){grid-column:2!important;grid-row:2!important;font-size:17px!important;line-height:1.55!important;margin:0!important}
   html.tv-mode :is(#eventModal,#mapChoiceModal) .choices{grid-column:2!important;grid-row:3!important;display:grid!important;grid-template-rows:none!important;grid-auto-rows:minmax(88px,1fr)!important;align-content:stretch!important;gap:12px!important;min-height:0!important;height:100%!important;overflow:hidden!important}
