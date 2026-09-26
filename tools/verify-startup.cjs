@@ -54,7 +54,7 @@ assert(landscapeCss.includes('width:var(--abyss-vv-width,100%)!important'),
  'landscape root does not use the measured visual viewport width');
 assert(landscapeCss.includes('height:var(--abyss-vv-height,100%)!important'),
  'landscape root does not use the measured visual viewport height');
-assert(index.includes('responsive-desktop.css?v=9'),
+assert(index.includes('responsive-desktop.css?v=10'),
  'PC layout stylesheet is not loaded after the landscape layout');
 assert(desktopCss.trim().startsWith('/* PC landscape layout.')&&desktopCss.includes('@media (orientation:landscape) and (hover:hover) and (pointer:fine) and (min-width:1000px) and (min-height:600px)'),
  'PC layout is not isolated from touch and portrait layouts');
@@ -65,7 +65,7 @@ assert(desktopCss.includes("grid-template-areas:'icon name power' 'icon name cos
  'PC boss relic choices do not use the available horizontal space');
 assert(desktopCss.includes('#outcomeModal #outcomeText ruby{display:ruby!important'),
  'PC result furigana can still split the outcome sentence');
-assert(shellJs.includes("desktop.href='responsive-desktop.css?v=9'"),
+assert(shellJs.includes("desktop.href='responsive-desktop.css?v=10'"),
  'dynamically loaded game shells do not receive the PC layout');
 assert(shellJs.includes('.relic-grid .relic-card,.beast-legacy-grid .beast-card'),
  'controller focus cannot traverse creature and relic archive entries');
@@ -79,8 +79,18 @@ assert(shellJs.includes("topModal?.matches?.('#shopModal')?topModal.querySelecto
  'controller cancel does not return card upgrade/removal choices to the market');
 assert(shellJs.includes('function scrollShopListBeforeLeaving(dir)')&&shellJs.includes('if(scrollShopListBeforeLeaving(dir))return'),
  'shop navigation can leave the scrolling list before reaching its edge');
+assert(shellJs.includes('function applyPcMapEdgePadding(track)')&&shellJs.includes('const remap=value=>pcMap?6+value*.88:value'),
+ 'PC map nodes do not keep safe space above the first row and below the boss row');
+assert(shellJs.includes("track.querySelectorAll('svg .route')"),
+ 'PC map routes are not kept aligned with padded map nodes');
 assert(shellJs.includes("const fixedPcForecast=matchMedia?.('(hover:hover) and (pointer:fine) and (min-width:1000px) and (min-height:600px)')?.matches"),
  'PC enemy forecast still follows animated enemy geometry');
+assert(desktopCss.includes('.boss-unit>.intent{position:absolute!important')&&desktopCss.includes('transform-origin:left bottom!important'),
+ 'PC boss forecast is not anchored above and to the left of the boss');
+assert(desktopCss.includes('.boss-unit>#enemySprite.boss-enemy')&&desktopCss.includes('height:min(41vh,390px)!important'),
+ 'PC boss artwork is not enlarged independently from ordinary enemies');
+assert(desktopCss.includes('.debug-panel h2{margin:4px 0 0!important;font-size:32px!important'),
+ 'PC debug panel text is still using the compact landscape scale');
 assert((desktopCss.match(/{/g)||[]).length===(desktopCss.match(/}/g)||[]).length,
  'PC stylesheet has unbalanced blocks');
 for(const [width,height]of [[1000,600],[1366,768],[1920,1080]]){
@@ -382,9 +392,9 @@ async function verifyServer(){
   assert(response?.ok,`local server did not return index.html (${response?.status||'no response'})`);
   const html=await response.text();
   assert(html.includes('id="tapStartGate"'),'served page has no TAP START gate');
-  assert(html.includes('responsive-shell.js?v=38'),'served page has a stale responsive script version');
+  assert(html.includes('responsive-shell.js?v=39'),'served page has a stale responsive script version');
   assert(html.includes('responsive-landscape.css?v=46'),'served page has a stale responsive stylesheet version');
-  assert(html.includes('responsive-desktop.css?v=9'),'served page has no PC layout stylesheet');
+  assert(html.includes('responsive-desktop.css?v=10'),'served page has no PC layout stylesheet');
   assert(html.includes('relics-events.js?v=155'),'served page has a stale relic event script version');
   assert(html.includes('strategy-polish.js?v=186'),'served page has a stale strategy event script version');
   assert(html.includes('economy.js?v=158'),'served page has a stale economy script version');
