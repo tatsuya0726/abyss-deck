@@ -1,5 +1,5 @@
 /* PC landscape layout. Kept separate so phone portrait/landscape remains unchanged. */
-@media (orientation:landscape) and (hover:hover) and (pointer:fine) and (min-width:1000px) and (min-height:600px){
+@media (orientation:landscape) and (min-width:1000px) and (min-height:600px){
   html.tv-mode{--pc-rail:216px;--pc-actions:180px;--pc-gap:clamp(16px,1.7vw,30px);--pc-ui:clamp(14px,.86vw,18px);--pc-small:clamp(12px,.72vw,15px);--pc-card-width:clamp(168px,11.5vw,206px);--pc-card-height:clamp(210px,38vh,300px)}
   html.tv-mode body{font-size:var(--pc-ui)!important}
 
@@ -283,6 +283,23 @@
   /* Never inherit the phone layout's 6–10px helper text on PC dialogs. */
   html.tv-mode .modal :is(button,p,span,small,label,b,strong):not(.card *):not(.unified-card *){font-size:max(13px,1em)!important}
 }
+
+/* TV calibration: keep the PC composition on a single 16:9 stage and scale
+   the whole game uniformly. The default 92% safe area avoids television
+   overscan; the setting can cycle from 100% down to 80%. */
+html.tv-mode.tv-fixed-canvas{box-sizing:border-box;width:100%;height:100%;overflow:hidden!important;background:#01050b!important;--pc-ui:16px;--pc-small:13px;--pc-card-width:190px;--pc-card-height:280px;--pc-hand-height:320px}
+html.tv-mode.tv-fixed-canvas body{position:fixed!important;left:50%!important;top:50%!important;width:var(--tv-canvas-width,1600px)!important;height:var(--tv-canvas-height,900px)!important;min-width:var(--tv-canvas-width,1600px)!important;min-height:var(--tv-canvas-height,900px)!important;margin:0!important;overflow:hidden!important;transform:translate(-50%,-50%) scale(var(--tv-canvas-scale,1))!important;transform-origin:center center!important}
+html.tv-mode.tv-fixed-canvas body>*{max-width:none}
+html.tv-mode.tv-fixed-canvas #battle .arena{height:calc(100% - var(--pc-hand-height))!important}
+html.tv-mode.tv-fixed-canvas #battle .handArea{height:var(--pc-hand-height)!important}
+html.tv-mode.tv-fixed-canvas #battle .creature{height:306px!important}
+html.tv-mode.tv-fixed-canvas #battle .enemy-unit .creature{height:333px!important}
+html.tv-mode.tv-fixed-canvas #battle .boss-unit>#enemySprite.boss-enemy{height:369px!important}
+html.tv-mode.tv-fixed-canvas #battle :is(#playerStatus,#enemyStatus){height:81px!important}
+html.tv-mode.tv-fixed-canvas #battle .intent{width:224px!important}
+html.tv-mode.tv-fixed-canvas #battle .enemy-unit>#intent{left:1072px!important;top:261px!important}
+html.tv-mode.tv-fixed-canvas #battle .enemy-unit.elite-unit>#intent{left:1040px!important}
+html.tv-mode.tv-fixed-canvas #battle .enemy-unit.boss-unit>#intent{left:976px!important}
 
 /* Tall PC displays: reclaim the empty band above the hand and give the enemy
    composition enough vertical room to keep its artwork and name separated. */

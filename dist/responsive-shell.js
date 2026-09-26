@@ -2,6 +2,32 @@
 const stage=document.getElementById('stage'),directMode=!stage,ring=document.getElementById('gp-focus-ring'),fsBtn=document.getElementById('fullscreen-btn'),ctrlBtn=document.getElementById('controller-toggle');
 let landscapeLayout=matchMedia('(orientation:landscape)').matches||innerWidth>innerHeight;
 const stageWrap=document.getElementById('stage-wrap');
+const TV_CANVAS_KEY='abyssTvFixedCanvas',TV_CANVAS_SIZE_KEY='abyssTvCanvasPercent',TV_CANVAS_WIDTH=1600,TV_CANVAS_HEIGHT=900,TV_CANVAS_SIZES=[100,96,92,88,84,80];
+let tvCanvasEnabled=false,tvCanvasPercent=92;
+try{tvCanvasEnabled=localStorage.getItem(TV_CANVAS_KEY)==='1';tvCanvasPercent=Number(localStorage.getItem(TV_CANVAS_SIZE_KEY))||92}catch(e){}
+if(!TV_CANVAS_SIZES.includes(tvCanvasPercent))tvCanvasPercent=92;
+function syncTvCanvasUi(){
+ const d=doc(),display=d?.getElementById('titleTvDisplay'),size=d?.getElementById('titleTvScale');
+ const displayText=`TV固定表示 ${tvCanvasEnabled?'ON':'OFF'}`;
+ if(display){display.classList.toggle('active',tvCanvasEnabled);const label=display.querySelector('small');if(label&&label.textContent!==displayText)label.textContent=displayText}
+ if(size){size.classList.toggle('active',tvCanvasEnabled);const label=size.querySelector('small'),sizeText=`表示範囲 ${tvCanvasPercent}%`;if(label&&label.textContent!==sizeText)label.textContent=sizeText}
+}
+function syncTvCanvas(){
+ const d=doc();if(!d)return;
+ const root=d.documentElement,active=landscapeLayout&&tvCanvasEnabled;
+ root.classList.toggle('tv-fixed-canvas',active);
+ if(active){
+  const viewport=window.visualViewport,useVisualViewport=viewport&&Math.abs(viewport.scale-1)<.01;
+  const width=Math.max(1,useVisualViewport?viewport.width:window.innerWidth),height=Math.max(1,useVisualViewport?viewport.height:window.innerHeight),safe=tvCanvasPercent/100;
+  const scale=Math.min(width*safe/TV_CANVAS_WIDTH,height*safe/TV_CANVAS_HEIGHT);
+  root.style.setProperty('--tv-canvas-scale',Math.max(.1,scale).toFixed(5));
+  root.style.setProperty('--tv-canvas-width',TV_CANVAS_WIDTH+'px');
+  root.style.setProperty('--tv-canvas-height',TV_CANVAS_HEIGHT+'px');
+ }else{
+  root.style.removeProperty('--tv-canvas-scale');root.style.removeProperty('--tv-canvas-width');root.style.removeProperty('--tv-canvas-height');
+ }
+ syncTvCanvasUi();
+}
 function syncStageViewport(){
  const root=document.documentElement;
  const viewport=window.visualViewport;
@@ -15,6 +41,7 @@ function syncStageViewport(){
  if(directMode&&landscapeLayout)root.style.setProperty('--abyss-event-height',height+'px');
  else root.style.removeProperty('--abyss-event-height');
  if(directMode){
+  syncTvCanvas();
   return;
  }
  stageWrap.style.setProperty('width',width+'px');
@@ -23,6 +50,7 @@ function syncStageViewport(){
  stageWrap.style.setProperty('bottom','auto');
  stage.style.setProperty('width','100%');
  stage.style.setProperty('height','100%');
+ syncTvCanvas();
 }
 const SELECTOR="#newGame,#continueGame,#titleSettingsMenu,.title-hub-grid button:not(:disabled),[data-hub-close],#titleBestiary,#titleCardCodex,#titleRelicCodex,#titleBgmGallery:not(:disabled),#titleCodex,#resetAllData,#resetCancel,#resetConfirm,#modifierClose,#strategyClose,#runModifierBadge,#mapHelpView,#mapHelpClose,#rewardGoldOption,#rewardCardOption,#rewardRelicOption,#rewardContinue,#rewardBack,#skipReward,.boss-relic-choice,.achievement-card:not(:disabled),.market-item:not(:disabled),.node.available,.choice,.card[data-i],.pileBtn,#collectionClose,.relic-grid .relic-card,.beast-legacy-grid .beast-card,input[type=range]:not([disabled]),button:not([disabled]),.codex-card-wrap,[data-setting],[data-filter],[data-tab],a[href]";
 
@@ -60,9 +88,11 @@ function installTitleSettings(){
   add('titleTvSound','♫','音楽','音楽 ON',()=>soundBtn.click());
   add('titleTvController','🎮','コントローラー','コントローラー ON',()=>ctrlBtn.click());
   add('titleTvFullscreen','⛶','フルスクリーン','画面いっぱいに表示',()=>fsBtn.click());
+  add('titleTvDisplay','📺','TV固定表示','TV固定表示 OFF',()=>{tvCanvasEnabled=!tvCanvasEnabled;try{localStorage.setItem(TV_CANVAS_KEY,tvCanvasEnabled?'1':'0')}catch(e){}syncTvCanvas();requestAnimationFrame(()=>{ensureFocus();updateRing()})});
+  add('titleTvScale','↔','表示範囲','表示範囲 92%',()=>{let index=TV_CANVAS_SIZES.indexOf(tvCanvasPercent);tvCanvasPercent=TV_CANVAS_SIZES[(index+1)%TV_CANVAS_SIZES.length];try{localStorage.setItem(TV_CANVAS_SIZE_KEY,String(tvCanvasPercent))}catch(e){}syncTvCanvas();requestAnimationFrame(()=>{ensureFocus();updateRing()})});
  }
  const hide=!landscapeLayout;d.querySelectorAll('.tv-title-setting').forEach(b=>{if(b.hidden!==hide)b.hidden=hide});
- syncSoundBtn();syncCtrlBtn();
+ syncSoundBtn();syncCtrlBtn();syncTvCanvasUi();
 }
 function syncOrientationLayout(){
  const d=doc();if(!d)return;
@@ -70,6 +100,7 @@ function syncOrientationLayout(){
  d.documentElement.classList.toggle('tv-mode',landscapeLayout);
  syncControllerUi();
  installTitleSettings();
+ syncTvCanvas();
  if(!landscapeLayout){focusEl=null;ring.style.display='none'}
  else ensureFocus();
  clearTimeout(syncOrientationLayout._bgmTimer);
@@ -92,7 +123,7 @@ function injectLandscapeCss(){
  }
  if(!d.querySelector('link[data-abyss-desktop-layout],link[href*="responsive-desktop.css"]')){
   const desktop=d.createElement('link');
-  desktop.rel='stylesheet';desktop.href='responsive-desktop.css?v=30';
+  desktop.rel='stylesheet';desktop.href='responsive-desktop.css?v=31';
   desktop.dataset.abyssDesktopLayout='1';d.head.appendChild(desktop);
  }
 }
@@ -123,7 +154,7 @@ function syncIntentPosition(){
  const nameEl=d.getElementById('enemyName'),intentEl=d.getElementById('intent'),battleEl=d.getElementById('battle'),enemyEl=d.getElementById('enemySprite'),playerEl=d.getElementById('playerSprite');
  if(!intentEl)return;
  if(!landscapeLayout){intentEl.style.removeProperty('top');intentEl.style.removeProperty('left');intentEl.style.removeProperty('width');intentEl.style.removeProperty('transform');return}
- const fixedPcForecast=matchMedia?.('(hover:hover) and (pointer:fine) and (min-width:1000px) and (min-height:600px)')?.matches;
+ const fixedPcForecast=d.documentElement.classList.contains('tv-fixed-canvas')||matchMedia?.('(hover:hover) and (pointer:fine) and (min-width:1000px) and (min-height:600px)')?.matches;
  if(fixedPcForecast){intentEl.style.removeProperty('top');intentEl.style.removeProperty('left');intentEl.style.removeProperty('width');intentEl.style.removeProperty('transform');return}
  if(!nameEl||!battleEl)return;
  const r=nameEl.getBoundingClientRect();
@@ -226,7 +257,8 @@ function rectOf(el){
 
 function updateRing(){
  if(!landscapeLayout||!enabled||activeAdvanceOverlay()||!focusEl||!visible(focusEl)){ring.style.display='none';return}
- const r=rectOf(focusEl);
+ let r=rectOf(focusEl);const d=doc();
+ if(d?.documentElement.classList.contains('tv-fixed-canvas')&&directMode){const bodyRect=d.body.getBoundingClientRect(),scale=Number(getComputedStyle(d.documentElement).getPropertyValue('--tv-canvas-scale'))||1;r={left:(r.left-bodyRect.left)/scale,top:(r.top-bodyRect.top)/scale,width:r.width/scale,height:r.height/scale}}
  ring.style.display='block';
  ring.style.left=(r.left-4)+'px';ring.style.top=(r.top-4)+'px';ring.style.width=(r.width+8)+'px';ring.style.height=(r.height+8)+'px';
 }
@@ -519,6 +551,7 @@ syncStageViewport();
 window.addEventListener('resize',handleOrientation,{passive:true});
 window.addEventListener('pageshow',handleOrientation,{passive:true});
 window.addEventListener('orientationchange',()=>setTimeout(handleOrientation,80),{passive:true});
+document.addEventListener('fullscreenchange',handleOrientation,{passive:true});
 window.visualViewport?.addEventListener('resize',handleOrientation,{passive:true});
 window.visualViewport?.addEventListener('scroll',syncStageViewport,{passive:true});
 

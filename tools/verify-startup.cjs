@@ -90,9 +90,9 @@ assert(landscapeCss.includes('width:var(--abyss-vv-width,100%)!important'),
  'landscape root does not use the measured visual viewport width');
 assert(landscapeCss.includes('height:var(--abyss-vv-height,100%)!important'),
  'landscape root does not use the measured visual viewport height');
-assert(index.includes('responsive-desktop.css?v=30'),
+assert(index.includes('responsive-desktop.css?v=31'),
  'PC layout stylesheet is not loaded after the landscape layout');
-assert(desktopCss.trim().startsWith('/* PC landscape layout.')&&desktopCss.includes('@media (orientation:landscape) and (hover:hover) and (pointer:fine) and (min-width:1000px) and (min-height:600px)'),
+assert(desktopCss.trim().startsWith('/* PC landscape layout.')&&desktopCss.includes('@media (orientation:landscape) and (min-width:1000px) and (min-height:600px)'),
  'PC layout is not isolated from touch and portrait layouts');
 for(const selector of ['#battle .arena','#battle .hand','#map>.path','#eventModal','#shopModal','.reward-panel','.boss-relic-choices']){
  assert(desktopCss.includes(selector),`PC layout does not cover ${selector}`);
@@ -101,8 +101,12 @@ assert(desktopCss.includes("grid-template-areas:'icon name power' 'icon name cos
  'PC boss relic choices do not use the available horizontal space');
 assert(desktopCss.includes('#outcomeModal #outcomeText ruby{display:ruby!important'),
  'PC result furigana can still split the outcome sentence');
-assert(shellJs.includes("desktop.href='responsive-desktop.css?v=30'")&&shellJs.includes("link.href='responsive-landscape.css?v=48'"),
+assert(shellJs.includes("desktop.href='responsive-desktop.css?v=31'")&&shellJs.includes("link.href='responsive-landscape.css?v=48'"),
  'dynamically loaded game shells do not receive the PC layout');
+assert(shellJs.includes("TV_CANVAS_KEY='abyssTvFixedCanvas'")&&shellJs.includes('TV_CANVAS_WIDTH=1600,TV_CANVAS_HEIGHT=900')&&shellJs.includes("add('titleTvDisplay'")&&shellJs.includes("add('titleTvScale'"),
+ 'TV fixed-canvas controls are missing from settings');
+assert(desktopCss.includes('html.tv-mode.tv-fixed-canvas body{position:fixed!important;left:50%!important;top:50%!important')&&desktopCss.includes('scale(var(--tv-canvas-scale,1))!important'),
+ 'TV layout does not uniformly scale a centered 16:9 canvas');
 assert(gamePolishCss.includes('#deckChoiceList{box-sizing:border-box;flex:1 1 auto;min-height:0;max-height:none')&&desktopCss.includes('#deckChoiceModal>.panel{display:flex!important;flex-direction:column!important;width:min(1180px,94vw)!important;height:min(820px,90vh)!important'),
  'single-card event picker can still collapse or hide its card list');
 assert(shellJs.includes('input[type=range]:not([disabled])')&&shellJs.includes('function adjustFocusedRange(dir)')&&shellJs.includes("focusEl.dispatchEvent(new Event('input',{bubbles:true}))"),
@@ -127,7 +131,7 @@ assert(shellJs.includes('function applyPcMapEdgePadding(track)')&&shellJs.includ
  'PC map nodes do not keep safe space above the first row and below the boss row');
 assert(shellJs.includes("track.querySelectorAll('svg .route')"),
  'PC map routes are not kept aligned with padded map nodes');
-assert(shellJs.includes("const fixedPcForecast=matchMedia?.('(hover:hover) and (pointer:fine) and (min-width:1000px) and (min-height:600px)')?.matches"),
+assert(shellJs.includes("const fixedPcForecast=d.documentElement.classList.contains('tv-fixed-canvas')||matchMedia?.('(hover:hover) and (pointer:fine) and (min-width:1000px) and (min-height:600px)')?.matches"),
  'PC enemy forecast still follows animated enemy geometry');
 assert(desktopCss.includes('.enemy-unit>#intent{position:fixed!important;left:67vw!important')&&desktopCss.includes('.enemy-unit.elite-unit>#intent{left:65vw!important}')&&desktopCss.includes('.enemy-unit.boss-unit>#intent{left:61vw!important}')&&desktopCss.includes('top:29vh!important')&&desktopCss.includes('transform:translate(-100%,-100%)!important'),
  'PC enemy forecast is not fixed in the marked space immediately left of the enemy');
@@ -484,9 +488,9 @@ async function verifyServer(){
   assert(response?.ok,`local server did not return index.html (${response?.status||'no response'})`);
   const html=await response.text();
   assert(html.includes('id="tapStartGate"'),'served page has no TAP START gate');
-  assert(html.includes('responsive-shell.js?v=47'),'served page has a stale responsive script version');
+  assert(html.includes('responsive-shell.js?v=48'),'served page has a stale responsive script version');
   assert(html.includes('responsive-landscape.css?v=48'),'served page has a stale responsive stylesheet version');
-  assert(html.includes('responsive-desktop.css?v=30'),'served page has no PC layout stylesheet');
+  assert(html.includes('responsive-desktop.css?v=31'),'served page has no PC layout stylesheet');
   assert(html.includes('relics-events.js?v=155'),'served page has a stale relic event script version');
   assert(html.includes('strategy-polish.js?v=188'),'served page has a stale strategy event script version');
   assert(html.includes('economy.js?v=158'),'served page has a stale economy script version');
