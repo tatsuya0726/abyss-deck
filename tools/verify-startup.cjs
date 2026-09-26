@@ -48,19 +48,33 @@ const refinementJs=fs.readFileSync(path.join(dist,'refinement.js'),'utf8');
 const economyJs=fs.readFileSync(path.join(dist,'economy.js'),'utf8');
 const relicsEventsJs=fs.readFileSync(path.join(dist,'relics-events.js'),'utf8');
 const strategyPolishJs=fs.readFileSync(path.join(dist,'strategy-polish.js'),'utf8');
+assert(enhanceJs.includes("document.getElementById('battle')?.classList.contains('on')&&window.getAbyssGame?.()?.enemy"),
+ 'combat sound effects still lower the active battle BGM');
 assert(landscapeCss.includes('width:var(--abyss-vv-width,100%)!important'),
  'landscape root does not use the measured visual viewport width');
 assert(landscapeCss.includes('height:var(--abyss-vv-height,100%)!important'),
  'landscape root does not use the measured visual viewport height');
-assert(index.includes('responsive-desktop.css?v=4'),
+assert(index.includes('responsive-desktop.css?v=7'),
  'PC layout stylesheet is not loaded after the landscape layout');
 assert(desktopCss.trim().startsWith('/* PC landscape layout.')&&desktopCss.includes('@media (orientation:landscape) and (hover:hover) and (pointer:fine) and (min-width:1000px) and (min-height:600px)'),
  'PC layout is not isolated from touch and portrait layouts');
 for(const selector of ['#battle .arena','#battle .hand','#map>.path','#eventModal','#shopModal','.reward-panel','.boss-relic-choices']){
  assert(desktopCss.includes(selector),`PC layout does not cover ${selector}`);
 }
-assert(shellJs.includes("desktop.href='responsive-desktop.css?v=4'"),
+assert(shellJs.includes("desktop.href='responsive-desktop.css?v=7'"),
  'dynamically loaded game shells do not receive the PC layout');
+assert(shellJs.includes('.relic-grid .relic-card,.beast-legacy-grid .beast-card'),
+ 'controller focus cannot traverse creature and relic archive entries');
+assert(shellJs.includes("activeModal?.querySelector('.modal-shell-body')"),
+ 'controller scrolling does not prioritize the active modal body');
+assert(shellJs.includes("if(el.matches?.(':disabled,[hidden]'))return false"),
+ 'controller focus can remain on completed reward actions');
+assert(shellJs.includes("pendingHandFocusIndex=Math.max(0,(Number(focusEl.dataset.i)||0)-1)"),
+ 'controller focus does not move to the card left of a played card');
+assert(shellJs.includes("topModal?.matches?.('#shopModal')?topModal.querySelector('.shop-choose #shopBack'):null"),
+ 'controller cancel does not return card upgrade/removal choices to the market');
+assert(shellJs.includes("const fixedPcForecast=matchMedia?.('(hover:hover) and (pointer:fine) and (min-width:1000px) and (min-height:600px)')?.matches"),
+ 'PC enemy forecast still follows animated enemy geometry');
 assert((desktopCss.match(/{/g)||[]).length===(desktopCss.match(/}/g)||[]).length,
  'PC stylesheet has unbalanced blocks');
 for(const [width,height]of [[1000,600],[1366,768],[1920,1080]]){
@@ -143,6 +157,14 @@ assert(landscapeCss.includes('top:214px!important;min-height:30px!important;heig
  'desktop debug actions do not fit beneath the left utility group');
 assert(landscapeCss.includes('height:min(31vh,220px)!important;--enemy-scale:1.28!important;margin-top:24px!important'),
  'desktop characters were not enlarged within the protected arena');
+assert(desktopCss.includes('--pc-hand-height:clamp(320px,34vh,360px)')&&desktopCss.includes('height:calc(100% - var(--pc-hand-height))!important'),
+ 'tall PC battle layout still leaves excessive space above the cards');
+assert(desktopCss.includes('height:26px!important')&&desktopCss.includes('#battle .hptext{font-size:clamp(13px,.82vw,16px)!important'),
+ 'PC HP bar does not fully contain its enlarged value text');
+assert(desktopCss.includes('#battle .enemyName{font-size:clamp(16px,1vw,20px)!important')&&desktopCss.includes(':is(.state-pill,.state-none){font-size:clamp(12px,.76vw,15px)!important'),
+ 'PC battle names and status text were not enlarged');
+assert(desktopCss.includes('#shopModal:has(.shop-choose) .shop-card-list')&&desktopCss.includes('grid-template-columns:repeat(4,minmax(0,1fr))!important'),
+ 'PC shop upgrade choices are not arranged four cards per row');
 assert(landscapeCss.includes('html.tv-mode #shopGrid .unified-market-item.sale-card,'),
  'shop sale and synergy frames are not explicitly removed');
 assert(landscapeCss.includes('left:calc(var(--abyss-safe-left,0px) + 106px)!important'),
@@ -348,14 +370,14 @@ async function verifyServer(){
   assert(response?.ok,`local server did not return index.html (${response?.status||'no response'})`);
   const html=await response.text();
   assert(html.includes('id="tapStartGate"'),'served page has no TAP START gate');
-  assert(html.includes('responsive-shell.js?v=35'),'served page has a stale responsive script version');
+  assert(html.includes('responsive-shell.js?v=37'),'served page has a stale responsive script version');
   assert(html.includes('responsive-landscape.css?v=46'),'served page has a stale responsive stylesheet version');
-  assert(html.includes('responsive-desktop.css?v=4'),'served page has no PC layout stylesheet');
+  assert(html.includes('responsive-desktop.css?v=7'),'served page has no PC layout stylesheet');
   assert(html.includes('relics-events.js?v=155'),'served page has a stale relic event script version');
   assert(html.includes('strategy-polish.js?v=186'),'served page has a stale strategy event script version');
   assert(html.includes('economy.js?v=158'),'served page has a stale economy script version');
   assert(html.includes('refinement.js?v=70'),'served page has a stale event script version');
-  assert(html.includes('enhance.js?v=268'),'served page has a stale audio script version');
+  assert(html.includes('enhance.js?v=269'),'served page has a stale audio script version');
  }finally{
   server.kill('SIGTERM');
  }
