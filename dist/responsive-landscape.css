@@ -1503,6 +1503,7 @@ html.tv-mode{
     overflow-y:auto!important;align-content:start!important
   }
   html.tv-mode #deckChoiceCancel{flex:0 0 auto!important;min-height:34px!important;padding:5px 10px!important}
+  html.tv-mode #deckChoiceList>.unified-card-choice{min-height:var(--card-h,202px)!important;height:auto!important}
 }
 html.tv-mode .app,
 html.tv-mode body.scene-title #title,

@@ -90,7 +90,7 @@ assert(landscapeCss.includes('width:var(--abyss-vv-width,100%)!important'),
  'landscape root does not use the measured visual viewport width');
 assert(landscapeCss.includes('height:var(--abyss-vv-height,100%)!important'),
  'landscape root does not use the measured visual viewport height');
-assert(index.includes('responsive-desktop.css?v=29'),
+assert(index.includes('responsive-desktop.css?v=30'),
  'PC layout stylesheet is not loaded after the landscape layout');
 assert(desktopCss.trim().startsWith('/* PC landscape layout.')&&desktopCss.includes('@media (orientation:landscape) and (hover:hover) and (pointer:fine) and (min-width:1000px) and (min-height:600px)'),
  'PC layout is not isolated from touch and portrait layouts');
@@ -101,8 +101,10 @@ assert(desktopCss.includes("grid-template-areas:'icon name power' 'icon name cos
  'PC boss relic choices do not use the available horizontal space');
 assert(desktopCss.includes('#outcomeModal #outcomeText ruby{display:ruby!important'),
  'PC result furigana can still split the outcome sentence');
-assert(shellJs.includes("desktop.href='responsive-desktop.css?v=29'")&&shellJs.includes("link.href='responsive-landscape.css?v=47'"),
+assert(shellJs.includes("desktop.href='responsive-desktop.css?v=30'")&&shellJs.includes("link.href='responsive-landscape.css?v=48'"),
  'dynamically loaded game shells do not receive the PC layout');
+assert(gamePolishCss.includes('#deckChoiceList{box-sizing:border-box;flex:1 1 auto;min-height:0;max-height:none')&&desktopCss.includes('#deckChoiceModal>.panel{display:flex!important;flex-direction:column!important;width:min(1180px,94vw)!important;height:min(820px,90vh)!important'),
+ 'single-card event picker can still collapse or hide its card list');
 assert(shellJs.includes('input[type=range]:not([disabled])')&&shellJs.includes('function adjustFocusedRange(dir)')&&shellJs.includes("focusEl.dispatchEvent(new Event('input',{bubbles:true}))"),
  'controller navigation cannot focus and adjust the audio sliders');
 assert(shellJs.includes('.relic-grid .relic-card,.beast-legacy-grid .beast-card'),
@@ -482,9 +484,9 @@ async function verifyServer(){
   assert(response?.ok,`local server did not return index.html (${response?.status||'no response'})`);
   const html=await response.text();
   assert(html.includes('id="tapStartGate"'),'served page has no TAP START gate');
-  assert(html.includes('responsive-shell.js?v=46'),'served page has a stale responsive script version');
-  assert(html.includes('responsive-landscape.css?v=47'),'served page has a stale responsive stylesheet version');
-  assert(html.includes('responsive-desktop.css?v=29'),'served page has no PC layout stylesheet');
+  assert(html.includes('responsive-shell.js?v=47'),'served page has a stale responsive script version');
+  assert(html.includes('responsive-landscape.css?v=48'),'served page has a stale responsive stylesheet version');
+  assert(html.includes('responsive-desktop.css?v=30'),'served page has no PC layout stylesheet');
   assert(html.includes('relics-events.js?v=155'),'served page has a stale relic event script version');
   assert(html.includes('strategy-polish.js?v=188'),'served page has a stale strategy event script version');
   assert(html.includes('economy.js?v=158'),'served page has a stale economy script version');
@@ -492,7 +494,7 @@ async function verifyServer(){
   assert(html.includes('refinement.js?v=73'),'served page has a stale event script version');
   assert(html.includes('enhance.js?v=270'),'served page has a stale audio script version');
   assert(html.includes('title-tools.js?v=114'),'served page has a stale settings script version');
-  assert(html.includes('game-polish.css?v=153'),'served page has a stale game polish stylesheet version');
+  assert(html.includes('game-polish.css?v=154'),'served page has a stale game polish stylesheet version');
  }finally{
   server.kill('SIGTERM');
  }

@@ -246,6 +246,12 @@
   html.tv-mode :is(#deckChoiceModal,#multiDeckChoiceModal,#markSelectModal,#pathCardChoiceModal) .map-choice-note{font-size:14px!important;line-height:1.45!important;margin:0 0 10px!important}
   html.tv-mode :is(#deckChoiceList,#multiDeckList,#markCardList,#pathCardChoiceList){display:grid!important;grid-template-columns:repeat(3,minmax(var(--pc-card-width),1fr))!important;grid-auto-rows:max-content!important;justify-items:center!important;align-items:start!important;gap:22px 16px!important;width:100%!important;max-height:calc(92vh - 170px)!important;padding:8px 4px 20px!important;overflow-x:hidden!important;overflow-y:auto!important}
   html.tv-mode :is(#deckChoiceList,#multiDeckList,#markCardList,#pathCardChoiceList)>.choice{box-sizing:border-box!important;width:auto!important;min-height:var(--pc-card-height)!important;height:auto!important;padding:3px!important;align-self:start!important}
+  /* Memory-eating clam and other single-card picks keep a full-height card
+     viewport instead of collapsing the list inside an auto-sized panel. */
+  html.tv-mode #deckChoiceModal>.panel{display:flex!important;flex-direction:column!important;width:min(1180px,94vw)!important;height:min(820px,90vh)!important;max-height:90vh!important;overflow:hidden!important}
+  html.tv-mode #deckChoiceModal :is(.bigicon,h2,.map-choice-note),html.tv-mode #deckChoiceCancel{flex:0 0 auto!important}
+  html.tv-mode #deckChoiceList{flex:1 1 auto!important;min-height:0!important;height:auto!important;max-height:none!important;grid-template-columns:repeat(4,minmax(var(--pc-card-width),1fr))!important;align-content:start!important;overflow-y:auto!important;scrollbar-gutter:stable!important}
+  html.tv-mode #deckChoiceCancel{width:min(420px,70%)!important;min-height:48px!important;margin:8px auto 0!important}
 
   /* Reveal/result dialogs size themselves to their real content. */
   html.tv-mode #cardRevealModal{align-items:center!important;padding:4vh 3vw!important}
