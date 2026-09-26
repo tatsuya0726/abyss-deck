@@ -104,9 +104,9 @@
 
   /* Events: illustration and choices get independent columns. */
   html.tv-mode :is(#eventModal,#mapChoiceModal){padding:76px 3vw 18px!important;align-items:center!important}
-  html.tv-mode :is(#eventModal,#mapChoiceModal)>.panel{width:min(1400px,94vw)!important;height:min(760px,82vh)!important;max-width:1400px!important;max-height:760px!important;display:grid!important;grid-template-columns:minmax(360px,42%) minmax(0,1fr)!important;grid-template-rows:auto auto minmax(0,1fr)!important;column-gap:30px!important;row-gap:12px!important;padding:20px 24px!important;overflow:hidden!important}
-  html.tv-mode :is(#eventModal,#mapChoiceModal) .bigicon{grid-column:1!important;grid-row:1/4!important;width:100%!important;height:100%!important;min-height:0!important;overflow:hidden!important}
-  html.tv-mode :is(#eventModal,#mapChoiceModal) .event-illustration{width:100%!important;height:100%!important;object-fit:contain!important;object-position:center!important}
+  html.tv-mode :is(#eventModal,#mapChoiceModal)>.panel{width:min(1400px,94vw)!important;height:min(760px,82vh)!important;max-width:1400px!important;max-height:760px!important;display:grid!important;grid-template-columns:minmax(420px,50%) minmax(0,1fr)!important;grid-template-rows:auto auto minmax(0,1fr)!important;column-gap:24px!important;row-gap:12px!important;padding:20px 24px!important;overflow:hidden!important}
+  html.tv-mode :is(#eventModal,#mapChoiceModal) .bigicon{grid-column:1!important;grid-row:1/4!important;width:100%!important;height:100%!important;min-height:0!important;aspect-ratio:auto!important;overflow:hidden!important}
+  html.tv-mode :is(#eventModal,#mapChoiceModal) .event-illustration{width:100%!important;height:100%!important;object-fit:cover!important;object-position:center!important}
   html.tv-mode :is(#eventModal,#mapChoiceModal) h2{grid-column:2!important;grid-row:1!important;margin:6px 0 0!important;padding-right:190px!important;font-size:clamp(28px,2vw,38px)!important;line-height:1.15!important}
   html.tv-mode :is(#eventModal,#mapChoiceModal) :is(#eventText,#mapChoiceText){grid-column:2!important;grid-row:2!important;font-size:17px!important;line-height:1.55!important;margin:0!important}
   html.tv-mode :is(#eventModal,#mapChoiceModal) .choices{grid-column:2!important;grid-row:3!important;display:grid!important;grid-template-rows:none!important;grid-auto-rows:minmax(88px,1fr)!important;align-content:stretch!important;gap:12px!important;min-height:0!important;height:100%!important;overflow:hidden!important}

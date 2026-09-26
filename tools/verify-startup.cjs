@@ -87,7 +87,7 @@ assert(landscapeCss.includes('width:var(--abyss-vv-width,100%)!important'),
  'landscape root does not use the measured visual viewport width');
 assert(landscapeCss.includes('height:var(--abyss-vv-height,100%)!important'),
  'landscape root does not use the measured visual viewport height');
-assert(index.includes('responsive-desktop.css?v=27'),
+assert(index.includes('responsive-desktop.css?v=28'),
  'PC layout stylesheet is not loaded after the landscape layout');
 assert(desktopCss.trim().startsWith('/* PC landscape layout.')&&desktopCss.includes('@media (orientation:landscape) and (hover:hover) and (pointer:fine) and (min-width:1000px) and (min-height:600px)'),
  'PC layout is not isolated from touch and portrait layouts');
@@ -98,7 +98,7 @@ assert(desktopCss.includes("grid-template-areas:'icon name power' 'icon name cos
  'PC boss relic choices do not use the available horizontal space');
 assert(desktopCss.includes('#outcomeModal #outcomeText ruby{display:ruby!important'),
  'PC result furigana can still split the outcome sentence');
-assert(shellJs.includes("desktop.href='responsive-desktop.css?v=27'"),
+assert(shellJs.includes("desktop.href='responsive-desktop.css?v=28'"),
  'dynamically loaded game shells do not receive the PC layout');
 assert(shellJs.includes('.relic-grid .relic-card,.beast-legacy-grid .beast-card'),
  'controller focus cannot traverse creature and relic archive entries');
@@ -150,6 +150,8 @@ assert(refinementJs.includes('function syncPortraitEventArt()')&&refinementJs.in
  'portrait event artwork has no fallback when a stale seal icon is rendered');
 assert(refinementCss.includes('@media (orientation:portrait) and (max-width:700px)')&&refinementCss.includes('.bigicon:has(.event-illustration)')&&refinementCss.includes('height:clamp(150px,24dvh,220px)')&&refinementCss.includes('object-fit:cover'),
  'portrait event illustrations do not have a bounded mobile layout');
+assert(desktopCss.includes('grid-template-columns:minmax(420px,50%) minmax(0,1fr)!important')&&desktopCss.includes('.event-illustration{width:100%!important;height:100%!important;object-fit:cover!important'),
+ 'PC event illustrations do not use the widened half-panel layout');
 for(const name of ['black-threads.webp','memory-vault.webp','void-scales.webp']){
  const image=fs.readFileSync(path.join(dist,'assets/events',name));
  assert(image.length>100000,`high-resolution abyss event art is unexpectedly small: ${name}`);
@@ -471,7 +473,7 @@ async function verifyServer(){
   assert(html.includes('id="tapStartGate"'),'served page has no TAP START gate');
   assert(html.includes('responsive-shell.js?v=45'),'served page has a stale responsive script version');
   assert(html.includes('responsive-landscape.css?v=46'),'served page has a stale responsive stylesheet version');
-  assert(html.includes('responsive-desktop.css?v=27'),'served page has no PC layout stylesheet');
+  assert(html.includes('responsive-desktop.css?v=28'),'served page has no PC layout stylesheet');
   assert(html.includes('relics-events.js?v=155'),'served page has a stale relic event script version');
   assert(html.includes('strategy-polish.js?v=188'),'served page has a stale strategy event script version');
   assert(html.includes('economy.js?v=158'),'served page has a stale economy script version');
