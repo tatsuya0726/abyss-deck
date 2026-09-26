@@ -2064,6 +2064,11 @@ html.tv-mode #tapStartGate{width:auto!important;height:auto!important}
   html.tv-mode #multiResultList :is(.relic-card,.stat-result-card){
     padding:7px 9px!important;font-size:9px!important;line-height:1.2!important
   }
+  html.tv-mode #multiResultList .stat-result-card,
+  html.tv-mode #multiResultList .stat-result-card>b{
+    font-size:clamp(22px,min(1.8vw,3.8vh),34px)!important;
+    line-height:1.35!important
+  }
   html.tv-mode #multiResultList .relic-icon{font-size:22px!important}
   html.tv-mode #multiResultClose{
     flex:0 0 34px!important;width:min(100%,360px)!important;min-height:34px!important;

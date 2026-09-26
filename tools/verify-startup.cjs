@@ -165,6 +165,8 @@ assert(landscapeCss.includes(':is(#multiDeckResultModal,#outcomeModal)>.panel'),
  'landscape result scenes are not bounded to one viewport');
 assert(landscapeCss.includes('#multiResultList .multi-result-card:only-child .unified-card'),
  'single-card event results do not preserve readable card dimensions');
+assert(landscapeCss.includes('font-size:clamp(22px,min(1.8vw,3.8vh),34px)!important'),
+ 'landscape gold/stat result text remains too small');
 assert(landscapeCss.includes(':is(#multiDeckResultModal,#outcomeModal)>.panel>small{display:none!important}'),
  'decorative English captions still consume landscape result space');
 assert(landscapeCss.includes('#rewardRelicOption[hidden]{display:none!important}'),
@@ -347,7 +349,7 @@ async function verifyServer(){
   const html=await response.text();
   assert(html.includes('id="tapStartGate"'),'served page has no TAP START gate');
   assert(html.includes('responsive-shell.js?v=35'),'served page has a stale responsive script version');
-  assert(html.includes('responsive-landscape.css?v=45'),'served page has a stale responsive stylesheet version');
+  assert(html.includes('responsive-landscape.css?v=46'),'served page has a stale responsive stylesheet version');
   assert(html.includes('responsive-desktop.css?v=4'),'served page has no PC layout stylesheet');
   assert(html.includes('relics-events.js?v=155'),'served page has a stale relic event script version');
   assert(html.includes('strategy-polish.js?v=186'),'served page has a stale strategy event script version');
