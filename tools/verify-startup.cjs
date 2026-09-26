@@ -111,6 +111,8 @@ assert(desktopCss.includes('#titleSettingsModal>.settings-hub-panel{box-sizing:b
  'TV settings are not proportionally fitted with the close footer inside the canvas');
 assert(!shellJs.includes('installTvModalWheel'),
  'TV settings still depend on a special wheel-scroll workaround');
+assert(shellJs.includes('function closeSettingsForDisplayChange()')&&shellJs.includes('function settleDisplayViewport()')&&shellJs.includes('for(const delay of [0,60,180,420])')&&shellJs.includes("document.addEventListener('fullscreenchange',()=>{handleOrientation();settleDisplayViewport()"),
+ 'fullscreen and TV fixed mode do not remeasure after the native viewport settles');
 assert(gamePolishCss.includes('#deckChoiceList{box-sizing:border-box;flex:1 1 auto;min-height:0;max-height:none')&&desktopCss.includes('#deckChoiceModal>.panel{display:flex!important;flex-direction:column!important;width:min(1180px,94vw)!important;height:min(820px,90vh)!important'),
  'single-card event picker can still collapse or hide its card list');
 assert(shellJs.includes('input[type=range]:not([disabled])')&&shellJs.includes('function adjustFocusedRange(dir)')&&shellJs.includes("focusEl.dispatchEvent(new Event('input',{bubbles:true}))"),
@@ -492,7 +494,7 @@ async function verifyServer(){
   assert(response?.ok,`local server did not return index.html (${response?.status||'no response'})`);
   const html=await response.text();
   assert(html.includes('id="tapStartGate"'),'served page has no TAP START gate');
-  assert(html.includes('responsive-shell.js?v=49'),'served page has a stale responsive script version');
+  assert(html.includes('responsive-shell.js?v=50'),'served page has a stale responsive script version');
   assert(html.includes('responsive-landscape.css?v=48'),'served page has a stale responsive stylesheet version');
   assert(html.includes('responsive-desktop.css?v=32'),'served page has no PC layout stylesheet');
   assert(html.includes('relics-events.js?v=155'),'served page has a stale relic event script version');

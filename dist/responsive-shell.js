@@ -54,7 +54,15 @@ function syncStageViewport(){
 }
 const SELECTOR="#newGame,#continueGame,#titleSettingsMenu,.title-hub-grid button:not(:disabled),[data-hub-close],#titleBestiary,#titleCardCodex,#titleRelicCodex,#titleBgmGallery:not(:disabled),#titleCodex,#resetAllData,#resetCancel,#resetConfirm,#modifierClose,#strategyClose,#runModifierBadge,#mapHelpView,#mapHelpClose,#rewardGoldOption,#rewardCardOption,#rewardRelicOption,#rewardContinue,#rewardBack,#skipReward,.boss-relic-choice,.achievement-card:not(:disabled),.market-item:not(:disabled),.node.available,.choice,.card[data-i],.pileBtn,#collectionClose,.relic-grid .relic-card,.beast-legacy-grid .beast-card,input[type=range]:not([disabled]),button:not([disabled]),.codex-card-wrap,[data-setting],[data-filter],[data-tab],a[href]";
 
-fsBtn.onclick=()=>{if(document.fullscreenElement)document.exitFullscreen?.();else document.documentElement.requestFullscreen?.().catch(()=>{})};
+function closeSettingsForDisplayChange(){doc()?.getElementById('titleSettingsModal')?.classList.remove('on')}
+function settleDisplayViewport(){
+ for(const delay of [0,60,180,420])setTimeout(()=>{syncStageViewport();syncIntentPosition();updateRing();queueMapPosition()},delay);
+}
+fsBtn.onclick=()=>{
+ closeSettingsForDisplayChange();
+ const change=document.fullscreenElement?document.exitFullscreen?.():document.documentElement.requestFullscreen?.();
+ Promise.resolve(change).catch(()=>{}).finally(settleDisplayViewport);
+};
 
 const soundBtn=document.getElementById('sound-toggle');
 function syncSoundBtn(){try{let b=doc()?.getElementById('soundBtn');if(!b)return;let on=!b.classList.contains('muted'),buttonText=`♫ 音楽：${on?'ON':'OFF'}`;if(soundBtn.textContent!==buttonText)soundBtn.textContent=buttonText;let label=doc()?.querySelector('#titleTvSound small'),text=`音楽 ${on?'ON':'OFF'}`;if(label&&label.textContent!==text)label.textContent=text}catch(e){}}
@@ -88,7 +96,7 @@ function installTitleSettings(){
   add('titleTvSound','♫','音楽','音楽 ON',()=>soundBtn.click());
   add('titleTvController','🎮','コントローラー','コントローラー ON',()=>ctrlBtn.click());
   add('titleTvFullscreen','⛶','フルスクリーン','画面いっぱいに表示',()=>fsBtn.click());
-  add('titleTvDisplay','📺','TV固定表示','TV固定表示 OFF',()=>{tvCanvasEnabled=!tvCanvasEnabled;try{localStorage.setItem(TV_CANVAS_KEY,tvCanvasEnabled?'1':'0')}catch(e){}syncTvCanvas();requestAnimationFrame(()=>{ensureFocus();updateRing()})});
+  add('titleTvDisplay','📺','TV固定表示','TV固定表示 OFF',()=>{closeSettingsForDisplayChange();tvCanvasEnabled=!tvCanvasEnabled;try{localStorage.setItem(TV_CANVAS_KEY,tvCanvasEnabled?'1':'0')}catch(e){}settleDisplayViewport();requestAnimationFrame(()=>{ensureFocus();updateRing()})});
   add('titleTvScale','↔','表示範囲','表示範囲 92%',()=>{let index=TV_CANVAS_SIZES.indexOf(tvCanvasPercent);tvCanvasPercent=TV_CANVAS_SIZES[(index+1)%TV_CANVAS_SIZES.length];try{localStorage.setItem(TV_CANVAS_SIZE_KEY,String(tvCanvasPercent))}catch(e){}syncTvCanvas();requestAnimationFrame(()=>{ensureFocus();updateRing()})});
  }
  const hide=!landscapeLayout;d.querySelectorAll('.tv-title-setting').forEach(b=>{if(b.hidden!==hide)b.hidden=hide});
@@ -551,7 +559,7 @@ syncStageViewport();
 window.addEventListener('resize',handleOrientation,{passive:true});
 window.addEventListener('pageshow',handleOrientation,{passive:true});
 window.addEventListener('orientationchange',()=>setTimeout(handleOrientation,80),{passive:true});
-document.addEventListener('fullscreenchange',handleOrientation,{passive:true});
+document.addEventListener('fullscreenchange',()=>{handleOrientation();settleDisplayViewport()},{passive:true});
 window.visualViewport?.addEventListener('resize',handleOrientation,{passive:true});
 window.visualViewport?.addEventListener('scroll',syncStageViewport,{passive:true});
 
