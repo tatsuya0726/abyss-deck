@@ -57,6 +57,20 @@ assert(titleToolsJs.includes('id="pcBgmVolume"')&&titleToolsJs.includes('id="pcS
  'PC settings do not expose persistent BGM and sound-effect volume controls');
 assert(upgradeJs.includes('id="battleSettingsView"')&&titleToolsJs.includes("$('#battleSettingsView')?.addEventListener('click',openSettings)"),
  'battle quick navigation cannot open the settings menu');
+for(const combatHtml of [index,fs.readFileSync(path.join(dist,'game.html'),'utf8')]){
+ assert(combatHtml.includes('if(fixed.stealBlock){fixed.denyDraw=Math.max')&&combatHtml.includes('delete fixed.stealBlock'),
+  'conditional block theft is not converted into reliable draw denial');
+ assert(combatHtml.includes('if(fixed.randomizeTop){fixed.topCostUp=Math.max')&&combatHtml.includes('delete fixed.randomizeTop'),
+  'random top-card cost changes are not converted into a guaranteed cost increase');
+ assert(combatHtml.includes('G.topCostPenalty=Math.max')&&combatHtml.includes('if(G.topCostPenalty>0)')&&combatHtml.includes('if(G.turn===1)G.topCostPenalty=0'),
+  'the guaranteed next-card cost increase is not resolved and consumed');
+ assert(combatHtml.includes('視界妨害：次のターンの手札−')&&combatHtml.includes('攪乱：次に引くカードのコスト＋'),
+  'replacement enemy actions are missing from the combat forecast');
+}
+assert(upgradeJs.includes('視界妨害：次のターンの手札−${m.denyDraw}')&&upgradeJs.includes('攪乱：次に引くカードのコスト＋${m.topCostUp}'),
+ 'the bestiary does not explain the replacement enemy actions');
+assert(!upgradeJs.includes('m.stealBlock')&&!upgradeJs.includes('m.randomizeTop'),
+ 'the bestiary still advertises ineffective enemy actions');
 assert(desktopCss.includes('.quick-nav .pc-battle-settings{display:block!important}')&&desktopCss.includes('.pc-audio-settings'),
  'PC layout does not reveal the battle settings button and audio mixer');
 assert(landscapeCss.includes('width:var(--abyss-vv-width,100%)!important'),
