@@ -92,7 +92,7 @@ function injectLandscapeCss(){
  }
  if(!d.querySelector('link[data-abyss-desktop-layout],link[href*="responsive-desktop.css"]')){
   const desktop=d.createElement('link');
-  desktop.rel='stylesheet';desktop.href='responsive-desktop.css?v=12';
+  desktop.rel='stylesheet';desktop.href='responsive-desktop.css?v=13';
   desktop.dataset.abyssDesktopLayout='1';d.head.appendChild(desktop);
  }
 }
@@ -277,7 +277,8 @@ function scrollParent(el){
 }
 function revealFocus(el){
  if(!el)return;
- try{el.scrollIntoView({block:'nearest',inline:'nearest',behavior:'smooth'})}catch(e){el.scrollIntoView(false)}
+ const centerShopChoice=!!el.closest?.('#shopModal .shop-choose .shop-card-list');
+ try{el.scrollIntoView({block:centerShopChoice?'center':'nearest',inline:'nearest',behavior:'smooth'})}catch(e){el.scrollIntoView(false)}
  requestAnimationFrame(updateRing);
 }
 function scrollActive(amount){
@@ -305,7 +306,7 @@ function scrollShopListBeforeLeaving(dir){
  if(dir!=='up'&&dir!=='down')return false;
  const d=doc(),shop=d?.querySelector('#shopModal.on');
  if(!shop||!focusEl)return false;
- const item=focusEl.closest?.('.shop-card-list .unified-shop-choice,#shopGrid .market-item,#shopGrid .shop-item');
+ const item=focusEl.closest?.('#shopGrid .market-item,#shopGrid .shop-item');
  if(!item)return false;
  const target=item.closest('.shop-card-list')||shop.querySelector('#shopGrid');
  if(!target||target.scrollHeight<=target.clientHeight+2)return false;

@@ -27,7 +27,7 @@
   html.tv-mode #battle .boss-unit>.enemyName{top:0!important;margin:0 0 12px!important;font-size:clamp(18px,1.15vw,23px)!important;line-height:1.25!important}
   html.tv-mode #battle .boss-unit>#enemySprite.boss-enemy{box-sizing:border-box!important;width:100%!important;min-width:0!important;height:min(41vh,390px)!important;max-height:390px!important;margin:8px auto 12px!important;background-size:contain!important;background-position:center bottom!important;--enemy-scale:1.08!important;transform-origin:center bottom!important}
   html.tv-mode #battle .boss-unit>.hpbar{margin-top:10px!important}
-  html.tv-mode #battle .enemy-unit>.intent{position:absolute!important;left:auto!important;right:calc(100% + clamp(40px,4vw,76px))!important;top:auto!important;bottom:calc(100% - 172px)!important;height:auto!important;max-height:none!important;overflow:visible!important;transform:none!important;transform-origin:right bottom!important;justify-content:flex-end!important}
+  html.tv-mode #battle .enemy-unit>.intent{position:fixed!important;left:48vw!important;right:auto!important;top:auto!important;bottom:58vh!important;height:auto!important;max-height:none!important;overflow:visible!important;transform:translateX(-100%)!important;transform-origin:right bottom!important;justify-content:flex-end!important}
   html.tv-mode #battle .handArea{height:42%!important;min-height:0!important;padding:14px calc(var(--pc-actions) + 12px) 14px 22px!important;align-items:stretch!important;overflow:visible!important}
   html.tv-mode #battle .hand{width:100%!important;height:100%!important;display:flex!important;justify-content:center!important;align-items:flex-end!important;gap:14px!important;overflow-x:auto!important;overflow-y:hidden!important;padding:0 8px!important;scrollbar-width:thin}
   html.tv-mode #battle .hand .card{flex:0 0 var(--pc-card-width)!important;width:var(--pc-card-width)!important;height:var(--pc-card-height)!important;min-height:210px!important;margin:0!important;transform:none!important}
@@ -88,8 +88,8 @@
   html.tv-mode #shopModal .shop-head h2{font-size:34px!important;line-height:1.1!important}
   html.tv-mode #shopModal .shop-resources{gap:10px!important;font-size:15px!important}
   html.tv-mode #shopModal :is(.shop-wallet,.shop-deck-view){min-height:38px!important;padding:7px 12px!important;font-size:14px!important;line-height:1.15!important}
-  html.tv-mode #shopModal .shop-keeper{position:absolute!important;top:10px!important;left:300px!important;right:415px!important;height:62px!important;display:flex!important;align-items:center!important;gap:10px!important;z-index:3!important}
-  html.tv-mode #shopModal .shop-keeper img{width:72px!important;height:72px!important;object-fit:contain!important;order:2!important}
+  html.tv-mode #shopModal .shop-keeper{position:absolute!important;top:4px!important;left:300px!important;right:415px!important;height:86px!important;display:flex!important;align-items:center!important;gap:12px!important;z-index:3!important}
+  html.tv-mode #shopModal .shop-keeper img{width:118px!important;height:96px!important;object-fit:contain!important;order:2!important;filter:drop-shadow(0 5px 8px #0009)!important}
   html.tv-mode #shopModal .keeper-speech{flex:1!important;min-width:0!important;min-height:48px!important;padding:10px 16px!important;font-size:14px!important;line-height:1.35!important}
   html.tv-mode #shopModal .shop-tabs{height:52px!important;min-height:52px!important;gap:10px!important;margin:7px 0!important}
   html.tv-mode #shopModal .shop-tabs button{min-height:48px!important;padding:8px 12px!important;font-size:18px!important;line-height:1.2!important}
