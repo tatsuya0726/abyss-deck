@@ -2376,7 +2376,7 @@ html.tv-mode #shopGrid .unified-market-item.synergy-card{
   html.tv-mode .btn.gold ruby rt,
   html.tv-mode .keeper-speech ruby rt,
   html.tv-mode #shopModal .shop-tabs button[aria-pressed="true"] ruby rt{
-    color:#21190a!important;text-shadow:none!important
+    color:#000!important;text-shadow:none!important
   }
   html.tv-mode #shopModal .shop-wallet{
     display:grid!important;grid-template-columns:15px auto!important;align-items:center!important;
@@ -2534,5 +2534,60 @@ html.tv-mode #firstBlessingModal .choice>span{
   html.tv-mode #battle .arena>.enemy-unit>.enemyName{
     top:3px!important;width:min(92%,430px)!important;min-height:34px!important;
     padding:5px 14px!important
+  }
+}
+
+/* Ruby annotations must not widen prose into a chain of disconnected words.
+   Choice rows use the available landscape width, while one-line result dialogs
+   stay as one compact decision instead of scattering content over the screen. */
+@media (orientation:landscape){
+  html.tv-mode ruby rt{
+    color:#000!important;text-shadow:0 0 2px #d9ffff!important
+  }
+  html.tv-mode #firstBlessingModal .choice{
+    grid-template-columns:minmax(170px,29%) minmax(0,1fr)!important;
+    grid-template-rows:1fr!important;align-items:center!important;
+    column-gap:18px!important
+  }
+  html.tv-mode #firstBlessingModal .choice>b{
+    align-self:center!important;margin:0!important;line-height:1.35!important
+  }
+  html.tv-mode #firstBlessingModal .choice>span{
+    align-self:center!important;min-width:0!important;line-height:1.55!important
+  }
+  html.tv-mode :is(#firstBlessingModal .keeper-speech,#firstBlessingModal .choice>span,#multiResultList .stat-result-card) ruby{
+    white-space:nowrap!important;ruby-align:center
+  }
+  html.tv-mode :is(#firstBlessingModal .keeper-speech,#firstBlessingModal .choice>span,#multiResultList .stat-result-card) ruby rt{
+    font-size:.42em!important;line-height:1!important;letter-spacing:-.02em!important
+  }
+
+  html.tv-mode #multiDeckResultModal:has(#multiResultList>.stat-result-card:only-child){
+    place-items:center!important;padding:18px!important
+  }
+  html.tv-mode #multiDeckResultModal:has(#multiResultList>.stat-result-card:only-child)>.panel{
+    display:flex!important;flex-direction:column!important;align-items:center!important;
+    width:min(480px,86vw)!important;height:auto!important;max-width:480px!important;max-height:90vh!important;
+    gap:8px!important;margin:auto!important;padding:16px 20px!important;overflow:visible!important
+  }
+  html.tv-mode #multiDeckResultModal:has(#multiResultList>.stat-result-card:only-child) .bigicon{
+    flex:0 0 auto!important;font-size:30px!important;line-height:1!important;margin:0!important
+  }
+  html.tv-mode #multiDeckResultModal:has(#multiResultList>.stat-result-card:only-child) h2{
+    flex:0 0 auto!important;margin:0 0 3px!important;font-size:clamp(18px,4vh,25px)!important;line-height:1.35!important
+  }
+  html.tv-mode #multiDeckResultModal:has(#multiResultList>.stat-result-card:only-child) #multiResultList{
+    display:block!important;flex:0 0 auto!important;width:100%!important;min-height:0!important;
+    margin:0!important;padding:4px 0!important;overflow:visible!important
+  }
+  html.tv-mode #multiDeckResultModal:has(#multiResultList>.stat-result-card:only-child) .stat-result-card{
+    display:flex!important;align-items:center!important;justify-content:center!important;
+    box-sizing:border-box!important;width:100%!important;max-width:100%!important;min-height:64px!important;
+    padding:12px 16px!important;font-size:clamp(11px,2.4vh,15px)!important;line-height:1.55!important;
+    overflow:visible!important
+  }
+  html.tv-mode #multiDeckResultModal:has(#multiResultList>.stat-result-card:only-child) #multiResultClose{
+    flex:0 0 46px!important;width:min(300px,76%)!important;min-height:46px!important;
+    margin:4px auto 0!important;padding:7px 12px!important;font-size:14px!important
   }
 }

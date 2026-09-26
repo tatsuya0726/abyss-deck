@@ -81,7 +81,7 @@ function injectLandscapeCss(){
  if(!cssInjected){
   try{
    const link=d.createElement('link');
-   link.rel='stylesheet';link.href='responsive-landscape.css?v=47';
+   link.rel='stylesheet';link.href='responsive-landscape.css?v=48';
    d.head.appendChild(link);cssInjected=true;
   }catch(e){}
  }

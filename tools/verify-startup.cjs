@@ -217,6 +217,14 @@ assert(landscapeCss.includes('padding-top:42px!important')&&landscapeCss.include
  'PC enemy name does not have a dedicated band above the artwork');
 assert(landscapeCss.includes('.enemy-unit>.enemyName ruby rt')&&landscapeCss.includes('color:#000!important'),
  'enemy-name furigana is not fixed to black in landscape');
+assert(landscapeCss.includes('grid-template-columns:minmax(170px,29%) minmax(0,1fr)!important'),
+ 'opening gift choices do not use the landscape width for title and prose');
+assert(landscapeCss.includes('font-size:.42em!important')&&landscapeCss.includes('ruby-align:center'),
+ 'landscape prose furigana can still spread sentence fragments apart');
+assert(landscapeCss.includes('html.tv-mode ruby rt{')&&landscapeCss.includes('color:#000!important;text-shadow:0 0 2px #d9ffff!important'),
+ 'landscape furigana is not consistently black across changing backgrounds');
+assert(landscapeCss.includes('#multiDeckResultModal:has(#multiResultList>.stat-result-card:only-child)>.panel')&&landscapeCss.includes('width:min(480px,86vw)!important;height:auto!important'),
+ 'single-effect result window is not compact and content-sized');
 assert(landscapeCss.includes('width:116px!important;height:108px!important'),
  'opening gift spirit is not enlarged beside the title');
 const giftMinimumInnerHeight=320-12-14;
@@ -364,8 +372,8 @@ async function verifyServer(){
   assert(response?.ok,`local server did not return index.html (${response?.status||'no response'})`);
   const html=await response.text();
   assert(html.includes('id="tapStartGate"'),'served page has no TAP START gate');
-  assert(html.includes('responsive-shell.js?v=38'),'served page has a stale responsive script version');
-  assert(html.includes('responsive-landscape.css?v=47'),'served page has a stale responsive stylesheet version');
+  assert(html.includes('responsive-shell.js?v=39'),'served page has a stale responsive script version');
+  assert(html.includes('responsive-landscape.css?v=48'),'served page has a stale responsive stylesheet version');
   assert(html.includes('responsive-desktop.css?v=5'),'served page has no PC layout stylesheet');
   assert(html.includes('relics-events.js?v=155'),'served page has a stale relic event script version');
   assert(html.includes('strategy-polish.js?v=186'),'served page has a stale strategy event script version');
