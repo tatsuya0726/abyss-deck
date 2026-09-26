@@ -44,6 +44,7 @@ const landscapeCss=fs.readFileSync(path.join(dist,'responsive-landscape.css'),'u
 const desktopCss=fs.readFileSync(path.join(dist,'responsive-desktop.css'),'utf8');
 const shellJs=fs.readFileSync(path.join(dist,'responsive-shell.js'),'utf8');
 const upgradeJs=fs.readFileSync(path.join(dist,'upgrade.js'),'utf8');
+const titleToolsJs=fs.readFileSync(path.join(dist,'title-tools.js'),'utf8');
 const refinementCss=fs.readFileSync(path.join(dist,'refinement.css'),'utf8');
 const enhanceJs=fs.readFileSync(path.join(dist,'enhance.js'),'utf8');
 const refinementJs=fs.readFileSync(path.join(dist,'refinement.js'),'utf8');
@@ -52,11 +53,17 @@ const relicsEventsJs=fs.readFileSync(path.join(dist,'relics-events.js'),'utf8');
 const strategyPolishJs=fs.readFileSync(path.join(dist,'strategy-polish.js'),'utf8');
 assert(enhanceJs.includes("document.getElementById('battle')?.classList.contains('on')&&window.getAbyssGame?.()?.enemy"),
  'combat sound effects still lower the active battle BGM');
+assert(titleToolsJs.includes('id="pcBgmVolume"')&&titleToolsJs.includes('id="pcSfxVolume"')&&titleToolsJs.includes('setAbyssAudioPrefs'),
+ 'PC settings do not expose persistent BGM and sound-effect volume controls');
+assert(upgradeJs.includes('id="battleSettingsView"')&&titleToolsJs.includes("$('#battleSettingsView')?.addEventListener('click',openSettings)"),
+ 'battle quick navigation cannot open the settings menu');
+assert(desktopCss.includes('.quick-nav .pc-battle-settings{display:block!important}')&&desktopCss.includes('.pc-audio-settings'),
+ 'PC layout does not reveal the battle settings button and audio mixer');
 assert(landscapeCss.includes('width:var(--abyss-vv-width,100%)!important'),
  'landscape root does not use the measured visual viewport width');
 assert(landscapeCss.includes('height:var(--abyss-vv-height,100%)!important'),
  'landscape root does not use the measured visual viewport height');
-assert(index.includes('responsive-desktop.css?v=26'),
+assert(index.includes('responsive-desktop.css?v=27'),
  'PC layout stylesheet is not loaded after the landscape layout');
 assert(desktopCss.trim().startsWith('/* PC landscape layout.')&&desktopCss.includes('@media (orientation:landscape) and (hover:hover) and (pointer:fine) and (min-width:1000px) and (min-height:600px)'),
  'PC layout is not isolated from touch and portrait layouts');
@@ -67,7 +74,7 @@ assert(desktopCss.includes("grid-template-areas:'icon name power' 'icon name cos
  'PC boss relic choices do not use the available horizontal space');
 assert(desktopCss.includes('#outcomeModal #outcomeText ruby{display:ruby!important'),
  'PC result furigana can still split the outcome sentence');
-assert(shellJs.includes("desktop.href='responsive-desktop.css?v=26'"),
+assert(shellJs.includes("desktop.href='responsive-desktop.css?v=27'"),
  'dynamically loaded game shells do not receive the PC layout');
 assert(shellJs.includes('.relic-grid .relic-card,.beast-legacy-grid .beast-card'),
  'controller focus cannot traverse creature and relic archive entries');
@@ -438,9 +445,9 @@ async function verifyServer(){
   assert(response?.ok,`local server did not return index.html (${response?.status||'no response'})`);
   const html=await response.text();
   assert(html.includes('id="tapStartGate"'),'served page has no TAP START gate');
-  assert(html.includes('responsive-shell.js?v=44'),'served page has a stale responsive script version');
+  assert(html.includes('responsive-shell.js?v=45'),'served page has a stale responsive script version');
   assert(html.includes('responsive-landscape.css?v=46'),'served page has a stale responsive stylesheet version');
-  assert(html.includes('responsive-desktop.css?v=26'),'served page has no PC layout stylesheet');
+  assert(html.includes('responsive-desktop.css?v=27'),'served page has no PC layout stylesheet');
   assert(html.includes('relics-events.js?v=155'),'served page has a stale relic event script version');
   assert(html.includes('strategy-polish.js?v=187'),'served page has a stale strategy event script version');
   assert(html.includes('economy.js?v=158'),'served page has a stale economy script version');

@@ -3,12 +3,26 @@
   html.tv-mode{--pc-rail:216px;--pc-actions:180px;--pc-gap:clamp(16px,1.7vw,30px);--pc-ui:clamp(14px,.86vw,18px);--pc-small:clamp(12px,.72vw,15px);--pc-card-width:clamp(168px,11.5vw,206px);--pc-card-height:clamp(210px,38vh,300px)}
   html.tv-mode body{font-size:var(--pc-ui)!important}
 
+  /* PC-only audio mixer in the title settings menu. */
+  html.tv-mode .settings-hub-panel{height:min(650px,94vh)!important;max-height:94vh!important}
+  html.tv-mode .settings-hub-grid{overflow-y:auto!important}
+  html.tv-mode .pc-audio-settings{box-sizing:border-box;display:grid!important;grid-column:1/-1;grid-template-columns:minmax(150px,.72fr) repeat(2,minmax(230px,1fr));align-items:center;gap:14px 22px;padding:14px 18px;border:1px solid #4d747b;border-radius:11px;background:linear-gradient(145deg,#102831,#07171e);box-shadow:inset 0 0 26px #0b3b4244}
+  html.tv-mode .pc-audio-settings>header{display:flex;align-items:center;gap:12px;min-width:0}
+  html.tv-mode .pc-audio-settings>header>i{display:grid;place-items:center;flex:0 0 46px;width:46px;height:46px;border-radius:50%;background:#173d45;color:#96f5ed;font-style:normal;font-size:25px}
+  html.tv-mode .pc-audio-settings>header b,html.tv-mode .pc-audio-settings>header small{display:block}
+  html.tv-mode .pc-audio-settings>header b{color:#f1d692;font-size:17px!important;line-height:1.25}
+  html.tv-mode .pc-audio-settings>header small{margin-top:4px;color:#91b2b5;font-size:12px!important;line-height:1.25}
+  html.tv-mode .pc-audio-settings>label{display:grid;grid-template-columns:64px minmax(120px,1fr) 52px;align-items:center;gap:10px;min-width:0;color:#dbeceb;font-weight:800;font-size:15px!important}
+  html.tv-mode .pc-audio-settings input[type=range]{width:100%;height:28px;margin:0;cursor:pointer;accent-color:#73e5dc}
+  html.tv-mode .pc-audio-settings output{color:#ffe19a;font:800 15px/1.2 sans-serif;text-align:right;font-variant-numeric:tabular-nums}
+
   /* Battle: fixed utility rail, roomy arena and stable card spacing. */
-  html.tv-mode body:has(#battle.on) .quick-nav{position:fixed!important;inset:18px auto auto 18px!important;width:198px!important;max-width:198px!important;height:auto!important;display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;grid-template-rows:repeat(3,48px)!important;grid-auto-rows:48px!important;gap:7px!important;padding:0!important;transform:none!important;z-index:75!important;background:none!important}
+  html.tv-mode body:has(#battle.on) .quick-nav{position:fixed!important;inset:18px auto auto 18px!important;width:198px!important;max-width:198px!important;height:auto!important;display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;grid-template-rows:repeat(4,48px)!important;grid-auto-rows:48px!important;gap:7px!important;padding:0!important;transform:none!important;z-index:75!important;background:none!important}
   html.tv-mode body:has(#battle.on) .quick-nav button{width:auto!important;min-width:0!important;height:48px!important;min-height:48px!important;padding:5px 7px!important;font-size:14px!important;line-height:1.12!important}
-  html.tv-mode body:has(#battle.on) .hud .res{position:fixed!important;inset:181px auto auto 18px!important;width:198px!important;display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;grid-template-rows:46px!important;grid-auto-rows:46px!important;gap:7px!important;padding:0!important;transform:none!important;z-index:74!important}
+  html.tv-mode body:has(#battle.on) .quick-nav .pc-battle-settings{display:block!important}
+  html.tv-mode body:has(#battle.on) .hud .res{position:fixed!important;inset:236px auto auto 18px!important;width:198px!important;display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;grid-template-rows:46px!important;grid-auto-rows:46px!important;gap:7px!important;padding:0!important;transform:none!important;z-index:74!important}
   html.tv-mode body:has(#battle.on) .hud .res>*{width:auto!important;min-width:0!important;height:46px!important;font-size:14px!important}
-  html.tv-mode body:has(#battle.on) :is(#debugKillNow,#debugLauncher){position:fixed!important;top:234px!important;width:95px!important;height:36px!important;min-height:36px!important;padding:3px 5px!important;font-size:11px!important;line-height:1!important;z-index:76!important;transform:none!important}
+  html.tv-mode body:has(#battle.on) :is(#debugKillNow,#debugLauncher){position:fixed!important;top:289px!important;width:95px!important;height:36px!important;min-height:36px!important;padding:3px 5px!important;font-size:11px!important;line-height:1!important;z-index:76!important;transform:none!important}
   html.tv-mode body:has(#battle.on) #debugKillNow{left:18px!important}
   html.tv-mode body:has(#battle.on) #debugLauncher{left:121px!important;right:auto!important}
   html.tv-mode #battle .arena{height:58%!important;min-height:0!important;padding:24px var(--pc-actions) 8px calc(var(--pc-rail) + 24px)!important;gap:var(--pc-gap)!important;align-items:flex-end!important;justify-content:space-between!important}
