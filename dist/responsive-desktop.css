@@ -27,7 +27,7 @@
   html.tv-mode #battle .boss-unit>.enemyName{top:0!important;margin:0 0 12px!important;font-size:clamp(18px,1.15vw,23px)!important;line-height:1.25!important}
   html.tv-mode #battle .boss-unit>#enemySprite.boss-enemy{box-sizing:border-box!important;width:100%!important;min-width:0!important;height:min(41vh,390px)!important;max-height:390px!important;margin:8px auto 12px!important;background-size:contain!important;background-position:center bottom!important;--enemy-scale:1.08!important;transform-origin:center bottom!important}
   html.tv-mode #battle .boss-unit>.hpbar{margin-top:10px!important}
-  html.tv-mode #battle .enemy-unit>.intent{position:fixed!important;left:48vw!important;right:auto!important;top:auto!important;bottom:58vh!important;height:auto!important;max-height:none!important;overflow:visible!important;transform:translateX(-100%)!important;transform-origin:right bottom!important;justify-content:flex-end!important}
+  html.tv-mode #battle .enemy-unit>.intent{position:fixed!important;left:64vw!important;right:auto!important;top:47vh!important;bottom:auto!important;height:auto!important;max-height:none!important;overflow:visible!important;transform:translate(-100%,-100%)!important;transform-origin:right bottom!important;justify-content:flex-end!important}
   html.tv-mode #battle .handArea{height:42%!important;min-height:0!important;padding:14px calc(var(--pc-actions) + 12px) 14px 22px!important;align-items:stretch!important;overflow:visible!important}
   html.tv-mode #battle .hand{width:100%!important;height:100%!important;display:flex!important;justify-content:center!important;align-items:flex-end!important;gap:14px!important;overflow-x:auto!important;overflow-y:hidden!important;padding:0 8px!important;scrollbar-width:thin}
   html.tv-mode #battle .hand .card{flex:0 0 var(--pc-card-width)!important;width:var(--pc-card-width)!important;height:var(--pc-card-height)!important;min-height:210px!important;margin:0!important;transform:none!important}
@@ -157,6 +157,8 @@
   html.tv-mode .boss-relic-choice .boss-power{grid-area:power!important;align-self:end!important}
   html.tv-mode .boss-relic-choice .boss-cost{grid-area:cost!important;align-self:start!important;margin:0!important;padding-top:6px!important}
   html.tv-mode .boss-relic-choice span{font-size:clamp(15px,.95vw,18px)!important;line-height:1.55!important}
+  html.tv-mode #relicRevealModal>.relic-reveal{box-sizing:border-box!important;width:min(680px,60vw)!important;max-width:680px!important;height:auto!important;max-height:86vh!important;margin:auto!important;padding:26px 34px!important;overflow:auto!important}
+  html.tv-mode #relicRevealModal #relicRevealEffect{width:100%!important;box-sizing:border-box!important}
   html.tv-mode :is(#cardRevealModal,#multiDeckResultModal,#outcomeModal)>.panel{width:min(720px,72vw)!important;max-height:90vh!important;padding:18px 24px!important;overflow:auto!important}
   html.tv-mode :is(#cardRevealModal,#multiDeckResultModal,#outcomeModal) h2{font-size:30px!important;line-height:1.2!important}
   html.tv-mode :is(#cardRevealModal,#multiDeckResultModal,#outcomeModal) .btn.gold{width:min(360px,80%)!important;min-height:52px!important;margin-inline:auto!important;font-size:16px!important}
