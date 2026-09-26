@@ -27,7 +27,7 @@
   html.tv-mode #battle .boss-unit>.enemyName{top:0!important;margin:0 0 12px!important;font-size:clamp(18px,1.15vw,23px)!important;line-height:1.25!important}
   html.tv-mode #battle .boss-unit>#enemySprite.boss-enemy{box-sizing:border-box!important;width:100%!important;min-width:0!important;height:min(41vh,390px)!important;max-height:390px!important;margin:8px auto 12px!important;background-size:contain!important;background-position:center bottom!important;--enemy-scale:1.08!important;transform-origin:center bottom!important}
   html.tv-mode #battle .boss-unit>.hpbar{margin-top:10px!important}
-  html.tv-mode #battle .boss-unit>.intent{position:absolute!important;left:clamp(-230px,-15vw,-175px)!important;right:auto!important;top:auto!important;bottom:calc(100% - 172px)!important;height:auto!important;max-height:none!important;overflow:visible!important;transform:none!important;transform-origin:left bottom!important;justify-content:flex-end!important}
+  html.tv-mode #battle .enemy-unit>.intent{position:absolute!important;left:auto!important;right:calc(100% + clamp(40px,4vw,76px))!important;top:auto!important;bottom:calc(100% - 172px)!important;height:auto!important;max-height:none!important;overflow:visible!important;transform:none!important;transform-origin:right bottom!important;justify-content:flex-end!important}
   html.tv-mode #battle .handArea{height:42%!important;min-height:0!important;padding:14px calc(var(--pc-actions) + 12px) 14px 22px!important;align-items:stretch!important;overflow:visible!important}
   html.tv-mode #battle .hand{width:100%!important;height:100%!important;display:flex!important;justify-content:center!important;align-items:flex-end!important;gap:14px!important;overflow-x:auto!important;overflow-y:hidden!important;padding:0 8px!important;scrollbar-width:thin}
   html.tv-mode #battle .hand .card{flex:0 0 var(--pc-card-width)!important;width:var(--pc-card-width)!important;height:var(--pc-card-height)!important;min-height:210px!important;margin:0!important;transform:none!important}
@@ -174,7 +174,7 @@
   html.tv-mode .modal .card:not(.card-use-ghost),html.tv-mode .madness-cast .card{box-sizing:border-box!important;flex:0 0 var(--pc-card-width)!important;width:var(--pc-card-width)!important;min-width:var(--pc-card-width)!important;max-width:var(--pc-card-width)!important;height:var(--pc-card-height)!important;min-height:var(--pc-card-height)!important;max-height:var(--pc-card-height)!important;margin:0!important;transform:none!important}
   html.tv-mode .modal .card :is(.art,.card-art),html.tv-mode .madness-cast .card :is(.art,.card-art){height:43%!important;min-height:96px!important}
   html.tv-mode .modal .card .cname,html.tv-mode .madness-cast .card .cname{font-size:clamp(14px,.86vw,17px)!important;line-height:1.2!important;padding:5px 4px!important}
-  html.tv-mode .modal .card .ctext,html.tv-mode .madness-cast .card .ctext{font-size:clamp(12px,.72vw,15px)!important;line-height:1.42!important}
+  html.tv-mode .modal .card .ctext,html.tv-mode .madness-cast .card .ctext{font-size:clamp(13px,.76vw,16px)!important;line-height:1.42!important}
   html.tv-mode .modal .card .cost,html.tv-mode .madness-cast .card .cost{width:42px!important;height:42px!important;font-size:20px!important}
   html.tv-mode #cardRevealModal .unified-card,
   html.tv-mode #multiResultList .unified-card,
@@ -209,6 +209,7 @@
   html.tv-mode #multiDeckResultModal>.panel{width:min(940px,90vw)!important;height:auto!important;max-height:92vh!important;padding:15px 20px!important;overflow:auto!important}
   html.tv-mode #multiResultList{display:grid!important;grid-template-columns:repeat(auto-fit,minmax(var(--pc-card-width),1fr))!important;align-content:start!important;gap:16px!important;width:100%!important;min-height:0!important;padding:8px!important;overflow:visible!important}
   html.tv-mode #multiResultList .multi-result-card{width:auto!important;max-width:none!important;max-height:none!important;overflow:visible!important}
+  html.tv-mode #multiResultList .multi-result-card>.result-action{width:100%!important;margin:0 0 10px!important;color:#f4d985!important;font-size:clamp(24px,1.65vw,32px)!important;line-height:1.2!important;text-align:center!important;letter-spacing:.12em!important}
   html.tv-mode #outcomeModal>.panel{box-sizing:border-box!important;width:min(820px,82vw)!important;height:auto!important;max-height:90vh!important;padding:clamp(24px,3vh,38px) clamp(32px,4vw,58px)!important;overflow:auto!important}
   html.tv-mode #outcomeModal .bigicon{font-size:46px!important;margin:0 0 7px!important}
   html.tv-mode #outcomeModal>.panel>small{font-size:13px!important;letter-spacing:.18em!important}
@@ -221,6 +222,9 @@
   html.tv-mode .shop-upgrade-card-pair{grid-template-columns:var(--pc-card-width) 36px var(--pc-card-width)!important;justify-content:center!important;gap:12px!important}
   html.tv-mode .madness-cast-shell{width:calc(var(--pc-card-width) + 70px)!important;gap:8px!important;padding:14px 18px!important}
   html.tv-mode .madness-card-preview{width:var(--pc-card-width)!important;max-height:var(--pc-card-height)!important}
+
+  /* Never inherit the phone layout's 6–10px helper text on PC dialogs. */
+  html.tv-mode .modal :is(button,p,span,small,label,b,strong):not(.card *):not(.unified-card *){font-size:max(13px,1em)!important}
 }
 
 /* Tall PC displays: reclaim the empty band above the hand and give the enemy

@@ -43,6 +43,7 @@ assert(responsive.includes("if(!landscapeLayout){existingHint?.remove();return}"
 const landscapeCss=fs.readFileSync(path.join(dist,'responsive-landscape.css'),'utf8');
 const desktopCss=fs.readFileSync(path.join(dist,'responsive-desktop.css'),'utf8');
 const shellJs=fs.readFileSync(path.join(dist,'responsive-shell.js'),'utf8');
+const upgradeJs=fs.readFileSync(path.join(dist,'upgrade.js'),'utf8');
 const enhanceJs=fs.readFileSync(path.join(dist,'enhance.js'),'utf8');
 const refinementJs=fs.readFileSync(path.join(dist,'refinement.js'),'utf8');
 const economyJs=fs.readFileSync(path.join(dist,'economy.js'),'utf8');
@@ -54,7 +55,7 @@ assert(landscapeCss.includes('width:var(--abyss-vv-width,100%)!important'),
  'landscape root does not use the measured visual viewport width');
 assert(landscapeCss.includes('height:var(--abyss-vv-height,100%)!important'),
  'landscape root does not use the measured visual viewport height');
-assert(index.includes('responsive-desktop.css?v=11'),
+assert(index.includes('responsive-desktop.css?v=12'),
  'PC layout stylesheet is not loaded after the landscape layout');
 assert(desktopCss.trim().startsWith('/* PC landscape layout.')&&desktopCss.includes('@media (orientation:landscape) and (hover:hover) and (pointer:fine) and (min-width:1000px) and (min-height:600px)'),
  'PC layout is not isolated from touch and portrait layouts');
@@ -65,7 +66,7 @@ assert(desktopCss.includes("grid-template-areas:'icon name power' 'icon name cos
  'PC boss relic choices do not use the available horizontal space');
 assert(desktopCss.includes('#outcomeModal #outcomeText ruby{display:ruby!important'),
  'PC result furigana can still split the outcome sentence');
-assert(shellJs.includes("desktop.href='responsive-desktop.css?v=11'"),
+assert(shellJs.includes("desktop.href='responsive-desktop.css?v=12'"),
  'dynamically loaded game shells do not receive the PC layout');
 assert(shellJs.includes('.relic-grid .relic-card,.beast-legacy-grid .beast-card'),
  'controller focus cannot traverse creature and relic archive entries');
@@ -85,8 +86,8 @@ assert(shellJs.includes("track.querySelectorAll('svg .route')"),
  'PC map routes are not kept aligned with padded map nodes');
 assert(shellJs.includes("const fixedPcForecast=matchMedia?.('(hover:hover) and (pointer:fine) and (min-width:1000px) and (min-height:600px)')?.matches"),
  'PC enemy forecast still follows animated enemy geometry');
-assert(desktopCss.includes('.boss-unit>.intent{position:absolute!important')&&desktopCss.includes('transform-origin:left bottom!important'),
- 'PC boss forecast is not anchored above and to the left of the boss');
+assert(desktopCss.includes('.enemy-unit>.intent{position:absolute!important')&&desktopCss.includes('right:calc(100% + clamp(40px,4vw,76px))!important')&&desktopCss.includes('transform-origin:right bottom!important'),
+ 'PC enemy forecast is not anchored outside the enemy upper-left edge');
 assert(desktopCss.includes('.boss-unit>#enemySprite.boss-enemy')&&desktopCss.includes('height:min(41vh,390px)!important'),
  'PC boss artwork is not enlarged independently from ordinary enemies');
 assert(desktopCss.includes('.debug-panel h2{margin:4px 0 0!important;font-size:32px!important'),
@@ -185,6 +186,14 @@ assert(desktopCss.includes('#shopGrid .shop-item b{font-size:17px!important')&&d
  'PC shop service text still inherits the compact landscape scale');
 assert(desktopCss.includes('.shop-tabs button{min-height:48px!important')&&desktopCss.includes('font-size:18px!important'),
  'PC shop tabs remain too small to read from a monitor');
+assert(desktopCss.includes('.modal :is(button,p,span,small,label,b,strong):not(.card *):not(.unified-card *){font-size:max(13px,1em)!important'),
+ 'PC dialogs can still inherit unreadable phone-sized helper text');
+assert(desktopCss.includes('.multi-result-card>.result-action')&&desktopCss.includes('font-size:clamp(24px,1.65vw,32px)!important'),
+ 'PC card result actions are not displayed at a readable size');
+assert(fs.readFileSync(path.join(dist,'game-polish.js'),'utf8').includes('class="result-action result-action-${r.kind'),
+ 'card result labels still repeat card names above the cards');
+assert(upgradeJs.includes('assets/enemies/${file}?v=80')&&upgradeJs.includes("assets/enemies/${b.file}?v=102"),
+ 'corrected enemy cutouts are not cache-busted in battle and bestiary views');
 assert(desktopCss.includes('min-height:calc(var(--pc-card-height) + 54px)!important'),
  'PC shop card rows can overlap each other');
 assert(desktopCss.includes('max-width:1220px!important')&&desktopCss.includes('grid-auto-rows:max-content!important'),
@@ -396,9 +405,9 @@ async function verifyServer(){
   assert(response?.ok,`local server did not return index.html (${response?.status||'no response'})`);
   const html=await response.text();
   assert(html.includes('id="tapStartGate"'),'served page has no TAP START gate');
-  assert(html.includes('responsive-shell.js?v=40'),'served page has a stale responsive script version');
+  assert(html.includes('responsive-shell.js?v=41'),'served page has a stale responsive script version');
   assert(html.includes('responsive-landscape.css?v=46'),'served page has a stale responsive stylesheet version');
-  assert(html.includes('responsive-desktop.css?v=11'),'served page has no PC layout stylesheet');
+  assert(html.includes('responsive-desktop.css?v=12'),'served page has no PC layout stylesheet');
   assert(html.includes('relics-events.js?v=155'),'served page has a stale relic event script version');
   assert(html.includes('strategy-polish.js?v=186'),'served page has a stale strategy event script version');
   assert(html.includes('economy.js?v=158'),'served page has a stale economy script version');
