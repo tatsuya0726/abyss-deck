@@ -300,6 +300,12 @@ html.tv-mode.tv-fixed-canvas #battle .intent{width:224px!important}
 html.tv-mode.tv-fixed-canvas #battle .enemy-unit>#intent{left:1072px!important;top:261px!important}
 html.tv-mode.tv-fixed-canvas #battle .enemy-unit.elite-unit>#intent{left:1040px!important}
 html.tv-mode.tv-fixed-canvas #battle .enemy-unit.boss-unit>#intent{left:976px!important}
+html.tv-mode.tv-fixed-canvas #titleSettingsModal{box-sizing:border-box!important;width:100%!important;height:100%!important;padding:0!important;overflow:hidden!important}
+html.tv-mode.tv-fixed-canvas #titleSettingsModal>.settings-hub-panel{box-sizing:border-box!important;position:absolute!important;left:50%!important;top:50%!important;display:flex!important;flex-direction:column!important;width:1420px!important;max-width:none!important;height:860px!important;max-height:none!important;padding:0!important;overflow:hidden!important;animation:none!important;transform:translate(-50%,-50%) scale(.92)!important;transform-origin:center center!important}
+html.tv-mode.tv-fixed-canvas #titleSettingsModal .modal-shell-head,html.tv-mode.tv-fixed-canvas #titleSettingsModal .modal-shell-foot{flex:0 0 auto!important}
+html.tv-mode.tv-fixed-canvas #titleSettingsModal .settings-hub-grid{box-sizing:border-box!important;flex:1 1 0!important;min-height:0!important;height:auto!important;max-height:none!important;grid-template-columns:repeat(3,minmax(0,1fr))!important;grid-auto-rows:minmax(82px,auto)!important;align-content:space-between!important;padding:12px!important;overflow:hidden!important}
+html.tv-mode.tv-fixed-canvas #titleSettingsModal .modal-shell-foot{display:block!important;min-height:58px!important;padding:8px 12px!important;border-top:1px solid #41636c!important;background:#07121bfc!important}
+html.tv-mode.tv-fixed-canvas #titleSettingsModal .modal-shell-foot .btn{display:block!important;width:100%!important;min-height:42px!important;margin:0!important}
 
 /* Tall PC displays: reclaim the empty band above the hand and give the enemy
    composition enough vertical room to keep its artwork and name separated. */

@@ -123,7 +123,7 @@ function injectLandscapeCss(){
  }
  if(!d.querySelector('link[data-abyss-desktop-layout],link[href*="responsive-desktop.css"]')){
   const desktop=d.createElement('link');
-  desktop.rel='stylesheet';desktop.href='responsive-desktop.css?v=31';
+  desktop.rel='stylesheet';desktop.href='responsive-desktop.css?v=32';
   desktop.dataset.abyssDesktopLayout='1';d.head.appendChild(desktop);
  }
 }
