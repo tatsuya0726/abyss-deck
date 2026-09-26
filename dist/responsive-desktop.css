@@ -259,6 +259,9 @@
   html.tv-mode #cardRevealModal .bigicon{font-size:30px!important;margin:0!important}
   html.tv-mode #cardRevealModal h2{font-size:26px!important;margin:3px 0 8px!important}
   html.tv-mode #cardRevealBody{display:grid!important;place-items:center!important;flex:none!important;width:100%!important;min-height:0!important;overflow:visible!important}
+  html.tv-mode #cardRevealModal:has(.dimensional-compression-grid)>.panel{display:flex!important;flex-direction:column!important;width:min(620px,88vw)!important;max-width:620px!important;height:min(840px,90vh)!important;overflow:hidden!important}
+  html.tv-mode #cardRevealBody:has(.dimensional-compression-grid){flex:1 1 auto!important;min-height:0!important;overflow:hidden!important}
+  html.tv-mode #cardRevealBody>.dimensional-compression-grid{box-sizing:border-box!important;width:100%!important;min-height:0!important;max-height:100%!important;grid-template-columns:repeat(2,var(--pc-card-width))!important;justify-content:center!important;align-content:start!important;gap:18px 16px!important;padding:8px 10px 18px!important;overflow-x:hidden!important;overflow-y:auto!important;scrollbar-gutter:stable!important}
   html.tv-mode #cardRevealModal:has(.shop-upgrade-card-pair)>.panel{width:min(680px,90vw)!important;max-width:680px!important}
   html.tv-mode #cardRevealModal .shop-upgrade-card-pair{box-sizing:border-box!important;width:100%!important;grid-template-columns:var(--pc-card-width) 36px var(--pc-card-width)!important;justify-content:center!important;justify-items:center!important;gap:14px!important;margin:12px auto!important}
   html.tv-mode #cardRevealModal .shop-upgrade-card-pair>div{min-width:0!important;width:var(--pc-card-width)!important}
@@ -299,7 +302,7 @@ html.tv-mode.tv-fixed-canvas #battle :is(#playerStatus,#enemyStatus){height:81px
 html.tv-mode.tv-fixed-canvas #battle .intent{width:224px!important}
 html.tv-mode.tv-fixed-canvas #battle .enemy-unit>#intent{left:1024px!important;top:243px!important}
 html.tv-mode.tv-fixed-canvas #battle .enemy-unit.elite-unit>#intent{left:992px!important}
-html.tv-mode.tv-fixed-canvas #battle .enemy-unit.boss-unit>#intent{left:928px!important}
+html.tv-mode.tv-fixed-canvas #battle .enemy-unit.boss-unit>#intent{left:896px!important}
 html.tv-mode.tv-fixed-canvas #titleSettingsModal{box-sizing:border-box!important;width:100%!important;height:100%!important;padding:0!important;overflow:hidden!important}
 html.tv-mode.tv-fixed-canvas #titleSettingsModal>.settings-hub-panel{box-sizing:border-box!important;position:absolute!important;left:50%!important;top:50%!important;display:flex!important;flex-direction:column!important;width:1420px!important;max-width:none!important;height:860px!important;max-height:none!important;padding:0!important;overflow:hidden!important;animation:none!important;transform:translate(-50%,-50%) scale(.92)!important;transform-origin:center center!important}
 html.tv-mode.tv-fixed-canvas #titleSettingsModal .modal-shell-head,html.tv-mode.tv-fixed-canvas #titleSettingsModal .modal-shell-foot{flex:0 0 auto!important}
