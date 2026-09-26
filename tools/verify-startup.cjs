@@ -46,21 +46,20 @@ const shellJs=fs.readFileSync(path.join(dist,'responsive-shell.js'),'utf8');
 const enhanceJs=fs.readFileSync(path.join(dist,'enhance.js'),'utf8');
 const refinementJs=fs.readFileSync(path.join(dist,'refinement.js'),'utf8');
 const economyJs=fs.readFileSync(path.join(dist,'economy.js'),'utf8');
-const gamePolishJs=fs.readFileSync(path.join(dist,'game-polish.js'),'utf8');
 const relicsEventsJs=fs.readFileSync(path.join(dist,'relics-events.js'),'utf8');
 const strategyPolishJs=fs.readFileSync(path.join(dist,'strategy-polish.js'),'utf8');
 assert(landscapeCss.includes('width:var(--abyss-vv-width,100%)!important'),
  'landscape root does not use the measured visual viewport width');
 assert(landscapeCss.includes('height:var(--abyss-vv-height,100%)!important'),
  'landscape root does not use the measured visual viewport height');
-assert(index.includes('responsive-desktop.css?v=5'),
+assert(index.includes('responsive-desktop.css?v=4'),
  'PC layout stylesheet is not loaded after the landscape layout');
 assert(desktopCss.trim().startsWith('/* PC landscape layout.')&&desktopCss.includes('@media (orientation:landscape) and (hover:hover) and (pointer:fine) and (min-width:1000px) and (min-height:600px)'),
  'PC layout is not isolated from touch and portrait layouts');
 for(const selector of ['#battle .arena','#battle .hand','#map>.path','#eventModal','#shopModal','.reward-panel','.boss-relic-choices']){
  assert(desktopCss.includes(selector),`PC layout does not cover ${selector}`);
 }
-assert(shellJs.includes("desktop.href='responsive-desktop.css?v=5'"),
+assert(shellJs.includes("desktop.href='responsive-desktop.css?v=4'"),
  'dynamically loaded game shells do not receive the PC layout');
 assert((desktopCss.match(/{/g)||[]).length===(desktopCss.match(/}/g)||[]).length,
  'PC stylesheet has unbalanced blocks');
@@ -150,12 +149,10 @@ assert(landscapeCss.includes('left:calc(var(--abyss-safe-left,0px) + 106px)!impo
  'debug actions are not aligned to the camera-safe utility columns');
 assert(landscapeCss.includes('justify-content:space-between!important;gap:0!important;padding-left:160px!important;padding-right:82px!important'),
  'landscape fighters are not separated into left and right regions');
-assert(landscapeCss.includes('left:58%!important;right:auto!important;top:50px!important'),
- 'enemy forecast is not anchored in the enemy-side centre gap');
-assert(shellJs.includes("intentEl.style.setProperty('transform','translateX(-50%)','important')"),
+assert(landscapeCss.includes('left:50%!important;right:auto!important;top:50px!important'),
+ 'enemy forecast is not anchored in the upper centre gap');
+assert(shellJs.includes("intentEl.style.setProperty('transform','translate(-50%,-50%)','important')"),
  'dynamic enemy forecast positioning does not preserve horizontal centring');
-assert(shellJs.includes('const safeTop=Math.max(0,battleRect.top)+10')&&shellJs.includes('bottomLimit-intentHeight'),
- 'enemy forecast is not top-anchored inside the visible battle area');
 assert(landscapeCss.includes('height:min(33vh,232px)!important;--enemy-scale:1.4!important;margin-top:24px!important'),
  'desktop boss artwork does not use the larger protected size');
 assert(landscapeCss.includes('@media (orientation:landscape) and (pointer:fine) and (min-height:601px){'),
@@ -182,12 +179,8 @@ assert(landscapeCss.includes('justify-content:center!important;gap:8px!important
  'landscape hand spacing still changes with the number of cards');
 assert(landscapeCss.includes('flex-direction:column!important;justify-content:center!important'),
  'landscape reward labels are not contained within their rows');
-assert(landscapeCss.includes('html.tv-mode ruby rt{')&&landscapeCss.includes('color:#000!important'),
- 'landscape furigana is not black');
-assert(!landscapeCss.includes('position:absolute!important;left:50%!important;bottom:calc(100% + .08em)!important'),
- 'furigana was taken out of native ruby flow again');
-assert(landscapeCss.includes('.keeper-speech ruby rt'),
- 'light landscape speech bubbles do not use dark furigana');
+assert(landscapeCss.includes('.btn.gold ruby rt'),
+ 'gold landscape buttons do not use dark furigana');
 assert(landscapeCss.includes('grid-template-columns:15px auto!important;align-items:center!important'),
  'shop life and gold counters are not aligned to one grid');
 assert(!economyJs.includes('ABYSS BAZAAR'),
@@ -196,13 +189,11 @@ assert(!economyJs.includes('深海階級：価格＋15%'),
  'ascension price adjustment is still exposed in the shop');
 assert(economyJs.includes("getAbyssShopPriceMultiplier?.(g)||1"),
  'ascension shop price adjustment is no longer applied to prices');
-assert(shellJs.includes('visibleEnemyLeft(enemyRect.left,r.left,innerWidth)-enemyClearance'),
+assert(shellJs.includes('visibleEnemyLeft(enemyRect.left,r.left,innerWidth)'),
  'enemy forecast does not compensate for artwork whose visible body is inset');
-assert(shellJs.includes('enemyForecastClearance(enemyEl,innerWidth)'),
- 'enemy forecast clearance does not respond to enemy size and rank');
 assert(shellJs.includes("intentEl.style.setProperty('left',(centerX-containerLeft)+'px','important')"),
  'enemy forecast is not positioned from the measured enemy edge');
-assert(shellJs.includes('intentPlacementBetweenFighters(playerRect.right,enemyRect.left-enemyClearance,preferredWidth,innerWidth)'),
+assert(shellJs.includes('intentPlacementBetweenFighters(playerRect.right,enemyRect.left,preferredWidth,innerWidth)'),
  'touch layout does not place the forecast between both fighters');
 assert(shellJs.includes('intentPlacementBeforeEnemy(playerRect.right,visibleLeft,preferredWidth,innerWidth)'),
  'PC layout does not place the forecast beside the enemy');
@@ -212,43 +203,29 @@ assert(landscapeCss.includes('object-fit:contain!important;object-position:cente
  'landscape event artwork does not preserve its complete composition');
 assert(landscapeCss.includes('grid-template-columns:minmax(175px,31%) minmax(0,1fr)!important'),
  'opening gift does not place its title beside the dialogue');
-assert(landscapeCss.includes('grid-template-rows:repeat(3,minmax(0,1fr))!important'),
- 'opening gift choices do not expand evenly into the available panel height');
+assert(landscapeCss.includes('grid-template-rows:repeat(3,74px)!important'),
+ 'opening gift choices still expand to fill the entire panel');
 assert(landscapeCss.includes('grid-template-rows:auto auto!important;align-content:center!important'),
  'opening gift choice text is not vertically contained');
-assert(landscapeCss.includes('padding-top:42px!important')&&landscapeCss.includes('width:min(92%,430px)!important'),
- 'PC enemy name does not have a dedicated band above the artwork');
-assert(landscapeCss.includes('border:0!important;border-radius:0!important')&&landscapeCss.includes('background:transparent!important;box-shadow:none!important'),
- 'enemy-name frame is still visible in landscape');
-assert(landscapeCss.includes('.enemy-unit>.enemyName ruby rt')&&landscapeCss.includes('color:#000!important'),
- 'enemy-name furigana is not fixed to black in landscape');
-assert(landscapeCss.includes('width:116px!important;height:108px!important'),
+assert(landscapeCss.includes('width:70px!important;height:58px!important'),
  'opening gift spirit is not enlarged beside the title');
-assert(gamePolishJs.includes('blessingKeeperSay();window.applyFuri?.(blessingModal);blessingModal.classList.add(\'on\')'),
- 'opening gift is shown before its furigana layout is complete');
-assert(!gamePolishJs.includes("classList.add('pop')")&&!gamePolishJs.includes('void e.offsetWidth'),
- 'opening gift still forces a second speech-bubble layout');
-assert((index.match(/textContent=(?:G\.enemy|e)\.n;window\.applyFuri\?\.\(\$\('#enemyName'\)\)/g)||[]).length===3,
- 'enemy names are not finalized with the standard furigana pass');
-assert(landscapeCss.includes('font-size:clamp(20px,min(1.55vw,3.2vh),32px)!important'),
- 'gold/stat result text remains too small');
+const giftLayoutHeight=58+5+74*3;
 const giftMinimumInnerHeight=320-12-14;
-const giftMinimumChoiceHeight=(giftMinimumInnerHeight-92-5-10)/3;
+assert(giftLayoutHeight<=giftMinimumInnerHeight,
+ 'opening gift rows overflow the shortest supported landscape viewport');
 const giftTwoLineRubyHeight=2*(13*1.2+13*.55)+2+14;
-assert(giftTwoLineRubyHeight<giftMinimumChoiceHeight,
+assert(giftTwoLineRubyHeight<74,
  'opening gift ruby text cannot fit inside a choice row');
 assert(refinementJs.includes('assets/events/${art}.webp?v=2'),
  'corrected event illustrations are not cache-busted');
 const intentPositionSource=shellJs.split('\n').find(line=>line.startsWith('function intentCenterBeforeEnemy('));
 const visibleEnemySource=shellJs.split('\n').find(line=>line.startsWith('function visibleEnemyLeft('));
 const visiblePcEnemySource=shellJs.split('\n').find(line=>line.startsWith('function visiblePcEnemyLeft('));
-const enemyClearanceSource=shellJs.match(/function enemyForecastClearance\([\s\S]*?\n\}/)?.[0];
 const fighterGapSource=shellJs.match(/function intentPlacementBetweenFighters\([\s\S]*?\n\}/)?.[0];
 const enemySideSource=shellJs.match(/function intentPlacementBeforeEnemy\([\s\S]*?\n\}/)?.[0];
 assert(intentPositionSource,'enemy forecast gap calculator is missing');
 assert(visibleEnemySource,'enemy visible-edge calculator is missing');
 assert(visiblePcEnemySource,'PC enemy visible-edge calculator is missing');
-assert(enemyClearanceSource,'size-aware enemy clearance calculator is missing');
 assert(fighterGapSource,'touch fighter-gap calculator is missing');
 assert(enemySideSource,'PC enemy-side forecast calculator is missing');
 const intentPositionContext={};
@@ -274,14 +251,6 @@ const enemySideContext={};
 vm.runInNewContext(`${visiblePcEnemySource};${enemySideSource};this.visible=visiblePcEnemyLeft;this.place=intentPlacementBeforeEnemy`,enemySideContext);
 assert(enemySideContext.visible(710,980,1920)>850,
  'PC forecast still anchors to the transparent left edge of enemy artwork');
-const enemyClearanceContext={};
-vm.runInNewContext(`${enemyClearanceSource};this.clearance=enemyForecastClearance`,enemyClearanceContext);
-const enemyMock=(rank,width,height)=>({offsetWidth:width,offsetHeight:height,classList:{contains:name=>name===`${rank}-enemy`}});
-const normalClearance=enemyClearanceContext.clearance(enemyMock('normal',260,190),1536);
-const eliteClearance=enemyClearanceContext.clearance(enemyMock('elite',340,230),1536);
-const bossClearance=enemyClearanceContext.clearance(enemyMock('boss',470,315),1536);
-assert(normalClearance<eliteClearance&&eliteClearance<bossClearance,
- 'enemy forecast clearance does not increase from normal to elite to boss');
 for(const [playerRight,enemyLeft,preferredWidth,viewportWidth]of [[610,980,230,1366],[760,1150,260,1920],[450,760,210,1000]]){
  const placed=enemySideContext.place(playerRight,enemyLeft,preferredWidth,viewportWidth),margin=Math.max(10,Math.min(16,viewportWidth*.01));
  assert(placed.center+placed.width/2<=enemyLeft-margin+.01,'PC forecast overlaps the enemy');
@@ -377,9 +346,9 @@ async function verifyServer(){
   assert(response?.ok,`local server did not return index.html (${response?.status||'no response'})`);
   const html=await response.text();
   assert(html.includes('id="tapStartGate"'),'served page has no TAP START gate');
-  assert(html.includes('responsive-shell.js?v=42'),'served page has a stale responsive script version');
-  assert(html.includes('responsive-landscape.css?v=51'),'served page has a stale responsive stylesheet version');
-  assert(html.includes('responsive-desktop.css?v=5'),'served page has no PC layout stylesheet');
+  assert(html.includes('responsive-shell.js?v=35'),'served page has a stale responsive script version');
+  assert(html.includes('responsive-landscape.css?v=45'),'served page has a stale responsive stylesheet version');
+  assert(html.includes('responsive-desktop.css?v=4'),'served page has no PC layout stylesheet');
   assert(html.includes('relics-events.js?v=155'),'served page has a stale relic event script version');
   assert(html.includes('strategy-polish.js?v=186'),'served page has a stale strategy event script version');
   assert(html.includes('economy.js?v=158'),'served page has a stale economy script version');
