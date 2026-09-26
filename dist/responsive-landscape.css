@@ -2525,9 +2525,6 @@ html.tv-mode #firstBlessingModal .choice>span{
     background:rgba(3,16,25,.88)!important;box-shadow:0 3px 12px rgba(0,0,0,.42)!important;
     text-align:center!important;z-index:12!important
   }
-  html.tv-mode #battle .arena>.enemy-unit>.enemyName ruby rt{
-    color:#000!important;text-shadow:0 0 2px #d9ffff!important
-  }
 }
 @media (orientation:landscape) and (pointer:fine) and (min-height:601px){
   html.tv-mode #battle .arena>.enemy-unit{padding-top:42px!important}
@@ -2541,9 +2538,6 @@ html.tv-mode #firstBlessingModal .choice>span{
    Choice rows use the available landscape width, while one-line result dialogs
    stay as one compact decision instead of scattering content over the screen. */
 @media (orientation:landscape){
-  html.tv-mode ruby rt{
-    color:#000!important;text-shadow:0 0 2px #d9ffff!important
-  }
   html.tv-mode #firstBlessingModal .choice{
     grid-template-columns:minmax(170px,29%) minmax(0,1fr)!important;
     grid-template-rows:1fr!important;align-items:center!important;
@@ -2555,11 +2549,18 @@ html.tv-mode #firstBlessingModal .choice>span{
   html.tv-mode #firstBlessingModal .choice>span{
     align-self:center!important;min-width:0!important;line-height:1.55!important
   }
-  html.tv-mode :is(#firstBlessingModal .keeper-speech,#firstBlessingModal .choice>span,#multiResultList .stat-result-card) ruby{
-    white-space:nowrap!important;ruby-align:center
+  html.tv-mode :is(#firstBlessingModal .keeper-speech,#firstBlessingModal h2,#firstBlessingModal .choice>b,#firstBlessingModal .choice>span,#multiDeckResultModal h2,#multiResultList .stat-result-card) ruby{
+    display:inline-block!important;position:relative!important;
+    white-space:nowrap!important;line-height:1!important;vertical-align:baseline!important;ruby-align:center
   }
-  html.tv-mode :is(#firstBlessingModal .keeper-speech,#firstBlessingModal .choice>span,#multiResultList .stat-result-card) ruby rt{
-    font-size:.42em!important;line-height:1!important;letter-spacing:-.02em!important
+  html.tv-mode :is(#firstBlessingModal .keeper-speech,#firstBlessingModal h2,#firstBlessingModal .choice>b,#firstBlessingModal .choice>span,#multiDeckResultModal h2,#multiResultList .stat-result-card) ruby rt{
+    position:absolute!important;left:50%!important;bottom:calc(100% + .08em)!important;
+    display:block!important;width:max-content!important;max-width:none!important;
+    transform:translateX(-50%)!important;font-size:.48em!important;
+    line-height:1!important;letter-spacing:0!important;text-shadow:none!important
+  }
+  html.tv-mode :is(#firstBlessingModal h2,#firstBlessingModal .choice>b,#firstBlessingModal .choice>span,#multiDeckResultModal h2,#multiResultList .stat-result-card) ruby rt{
+    color:#9fe5df!important
   }
 
   html.tv-mode #multiDeckResultModal:has(#multiResultList>.stat-result-card:only-child){
@@ -2583,8 +2584,11 @@ html.tv-mode #firstBlessingModal .choice>span{
   html.tv-mode #multiDeckResultModal:has(#multiResultList>.stat-result-card:only-child) .stat-result-card{
     display:flex!important;align-items:center!important;justify-content:center!important;
     box-sizing:border-box!important;width:100%!important;max-width:100%!important;min-height:64px!important;
-    padding:12px 16px!important;font-size:clamp(11px,2.4vh,15px)!important;line-height:1.55!important;
+    padding:12px 16px!important;font-size:clamp(15px,3.2vh,20px)!important;line-height:1.55!important;
     overflow:visible!important
+  }
+  html.tv-mode #multiDeckResultModal:has(#multiResultList>.stat-result-card:only-child) .stat-result-card>b{
+    font-size:clamp(15px,3.2vh,20px)!important;line-height:1.55!important
   }
   html.tv-mode #multiDeckResultModal:has(#multiResultList>.stat-result-card:only-child) #multiResultClose{
     flex:0 0 46px!important;width:min(300px,76%)!important;min-height:46px!important;
