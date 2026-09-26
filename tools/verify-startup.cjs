@@ -55,7 +55,7 @@ assert(landscapeCss.includes('width:var(--abyss-vv-width,100%)!important'),
  'landscape root does not use the measured visual viewport width');
 assert(landscapeCss.includes('height:var(--abyss-vv-height,100%)!important'),
  'landscape root does not use the measured visual viewport height');
-assert(index.includes('responsive-desktop.css?v=20'),
+assert(index.includes('responsive-desktop.css?v=21'),
  'PC layout stylesheet is not loaded after the landscape layout');
 assert(desktopCss.trim().startsWith('/* PC landscape layout.')&&desktopCss.includes('@media (orientation:landscape) and (hover:hover) and (pointer:fine) and (min-width:1000px) and (min-height:600px)'),
  'PC layout is not isolated from touch and portrait layouts');
@@ -66,7 +66,7 @@ assert(desktopCss.includes("grid-template-areas:'icon name power' 'icon name cos
  'PC boss relic choices do not use the available horizontal space');
 assert(desktopCss.includes('#outcomeModal #outcomeText ruby{display:ruby!important'),
  'PC result furigana can still split the outcome sentence');
-assert(shellJs.includes("desktop.href='responsive-desktop.css?v=20'"),
+assert(shellJs.includes("desktop.href='responsive-desktop.css?v=21'"),
  'dynamically loaded game shells do not receive the PC layout');
 assert(shellJs.includes('.relic-grid .relic-card,.beast-legacy-grid .beast-card'),
  'controller focus cannot traverse creature and relic archive entries');
@@ -92,6 +92,10 @@ assert(shellJs.includes("const fixedPcForecast=matchMedia?.('(hover:hover) and (
  'PC enemy forecast still follows animated enemy geometry');
 assert(desktopCss.includes('.enemy-unit>#intent{position:fixed!important')&&desktopCss.includes('left:63vw!important')&&desktopCss.includes('.enemy-unit.elite-unit>#intent{left:61vw!important}')&&desktopCss.includes('.enemy-unit.boss-unit>#intent{left:59vw!important}')&&desktopCss.includes('top:35vh!important')&&desktopCss.includes('transform:translate(-100%,-100%)!important'),
  'PC enemy forecast is not fixed in the marked space immediately left of the enemy');
+assert(desktopCss.includes('.enemy-unit>.enemyName{position:absolute!important;top:-38px!important'),
+ 'PC enemy name can still overlap the enemy artwork');
+assert(desktopCss.includes('#shopModal:has(.shop-choose) .shop-card-list')&&desktopCss.includes('overflow-y:scroll!important')&&desktopCss.includes('flex:1 1 0!important'),
+ 'PC shop card choices cannot scroll with a mouse wheel');
 assert(desktopCss.includes('#relicRevealModal>.relic-reveal')&&desktopCss.includes('width:min(680px,60vw)!important'),
  'PC relic reward reveal is still stretched across the screen');
 assert(desktopCss.includes('.boss-unit>#enemySprite.boss-enemy')&&desktopCss.includes('height:min(41vh,390px)!important'),
@@ -413,7 +417,7 @@ async function verifyServer(){
   assert(html.includes('id="tapStartGate"'),'served page has no TAP START gate');
   assert(html.includes('responsive-shell.js?v=44'),'served page has a stale responsive script version');
   assert(html.includes('responsive-landscape.css?v=46'),'served page has a stale responsive stylesheet version');
-  assert(html.includes('responsive-desktop.css?v=20'),'served page has no PC layout stylesheet');
+  assert(html.includes('responsive-desktop.css?v=21'),'served page has no PC layout stylesheet');
   assert(html.includes('relics-events.js?v=155'),'served page has a stale relic event script version');
   assert(html.includes('strategy-polish.js?v=186'),'served page has a stale strategy event script version');
   assert(html.includes('economy.js?v=158'),'served page has a stale economy script version');
