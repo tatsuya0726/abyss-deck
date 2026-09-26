@@ -52,14 +52,14 @@ assert(landscapeCss.includes('width:var(--abyss-vv-width,100%)!important'),
  'landscape root does not use the measured visual viewport width');
 assert(landscapeCss.includes('height:var(--abyss-vv-height,100%)!important'),
  'landscape root does not use the measured visual viewport height');
-assert(index.includes('responsive-desktop.css?v=4'),
+assert(index.includes('responsive-desktop.css?v=5'),
  'PC layout stylesheet is not loaded after the landscape layout');
 assert(desktopCss.trim().startsWith('/* PC landscape layout.')&&desktopCss.includes('@media (orientation:landscape) and (hover:hover) and (pointer:fine) and (min-width:1000px) and (min-height:600px)'),
  'PC layout is not isolated from touch and portrait layouts');
 for(const selector of ['#battle .arena','#battle .hand','#map>.path','#eventModal','#shopModal','.reward-panel','.boss-relic-choices']){
  assert(desktopCss.includes(selector),`PC layout does not cover ${selector}`);
 }
-assert(shellJs.includes("desktop.href='responsive-desktop.css?v=4'"),
+assert(shellJs.includes("desktop.href='responsive-desktop.css?v=5'"),
  'dynamically loaded game shells do not receive the PC layout');
 assert((desktopCss.match(/{/g)||[]).length===(desktopCss.match(/}/g)||[]).length,
  'PC stylesheet has unbalanced blocks');
@@ -149,8 +149,8 @@ assert(landscapeCss.includes('left:calc(var(--abyss-safe-left,0px) + 106px)!impo
  'debug actions are not aligned to the camera-safe utility columns');
 assert(landscapeCss.includes('justify-content:space-between!important;gap:0!important;padding-left:160px!important;padding-right:82px!important'),
  'landscape fighters are not separated into left and right regions');
-assert(landscapeCss.includes('left:50%!important;right:auto!important;top:50px!important'),
- 'enemy forecast is not anchored in the upper centre gap');
+assert(landscapeCss.includes('left:58%!important;right:auto!important;top:50px!important'),
+ 'enemy forecast is not anchored in the enemy-side centre gap');
 assert(shellJs.includes("intentEl.style.setProperty('transform','translate(-50%,-50%)','important')"),
  'dynamic enemy forecast positioning does not preserve horizontal centring');
 assert(landscapeCss.includes('height:min(33vh,232px)!important;--enemy-scale:1.4!important;margin-top:24px!important'),
@@ -181,6 +181,8 @@ assert(landscapeCss.includes('flex-direction:column!important;justify-content:ce
  'landscape reward labels are not contained within their rows');
 assert(landscapeCss.includes('.btn.gold ruby rt'),
  'gold landscape buttons do not use dark furigana');
+assert(landscapeCss.includes('.keeper-speech ruby rt'),
+ 'light landscape speech bubbles do not use dark furigana');
 assert(landscapeCss.includes('grid-template-columns:15px auto!important;align-items:center!important'),
  'shop life and gold counters are not aligned to one grid');
 assert(!economyJs.includes('ABYSS BAZAAR'),
@@ -203,18 +205,16 @@ assert(landscapeCss.includes('object-fit:contain!important;object-position:cente
  'landscape event artwork does not preserve its complete composition');
 assert(landscapeCss.includes('grid-template-columns:minmax(175px,31%) minmax(0,1fr)!important'),
  'opening gift does not place its title beside the dialogue');
-assert(landscapeCss.includes('grid-template-rows:repeat(3,74px)!important'),
- 'opening gift choices still expand to fill the entire panel');
+assert(landscapeCss.includes('grid-template-rows:repeat(3,minmax(0,1fr))!important'),
+ 'opening gift choices do not expand evenly into the available panel height');
 assert(landscapeCss.includes('grid-template-rows:auto auto!important;align-content:center!important'),
  'opening gift choice text is not vertically contained');
-assert(landscapeCss.includes('width:70px!important;height:58px!important'),
+assert(landscapeCss.includes('width:116px!important;height:108px!important'),
  'opening gift spirit is not enlarged beside the title');
-const giftLayoutHeight=58+5+74*3;
 const giftMinimumInnerHeight=320-12-14;
-assert(giftLayoutHeight<=giftMinimumInnerHeight,
- 'opening gift rows overflow the shortest supported landscape viewport');
+const giftMinimumChoiceHeight=(giftMinimumInnerHeight-92-5-10)/3;
 const giftTwoLineRubyHeight=2*(13*1.2+13*.55)+2+14;
-assert(giftTwoLineRubyHeight<74,
+assert(giftTwoLineRubyHeight<giftMinimumChoiceHeight,
  'opening gift ruby text cannot fit inside a choice row');
 assert(refinementJs.includes('assets/events/${art}.webp?v=2'),
  'corrected event illustrations are not cache-busted');
@@ -346,9 +346,9 @@ async function verifyServer(){
   assert(response?.ok,`local server did not return index.html (${response?.status||'no response'})`);
   const html=await response.text();
   assert(html.includes('id="tapStartGate"'),'served page has no TAP START gate');
-  assert(html.includes('responsive-shell.js?v=35'),'served page has a stale responsive script version');
-  assert(html.includes('responsive-landscape.css?v=45'),'served page has a stale responsive stylesheet version');
-  assert(html.includes('responsive-desktop.css?v=4'),'served page has no PC layout stylesheet');
+  assert(html.includes('responsive-shell.js?v=36'),'served page has a stale responsive script version');
+  assert(html.includes('responsive-landscape.css?v=46'),'served page has a stale responsive stylesheet version');
+  assert(html.includes('responsive-desktop.css?v=5'),'served page has no PC layout stylesheet');
   assert(html.includes('relics-events.js?v=155'),'served page has a stale relic event script version');
   assert(html.includes('strategy-polish.js?v=186'),'served page has a stale strategy event script version');
   assert(html.includes('economy.js?v=158'),'served page has a stale economy script version');
