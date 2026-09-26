@@ -181,8 +181,10 @@ assert(landscapeCss.includes('justify-content:center!important;gap:8px!important
  'landscape hand spacing still changes with the number of cards');
 assert(landscapeCss.includes('flex-direction:column!important;justify-content:center!important'),
  'landscape reward labels are not contained within their rows');
-assert(landscapeCss.includes('.btn.gold ruby rt'),
- 'gold landscape buttons do not use dark furigana');
+assert(landscapeCss.includes('html.tv-mode ruby rt{')&&landscapeCss.includes('color:#000!important'),
+ 'landscape furigana is not black');
+assert(!landscapeCss.includes('position:absolute!important;left:50%!important;bottom:calc(100% + .08em)!important'),
+ 'furigana was taken out of native ruby flow again');
 assert(landscapeCss.includes('.keeper-speech ruby rt'),
  'light landscape speech bubbles do not use dark furigana');
 assert(landscapeCss.includes('grid-template-columns:15px auto!important;align-items:center!important'),
@@ -215,10 +217,14 @@ assert(landscapeCss.includes('grid-template-rows:auto auto!important;align-conte
  'opening gift choice text is not vertically contained');
 assert(landscapeCss.includes('padding-top:42px!important')&&landscapeCss.includes('width:min(92%,430px)!important'),
  'PC enemy name does not have a dedicated band above the artwork');
+assert(landscapeCss.includes('border:0!important;border-radius:0!important')&&landscapeCss.includes('background:transparent!important;box-shadow:none!important'),
+ 'enemy-name frame is still visible in landscape');
 assert(landscapeCss.includes('.enemy-unit>.enemyName ruby rt')&&landscapeCss.includes('color:#000!important'),
  'enemy-name furigana is not fixed to black in landscape');
 assert(landscapeCss.includes('width:116px!important;height:108px!important'),
  'opening gift spirit is not enlarged beside the title');
+assert(landscapeCss.includes('font-size:clamp(20px,min(1.55vw,3.2vh),32px)!important'),
+ 'gold/stat result text remains too small');
 const giftMinimumInnerHeight=320-12-14;
 const giftMinimumChoiceHeight=(giftMinimumInnerHeight-92-5-10)/3;
 const giftTwoLineRubyHeight=2*(13*1.2+13*.55)+2+14;
@@ -364,8 +370,8 @@ async function verifyServer(){
   assert(response?.ok,`local server did not return index.html (${response?.status||'no response'})`);
   const html=await response.text();
   assert(html.includes('id="tapStartGate"'),'served page has no TAP START gate');
-  assert(html.includes('responsive-shell.js?v=41'),'served page has a stale responsive script version');
-  assert(html.includes('responsive-landscape.css?v=50'),'served page has a stale responsive stylesheet version');
+  assert(html.includes('responsive-shell.js?v=42'),'served page has a stale responsive script version');
+  assert(html.includes('responsive-landscape.css?v=51'),'served page has a stale responsive stylesheet version');
   assert(html.includes('responsive-desktop.css?v=5'),'served page has no PC layout stylesheet');
   assert(html.includes('relics-events.js?v=155'),'served page has a stale relic event script version');
   assert(html.includes('strategy-polish.js?v=186'),'served page has a stale strategy event script version');

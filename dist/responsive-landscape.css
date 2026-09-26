@@ -2371,8 +2371,13 @@ html.tv-mode #shopGrid .unified-market-item.synergy-card{
   html.tv-mode #battle .hand{gap:12px!important}
 }
 
-/* Gold controls use dark readings, and shop counters share one baseline. */
+/* Furigana stays black without changing native ruby flow. A pale halo keeps
+   the same black glyphs readable on dark panels; light controls remove it. */
 @media (orientation:landscape){
+  html.tv-mode ruby rt{
+    color:#000!important;
+    text-shadow:0 0 2px rgba(217,255,255,.98),0 0 4px rgba(217,255,255,.9)!important
+  }
   html.tv-mode .btn.gold ruby rt,
   html.tv-mode .keeper-speech ruby rt,
   html.tv-mode #shopModal .shop-tabs button[aria-pressed="true"] ruby rt{
@@ -2521,8 +2526,8 @@ html.tv-mode #firstBlessingModal .choice>span{
     box-sizing:border-box!important;width:min(94%,390px)!important;min-height:28px!important;
     margin:0!important;padding:4px 12px!important;transform:translateX(-50%)!important;
     display:flex!important;align-items:center!important;justify-content:center!important;
-    border:1px solid rgba(113,199,217,.38)!important;border-radius:999px!important;
-    background:rgba(3,16,25,.88)!important;box-shadow:0 3px 12px rgba(0,0,0,.42)!important;
+    border:0!important;border-radius:0!important;
+    background:transparent!important;box-shadow:none!important;
     text-align:center!important;z-index:12!important
   }
   html.tv-mode #battle .arena>.enemy-unit>.enemyName ruby rt{
@@ -2534,5 +2539,14 @@ html.tv-mode #firstBlessingModal .choice>span{
   html.tv-mode #battle .arena>.enemy-unit>.enemyName{
     top:3px!important;width:min(92%,430px)!important;min-height:34px!important;
     padding:5px 14px!important
+  }
+}
+
+/* Stat-only results such as gold gains should read as the primary outcome. */
+@media (orientation:landscape){
+  html.tv-mode #multiResultList .stat-result-card,
+  html.tv-mode #multiResultList .stat-result-card>b{
+    font-size:clamp(20px,min(1.55vw,3.2vh),32px)!important;
+    line-height:1.35!important
   }
 }
