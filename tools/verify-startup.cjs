@@ -44,6 +44,7 @@ const landscapeCss=fs.readFileSync(path.join(dist,'responsive-landscape.css'),'u
 const desktopCss=fs.readFileSync(path.join(dist,'responsive-desktop.css'),'utf8');
 const shellJs=fs.readFileSync(path.join(dist,'responsive-shell.js'),'utf8');
 const upgradeJs=fs.readFileSync(path.join(dist,'upgrade.js'),'utf8');
+const refinementCss=fs.readFileSync(path.join(dist,'refinement.css'),'utf8');
 const enhanceJs=fs.readFileSync(path.join(dist,'enhance.js'),'utf8');
 const refinementJs=fs.readFileSync(path.join(dist,'refinement.js'),'utf8');
 const economyJs=fs.readFileSync(path.join(dist,'economy.js'),'utf8');
@@ -112,6 +113,10 @@ assert(strategyPolishJs.includes("normalKeeperPortrait.src='assets/ui/puffer-sho
  'the normal puffer shopkeeper portrait is not preloaded before the first abyss story');
 assert(refinementJs.includes('assets/events/${art}.webp?v=3'),
  'event illustrations do not use the refreshed high-resolution assets');
+assert(refinementJs.includes('const art=eventArt[title];if(art)return `<img class="event-illustration"'),
+ 'portrait events still fall back to small seal icons instead of illustrations');
+assert(refinementCss.includes('@media (orientation:portrait) and (max-width:700px)')&&refinementCss.includes('.bigicon:has(.event-illustration)')&&refinementCss.includes('height:clamp(150px,24dvh,220px)')&&refinementCss.includes('object-fit:cover'),
+ 'portrait event illustrations do not have a bounded mobile layout');
 for(const name of ['black-threads.webp','memory-vault.webp','void-scales.webp']){
  const image=fs.readFileSync(path.join(dist,'assets/events',name));
  assert(image.length>100000,`high-resolution abyss event art is unexpectedly small: ${name}`);
@@ -437,7 +442,8 @@ async function verifyServer(){
   assert(html.includes('relics-events.js?v=155'),'served page has a stale relic event script version');
   assert(html.includes('strategy-polish.js?v=187'),'served page has a stale strategy event script version');
   assert(html.includes('economy.js?v=158'),'served page has a stale economy script version');
-  assert(html.includes('refinement.js?v=71'),'served page has a stale event script version');
+  assert(html.includes('refinement.css?v=68'),'served page has a stale event stylesheet version');
+  assert(html.includes('refinement.js?v=72'),'served page has a stale event script version');
   assert(html.includes('enhance.js?v=269'),'served page has a stale audio script version');
  }finally{
   server.kill('SIGTERM');
