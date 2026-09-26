@@ -92,7 +92,7 @@ function injectLandscapeCss(){
  }
  if(!d.querySelector('link[data-abyss-desktop-layout],link[href*="responsive-desktop.css"]')){
   const desktop=d.createElement('link');
-  desktop.rel='stylesheet';desktop.href='responsive-desktop.css?v=9';
+  desktop.rel='stylesheet';desktop.href='responsive-desktop.css?v=10';
   desktop.dataset.abyssDesktopLayout='1';d.head.appendChild(desktop);
  }
 }
@@ -316,9 +316,25 @@ function scrollShopListBeforeLeaving(dir){
 }
 
 let mapPositionQueued=false;
+function applyPcMapEdgePadding(track){
+ const pcMap=matchMedia?.('(orientation:landscape) and (hover:hover) and (pointer:fine) and (min-width:1000px) and (min-height:600px)')?.matches;
+ const remap=value=>pcMap?6+value*.88:value;
+ track.querySelectorAll('.node,.depthMark').forEach(el=>{
+  if(!el.dataset.abyssRawTop)el.dataset.abyssRawTop=String(parseFloat(el.style.top)||0);
+  el.style.top=remap(Number(el.dataset.abyssRawTop))+'%';
+ });
+ track.querySelectorAll('svg .route').forEach(line=>{
+  for(const attr of ['y1','y2']){
+   const key=attr==='y1'?'abyssRawY1':'abyssRawY2';
+   if(!line.dataset[key])line.dataset[key]=String(parseFloat(line.getAttribute(attr))||0);
+   line.setAttribute(attr,String(remap(Number(line.dataset[key]))));
+  }
+ });
+}
 function positionMapByProgress(){
  const d=doc(),map=d?.getElementById('map'),path=d?.getElementById('path'),track=d?.getElementById('pathTrack');
  if(!landscapeLayout||!map?.classList.contains('on')||!path||!track)return;
+ applyPcMapEdgePadding(track);
  track.style.marginTop='0px';track.style.marginBottom='0px';
  const current=track.querySelector('.node.current');
  if(!current){path.scrollTop=0;return}
