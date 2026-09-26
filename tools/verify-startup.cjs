@@ -193,11 +193,13 @@ assert(!economyJs.includes('深海階級：価格＋15%'),
  'ascension price adjustment is still exposed in the shop');
 assert(economyJs.includes("getAbyssShopPriceMultiplier?.(g)||1"),
  'ascension shop price adjustment is no longer applied to prices');
-assert(shellJs.includes('visibleEnemyLeft(enemyRect.left,r.left,innerWidth)'),
+assert(shellJs.includes('visibleEnemyLeft(enemyRect.left,r.left,innerWidth)-enemyClearance'),
  'enemy forecast does not compensate for artwork whose visible body is inset');
+assert(shellJs.includes('enemyForecastClearance(enemyEl,innerWidth)'),
+ 'enemy forecast clearance does not respond to enemy size and rank');
 assert(shellJs.includes("intentEl.style.setProperty('left',(centerX-containerLeft)+'px','important')"),
  'enemy forecast is not positioned from the measured enemy edge');
-assert(shellJs.includes('intentPlacementBetweenFighters(playerRect.right,enemyRect.left,preferredWidth,innerWidth)'),
+assert(shellJs.includes('intentPlacementBetweenFighters(playerRect.right,enemyRect.left-enemyClearance,preferredWidth,innerWidth)'),
  'touch layout does not place the forecast between both fighters');
 assert(shellJs.includes('intentPlacementBeforeEnemy(playerRect.right,visibleLeft,preferredWidth,innerWidth)'),
  'PC layout does not place the forecast beside the enemy');
@@ -211,6 +213,10 @@ assert(landscapeCss.includes('grid-template-rows:repeat(3,minmax(0,1fr))!importa
  'opening gift choices do not expand evenly into the available panel height');
 assert(landscapeCss.includes('grid-template-rows:auto auto!important;align-content:center!important'),
  'opening gift choice text is not vertically contained');
+assert(landscapeCss.includes('padding-top:42px!important')&&landscapeCss.includes('width:min(92%,430px)!important'),
+ 'PC enemy name does not have a dedicated band above the artwork');
+assert(landscapeCss.includes('.enemy-unit>.enemyName ruby rt')&&landscapeCss.includes('color:#000!important'),
+ 'enemy-name furigana is not fixed to black in landscape');
 assert(landscapeCss.includes('width:116px!important;height:108px!important'),
  'opening gift spirit is not enlarged beside the title');
 const giftMinimumInnerHeight=320-12-14;
@@ -223,11 +229,13 @@ assert(refinementJs.includes('assets/events/${art}.webp?v=2'),
 const intentPositionSource=shellJs.split('\n').find(line=>line.startsWith('function intentCenterBeforeEnemy('));
 const visibleEnemySource=shellJs.split('\n').find(line=>line.startsWith('function visibleEnemyLeft('));
 const visiblePcEnemySource=shellJs.split('\n').find(line=>line.startsWith('function visiblePcEnemyLeft('));
+const enemyClearanceSource=shellJs.match(/function enemyForecastClearance\([\s\S]*?\n\}/)?.[0];
 const fighterGapSource=shellJs.match(/function intentPlacementBetweenFighters\([\s\S]*?\n\}/)?.[0];
 const enemySideSource=shellJs.match(/function intentPlacementBeforeEnemy\([\s\S]*?\n\}/)?.[0];
 assert(intentPositionSource,'enemy forecast gap calculator is missing');
 assert(visibleEnemySource,'enemy visible-edge calculator is missing');
 assert(visiblePcEnemySource,'PC enemy visible-edge calculator is missing');
+assert(enemyClearanceSource,'size-aware enemy clearance calculator is missing');
 assert(fighterGapSource,'touch fighter-gap calculator is missing');
 assert(enemySideSource,'PC enemy-side forecast calculator is missing');
 const intentPositionContext={};
@@ -253,6 +261,14 @@ const enemySideContext={};
 vm.runInNewContext(`${visiblePcEnemySource};${enemySideSource};this.visible=visiblePcEnemyLeft;this.place=intentPlacementBeforeEnemy`,enemySideContext);
 assert(enemySideContext.visible(710,980,1920)>850,
  'PC forecast still anchors to the transparent left edge of enemy artwork');
+const enemyClearanceContext={};
+vm.runInNewContext(`${enemyClearanceSource};this.clearance=enemyForecastClearance`,enemyClearanceContext);
+const enemyMock=(rank,width,height)=>({offsetWidth:width,offsetHeight:height,classList:{contains:name=>name===`${rank}-enemy`}});
+const normalClearance=enemyClearanceContext.clearance(enemyMock('normal',260,190),1536);
+const eliteClearance=enemyClearanceContext.clearance(enemyMock('elite',340,230),1536);
+const bossClearance=enemyClearanceContext.clearance(enemyMock('boss',470,315),1536);
+assert(normalClearance<eliteClearance&&eliteClearance<bossClearance,
+ 'enemy forecast clearance does not increase from normal to elite to boss');
 for(const [playerRight,enemyLeft,preferredWidth,viewportWidth]of [[610,980,230,1366],[760,1150,260,1920],[450,760,210,1000]]){
  const placed=enemySideContext.place(playerRight,enemyLeft,preferredWidth,viewportWidth),margin=Math.max(10,Math.min(16,viewportWidth*.01));
  assert(placed.center+placed.width/2<=enemyLeft-margin+.01,'PC forecast overlaps the enemy');
@@ -348,8 +364,8 @@ async function verifyServer(){
   assert(response?.ok,`local server did not return index.html (${response?.status||'no response'})`);
   const html=await response.text();
   assert(html.includes('id="tapStartGate"'),'served page has no TAP START gate');
-  assert(html.includes('responsive-shell.js?v=37'),'served page has a stale responsive script version');
-  assert(html.includes('responsive-landscape.css?v=46'),'served page has a stale responsive stylesheet version');
+  assert(html.includes('responsive-shell.js?v=38'),'served page has a stale responsive script version');
+  assert(html.includes('responsive-landscape.css?v=47'),'served page has a stale responsive stylesheet version');
   assert(html.includes('responsive-desktop.css?v=5'),'served page has no PC layout stylesheet');
   assert(html.includes('relics-events.js?v=155'),'served page has a stale relic event script version');
   assert(html.includes('strategy-polish.js?v=186'),'served page has a stale strategy event script version');

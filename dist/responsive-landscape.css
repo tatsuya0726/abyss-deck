@@ -2508,3 +2508,31 @@ html.tv-mode #firstBlessingModal .choice>span{
     font-size:calc(10px * var(--abyss-phone-ui-scale,1))!important
   }
 }
+
+/* Keep the enemy label in reserved space above the artwork. Enemy silhouettes
+   vary greatly in height and width, so overlaying the label on the sprite made
+   large bosses unreadable even when the intent panel itself was clear. */
+@media (orientation:landscape){
+  html.tv-mode #battle .arena>.enemy-unit{
+    position:relative!important;box-sizing:border-box!important;padding-top:34px!important
+  }
+  html.tv-mode #battle .arena>.enemy-unit>.enemyName{
+    position:absolute!important;top:2px!important;left:50%!important;right:auto!important;
+    box-sizing:border-box!important;width:min(94%,390px)!important;min-height:28px!important;
+    margin:0!important;padding:4px 12px!important;transform:translateX(-50%)!important;
+    display:flex!important;align-items:center!important;justify-content:center!important;
+    border:1px solid rgba(113,199,217,.38)!important;border-radius:999px!important;
+    background:rgba(3,16,25,.88)!important;box-shadow:0 3px 12px rgba(0,0,0,.42)!important;
+    text-align:center!important;z-index:12!important
+  }
+  html.tv-mode #battle .arena>.enemy-unit>.enemyName ruby rt{
+    color:#000!important;text-shadow:0 0 2px #d9ffff!important
+  }
+}
+@media (orientation:landscape) and (pointer:fine) and (min-height:601px){
+  html.tv-mode #battle .arena>.enemy-unit{padding-top:42px!important}
+  html.tv-mode #battle .arena>.enemy-unit>.enemyName{
+    top:3px!important;width:min(92%,430px)!important;min-height:34px!important;
+    padding:5px 14px!important
+  }
+}

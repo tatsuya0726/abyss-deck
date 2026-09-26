@@ -81,7 +81,7 @@ function injectLandscapeCss(){
  if(!cssInjected){
   try{
    const link=d.createElement('link');
-   link.rel='stylesheet';link.href='responsive-landscape.css?v=46';
+   link.rel='stylesheet';link.href='responsive-landscape.css?v=47';
    d.head.appendChild(link);cssInjected=true;
   }catch(e){}
  }
@@ -108,6 +108,12 @@ function injectLandscapeCss(){
    #battle's own viewport offset to compensate. */
 function visibleEnemyLeft(enemyLeft,nameLeft,viewportWidth){const nameInset=Math.max(34,Math.min(44,viewportWidth*.045));return Math.max(enemyLeft,nameLeft-nameInset)}
 function visiblePcEnemyLeft(enemyLeft,nameLeft,viewportWidth){const nameInset=Math.max(76,Math.min(112,viewportWidth*.055));return Math.max(enemyLeft,nameLeft-nameInset)}
+function enemyForecastClearance(enemyEl,viewportWidth){
+ if(!enemyEl)return 0;
+ const size=Math.max(enemyEl.offsetWidth||0,enemyEl.offsetHeight||0),boss=enemyEl.classList?.contains('boss-enemy'),elite=enemyEl.classList?.contains('elite-enemy');
+ const factor=boss ? .16 : elite ? .1 : .05,min=boss?44:elite?26:12,max=boss?92:elite?58:30;
+ return Math.max(min,Math.min(max,size*factor,viewportWidth*.07));
+}
 function intentCenterBeforeEnemy(enemyLeft,intentWidth){return Math.max(intentWidth/2+8,enemyLeft-intentWidth/2)}
 function intentPlacementBetweenFighters(playerRight,enemyLeft,preferredWidth,viewportWidth){
  const margin=Math.max(6,Math.min(10,viewportWidth*.01)),left=Math.max(margin,playerRight+margin),right=Math.min(viewportWidth-margin,enemyLeft-margin),available=Math.max(1,right-left),width=Math.min(preferredWidth,available);
@@ -136,15 +142,16 @@ function syncIntentPosition(){
  const enemyRect=enemyEl?.getBoundingClientRect(),playerRect=playerEl?.getBoundingClientRect(),intentWidth=Math.max(1,intentEl.getBoundingClientRect().width||intentEl.offsetWidth||1);
  if(enemyRect?.width){
   const containerLeft=transformed?battleRect.left:0,coarse=matchMedia?.('(pointer:coarse)')?.matches||navigator.maxTouchPoints>0;
+  const enemyClearance=enemyForecastClearance(enemyEl,innerWidth);
   let centerX;
   if(coarse&&playerRect?.width){
-   const preferredWidth=Math.min(136,innerWidth*.25),placement=intentPlacementBetweenFighters(playerRect.right,enemyRect.left,preferredWidth,innerWidth);
+   const preferredWidth=Math.min(136,innerWidth*.25),placement=intentPlacementBetweenFighters(playerRect.right,enemyRect.left-enemyClearance,preferredWidth,innerWidth);
    centerX=placement.center;intentEl.style.setProperty('width',placement.width+'px','important');
   }else if(playerRect?.width){
-   const visibleLeft=visiblePcEnemyLeft(enemyRect.left,r.left,innerWidth),preferredWidth=Math.max(210,Math.min(260,innerWidth*.14)),placement=intentPlacementBeforeEnemy(playerRect.right,visibleLeft,preferredWidth,innerWidth);
+   const visibleLeft=visiblePcEnemyLeft(enemyRect.left,r.left,innerWidth)-enemyClearance,preferredWidth=Math.max(210,Math.min(260,innerWidth*.14)),placement=intentPlacementBeforeEnemy(playerRect.right,visibleLeft,preferredWidth,innerWidth);
    centerX=placement.center;intentEl.style.setProperty('width',placement.width+'px','important');
   }else{
-   const visibleLeft=visibleEnemyLeft(enemyRect.left,r.left,innerWidth);centerX=intentCenterBeforeEnemy(visibleLeft,intentWidth,innerWidth);
+   const visibleLeft=visibleEnemyLeft(enemyRect.left,r.left,innerWidth)-enemyClearance;centerX=intentCenterBeforeEnemy(visibleLeft,intentWidth,innerWidth);
    intentEl.style.removeProperty('width');
   }
   intentEl.style.setProperty('left',(centerX-containerLeft)+'px','important');
