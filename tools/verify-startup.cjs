@@ -55,6 +55,7 @@ const economyJs=fs.readFileSync(path.join(dist,'economy.js'),'utf8');
 const relicsEventsJs=fs.readFileSync(path.join(dist,'relics-events.js'),'utf8');
 const strategyPolishJs=fs.readFileSync(path.join(dist,'strategy-polish.js'),'utf8');
 const gamePolishCss=fs.readFileSync(path.join(dist,'game-polish.css'),'utf8');
+const abyssEndgameCss=fs.readFileSync(path.join(dist,'abyss-endgame.css'),'utf8');
 assert(enhanceJs.includes("document.getElementById('battle')?.classList.contains('on')&&window.getAbyssGame?.()?.enemy"),
  'combat sound effects still lower the active battle BGM');
 assert(titleToolsJs.includes('id="pcBgmVolume"')&&titleToolsJs.includes('id="pcSfxVolume"')&&titleToolsJs.includes('setAbyssAudioPrefs'),
@@ -87,13 +88,17 @@ for(const combatHtml of [index,fs.readFileSync(path.join(dist,'game.html'),'utf8
 }
 assert(!strategyPolishJs.includes("steps.length===3&&steps[0]?.[0]==='THE DEEP LORD FALLS'"),
  'strategy polish still replaces the concise ending with long copy');
+assert(strategyPolishJs.includes("abyss-endgame.css?v=121")&&abyssEndgameCss.includes('#enemySprite.secret-guardian.guardian-phase2{--enemy-scale:1.65'),
+ 'the final boss second form is not enlarged on portrait screens');
+assert(landscapeCss.includes('boss-enemy.secret-guardian.guardian-phase2')&&landscapeCss.includes('--enemy-scale:1.66!important')&&desktopCss.includes('--enemy-scale:1.3!important')&&desktopCss.includes('--enemy-scale:1.22!important'),
+ 'the final boss second form is not enlarged across landscape, PC, and fixed-TV layouts');
 assert(desktopCss.includes('.quick-nav .pc-battle-settings{display:block!important}')&&desktopCss.includes('.pc-audio-settings'),
  'PC layout does not reveal the battle settings button and audio mixer');
 assert(landscapeCss.includes('width:var(--abyss-vv-width,100%)!important'),
  'landscape root does not use the measured visual viewport width');
 assert(landscapeCss.includes('height:var(--abyss-vv-height,100%)!important'),
  'landscape root does not use the measured visual viewport height');
-assert(index.includes('responsive-desktop.css?v=39'),
+assert(index.includes('responsive-desktop.css?v=40'),
  'PC layout stylesheet is not loaded after the landscape layout');
 assert(desktopCss.trim().startsWith('/* PC landscape layout.')&&desktopCss.includes('@media (orientation:landscape) and (min-width:1000px) and (min-height:600px)'),
  'PC layout is not isolated from touch and portrait layouts');
@@ -104,7 +109,7 @@ assert(desktopCss.includes("grid-template-areas:'icon name power' 'icon name cos
  'PC boss relic choices do not use the available horizontal space');
 assert(desktopCss.includes('#outcomeModal #outcomeText ruby{display:ruby!important'),
  'PC result furigana can still split the outcome sentence');
-assert(shellJs.includes("desktop.href='responsive-desktop.css?v=39'")&&shellJs.includes("link.href='responsive-landscape.css?v=48'"),
+assert(shellJs.includes("desktop.href='responsive-desktop.css?v=40'")&&shellJs.includes("link.href='responsive-landscape.css?v=49'"),
  'dynamically loaded game shells do not receive the PC layout');
 assert(desktopCss.includes('min-width:var(--pc-card-width)!important;max-width:var(--pc-card-width)!important')&&desktopCss.includes('.shop-upgrade-card-pair .unified-card>.cardInner'),
  'TV cards can still render with a frame wider than their contents');
@@ -514,10 +519,10 @@ async function verifyServer(){
   const html=await response.text();
   assert(html.includes('id="tapStartGate"'),'served page has no TAP START gate');
   assert(html.includes('responsive-shell.js?v=56'),'served page has a stale responsive script version');
-  assert(html.includes('responsive-landscape.css?v=48'),'served page has a stale responsive stylesheet version');
-  assert(html.includes('responsive-desktop.css?v=39'),'served page has no PC layout stylesheet');
+  assert(html.includes('responsive-landscape.css?v=49'),'served page has a stale responsive stylesheet version');
+  assert(html.includes('responsive-desktop.css?v=40'),'served page has no PC layout stylesheet');
   assert(html.includes('relics-events.js?v=155'),'served page has a stale relic event script version');
-  assert(html.includes('strategy-polish.js?v=188'),'served page has a stale strategy event script version');
+  assert(html.includes('strategy-polish.js?v=189'),'served page has a stale strategy event script version');
   assert(html.includes('economy.js?v=158'),'served page has a stale economy script version');
   assert(html.includes('refinement.css?v=69'),'served page has a stale event stylesheet version');
   assert(html.includes('refinement.js?v=73'),'served page has a stale event script version');
