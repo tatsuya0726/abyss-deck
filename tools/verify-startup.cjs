@@ -7,12 +7,15 @@ const root=path.resolve(__dirname,'..');
 const dist=path.join(root,'dist');
 const indexPath=path.join(dist,'index.html');
 const index=fs.readFileSync(indexPath,'utf8');
+const gameHtml=fs.readFileSync(path.join(dist,'game.html'),'utf8');
 
 function assert(value,message){if(!value)throw new Error(message)}
 
 assert(index.includes('id="tapStartGate"'),'TAP START gate is missing from index.html');
 assert(index.includes('id="title"'),'title screen is missing from index.html');
 assert(index.includes("boot-recovery.js?v=1"),'startup recovery script is missing');
+assert(index.includes("voidjaw:{n:'虚空顎',i:'👹',c:2,choice:'voidExhaust',upgrade:{c:-1}")&&gameHtml.includes("voidjaw:{n:'虚空顎',i:'👹',c:2,choice:'voidExhaust',upgrade:{c:-1}"),
+ 'upgraded Void Jaw does not cost 1 energy in both game entry pages');
 
 const inlineScripts=[...index.matchAll(/<script(?:\s[^>]*)?>([\s\S]*?)<\/script>/gi)]
  .filter(match=>!/<script\s[^>]*\bsrc=/i.test(match[0]))
