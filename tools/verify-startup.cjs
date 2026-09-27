@@ -90,6 +90,8 @@ assert(!strategyPolishJs.includes("steps.length===3&&steps[0]?.[0]==='THE DEEP L
  'strategy polish still replaces the concise ending with long copy');
 assert(strategyPolishJs.includes("'深淵が口を開く'")&&!strategyPolishJs.includes('そこは天井ではなかった'),
  'the final event still describes an implausible ceiling in the deep sea');
+assert(strategyPolishJs.includes('通常の第3層ボスを倒して潜航を終えても、アセンションは進みます。'),
+ 'the four-shard guide does not explain that a normal layer-three clear still advances ascension');
 assert(strategyPolishJs.includes("abyss-endgame.css?v=121")&&abyssEndgameCss.includes('#enemySprite.secret-guardian.guardian-phase2{--enemy-scale:1.65'),
  'the final boss second form is not enlarged on portrait screens');
 assert(landscapeCss.includes('boss-enemy.secret-guardian.guardian-phase2')&&landscapeCss.includes('--enemy-scale:1.66!important')&&desktopCss.includes('--enemy-scale:1.3!important')&&desktopCss.includes('--enemy-scale:1.22!important'),
@@ -526,7 +528,7 @@ async function verifyServer(){
   assert(html.includes('responsive-landscape.css?v=49'),'served page has a stale responsive stylesheet version');
   assert(html.includes('responsive-desktop.css?v=42'),'served page has no PC layout stylesheet');
   assert(html.includes('relics-events.js?v=155'),'served page has a stale relic event script version');
-  assert(html.includes('strategy-polish.js?v=190'),'served page has a stale strategy event script version');
+  assert(html.includes('strategy-polish.js?v=191'),'served page has a stale strategy event script version');
   assert(html.includes('economy.js?v=158'),'served page has a stale economy script version');
   assert(html.includes('refinement.css?v=69'),'served page has a stale event stylesheet version');
   assert(html.includes('refinement.js?v=73'),'served page has a stale event script version');
