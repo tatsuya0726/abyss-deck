@@ -309,10 +309,10 @@ html.tv-mode.tv-fixed-canvas #map>.mapHead h2{position:relative!important;inset:
 html.tv-mode.tv-fixed-canvas #map>.mapHead #abyssShardHud{position:relative!important;inset:auto!important;width:100%!important;display:grid!important;grid-template-columns:1fr!important;gap:7px!important;flex:0 0 auto!important;margin:0!important}
 html.tv-mode.tv-fixed-canvas #map>.mapHead #abyssShardHud span{box-sizing:border-box!important;width:100%!important;justify-content:center!important}
 html.tv-mode.tv-fixed-canvas #map>.mapHead #runModifierBadge{position:relative!important;inset:auto!important;width:100%!important;flex:0 0 auto!important;margin:12px 0 0!important}
-html.tv-mode.tv-fixed-canvas :is(#eventModal,#mapChoiceModal){padding:20px!important}
-html.tv-mode.tv-fixed-canvas :is(#eventModal,#mapChoiceModal)>.panel{width:1540px!important;max-width:1540px!important;height:840px!important;max-height:840px!important}
-html.tv-mode.tv-fixed-canvas #shopModal{padding:10px!important}
-html.tv-mode.tv-fixed-canvas #shopModal>.shop-panel{width:1560px!important;max-width:1560px!important;height:870px!important;max-height:870px!important}
+html.tv-mode.tv-fixed-canvas :is(#eventModal,#mapChoiceModal){box-sizing:border-box!important;padding:20px 8px 8px!important}
+html.tv-mode.tv-fixed-canvas :is(#eventModal,#mapChoiceModal)>.panel{box-sizing:border-box!important;width:100%!important;max-width:none!important;height:100%!important;max-height:none!important}
+html.tv-mode.tv-fixed-canvas #shopModal{box-sizing:border-box!important;padding:8px!important}
+html.tv-mode.tv-fixed-canvas #shopModal>.shop-panel{box-sizing:border-box!important;width:100%!important;max-width:none!important;height:100%!important;max-height:none!important}
 html.tv-mode.tv-fixed-canvas #titleSettingsModal{box-sizing:border-box!important;width:100%!important;height:100%!important;padding:0!important;overflow:hidden!important}
 html.tv-mode.tv-fixed-canvas #titleSettingsModal>.settings-hub-panel{box-sizing:border-box!important;position:absolute!important;left:50%!important;top:50%!important;display:flex!important;flex-direction:column!important;width:1420px!important;max-width:none!important;height:860px!important;max-height:none!important;padding:0!important;overflow:hidden!important;animation:none!important;transform:translate(-50%,-50%) scale(.92)!important;transform-origin:center center!important}
 html.tv-mode.tv-fixed-canvas #titleSettingsModal .modal-shell-head,html.tv-mode.tv-fixed-canvas #titleSettingsModal .modal-shell-foot{flex:0 0 auto!important}
