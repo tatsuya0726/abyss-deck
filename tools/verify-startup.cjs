@@ -93,7 +93,7 @@ assert(landscapeCss.includes('width:var(--abyss-vv-width,100%)!important'),
  'landscape root does not use the measured visual viewport width');
 assert(landscapeCss.includes('height:var(--abyss-vv-height,100%)!important'),
  'landscape root does not use the measured visual viewport height');
-assert(index.includes('responsive-desktop.css?v=36'),
+assert(index.includes('responsive-desktop.css?v=37'),
  'PC layout stylesheet is not loaded after the landscape layout');
 assert(desktopCss.trim().startsWith('/* PC landscape layout.')&&desktopCss.includes('@media (orientation:landscape) and (min-width:1000px) and (min-height:600px)'),
  'PC layout is not isolated from touch and portrait layouts');
@@ -104,12 +104,14 @@ assert(desktopCss.includes("grid-template-areas:'icon name power' 'icon name cos
  'PC boss relic choices do not use the available horizontal space');
 assert(desktopCss.includes('#outcomeModal #outcomeText ruby{display:ruby!important'),
  'PC result furigana can still split the outcome sentence');
-assert(shellJs.includes("desktop.href='responsive-desktop.css?v=36'")&&shellJs.includes("link.href='responsive-landscape.css?v=48'"),
+assert(shellJs.includes("desktop.href='responsive-desktop.css?v=37'")&&shellJs.includes("link.href='responsive-landscape.css?v=48'"),
  'dynamically loaded game shells do not receive the PC layout');
 assert(shellJs.includes("TV_CANVAS_KEY='abyssTvFixedCanvas'")&&shellJs.includes('TV_CANVAS_WIDTH=1600,TV_CANVAS_HEIGHT=900')&&shellJs.includes("add('titleTvDisplay'")&&shellJs.includes("add('titleTvScale'"),
  'TV fixed-canvas controls are missing from settings');
 assert(desktopCss.includes('html.tv-mode.tv-fixed-canvas body{position:fixed!important;left:50%!important;top:50%!important')&&desktopCss.includes('scale(var(--tv-canvas-scale,1))!important'),
  'TV layout does not uniformly scale a centered 16:9 canvas');
+assert(desktopCss.includes('tv-fixed-canvas :is(#eventModal,#mapChoiceModal)>.panel{width:1540px!important;max-width:1540px!important;height:840px!important')&&desktopCss.includes('tv-fixed-canvas #shopModal>.shop-panel{width:1560px!important;max-width:1560px!important;height:870px!important'),
+ 'TV fixed event or shop window is still undersized');
 assert(desktopCss.includes('#titleSettingsModal>.settings-hub-panel{box-sizing:border-box!important;position:absolute!important;left:50%!important;top:50%!important')&&desktopCss.includes('transform:translate(-50%,-50%) scale(.92)!important')&&desktopCss.includes('#titleSettingsModal .modal-shell-foot{display:block!important'),
  'TV settings are not proportionally fitted with the close footer inside the canvas');
 assert(!shellJs.includes('installTvModalWheel'),
@@ -150,6 +152,8 @@ assert(desktopCss.includes('tv-fixed-canvas #map>.mapHead h2{position:relative!i
  'TV map layer title can still overlap the shard HUD');
 assert(fs.readFileSync(path.join(dist,'game-polish.js'),'utf8').includes('unified-card-grid dimensional-compression-grid')&&desktopCss.includes('#cardRevealBody>.dimensional-compression-grid')&&desktopCss.includes('grid-template-columns:repeat(2,var(--pc-card-width))!important'),
  'dimensional compression result is not locked to two card columns');
+assert(shellJs.includes("focusEl?.closest?.('.dimensional-compression-grid,.modal-shell-body')")&&shellJs.includes("activeModal?.querySelector('.dimensional-compression-grid')"),
+ 'controller scrolling cannot reach the dimensional compression card grid');
 assert(desktopCss.includes('.arena>.unit:first-child>.enemyName,')&&desktopCss.includes('.arena>.enemy-unit>.enemyName{position:relative!important;top:auto!important')&&desktopCss.includes('.unit>.creature{margin-top:0!important}'),
  'PC combatant names can still overlap their artwork');
 assert(index.indexOf('id="enemySprite"')<index.indexOf('id="enemyName"')&&index.indexOf('id="enemyName"')<index.indexOf('id="enemyHpFill"'),
@@ -505,9 +509,9 @@ async function verifyServer(){
   assert(response?.ok,`local server did not return index.html (${response?.status||'no response'})`);
   const html=await response.text();
   assert(html.includes('id="tapStartGate"'),'served page has no TAP START gate');
-  assert(html.includes('responsive-shell.js?v=54'),'served page has a stale responsive script version');
+  assert(html.includes('responsive-shell.js?v=55'),'served page has a stale responsive script version');
   assert(html.includes('responsive-landscape.css?v=48'),'served page has a stale responsive stylesheet version');
-  assert(html.includes('responsive-desktop.css?v=36'),'served page has no PC layout stylesheet');
+  assert(html.includes('responsive-desktop.css?v=37'),'served page has no PC layout stylesheet');
   assert(html.includes('relics-events.js?v=155'),'served page has a stale relic event script version');
   assert(html.includes('strategy-polish.js?v=188'),'served page has a stale strategy event script version');
   assert(html.includes('economy.js?v=158'),'served page has a stale economy script version');
