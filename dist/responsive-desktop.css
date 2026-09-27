@@ -297,7 +297,8 @@ html.tv-mode.tv-fixed-canvas #battle .arena{height:calc(100% - var(--pc-hand-hei
 html.tv-mode.tv-fixed-canvas #battle .handArea{height:var(--pc-hand-height)!important}
 html.tv-mode.tv-fixed-canvas #battle .creature{height:306px!important}
 html.tv-mode.tv-fixed-canvas #battle .enemy-unit .creature{height:333px!important}
-html.tv-mode.tv-fixed-canvas #battle .boss-unit>#enemySprite.boss-enemy{height:369px!important}
+html.tv-mode.tv-fixed-canvas #battle .enemy-unit.boss-unit{padding-top:0!important}
+html.tv-mode.tv-fixed-canvas #battle .boss-unit>#enemySprite.boss-enemy{height:290px!important;max-height:290px!important;margin:0 auto 8px!important;background-position:center!important;--enemy-scale:1!important}
 html.tv-mode.tv-fixed-canvas #battle :is(#playerStatus,#enemyStatus){height:81px!important}
 html.tv-mode.tv-fixed-canvas #battle .intent{width:224px!important}
 html.tv-mode.tv-fixed-canvas #battle .enemy-unit>#intent{left:992px!important;top:243px!important}
