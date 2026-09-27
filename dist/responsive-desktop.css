@@ -298,6 +298,24 @@
 html.tv-mode.tv-fixed-canvas{box-sizing:border-box;width:100%;height:100%;overflow:hidden!important;background:#01050b!important;--pc-ui:16px;--pc-small:13px;--pc-card-width:190px;--pc-card-height:280px;--pc-hand-height:320px}
 html.tv-mode.tv-fixed-canvas body{position:fixed!important;left:50%!important;top:50%!important;width:var(--tv-canvas-width,1600px)!important;height:var(--tv-canvas-height,900px)!important;min-width:var(--tv-canvas-width,1600px)!important;min-height:var(--tv-canvas-height,900px)!important;margin:0!important;overflow:hidden!important;transform:translate(-50%,-50%) scale(var(--tv-canvas-scale,1))!important;transform-origin:center center!important}
 html.tv-mode.tv-fixed-canvas body>*{max-width:none}
+html.tv-mode.tv-fixed-canvas body.scene-title .titlebox{box-sizing:border-box!important;width:720px!important;max-width:720px!important;gap:8px!important}
+html.tv-mode.tv-fixed-canvas body.scene-title .sigil{box-sizing:border-box!important;width:92px!important;height:92px!important;font-size:68px!important}
+html.tv-mode.tv-fixed-canvas body.scene-title .titlebox h1{font-size:68px!important;line-height:.96!important}
+html.tv-mode.tv-fixed-canvas body.scene-title .titlebox h1 em{margin-top:6px!important;font-size:18px!important}
+html.tv-mode.tv-fixed-canvas body.scene-title #ascensionPanel{box-sizing:border-box!important;width:680px!important;max-width:680px!important;margin:6px auto 8px!important;padding:14px 16px!important}
+html.tv-mode.tv-fixed-canvas body.scene-title #ascensionPanel .ascension-select{grid-template-columns:50px minmax(0,1fr) 50px!important;gap:10px!important}
+html.tv-mode.tv-fixed-canvas body.scene-title #ascensionPanel .ascension-select button{height:48px!important;font-size:32px!important}
+html.tv-mode.tv-fixed-canvas body.scene-title #ascensionPanel .ascension-select small{font-size:14px!important}
+html.tv-mode.tv-fixed-canvas body.scene-title #ascensionPanel .ascension-select strong{font-size:19px!important}
+html.tv-mode.tv-fixed-canvas body.scene-title #ascensionPanel>p{min-height:24px!important;margin:7px 0!important;font-size:15px!important;line-height:1.45!important}
+html.tv-mode.tv-fixed-canvas body.scene-title #ascensionPanel .memory-open{padding-top:8px!important;font-size:15px!important}
+html.tv-mode.tv-fixed-canvas body.scene-title .title-actions{width:680px!important;max-width:680px!important;column-gap:10px!important;row-gap:9px!important}
+html.tv-mode.tv-fixed-canvas body.scene-title #continueGame,
+html.tv-mode.tv-fixed-canvas body.scene-title #newGame{min-height:60px!important;padding:10px 14px!important;font-size:20px!important}
+html.tv-mode.tv-fixed-canvas body.scene-title .title-actions:has(#continueGame[hidden]) #newGame{width:520px!important;max-width:520px!important}
+html.tv-mode.tv-fixed-canvas body.scene-title .title-library-grid{gap:9px!important}
+html.tv-mode.tv-fixed-canvas body.scene-title .title-library-grid .title-tool{min-height:54px!important;padding:9px 14px!important;font-size:17px!important}
+html.tv-mode.tv-fixed-canvas body.scene-title .title-hint{bottom:10px!important;font-size:14px!important}
 html.tv-mode.tv-fixed-canvas #battle .arena{height:calc(100% - var(--pc-hand-height))!important}
 html.tv-mode.tv-fixed-canvas #battle .handArea{height:var(--pc-hand-height)!important}
 html.tv-mode.tv-fixed-canvas #battle .creature{height:306px!important}
