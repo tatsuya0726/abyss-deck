@@ -88,6 +88,8 @@ for(const combatHtml of [index,fs.readFileSync(path.join(dist,'game.html'),'utf8
 }
 assert(!strategyPolishJs.includes("steps.length===3&&steps[0]?.[0]==='THE DEEP LORD FALLS'"),
  'strategy polish still replaces the concise ending with long copy');
+assert(strategyPolishJs.includes("'深淵が口を開く'")&&!strategyPolishJs.includes('そこは天井ではなかった'),
+ 'the final event still describes an implausible ceiling in the deep sea');
 assert(strategyPolishJs.includes("abyss-endgame.css?v=121")&&abyssEndgameCss.includes('#enemySprite.secret-guardian.guardian-phase2{--enemy-scale:1.65'),
  'the final boss second form is not enlarged on portrait screens');
 assert(landscapeCss.includes('boss-enemy.secret-guardian.guardian-phase2')&&landscapeCss.includes('--enemy-scale:1.66!important')&&desktopCss.includes('--enemy-scale:1.3!important')&&desktopCss.includes('--enemy-scale:1.22!important'),
@@ -98,7 +100,7 @@ assert(landscapeCss.includes('width:var(--abyss-vv-width,100%)!important'),
  'landscape root does not use the measured visual viewport width');
 assert(landscapeCss.includes('height:var(--abyss-vv-height,100%)!important'),
  'landscape root does not use the measured visual viewport height');
-assert(index.includes('responsive-desktop.css?v=41'),
+assert(index.includes('responsive-desktop.css?v=42'),
  'PC layout stylesheet is not loaded after the landscape layout');
 assert(desktopCss.trim().startsWith('/* PC landscape layout.')&&desktopCss.includes('@media (orientation:landscape) and (min-width:1000px) and (min-height:600px)'),
  'PC layout is not isolated from touch and portrait layouts');
@@ -109,7 +111,7 @@ assert(desktopCss.includes("grid-template-areas:'icon name power' 'icon name cos
  'PC boss relic choices do not use the available horizontal space');
 assert(desktopCss.includes('#outcomeModal #outcomeText ruby{display:ruby!important'),
  'PC result furigana can still split the outcome sentence');
-assert(shellJs.includes("desktop.href='responsive-desktop.css?v=41'")&&shellJs.includes("link.href='responsive-landscape.css?v=49'"),
+assert(shellJs.includes("desktop.href='responsive-desktop.css?v=42'")&&shellJs.includes("link.href='responsive-landscape.css?v=49'"),
  'dynamically loaded game shells do not receive the PC layout');
 assert(desktopCss.includes('min-width:var(--pc-card-width)!important;max-width:var(--pc-card-width)!important')&&desktopCss.includes('.shop-upgrade-card-pair .unified-card>.cardInner'),
  'TV cards can still render with a frame wider than their contents');
@@ -121,7 +123,7 @@ assert(desktopCss.includes('html.tv-mode.tv-fixed-canvas body{position:fixed!imp
  'TV layout does not uniformly scale a centered 16:9 canvas');
 assert(desktopCss.includes('body.scene-title .titlebox{box-sizing:border-box!important;width:720px!important')&&desktopCss.includes('body.scene-title .title-actions{width:680px!important')&&desktopCss.includes('.title-library-grid .title-tool{min-height:54px!important'),
  'TV fixed-canvas opening menu is still too small for television viewing');
-assert(desktopCss.includes('tv-fixed-canvas :is(#eventModal,#mapChoiceModal){box-sizing:border-box!important;padding:20px 8px 8px!important}')&&desktopCss.includes('tv-fixed-canvas :is(#eventModal,#mapChoiceModal)>.panel{box-sizing:border-box!important;width:100%!important;max-width:none!important;height:100%!important;max-height:none!important}')&&desktopCss.includes('tv-fixed-canvas #shopModal>.shop-panel{box-sizing:border-box!important;width:100%!important;max-width:none!important;height:100%!important;max-height:none!important}'),
+assert(desktopCss.includes('tv-fixed-canvas :is(#eventModal,#mapChoiceModal){box-sizing:border-box!important;display:block!important;padding:0!important}')&&desktopCss.includes('tv-fixed-canvas :is(#eventModal,#mapChoiceModal)>.panel{box-sizing:border-box!important;position:absolute!important;inset:8px!important;width:auto!important;max-width:none!important;height:auto!important;max-height:none!important;margin:0!important')&&desktopCss.includes('tv-fixed-canvas #shopModal>.shop-panel{box-sizing:border-box!important;width:100%!important;max-width:none!important;height:100%!important;max-height:none!important}'),
  'TV fixed event or shop window does not fit the available safe canvas');
 assert(desktopCss.includes('#titleSettingsModal>.settings-hub-panel{box-sizing:border-box!important;position:absolute!important;left:50%!important;top:50%!important')&&desktopCss.includes('transform:translate(-50%,-50%) scale(.92)!important')&&desktopCss.includes('#titleSettingsModal .modal-shell-foot{display:block!important'),
  'TV settings are not proportionally fitted with the close footer inside the canvas');
@@ -143,10 +145,10 @@ assert(shellJs.includes("pendingHandFocusIndex=Math.max(0,(Number(focusEl.datase
  'controller focus does not move to the card left of a played card');
 assert(shellJs.includes("topModal?.matches?.('#shopModal')?topModal.querySelector('.shop-choose #shopBack'):null"),
  'controller cancel does not return card upgrade/removal choices to the market');
-assert(shellJs.includes('function scrollShopListBeforeLeaving(dir)')&&shellJs.includes('if(scrollShopListBeforeLeaving(dir))return'),
- 'shop navigation can leave the scrolling list before reaching its edge');
-assert(shellJs.includes("centerShopChoice=!!el.closest?.('#shopModal .shop-choose .shop-card-list')")&&shellJs.includes("block:centerShopChoice?'center':'nearest'"),
- 'focused shop upgrade/removal rows are not centered in the scroller');
+assert(!shellJs.includes('scrollShopListBeforeLeaving')&&shellJs.includes("#shopGrid .market-item,#shopGrid .shop-item,#shopGrid .shop-card"),
+ 'shop navigation does not move focus normally across every market and service item');
+assert(shellJs.includes('targetRect.top+targetRect.height/2')&&shellJs.includes("target.scrollTo({top:Math.max(0,Math.min(max,desired)),behavior:'smooth'})")&&shellJs.includes('setTimeout(updateRing,180)'),
+ 'focused shop rows are not centered in their scrolling area');
 assert(!shellJs.includes(".shop-card-list .unified-shop-choice,#shopGrid .market-item"),
  'shop upgrade/removal navigation still scrolls instead of moving between rows');
 assert(shellJs.includes('function applyPcMapEdgePadding(track)')&&shellJs.includes('const remap=value=>pcMap?6+value*.88:value'),
@@ -193,7 +195,7 @@ assert(refinementJs.includes('function syncPortraitEventArt()')&&refinementJs.in
  'portrait event artwork has no fallback when a stale seal icon is rendered');
 assert(refinementCss.includes('@media (orientation:portrait) and (max-width:700px)')&&refinementCss.includes('.bigicon:has(.event-illustration)')&&refinementCss.includes('height:clamp(150px,24dvh,220px)')&&refinementCss.includes('object-fit:cover'),
  'portrait event illustrations do not have a bounded mobile layout');
-assert(desktopCss.includes('width:min(1500px,94vw)!important;height:min(700px,78vh)!important')&&desktopCss.includes('grid-template-columns:minmax(460px,52%) minmax(0,1fr)!important')&&desktopCss.includes('.event-illustration{width:100%!important;height:100%!important;object-fit:contain!important'),
+assert(desktopCss.includes('width:min(1560px,98vw)!important;height:min(780px,88vh)!important')&&desktopCss.includes('grid-template-columns:minmax(560px,58%) minmax(0,1fr)!important')&&desktopCss.includes('.event-illustration{width:100%!important;height:100%!important;object-fit:contain!important'),
  'PC event illustrations are cropped or do not use the widened short-panel layout');
 assert(desktopCss.includes('#strategyModal .achievement-card b{font-size:18px!important')&&desktopCss.includes('#strategyModal .achievement-card p{margin:7px 0!important;font-size:15px!important')&&desktopCss.includes('.achievement-card.locked{opacity:.68!important'),
  'PC achievements are still too small or faint to read');
@@ -520,11 +522,11 @@ async function verifyServer(){
   assert(response?.ok,`local server did not return index.html (${response?.status||'no response'})`);
   const html=await response.text();
   assert(html.includes('id="tapStartGate"'),'served page has no TAP START gate');
-  assert(html.includes('responsive-shell.js?v=56'),'served page has a stale responsive script version');
+  assert(html.includes('responsive-shell.js?v=57'),'served page has a stale responsive script version');
   assert(html.includes('responsive-landscape.css?v=49'),'served page has a stale responsive stylesheet version');
-  assert(html.includes('responsive-desktop.css?v=41'),'served page has no PC layout stylesheet');
+  assert(html.includes('responsive-desktop.css?v=42'),'served page has no PC layout stylesheet');
   assert(html.includes('relics-events.js?v=155'),'served page has a stale relic event script version');
-  assert(html.includes('strategy-polish.js?v=189'),'served page has a stale strategy event script version');
+  assert(html.includes('strategy-polish.js?v=190'),'served page has a stale strategy event script version');
   assert(html.includes('economy.js?v=158'),'served page has a stale economy script version');
   assert(html.includes('refinement.css?v=69'),'served page has a stale event stylesheet version');
   assert(html.includes('refinement.js?v=73'),'served page has a stale event script version');
