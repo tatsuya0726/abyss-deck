@@ -131,7 +131,7 @@ function injectLandscapeCss(){
  }
  if(!d.querySelector('link[data-abyss-desktop-layout],link[href*="responsive-desktop.css"]')){
   const desktop=d.createElement('link');
-  desktop.rel='stylesheet';desktop.href='responsive-desktop.css?v=38';
+  desktop.rel='stylesheet';desktop.href='responsive-desktop.css?v=39';
   desktop.dataset.abyssDesktopLayout='1';d.head.appendChild(desktop);
  }
 }
@@ -263,9 +263,17 @@ function rectOf(el){
  return{left,top,width:r.width,height:r.height,cx:left+r.width/2,cy:top+r.height/2};
 }
 
+function focusVisualTarget(el){
+ if(!el)return el;
+ if(el.matches?.('.unified-shop-choice,.shop-card'))return el.querySelector('.unified-card')||el;
+ return el;
+}
+
 function updateRing(){
  if(!landscapeLayout||!enabled||activeAdvanceOverlay()||!focusEl||!visible(focusEl)){ring.style.display='none';return}
- let r=rectOf(focusEl);const d=doc();
+ const visualTarget=focusVisualTarget(focusEl);
+ if(!visualTarget||!visible(visualTarget)){ring.style.display='none';return}
+ let r=rectOf(visualTarget);const d=doc();
  if(d?.documentElement.classList.contains('tv-fixed-canvas')&&directMode){const bodyRect=d.body.getBoundingClientRect(),scale=Number(getComputedStyle(d.documentElement).getPropertyValue('--tv-canvas-scale'))||1;r={left:(r.left-bodyRect.left)/scale,top:(r.top-bodyRect.top)/scale,width:r.width/scale,height:r.height/scale}}
  ring.style.display='block';
  ring.style.left=(r.left-4)+'px';ring.style.top=(r.top-4)+'px';ring.style.width=(r.width+8)+'px';ring.style.height=(r.height+8)+'px';
