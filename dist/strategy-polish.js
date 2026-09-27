@@ -135,7 +135,7 @@ window.startAbyssSecretBoss=()=>{const g=game();if(g.map?.[g.currentNode]?.guard
  ['THE SHOPKEEPER AWAKENS','深淵の監視者・フグ店長','「逃げて」と動いた口を、黒い糸が無理やり笑わせる。監視者となった店長が、あなたの前へ立ちはだかる。']
  ],()=>window.startAbyssSpecialBattle?.(WATCHER),'watcher-awaken')};
 window.startAbyssGuardianBoss=()=>{const g=game();g.secretBossPhase=2;window.abyssSave?.();abyssStory([
- ['THE SEA OPENS','そこは天井ではなかった','三つの深淵を越えた先で、暗い海そのものが一つの瞼として開く。珊瑚の王冠、無数の眼、沈没都市を背負う巨体が深淵を押し広げる。'],
+ ['THE SEA OPENS','深淵が口を開く','三つの深淵を越えた先で、暗い海そのものが一つの瞼として開く。珊瑚の王冠、無数の眼、沈没都市を背負う巨体が深淵を押し広げる。'],
  ['THE ABYSS GUARDIAN','深淵の守護者・クトゥル＝アビス','フグ店長を操っていた真の主が、虚無を抱く胸を開く。六つの儀式が巡りきる前に、この海の神を沈めろ。']
  ],()=>window.startAbyssSpecialBattle?.(GUARDIAN),'post-watcher-story')};
 window.finishAbyssSecretPhase=phase=>{const g=game();if(phase===1){abyssStory([
