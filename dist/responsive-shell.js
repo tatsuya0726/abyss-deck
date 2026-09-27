@@ -131,7 +131,7 @@ function injectLandscapeCss(){
  }
  if(!d.querySelector('link[data-abyss-desktop-layout],link[href*="responsive-desktop.css"]')){
   const desktop=d.createElement('link');
-  desktop.rel='stylesheet';desktop.href='responsive-desktop.css?v=36';
+  desktop.rel='stylesheet';desktop.href='responsive-desktop.css?v=37';
   desktop.dataset.abyssDesktopLayout='1';d.head.appendChild(desktop);
  }
 }
@@ -331,7 +331,7 @@ function scrollActive(amount){
  }
  if(!target){
   const modals=[...d.querySelectorAll('.modal.on')],activeModal=modals[modals.length-1];
-  const modalTargets=[focusEl?.closest?.('.modal-shell-body'),activeModal?.querySelector('.modal-shell-body'),activeModal?.querySelector('.panel')].filter(Boolean);
+  const modalTargets=[focusEl?.closest?.('.dimensional-compression-grid,.modal-shell-body'),activeModal?.querySelector('.dimensional-compression-grid'),activeModal?.querySelector('.modal-shell-body'),activeModal?.querySelector('.panel')].filter(Boolean);
   target=modalTargets.find(el=>el.scrollHeight>el.clientHeight+2||el.scrollWidth>el.clientWidth+2)||null;
  }
  if(!target)target=scrollParent(focusEl);
