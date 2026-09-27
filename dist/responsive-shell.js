@@ -120,7 +120,7 @@ function injectLandscapeCss(){
  if(!cssInjected){
   try{
    const link=d.createElement('link');
-   link.rel='stylesheet';link.href='responsive-landscape.css?v=48';
+   link.rel='stylesheet';link.href='responsive-landscape.css?v=49';
    d.head.appendChild(link);cssInjected=true;
   }catch(e){}
  }
@@ -131,7 +131,7 @@ function injectLandscapeCss(){
  }
  if(!d.querySelector('link[data-abyss-desktop-layout],link[href*="responsive-desktop.css"]')){
   const desktop=d.createElement('link');
-  desktop.rel='stylesheet';desktop.href='responsive-desktop.css?v=39';
+  desktop.rel='stylesheet';desktop.href='responsive-desktop.css?v=40';
   desktop.dataset.abyssDesktopLayout='1';d.head.appendChild(desktop);
  }
 }
