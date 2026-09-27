@@ -90,7 +90,7 @@ assert(landscapeCss.includes('width:var(--abyss-vv-width,100%)!important'),
  'landscape root does not use the measured visual viewport width');
 assert(landscapeCss.includes('height:var(--abyss-vv-height,100%)!important'),
  'landscape root does not use the measured visual viewport height');
-assert(index.includes('responsive-desktop.css?v=35'),
+assert(index.includes('responsive-desktop.css?v=36'),
  'PC layout stylesheet is not loaded after the landscape layout');
 assert(desktopCss.trim().startsWith('/* PC landscape layout.')&&desktopCss.includes('@media (orientation:landscape) and (min-width:1000px) and (min-height:600px)'),
  'PC layout is not isolated from touch and portrait layouts');
@@ -101,7 +101,7 @@ assert(desktopCss.includes("grid-template-areas:'icon name power' 'icon name cos
  'PC boss relic choices do not use the available horizontal space');
 assert(desktopCss.includes('#outcomeModal #outcomeText ruby{display:ruby!important'),
  'PC result furigana can still split the outcome sentence');
-assert(shellJs.includes("desktop.href='responsive-desktop.css?v=35'")&&shellJs.includes("link.href='responsive-landscape.css?v=48'"),
+assert(shellJs.includes("desktop.href='responsive-desktop.css?v=36'")&&shellJs.includes("link.href='responsive-landscape.css?v=48'"),
  'dynamically loaded game shells do not receive the PC layout');
 assert(shellJs.includes("TV_CANVAS_KEY='abyssTvFixedCanvas'")&&shellJs.includes('TV_CANVAS_WIDTH=1600,TV_CANVAS_HEIGHT=900')&&shellJs.includes("add('titleTvDisplay'")&&shellJs.includes("add('titleTvScale'"),
  'TV fixed-canvas controls are missing from settings');
@@ -161,6 +161,8 @@ assert(desktopCss.includes('#relicRevealModal>.relic-reveal')&&desktopCss.includ
  'PC relic reward reveal is still stretched across the screen');
 assert(desktopCss.includes('.boss-unit>#enemySprite.boss-enemy')&&desktopCss.includes('height:min(41vh,390px)!important'),
  'PC boss artwork is not enlarged independently from ordinary enemies');
+assert(desktopCss.includes('tv-fixed-canvas #battle .enemy-unit.boss-unit{padding-top:0!important}')&&desktopCss.includes('tv-fixed-canvas #battle .boss-unit>#enemySprite.boss-enemy{height:290px!important;max-height:290px!important')&&desktopCss.includes('--enemy-scale:1!important'),
+ 'TV fixed boss artwork can extend beyond the visible combat arena');
 assert(desktopCss.includes('#collectionGrid.beast-legacy-grid{grid-template-columns:repeat(auto-fill,minmax(clamp(340px,24vw,440px),1fr))')&&desktopCss.includes('#beastDetailModal .beast-detail-portrait')&&desktopCss.includes('width:min(520px,58vw)!important;height:min(300px,34vh)!important'),
  'PC bestiary cards or the centred detail portrait are still too small');
 assert(strategyPolishJs.includes("normalKeeperPortrait.src='assets/ui/puffer-shopkeeper-v2.webp?v=73'"),
@@ -500,9 +502,9 @@ async function verifyServer(){
   assert(response?.ok,`local server did not return index.html (${response?.status||'no response'})`);
   const html=await response.text();
   assert(html.includes('id="tapStartGate"'),'served page has no TAP START gate');
-  assert(html.includes('responsive-shell.js?v=53'),'served page has a stale responsive script version');
+  assert(html.includes('responsive-shell.js?v=54'),'served page has a stale responsive script version');
   assert(html.includes('responsive-landscape.css?v=48'),'served page has a stale responsive stylesheet version');
-  assert(html.includes('responsive-desktop.css?v=35'),'served page has no PC layout stylesheet');
+  assert(html.includes('responsive-desktop.css?v=36'),'served page has no PC layout stylesheet');
   assert(html.includes('relics-events.js?v=155'),'served page has a stale relic event script version');
   assert(html.includes('strategy-polish.js?v=188'),'served page has a stale strategy event script version');
   assert(html.includes('economy.js?v=158'),'served page has a stale economy script version');
