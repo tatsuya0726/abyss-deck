@@ -1,7 +1,9 @@
 (()=>{'use strict';
 const $=s=>document.querySelector(s);
 if(window.matchMedia('(display-mode: standalone)').matches||window.navigator.standalone===true)return;
-const isIOS=/iPad|iPhone|iPod/.test(navigator.userAgent)&&!window.MSStream;
+const ua=navigator.userAgent||'',isIOS=(/iPad|iPhone|iPod/.test(ua)||(navigator.platform==='MacIntel'&&navigator.maxTouchPoints>1))&&!window.MSStream;
+const isHandheld=isIOS||/Android.+Mobile|Mobile.+Android/i.test(ua);
+if(!isHandheld)return;
 const seenKey='abyssA2hsSeenV2';
 function seen(){try{return localStorage.getItem(seenKey)==='1'}catch(e){return false}}
 function markSeen(){try{localStorage.setItem(seenKey,'1')}catch(e){}}
