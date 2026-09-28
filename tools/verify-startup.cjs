@@ -109,7 +109,7 @@ assert(landscapeCss.includes('width:var(--abyss-vv-width,100%)!important'),
  'landscape root does not use the measured visual viewport width');
 assert(landscapeCss.includes('height:var(--abyss-vv-height,100%)!important'),
  'landscape root does not use the measured visual viewport height');
-assert(index.includes('responsive-desktop.css?v=42'),
+assert(index.includes('responsive-desktop.css?v=43'),
  'PC layout stylesheet is not loaded after the landscape layout');
 assert(desktopCss.trim().startsWith('/* PC landscape layout.')&&desktopCss.includes('@media (orientation:landscape) and (min-width:1000px) and (min-height:600px)'),
  'PC layout is not isolated from touch and portrait layouts');
@@ -120,7 +120,7 @@ assert(desktopCss.includes("grid-template-areas:'icon name power' 'icon name cos
  'PC boss relic choices do not use the available horizontal space');
 assert(desktopCss.includes('#outcomeModal #outcomeText ruby{display:ruby!important'),
  'PC result furigana can still split the outcome sentence');
-assert(shellJs.includes("desktop.href='responsive-desktop.css?v=42'")&&shellJs.includes("link.href='responsive-landscape.css?v=49'"),
+assert(shellJs.includes("desktop.href='responsive-desktop.css?v=43'")&&shellJs.includes("link.href='responsive-landscape.css?v=49'"),
  'dynamically loaded game shells do not receive the PC layout');
 assert(desktopCss.includes('min-width:var(--pc-card-width)!important;max-width:var(--pc-card-width)!important')&&desktopCss.includes('.shop-upgrade-card-pair .unified-card>.cardInner'),
  'TV cards can still render with a frame wider than their contents');
@@ -132,7 +132,7 @@ assert(desktopCss.includes('html.tv-mode.tv-fixed-canvas body{position:fixed!imp
  'TV layout does not uniformly scale a centered 16:9 canvas');
 assert(desktopCss.includes('body.scene-title .titlebox{box-sizing:border-box!important;width:720px!important')&&desktopCss.includes('body.scene-title .title-actions{width:680px!important')&&desktopCss.includes('.title-library-grid .title-tool{min-height:54px!important'),
  'TV fixed-canvas opening menu is still too small for television viewing');
-assert(desktopCss.includes('tv-fixed-canvas :is(#eventModal,#mapChoiceModal){box-sizing:border-box!important;display:block!important;padding:0!important}')&&desktopCss.includes('tv-fixed-canvas :is(#eventModal,#mapChoiceModal)>.panel{box-sizing:border-box!important;position:absolute!important;inset:8px!important;width:auto!important;max-width:none!important;height:auto!important;max-height:none!important;margin:0!important')&&desktopCss.includes('tv-fixed-canvas #shopModal>.shop-panel{box-sizing:border-box!important;width:100%!important;max-width:none!important;height:100%!important;max-height:none!important}'),
+assert(desktopCss.includes('tv-fixed-canvas :is(#eventModal,#mapChoiceModal).on{box-sizing:border-box!important;display:block!important;padding:0!important}')&&desktopCss.includes('tv-fixed-canvas :is(#eventModal,#mapChoiceModal).on>.panel{box-sizing:border-box!important;position:absolute!important;inset:8px!important;width:auto!important;max-width:none!important;height:auto!important;max-height:none!important;margin:0!important')&&desktopCss.includes('tv-fixed-canvas #shopModal>.shop-panel{box-sizing:border-box!important;width:100%!important;max-width:none!important;height:100%!important;max-height:none!important}'),
  'TV fixed event or shop window does not fit the available safe canvas');
 assert(desktopCss.includes('#titleSettingsModal>.settings-hub-panel{box-sizing:border-box!important;position:absolute!important;left:50%!important;top:50%!important')&&desktopCss.includes('transform:translate(-50%,-50%) scale(.92)!important')&&desktopCss.includes('#titleSettingsModal .modal-shell-foot{display:block!important'),
  'TV settings are not proportionally fitted with the close footer inside the canvas');
@@ -535,7 +535,7 @@ async function verifyServer(){
   assert(html.includes('id="tapStartGate"'),'served page has no TAP START gate');
   assert(html.includes('responsive-shell.js?v=57'),'served page has a stale responsive script version');
   assert(html.includes('responsive-landscape.css?v=49'),'served page has a stale responsive stylesheet version');
-  assert(html.includes('responsive-desktop.css?v=42'),'served page has no PC layout stylesheet');
+  assert(html.includes('responsive-desktop.css?v=43'),'served page has no PC layout stylesheet');
   assert(html.includes('relics-events.js?v=155'),'served page has a stale relic event script version');
   assert(html.includes('strategy-polish.js?v=191'),'served page has a stale strategy event script version');
   assert(html.includes('economy.js?v=158'),'served page has a stale economy script version');
