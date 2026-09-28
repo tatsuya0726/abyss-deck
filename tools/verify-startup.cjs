@@ -202,6 +202,8 @@ assert(refinementJs.includes('function syncPortraitEventArt()')&&refinementJs.in
  'portrait event artwork has no fallback when a stale seal icon is rendered');
 assert(refinementCss.includes('@media (orientation:portrait) and (max-width:700px)')&&refinementCss.includes('.bigicon:has(.event-illustration)')&&refinementCss.includes('height:clamp(150px,24dvh,220px)')&&refinementCss.includes('object-fit:cover'),
  'portrait event illustrations do not have a bounded mobile layout');
+assert(refinementCss.includes('#deckChoiceModal .bigicon:has(.event-illustration)')&&refinementCss.includes('height:clamp(88px,13dvh,116px)')&&refinementCss.includes('#deckChoiceModal .bigicon .event-illustration'),
+ 'the portrait single-card event picker lets its illustration hide the card list');
 assert(desktopCss.includes('width:min(1560px,98vw)!important;height:min(780px,88vh)!important')&&desktopCss.includes('grid-template-columns:minmax(560px,58%) minmax(0,1fr)!important')&&desktopCss.includes('.event-illustration{width:100%!important;height:100%!important;object-fit:contain!important'),
  'PC event illustrations are cropped or do not use the widened short-panel layout');
 assert(desktopCss.includes('#strategyModal .achievement-card b{font-size:18px!important')&&desktopCss.includes('#strategyModal .achievement-card p{margin:7px 0!important;font-size:15px!important')&&desktopCss.includes('.achievement-card.locked{opacity:.68!important'),
@@ -535,7 +537,7 @@ async function verifyServer(){
   assert(html.includes('relics-events.js?v=155'),'served page has a stale relic event script version');
   assert(html.includes('strategy-polish.js?v=191'),'served page has a stale strategy event script version');
   assert(html.includes('economy.js?v=158'),'served page has a stale economy script version');
-  assert(html.includes('refinement.css?v=69'),'served page has a stale event stylesheet version');
+  assert(html.includes('refinement.css?v=70'),'served page has a stale event stylesheet version');
   assert(html.includes('refinement.js?v=73'),'served page has a stale event script version');
   assert(html.includes('enhance.js?v=270'),'served page has a stale audio script version');
   assert(html.includes('title-tools.js?v=114'),'served page has a stale settings script version');
