@@ -3,6 +3,8 @@
   :is(#eventModal,#mapChoiceModal)>.panel{box-sizing:border-box;width:94vw;max-height:90dvh;padding:14px 13px 16px;overflow-x:hidden;overflow-y:auto}
   :is(#eventModal,#mapChoiceModal) .bigicon:has(.event-illustration){box-sizing:border-box;width:100%;height:clamp(150px,24dvh,220px);margin:0 auto 10px;padding:0;overflow:hidden;border:1px solid #4b747d;border-radius:14px;background:#02080d;box-shadow:inset 0 0 28px #000a,0 8px 24px #0009;filter:none}
   :is(#eventModal,#mapChoiceModal) .event-illustration{display:block;width:100%;height:100%;object-fit:cover;object-position:center;filter:saturate(1.06) contrast(1.03)}
+  #deckChoiceModal .bigicon:has(.event-illustration){box-sizing:border-box;width:100%;height:clamp(88px,13dvh,116px);min-height:88px;flex:0 0 auto;margin:0 auto 6px;padding:0;overflow:hidden;border:1px solid #4b747d;border-radius:12px;background:#02080d;filter:none}
+  #deckChoiceModal .bigicon .event-illustration{display:block;width:100%;height:100%;object-fit:cover;object-position:center 48%;filter:saturate(1.06) contrast(1.03)}
   :is(#eventModal,#mapChoiceModal) h2{margin:5px 2px 7px;font-size:clamp(19px,6vw,25px);line-height:1.35}
   :is(#eventModal,#mapChoiceModal) :is(#eventText,#mapChoiceText){margin:0 3px 10px;font-size:13px;line-height:1.65;text-align:left}
   :is(#eventModal,#mapChoiceModal) .choices{margin-top:8px;gap:8px}
