@@ -56,6 +56,11 @@ const relicsEventsJs=fs.readFileSync(path.join(dist,'relics-events.js'),'utf8');
 const strategyPolishJs=fs.readFileSync(path.join(dist,'strategy-polish.js'),'utf8');
 const gamePolishCss=fs.readFileSync(path.join(dist,'game-polish.css'),'utf8');
 const abyssEndgameCss=fs.readFileSync(path.join(dist,'abyss-endgame.css'),'utf8');
+const addToHomeJs=fs.readFileSync(path.join(dist,'add-to-home.js'),'utf8');
+assert(addToHomeJs.includes("seenKey='abyssA2hsSeenV2'")&&addToHomeJs.includes('catch(e){return false}'),
+ 'the first-launch home-screen notice can be suppressed by stale or unavailable storage');
+assert(addToHomeJs.includes("$('#a2hsLater').onclick=()=>closeNotice(false)")&&addToHomeJs.includes('function queueNotice()'),
+ 'choosing later permanently suppresses the home-screen notice or startup events queue it repeatedly');
 assert(enhanceJs.includes("document.getElementById('battle')?.classList.contains('on')&&window.getAbyssGame?.()?.enemy"),
  'combat sound effects still lower the active battle BGM');
 assert(titleToolsJs.includes('id="pcBgmVolume"')&&titleToolsJs.includes('id="pcSfxVolume"')&&titleToolsJs.includes('setAbyssAudioPrefs'),
@@ -534,6 +539,7 @@ async function verifyServer(){
   assert(html.includes('refinement.js?v=73'),'served page has a stale event script version');
   assert(html.includes('enhance.js?v=270'),'served page has a stale audio script version');
   assert(html.includes('title-tools.js?v=114'),'served page has a stale settings script version');
+  assert(html.includes('add-to-home.js?v=4'),'served page has a stale home-screen notice script version');
   assert(html.includes('game-polish.css?v=154'),'served page has a stale game polish stylesheet version');
   assert(html.includes('game-polish.js?v=196'),'served page has a stale game polish script version');
  }finally{
