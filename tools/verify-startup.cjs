@@ -11,6 +11,7 @@ const gameHtml=fs.readFileSync(path.join(dist,'game.html'),'utf8');
 const tacticalCards=fs.readFileSync(path.join(dist,'tactical-cards.js'),'utf8');
 const cardCodex=fs.readFileSync(path.join(dist,'card-codex.js'),'utf8');
 const strategyPolish=fs.readFileSync(path.join(dist,'strategy-polish.js'),'utf8');
+const upgrade=fs.readFileSync(path.join(dist,'upgrade.js'),'utf8');
 
 function assert(value,message){if(!value)throw new Error(message)}
 
@@ -25,8 +26,14 @@ for(const key of ['bulletfire','speedloader','flatten','dieseadice']){
 }
 assert(index.includes('e.poisonNeedleStored>0?{p:e.poisonNeedleStored,needleRelease:1}')&&gameHtml.includes('e.poisonNeedleStored>0?{p:e.poisonNeedleStored,needleRelease:1}'),
  'poison-to-needle conversion is not wired in both game entry pages');
-assert(strategyPolish.includes("GUARDIAN.m2=[{a:18,powerDown:2},{b:34,poisonConvert:1}"),
+assert(strategyPolish.includes("GUARDIAN.m2=[{a:18},{b:34,poisonConvert:1}"),
  'the abyss guardian phase 2 does not attack immediately or alternate into poison needles');
+assert(index.includes('G.turn>=3&&(G.turn-3)%e.powerDownInterval===0')&&gameHtml.includes('G.turn>=3&&(G.turn-3)%e.powerDownInterval===0'),
+ 'attack-power reduction is not delayed until turn 3 in both game entry pages');
+assert(index.includes('e.powerDownInterval=e.boss?7:8')&&gameHtml.includes('e.powerDownInterval=e.boss?7:8'),
+ 'attack-power reduction cooldowns are missing in both game entry pages');
+assert(upgrade.includes('3ターン目から${entry.powerDownInterval}ターンごと')&&upgrade.includes('このターンは攻撃など他の行動なし'),
+ 'the bestiary does not explain the scheduled standalone attack-power reduction');
 
 const inlineScripts=[...index.matchAll(/<script(?:\s[^>]*)?>([\s\S]*?)<\/script>/gi)]
  .filter(match=>!/<script\s[^>]*\bsrc=/i.test(match[0]))
@@ -556,7 +563,7 @@ async function verifyServer(){
   assert(html.includes('responsive-landscape.css?v=49'),'served page has a stale responsive stylesheet version');
   assert(html.includes('responsive-desktop.css?v=45'),'served page has no PC layout stylesheet');
   assert(html.includes('relics-events.js?v=155'),'served page has a stale relic event script version');
-  assert(html.includes('strategy-polish.js?v=192'),'served page has a stale strategy event script version');
+  assert(html.includes('strategy-polish.js?v=193'),'served page has a stale strategy event script version');
   assert(html.includes('economy.js?v=158'),'served page has a stale economy script version');
   assert(html.includes('refinement.css?v=70'),'served page has a stale event stylesheet version');
   assert(html.includes('refinement.js?v=73'),'served page has a stale event script version');
