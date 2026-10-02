@@ -216,15 +216,16 @@
   html.tv-mode :is(#cardRevealModal,#multiDeckResultModal,#outcomeModal)>.panel{width:min(720px,72vw)!important;max-height:90vh!important;padding:18px 24px!important;overflow:auto!important}
   html.tv-mode :is(#cardRevealModal,#multiDeckResultModal,#outcomeModal) h2{font-size:30px!important;line-height:1.2!important}
   html.tv-mode :is(#cardRevealModal,#multiDeckResultModal,#outcomeModal) .btn.gold{width:min(360px,80%)!important;min-height:52px!important;margin-inline:auto!important;font-size:16px!important}
-  html.tv-mode #firstBlessingModal>.panel{box-sizing:border-box!important;width:min(1120px,90vw)!important;height:auto!important;max-height:92vh!important;grid-template-columns:minmax(250px,32%) minmax(0,1fr)!important;grid-template-rows:86px auto!important;column-gap:24px!important;row-gap:16px!important;padding:24px 32px!important;overflow:auto!important}
-  html.tv-mode #firstBlessingModal h2{align-self:center!important;padding:0!important;font-size:clamp(30px,2vw,38px)!important;line-height:1.2!important}
-  html.tv-mode #firstBlessingModal .blessing-keeper{height:86px!important;min-height:86px!important}
-  html.tv-mode #firstBlessingModal .blessing-keeper img{width:104px!important;height:86px!important}
-  html.tv-mode #firstBlessingModal .keeper-speech{right:112px!important;min-height:56px!important;padding:10px 14px!important;font-size:14px!important;line-height:1.45!important}
-  html.tv-mode #firstBlessingModal .choices{grid-template-rows:repeat(3,minmax(100px,auto))!important;gap:13px!important;overflow:visible!important}
-  html.tv-mode #firstBlessingModal .choice{box-sizing:border-box!important;height:auto!important;min-height:100px!important;padding:15px 20px!important;font-size:16px!important;line-height:1.5!important}
-  html.tv-mode #firstBlessingModal .choice>b{font-size:21px!important;line-height:1.35!important}
-  html.tv-mode #firstBlessingModal .choice>span{font-size:16px!important;line-height:1.5!important}
+  html.tv-mode #firstBlessingModal>.panel{box-sizing:border-box!important;width:min(1240px,94vw)!important;height:auto!important;max-height:92vh!important;grid-template-columns:minmax(320px,34%) minmax(0,1fr)!important;grid-template-rows:112px auto!important;column-gap:30px!important;row-gap:18px!important;padding:28px 38px!important;overflow:auto!important}
+  html.tv-mode #firstBlessingModal h2{align-self:center!important;padding:0!important;font-size:clamp(38px,2.5vw,48px)!important;line-height:1.2!important}
+  html.tv-mode #firstBlessingModal .blessing-keeper{height:112px!important;min-height:112px!important}
+  html.tv-mode #firstBlessingModal .blessing-keeper img{width:132px!important;height:108px!important}
+  html.tv-mode #firstBlessingModal .blessing-keeper .keeper-name{right:0!important;top:94px!important;width:132px!important;font-size:14px!important}
+  html.tv-mode #firstBlessingModal .keeper-speech{right:140px!important;min-height:72px!important;padding:13px 17px!important;font-size:20px!important;line-height:1.5!important}
+  html.tv-mode #firstBlessingModal .choices{grid-template-rows:repeat(3,minmax(118px,auto))!important;gap:16px!important;overflow:visible!important}
+  html.tv-mode #firstBlessingModal .choice{box-sizing:border-box!important;height:auto!important;min-height:118px!important;padding:18px 24px!important;font-size:21px!important;line-height:1.55!important}
+  html.tv-mode #firstBlessingModal .choice>b{font-size:28px!important;line-height:1.35!important}
+  html.tv-mode #firstBlessingModal .choice>span{font-size:21px!important;line-height:1.55!important}
 
   /* One card scale throughout the PC UI. Battle is the source of truth. */
   html.tv-mode .modal .card:not(.card-use-ghost),html.tv-mode .madness-cast .card{box-sizing:border-box!important;flex:0 0 var(--pc-card-width)!important;width:var(--pc-card-width)!important;min-width:var(--pc-card-width)!important;max-width:var(--pc-card-width)!important;height:var(--pc-card-height)!important;min-height:var(--pc-card-height)!important;max-height:var(--pc-card-height)!important;margin:0!important;transform:none!important}

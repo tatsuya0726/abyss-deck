@@ -133,7 +133,7 @@ assert(landscapeCss.includes('width:var(--abyss-vv-width,100%)!important'),
  'landscape root does not use the measured visual viewport width');
 assert(landscapeCss.includes('height:var(--abyss-vv-height,100%)!important'),
  'landscape root does not use the measured visual viewport height');
-assert(index.includes('responsive-desktop.css?v=45'),
+assert(index.includes('responsive-desktop.css?v=46'),
  'PC layout stylesheet is not loaded after the landscape layout');
 assert(desktopCss.trim().startsWith('/* PC landscape layout.')&&desktopCss.includes('@media (orientation:landscape) and (min-width:1000px) and (min-height:600px)'),
  'PC layout is not isolated from touch and portrait layouts');
@@ -144,7 +144,7 @@ assert(desktopCss.includes("grid-template-areas:'icon name power' 'icon name cos
  'PC boss relic choices do not use the available horizontal space');
 assert(desktopCss.includes('#outcomeModal #outcomeText ruby{display:ruby!important'),
  'PC result furigana can still split the outcome sentence');
-assert(shellJs.includes("desktop.href='responsive-desktop.css?v=45'")&&shellJs.includes("link.href='responsive-landscape.css?v=49'"),
+assert(shellJs.includes("desktop.href='responsive-desktop.css?v=46'")&&shellJs.includes("link.href='responsive-landscape.css?v=49'"),
  'dynamically loaded game shells do not receive the PC layout');
 assert(desktopCss.includes('min-width:var(--pc-card-width)!important;max-width:var(--pc-card-width)!important')&&desktopCss.includes('.shop-upgrade-card-pair .unified-card>.cardInner'),
  'TV cards can still render with a frame wider than their contents');
@@ -492,6 +492,8 @@ assert(desktopCss.includes('#rewardHome :is(.reward-gold,.reward-row)')&&desktop
  'legacy landscape rules still compress PC reward rows');
 assert(desktopCss.includes('grid-template-columns:repeat(3,var(--pc-card-width))!important')&&desktopCss.includes('height:auto!important;min-height:var(--pc-card-height)!important;max-height:none!important'),
  'PC reward cards still inherit the clipped 204px phone container');
+assert(desktopCss.includes('#firstBlessingModal .keeper-speech{right:140px!important;min-height:72px!important;padding:13px 17px!important;font-size:20px!important')&&desktopCss.includes('#firstBlessingModal .choice>b{font-size:28px!important')&&desktopCss.includes('#firstBlessingModal .choice>span{font-size:21px!important'),
+ 'TV spirit gift text is still too small for viewing distance');
 assert(desktopCss.includes('grid-template-rows:none!important;grid-auto-rows:minmax(88px,1fr)!important;align-content:stretch!important'),
  'PC event choices do not distribute over the available content column');
 assert(enhanceJs.includes('SFX_OUTPUT_GAIN=.5,BGM_OUTPUT_GAIN=.5,AUDIO_PREFS_VERSION=6'),
@@ -567,7 +569,7 @@ async function verifyServer(){
   assert(html.includes('id="tapStartGate"'),'served page has no TAP START gate');
   assert(html.includes('responsive-shell.js?v=59'),'served page has a stale responsive script version');
   assert(html.includes('responsive-landscape.css?v=49'),'served page has a stale responsive stylesheet version');
-  assert(html.includes('responsive-desktop.css?v=45'),'served page has no PC layout stylesheet');
+  assert(html.includes('responsive-desktop.css?v=46'),'served page has no PC layout stylesheet');
   assert(html.includes('relics-events.js?v=156'),'served page has a stale relic event script version');
   assert(html.includes('strategy-polish.js?v=193'),'served page has a stale strategy event script version');
   assert(html.includes('economy.js?v=158'),'served page has a stale economy script version');
