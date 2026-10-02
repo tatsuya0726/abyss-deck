@@ -83,6 +83,12 @@ assert(addToHomeJs.includes("$('#a2hsLater').onclick=()=>closeNotice(false)")&&a
  'choosing later permanently suppresses the home-screen notice or startup events queue it repeatedly');
 assert(enhanceJs.includes("document.getElementById('battle')?.classList.contains('on')&&window.getAbyssGame?.()?.enemy"),
  'combat sound effects still lower the active battle BGM');
+assert(enhanceJs.includes('g.eliteBgmBags[layer]')&&enhanceJs.includes('if(!bag.length)bag=shuffledEliteBgm')&&enhanceJs.includes('bag.shift()'),
+ 'elite BGM does not use a per-layer shuffle bag');
+assert(index.includes("G.relic.some(r=>r[1]==='深淵の瞳'))draw(1)")&&gameHtml.includes("G.relic.some(r=>r[1]==='深淵の瞳'))draw(1)"),
+ 'Abyss Eye does not draw exactly one extra card in both game entry pages');
+assert(relicsEventsJs.includes("'深淵の瞳':['🌌','ターン開始時、追加でカードを1枚引く。"),
+ 'Abyss Eye relic description does not match its one-card draw effect');
 assert(titleToolsJs.includes('id="pcBgmVolume"')&&titleToolsJs.includes('id="pcSfxVolume"')&&titleToolsJs.includes('setAbyssAudioPrefs'),
  'PC settings do not expose persistent BGM and sound-effect volume controls');
 assert(titleToolsJs.includes('value="50"')&&titleToolsJs.includes('{bgm:.5,sfx:.5}')&&enhanceJs.includes('DEFAULT_AUDIO_PREFS={version:AUDIO_PREFS_VERSION,bgm:.5,sfx:.5}'),
@@ -562,12 +568,12 @@ async function verifyServer(){
   assert(html.includes('responsive-shell.js?v=59'),'served page has a stale responsive script version');
   assert(html.includes('responsive-landscape.css?v=49'),'served page has a stale responsive stylesheet version');
   assert(html.includes('responsive-desktop.css?v=45'),'served page has no PC layout stylesheet');
-  assert(html.includes('relics-events.js?v=155'),'served page has a stale relic event script version');
+  assert(html.includes('relics-events.js?v=156'),'served page has a stale relic event script version');
   assert(html.includes('strategy-polish.js?v=193'),'served page has a stale strategy event script version');
   assert(html.includes('economy.js?v=158'),'served page has a stale economy script version');
   assert(html.includes('refinement.css?v=70'),'served page has a stale event stylesheet version');
   assert(html.includes('refinement.js?v=73'),'served page has a stale event script version');
-  assert(html.includes('enhance.js?v=270'),'served page has a stale audio script version');
+  assert(html.includes('enhance.js?v=271'),'served page has a stale audio script version');
   assert(html.includes('title-tools.js?v=114'),'served page has a stale settings script version');
   assert(html.includes('add-to-home.js?v=5'),'served page has a stale home-screen notice script version');
   assert(html.includes('game-polish.css?v=154'),'served page has a stale game polish stylesheet version');
