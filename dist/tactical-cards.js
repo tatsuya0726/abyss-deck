@@ -14,7 +14,11 @@ shadoweel:{c:2,p:0,b:0,spendPoison:0,curseScale:6,upgrade:{curseScale:2},t:'戦�
 coelacanth:{c:3,s:0,he:0,doubleFirstPower:1,retain:0,exhaust:1,upgrade:{retain:1},t:'この戦闘中、次のターンから各ターン最初に使う別のカードが、1回分のコストで2回発動する。使い切り。',upgradeText:'この戦闘中、次のターンから各ターン最初に使う別のカードが、1回分のコストで2回発動する。保留。使い切り。'},
 cthulhu:{c:2,d:0,s:0,graveSize:0,turnDrawPower:1,exhaust:1,upgrade:{c:-1},t:'この戦闘中、毎ターン開始時にカードを追加で1枚引く。使い切り。'},
 venombloom:{c:1,b:4,doublePoison:0,poisonBloom:8,upgrade:{b:3},t:'4ブロック。現在の毒の半分を追加で与える。'},
-moltscale:{c:0,b:3,exhaust:0,retain:1,upgrade:{b:2},t:'3ブロック。使わずにターンを終えると、このカードは手札に残る。'}
+moltscale:{c:0,b:3,exhaust:0,retain:1,upgrade:{b:2},t:'3ブロック。使わずにターンを終えると、このカードは手札に残る。'},
+bulletfire:{n:'バレットファイア',i:'🔫',c:0,d:7,upgrade:{d:3},t:'7ダメージ。',upgradeText:'10ダメージ。',g:'トークン・こうげき',special:1},
+speedloader:{n:'スピードローダー',i:'⏱️',c:1,generateBullet:1,bulletUpgrade:0,upgrade:{bulletUpgrade:1},t:'「バレットファイア」を1枚手札に加える。',upgradeText:'強化済みの「バレットファイア」を1枚手札に加える。',g:'アンコモン・装填',u:1},
+flatten:{n:'ぺしゃんこ',i:'🗜️',c:2,choice:'reduceCost',choicePicks:1,exhaust:1,upgrade:{choicePicks:1},t:'手札のカード1枚のコストを、この戦闘中1下げる。使い切り。',upgradeText:'手札のカード2枚のコストを、この戦闘中1下げる。使い切り。',g:'アンコモン・手札操作',u:1},
+dieseadice:{n:'ダイ・シー・ダイス',i:'🎲',c:1,diceEffect:1,upgrade:{c:-1},t:'いずれか1つが発動：10ダメージ／10ブロック／10ゴールドを得る／5ダメージを受ける。',g:'アンコモン・運試し',u:1}
 };
 const has=(g,n)=>g.relic?.some(r=>r[1]===n),data=k=>window.getAbyssCardData?.(k)||{},attack=c=>!!(c.d||c.perBlock),block=(g,n)=>{g.block+=n;if(g.runStats)g.runStats.blockGained+=n};
 window.prepareAbyssTactics=(c,g,draw)=>{
@@ -34,6 +38,8 @@ window.prepareAbyssTactics=(c,g,draw)=>{
  if(c.spendPoison){const n=Math.min(c.spendPoison,g.poison);g.poison-=n;c.b=n*3}
  if(c.poisonBloom)c.p=Math.min(c.poisonBloom,Math.ceil(g.poison/2));
  if(c.generateCurse)for(let i=0;i<c.generateCurse;i++)g.discard.push('abysscurse');if(c.redrawHand){const n=g.hand.length;g.discard.push(...g.hand.splice(0));if(n)window.tacticalCardMoved?.(g,'discard');draw(n)}
+ if(c.generateBullet&&g.hand.length<(window.abyssHandLimit?.(g)||8)){g.hand.push(c.bulletUpgrade?'bulletfire+':'bulletfire');window.abyssImpact?.('#playerSprite','draw')}
+ if(c.diceEffect){const roll=Math.random()*4|0;if(roll===0)c.d=10;else if(roll===1)c.b=10;else if(roll===2){g.pearl+=10;if(g.runStats)g.runStats.goldEarned=(g.runStats.goldEarned||0)+10}else{const before=g.hp;g.hp=Math.max(1,g.hp-5);window.recordAbyssSelfHpLoss?.(before-g.hp);if(g.runStats)g.runStats.damageTaken=(g.runStats.damageTaken||0)+(before-g.hp)}const result=['10ダメージ','10ブロック','10ゴールド','5ダメージを受けた'][roll];let log=document.getElementById('battlelog');if(log)log.textContent=`ダイ・シー・ダイス：${result}`;window.abyssImpact?.(roll===0?'#enemySprite':'#playerSprite',roll===0?'slash':roll===1?'guard':roll===2?'draw':'poison')}
  if(c.randomExhaustHand){if(g.hand.length){const index=Math.random()*g.hand.length|0,removed=g.hand.splice(index,1)[0];(g.exhausted||=[]).push(removed);window.tacticalCardMoved?.(g,'exhaust')}c.choice=null}
  if(c.curseScale){const n=window.countAbyssCurses?.(g)||0;c.d=n*c.curseScale;c.b=n*c.curseScale}
  if(c.d&&g.primedAttack){c.d+=g.primedAttack;g.primedAttack=0}

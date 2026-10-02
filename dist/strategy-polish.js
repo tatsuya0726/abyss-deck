@@ -83,7 +83,7 @@ const originalAnomaly=window.openAbyssAnomaly;window.openAbyssAnomaly=()=>{const
 
 const WATCHER={n:'深淵の監視者・フグ店長',hp:336,trait:'黒い操糸：守りながら毒を喰らい、棘の連撃と潮圧で行動を縛る。',m:[{b:30},{a:7,h:5},{a:15,p:7,feed:7},{b:20,devour:18},{a:38,pressure:2}]};
 const GUARDIAN={n:'深淵の守護者・クトゥル＝アビス',hp:576,trait:'虚海胎動：六つの儀式を巡り、毒喰い・反応攻撃・潮圧を重ねて最後に深海崩壊を放つ。',m:[{b:38,thornsSelf:4},{a:6,h:6,p:8},{b:24,devour:22},{a:19,h:2,counter:3},{b:30,pressure:2},{a:42,p:10}]};
-GUARDIAN.m2=[{b:34,handCostUp:1},{a:9,h:5,p:12},{b:26,devour:28},{a:24,h:2,counter:4},{a:16,h:3,p:14,counter:3},{a:52,pressure:2}];
+GUARDIAN.m2=[{a:18,powerDown:2},{b:34,poisonConvert:1},{a:9,h:5,p:12},{b:26,guardDown:2},{a:24,h:2,counter:4},{a:16,h:3,p:14,counter:3},{a:52,pressure:2}];
 const GUARDIAN_TRUE={n:'虚星邪神・クトゥル＝アビス',hp:GUARDIAN.hp,trait:'殻の内に封じられていた、無数の眼と虚星を宿す邪神。儀式の型を捨て、より速く重い一撃で押し切ろうとする。',m:GUARDIAN.m2};
 window.ABYSS_SPECIAL_ENEMIES={[WATCHER.n]:WATCHER,[GUARDIAN.n]:GUARDIAN,[GUARDIAN_TRUE.n]:GUARDIAN_TRUE};
 window.abyssGuardianPhase2Cutscene=(onReveal,onDone)=>{
@@ -99,9 +99,9 @@ window.abyssGuardianPhase2Cutscene=(onReveal,onDone)=>{
  (async()=>{
   try{
    await wait(800);
-   await showLine('……まだだ。まだ終わらぬ。',2600);
-   await showLine('この程度で、私を止められると思ったか。',2600);
-   lineEl.textContent='殻が砕け、虚星邪神が深淵へ溢れ出す――';window.applyFuri?.(lineEl);lineEl.classList.add('show');
+   await showLine('この海の痛みは、すべて私が背負えばよかった。',2900);
+   await showLine('皆が穏やかに泳げるなら、私は呪いの底に沈んでもよい。',3200);
+   lineEl.textContent='守ろうとした海の呪いが殻を砕き、悲しき真の姿をさらす――';window.applyFuri?.(lineEl);lineEl.classList.add('show');
    if(sp){sp.classList.remove('guardian-phase2-tremor');sp.classList.remove('guardian-phase2-burst');void sp.offsetWidth;sp.classList.add('guardian-phase2-burst')}
    await wait(500);
    try{onReveal?.()}catch(err){console.error('guardian phase2 reveal error',err)}

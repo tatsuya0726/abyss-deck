@@ -8,6 +8,9 @@ const dist=path.join(root,'dist');
 const indexPath=path.join(dist,'index.html');
 const index=fs.readFileSync(indexPath,'utf8');
 const gameHtml=fs.readFileSync(path.join(dist,'game.html'),'utf8');
+const tacticalCards=fs.readFileSync(path.join(dist,'tactical-cards.js'),'utf8');
+const cardCodex=fs.readFileSync(path.join(dist,'card-codex.js'),'utf8');
+const strategyPolish=fs.readFileSync(path.join(dist,'strategy-polish.js'),'utf8');
 
 function assert(value,message){if(!value)throw new Error(message)}
 
@@ -16,6 +19,14 @@ assert(index.includes('id="title"'),'title screen is missing from index.html');
 assert(index.includes("boot-recovery.js?v=1"),'startup recovery script is missing');
 assert(index.includes("voidjaw:{n:'虚空顎',i:'👹',c:2,choice:'voidExhaust',upgrade:{c:-1}")&&gameHtml.includes("voidjaw:{n:'虚空顎',i:'👹',c:2,choice:'voidExhaust',upgrade:{c:-1}"),
  'upgraded Void Jaw does not cost 1 energy in both game entry pages');
+for(const key of ['bulletfire','speedloader','flatten','dieseadice']){
+ assert(tacticalCards.includes(`${key}:{`),`new card definition is missing: ${key}`);
+ assert(cardCodex.includes(`${key}:'assets/cards/`),`new card artwork mapping is missing: ${key}`);
+}
+assert(index.includes('e.poisonNeedleStored>0?{p:e.poisonNeedleStored,needleRelease:1}')&&gameHtml.includes('e.poisonNeedleStored>0?{p:e.poisonNeedleStored,needleRelease:1}'),
+ 'poison-to-needle conversion is not wired in both game entry pages');
+assert(strategyPolish.includes("GUARDIAN.m2=[{a:18,powerDown:2},{b:34,poisonConvert:1}"),
+ 'the abyss guardian phase 2 does not attack immediately or alternate into poison needles');
 
 const inlineScripts=[...index.matchAll(/<script(?:\s[^>]*)?>([\s\S]*?)<\/script>/gi)]
  .filter(match=>!/<script\s[^>]*\bsrc=/i.test(match[0]))
@@ -226,8 +237,8 @@ assert(desktopCss.includes('.debug-panel h2{margin:4px 0 0!important;font-size:3
  'PC debug panel text is still using the compact landscape scale');
 assert((desktopCss.match(/{/g)||[]).length===(desktopCss.match(/}/g)||[]).length,
  'PC stylesheet has unbalanced blocks');
-assert(index.includes("portrait=window.matchMedia('(orientation:portrait)').matches")&&index.includes('let yBase=portrait?(n.row+.25+jy)/(rows-.5):(n.row+.5+jy)/rows'),
- 'portrait map does not reduce the empty space above the first row and below the boss row');
+assert(index.includes("portrait=window.matchMedia('(orientation:portrait)').matches")&&index.includes('let yBase=portrait?(n.row+.48+jy)/(rows-.04):(n.row+.5+jy)/rows'),
+ 'portrait map does not keep compact but visible padding above the first row and below the boss row');
 assert(index.includes("if(p&&portrait){track.style.marginTop='0px';track.style.marginBottom='0px';if(!cur)p.scrollTop=0;return}"),
  'portrait map still adds half-screen margins or recentres the current node after combat');
 for(const [width,height]of [[1000,600],[1366,768],[1920,1080]]){
@@ -545,7 +556,7 @@ async function verifyServer(){
   assert(html.includes('responsive-landscape.css?v=49'),'served page has a stale responsive stylesheet version');
   assert(html.includes('responsive-desktop.css?v=45'),'served page has no PC layout stylesheet');
   assert(html.includes('relics-events.js?v=155'),'served page has a stale relic event script version');
-  assert(html.includes('strategy-polish.js?v=191'),'served page has a stale strategy event script version');
+  assert(html.includes('strategy-polish.js?v=192'),'served page has a stale strategy event script version');
   assert(html.includes('economy.js?v=158'),'served page has a stale economy script version');
   assert(html.includes('refinement.css?v=70'),'served page has a stale event stylesheet version');
   assert(html.includes('refinement.js?v=73'),'served page has a stale event script version');
