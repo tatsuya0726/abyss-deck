@@ -329,10 +329,13 @@ html.tv-mode.tv-fixed-canvas #battle .intent{width:224px!important}
 html.tv-mode.tv-fixed-canvas #battle .enemy-unit>#intent{left:992px!important;top:243px!important}
 html.tv-mode.tv-fixed-canvas #battle .enemy-unit.elite-unit>#intent{left:992px!important}
 html.tv-mode.tv-fixed-canvas #battle .enemy-unit.boss-unit>#intent{left:896px!important}
-html.tv-mode.tv-fixed-canvas #map>.mapHead{box-sizing:border-box!important;display:flex!important;flex-direction:column!important;align-items:stretch!important}
+/* Keep the map header tied to the 1600x900 TV canvas. Browser chrome changes
+   the physical viewport when fullscreen closes; without a complete inset and
+   size override the landscape fallback stretches this header across the map. */
+html.tv-mode.tv-fixed-canvas #map>.mapHead{box-sizing:border-box!important;position:absolute!important;inset:20px auto auto 20px!important;width:220px!important;max-width:220px!important;height:auto!important;max-height:calc(100% - 40px)!important;padding:14px!important;display:flex!important;flex-direction:column!important;align-items:stretch!important}
 html.tv-mode.tv-fixed-canvas #map>.mapHead h2{position:relative!important;inset:auto!important;width:100%!important;flex:0 0 auto!important;margin:0 0 14px!important}
-html.tv-mode.tv-fixed-canvas #map>.mapHead #abyssShardHud{position:relative!important;inset:auto!important;width:100%!important;display:grid!important;grid-template-columns:1fr!important;gap:7px!important;flex:0 0 auto!important;margin:0!important}
-html.tv-mode.tv-fixed-canvas #map>.mapHead #abyssShardHud span{box-sizing:border-box!important;width:100%!important;justify-content:center!important}
+html.tv-mode.tv-fixed-canvas #map>.mapHead #abyssShardHud{box-sizing:border-box!important;position:relative!important;inset:auto!important;width:100%!important;max-width:100%!important;display:grid!important;grid-template-columns:minmax(0,1fr)!important;gap:7px!important;flex:0 0 auto!important;margin:0!important}
+html.tv-mode.tv-fixed-canvas #map>.mapHead #abyssShardHud span{box-sizing:border-box!important;width:100%!important;min-width:0!important;max-width:100%!important;justify-content:center!important;overflow:hidden!important}
 html.tv-mode.tv-fixed-canvas #map>.mapHead #runModifierBadge{position:relative!important;inset:auto!important;width:100%!important;flex:0 0 auto!important;margin:12px 0 0!important}
 html.tv-mode.tv-fixed-canvas :is(#eventModal,#mapChoiceModal).on{box-sizing:border-box!important;display:block!important;inset:0!important;width:100%!important;height:100%!important;max-height:none!important;padding:0!important}
 html.tv-mode.tv-fixed-canvas :is(#eventModal,#mapChoiceModal).on>.panel{box-sizing:border-box!important;position:absolute!important;inset:8px!important;width:auto!important;max-width:none!important;height:auto!important;max-height:none!important;margin:0!important;grid-template-columns:minmax(0,58%) minmax(0,1fr)!important}
