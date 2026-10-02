@@ -16,9 +16,9 @@ cthulhu:{c:2,d:0,s:0,graveSize:0,turnDrawPower:1,exhaust:1,upgrade:{c:-1},t:'こ
 venombloom:{c:1,b:4,doublePoison:0,poisonBloom:8,upgrade:{b:3},t:'4ブロック。現在の毒の半分を追加で与える。'},
 moltscale:{c:0,b:3,exhaust:0,retain:1,upgrade:{b:2},t:'3ブロック。使わずにターンを終えると、このカードは手札に残る。'},
 bulletfire:{n:'バレットファイア',i:'🔫',c:0,d:7,upgrade:{d:3},t:'7ダメージ。',upgradeText:'10ダメージ。',g:'トークン・こうげき',special:1},
-speedloader:{n:'スピードローダー',i:'⏱️',c:1,generateBullet:1,bulletUpgrade:0,upgrade:{bulletUpgrade:1},t:'「バレットファイア」を1枚手札に加える。',upgradeText:'強化済みの「バレットファイア」を1枚手札に加える。',g:'アンコモン・装填',u:1},
+speedloader:{n:'スピードローダー',i:'⏱️',c:1,generateBullet:1,bulletUpgrade:0,upgrade:{bulletUpgrade:1},t:'「バレットファイア」を1枚手札に加える。',upgradeText:'強化済みの「バレットファイア」を1枚手札に加える。',g:'コモン・装填'},
 flatten:{n:'ぺしゃんこ',i:'🗜️',c:2,choice:'reduceCost',choicePicks:1,exhaust:1,upgrade:{choicePicks:1},t:'手札のカード1枚のコストを、この戦闘中1下げる。使い切り。',upgradeText:'手札のカード2枚のコストを、この戦闘中1下げる。使い切り。',g:'アンコモン・手札操作',u:1},
-dieseadice:{n:'ダイ・シー・ダイス',i:'🎲',c:1,diceEffect:1,upgrade:{c:-1},t:'いずれか1つが発動：10ダメージ／10ブロック／10ゴールドを得る／5ダメージを受ける。',g:'アンコモン・運試し',u:1}
+dieseadice:{n:'ダイ・シー・ダイス',i:'🎲',c:1,diceEffect:1,upgrade:{c:-1},t:'いずれか1つが発動：10ダメージ／10ブロック／10ゴールドを得る／5ダメージを受ける。',g:'コモン・運試し'}
 };
 const has=(g,n)=>g.relic?.some(r=>r[1]===n),data=k=>window.getAbyssCardData?.(k)||{},attack=c=>!!(c.d||c.perBlock),block=(g,n)=>{g.block+=n;if(g.runStats)g.runStats.blockGained+=n};
 window.prepareAbyssTactics=(c,g,draw)=>{
