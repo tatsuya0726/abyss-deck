@@ -226,6 +226,10 @@ assert(desktopCss.includes('.debug-panel h2{margin:4px 0 0!important;font-size:3
  'PC debug panel text is still using the compact landscape scale');
 assert((desktopCss.match(/{/g)||[]).length===(desktopCss.match(/}/g)||[]).length,
  'PC stylesheet has unbalanced blocks');
+assert(index.includes("portrait=window.matchMedia('(orientation:portrait)').matches")&&index.includes('let yBase=portrait?(n.row+.25+jy)/(rows-.5):(n.row+.5+jy)/rows'),
+ 'portrait map does not reduce the empty space above the first row and below the boss row');
+assert(index.includes("if(p&&portrait){track.style.marginTop='0px';track.style.marginBottom='0px';if(!cur)p.scrollTop=0;return}"),
+ 'portrait map still adds half-screen margins or recentres the current node after combat');
 for(const [width,height]of [[1000,600],[1366,768],[1920,1080]]){
  const mapCenter=width-255-258;
  assert(mapCenter>=487,`PC map center is too narrow at ${width}x${height}`);
