@@ -12,14 +12,14 @@ const tacticalCards=fs.readFileSync(path.join(dist,'tactical-cards.js'),'utf8');
 const cardCodex=fs.readFileSync(path.join(dist,'card-codex.js'),'utf8');
 const strategyPolish=fs.readFileSync(path.join(dist,'strategy-polish.js'),'utf8');
 const upgrade=fs.readFileSync(path.join(dist,'upgrade.js'),'utf8');
-const analytics=fs.readFileSync(path.join(dist,'analytics.js'),'utf8');
+const analytics=fs.readFileSync(path.join(dist,'play-metrics.js'),'utf8');
 
 function assert(value,message){if(!value)throw new Error(message)}
 
 assert(index.includes('id="tapStartGate"'),'TAP START gate is missing from index.html');
 assert(index.includes('id="title"'),'title screen is missing from index.html');
 assert(index.includes("boot-recovery.js?v=1"),'startup recovery script is missing');
-assert(index.includes("analytics.js?v=1")&&gameHtml.includes("analytics.js?v=1"),'analytics is not loaded by both game entry pages');
+assert(index.includes("play-metrics.js?v=1")&&gameHtml.includes("play-metrics.js?v=1"),'analytics is not loaded by both game entry pages');
 assert(analytics.includes("G-JEBJP0KM5L")&&analytics.includes("allow_google_signals:false")&&analytics.includes("ad_storage:'denied'"),'privacy-conscious GA4 configuration is missing');
 for(const eventName of ['game_open','new_run','continue_run','battle_start','battle_win','run_failed','run_clear']){
  assert(analytics.includes(`'${eventName}'`)||index.includes(`'${eventName}'`),`analytics event is missing: ${eventName}`);
