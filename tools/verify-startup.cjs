@@ -125,6 +125,8 @@ assert(strategyPolishJs.includes('通常の第3層ボスを倒して潜航を終
  'the four-shard guide does not explain that a normal layer-three clear still advances ascension');
 assert(strategyPolishJs.includes("abyss-endgame.css?v=121")&&abyssEndgameCss.includes('#enemySprite.secret-guardian.guardian-phase2{--enemy-scale:1.65'),
  'the final boss second form is not enlarged on portrait screens');
+assert(strategyPolishJs.includes("背負えばよかった。',4200")&&strategyPolishJs.includes("底に沈んでもよい。',4800")&&strategyPolishJs.includes('await wait(3600);'),
+ 'guardian phase two dialogue timing is too short to read');
 assert(landscapeCss.includes('boss-enemy.secret-guardian.guardian-phase2')&&landscapeCss.includes('--enemy-scale:1.66!important')&&desktopCss.includes('--enemy-scale:1.3!important')&&desktopCss.includes('--enemy-scale:1.22!important'),
  'the final boss second form is not enlarged across landscape, PC, and fixed-TV layouts');
 assert(desktopCss.includes('.quick-nav .pc-battle-settings{display:block!important}')&&desktopCss.includes('.pc-audio-settings'),
@@ -571,7 +573,7 @@ async function verifyServer(){
   assert(html.includes('responsive-landscape.css?v=49'),'served page has a stale responsive stylesheet version');
   assert(html.includes('responsive-desktop.css?v=47'),'served page has no PC layout stylesheet');
   assert(html.includes('relics-events.js?v=156'),'served page has a stale relic event script version');
-  assert(html.includes('strategy-polish.js?v=193'),'served page has a stale strategy event script version');
+  assert(html.includes('strategy-polish.js?v=194'),'served page has a stale strategy event script version');
   assert(html.includes('economy.js?v=158'),'served page has a stale economy script version');
   assert(html.includes('refinement.css?v=70'),'served page has a stale event stylesheet version');
   assert(html.includes('refinement.js?v=73'),'served page has a stale event script version');

@@ -99,15 +99,15 @@ window.abyssGuardianPhase2Cutscene=(onReveal,onDone)=>{
  (async()=>{
   try{
    await wait(800);
-   await showLine('この海の痛みは、すべて私が背負えばよかった。',2900);
-   await showLine('皆が穏やかに泳げるなら、私は呪いの底に沈んでもよい。',3200);
+   await showLine('この海の痛みは、すべて私が背負えばよかった。',4200);
+   await showLine('皆が穏やかに泳げるなら、私は呪いの底に沈んでもよい。',4800);
    lineEl.textContent='守ろうとした海の呪いが殻を砕き、悲しき真の姿をさらす――';window.applyFuri?.(lineEl);lineEl.classList.add('show');
    if(sp){sp.classList.remove('guardian-phase2-tremor');sp.classList.remove('guardian-phase2-burst');void sp.offsetWidth;sp.classList.add('guardian-phase2-burst')}
    await wait(500);
    try{onReveal?.()}catch(err){console.error('guardian phase2 reveal error',err)}
    const flash=document.createElement('div');flash.className='guardian-phase2-flash';document.body.appendChild(flash);setTimeout(()=>flash.remove(),1200);
    if(log)log.textContent='虚星邪神・クトゥル＝アビスが顕現した……！';
-   await wait(2200);
+   await wait(3600);
    lineEl.classList.remove('show');
    overlay.classList.remove('on');
    await wait(500);
