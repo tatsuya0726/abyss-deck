@@ -164,6 +164,8 @@ function syncIntentPosition(){
  if(!landscapeLayout){intentEl.style.removeProperty('top');intentEl.style.removeProperty('left');intentEl.style.removeProperty('width');intentEl.style.removeProperty('transform');return}
  const fixedPcForecast=d.documentElement.classList.contains('tv-fixed-canvas')||matchMedia?.('(hover:hover) and (pointer:fine) and (min-width:1000px) and (min-height:600px)')?.matches;
  if(fixedPcForecast){intentEl.style.removeProperty('top');intentEl.style.removeProperty('left');intentEl.style.removeProperty('width');intentEl.style.removeProperty('transform');return}
+ // Short combat offsets must not move or resize the forecast with the sprites.
+ if(window.isAbyssCombatMotionActive?.())return;
  if(!nameEl||!battleEl)return;
  const r=nameEl.getBoundingClientRect();
  if(!r.height)return;

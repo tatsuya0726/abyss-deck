@@ -575,7 +575,8 @@ async function verifyServer(){
   assert(response?.ok,`local server did not return index.html (${response?.status||'no response'})`);
   const html=await response.text();
   assert(html.includes('id="tapStartGate"'),'served page has no TAP START gate');
-  assert(html.includes('responsive-shell.js?v=59'),'served page has a stale responsive script version');
+  assert(html.includes('responsive-shell.js?v=60'),'served page has a stale responsive script version');
+  assert(html.includes('combat-motion.js?v=1'),'served page has no lightweight combat motion script');
   assert(html.includes('responsive-landscape.css?v=49'),'served page has a stale responsive stylesheet version');
   assert(html.includes('responsive-desktop.css?v=47'),'served page has no PC layout stylesheet');
   assert(html.includes('relics-events.js?v=156'),'served page has a stale relic event script version');
