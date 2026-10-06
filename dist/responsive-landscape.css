@@ -95,7 +95,7 @@ html.tv-mode .endTurn{position:absolute!important;top:57%!important;right:5vw!im
    row only has to share space with a small energy badge + pile-count readout,
    both packed tight to the right. Cards sit centered in the remaining space and
    fan outward as more are added, instead of stacking from the left edge. ---------- */
-html.tv-mode .handArea{width:100%!important;height:37%!important;padding:8px 14px!important;
+html.tv-mode .handArea{width:100%!important;height:37%!important;padding:8px 14px!important;flex-basis:auto!important;
   display:flex!important;align-items:center!important;justify-content:flex-start!important;gap:8px!important}
 html.tv-mode .hand{order:1;width:auto!important;flex:1 1 auto!important;height:auto!important;overflow-x:auto!important;justify-content:center!important;gap:10px!important;padding:4px 2px}
 html.tv-mode .energy{order:2;position:static!important;flex-shrink:0!important;width:34px!important;height:34px!important;font-size:13px!important}
@@ -2500,4 +2500,26 @@ html.tv-mode #firstBlessingModal .choice>span{
   html.tv-mode #battle .endTurn{
     font-size:calc(10px * var(--abyss-phone-ui-scale,1))!important
   }
+}
+
+/* Narrow touch landscape: reserve the forecast strip and fit the default
+   five-card hand. Keep this after the shared battle rules so their fixed
+   card widths and sprite heights cannot override the narrow layout.
+   TV fixed mode uses its own 1600x900 composition, even on a small viewport. */
+@media (orientation:landscape) and (max-width:700px) and (pointer:coarse){
+  html.tv-mode:not(.tv-fixed-canvas) #battle .hand{gap:6px!important;justify-content:flex-start!important}
+  html.tv-mode:not(.tv-fixed-canvas) #battle .hand .card{
+    flex:0 0 calc((100% - 24px) / 5)!important;
+    width:calc((100% - 24px) / 5)!important;
+    min-width:calc((100% - 24px) / 5)!important;
+    max-width:calc((100% - 24px) / 5)!important;
+    height:100%!important;max-height:160px!important;min-height:0!important;
+  }
+  html.tv-mode:not(.tv-fixed-canvas) #battle .arena{align-items:flex-start!important;padding-top:60px!important}
+  html.tv-mode:not(.tv-fixed-canvas) #battle .arena>.unit>.enemyName{min-height:24px!important}
+  html.tv-mode:not(.tv-fixed-canvas) #battle .unit>.creature,
+  html.tv-mode:not(.tv-fixed-canvas) #battle #enemySprite.boss-enemy{
+    height:min(20vh,90px)!important;margin-top:28px!important;
+  }
+  html.tv-mode:not(.tv-fixed-canvas) #battle #enemySprite.boss-enemy{--enemy-scale:1!important}
 }

@@ -67,19 +67,19 @@ assert(!responsive.includes('dispatchingSyntheticClick'),
  'touches can still be resent as synthetic clicks');
 assert(responsive.includes("if(!landscapeLayout){existingHint?.remove();return}"),
  'portrait end-turn still receives the controller X hint');
-const landscapeCss=fs.readFileSync(path.join(dist,'responsive-landscape.css'),'utf8');
-const desktopCss=fs.readFileSync(path.join(dist,'responsive-desktop.css'),'utf8');
+const landscapeCss=fs.readFileSync(path.join(dist,'responsive-landscape.css'),'utf8').replace(/\r\n/g,'\n');
+const desktopCss=fs.readFileSync(path.join(dist,'responsive-desktop.css'),'utf8').replace(/\r\n/g,'\n');
 const shellJs=fs.readFileSync(path.join(dist,'responsive-shell.js'),'utf8');
 const upgradeJs=fs.readFileSync(path.join(dist,'upgrade.js'),'utf8');
 const titleToolsJs=fs.readFileSync(path.join(dist,'title-tools.js'),'utf8');
-const refinementCss=fs.readFileSync(path.join(dist,'refinement.css'),'utf8');
+const refinementCss=fs.readFileSync(path.join(dist,'refinement.css'),'utf8').replace(/\r\n/g,'\n');
 const enhanceJs=fs.readFileSync(path.join(dist,'enhance.js'),'utf8');
 const refinementJs=fs.readFileSync(path.join(dist,'refinement.js'),'utf8');
 const economyJs=fs.readFileSync(path.join(dist,'economy.js'),'utf8');
 const relicsEventsJs=fs.readFileSync(path.join(dist,'relics-events.js'),'utf8');
 const strategyPolishJs=fs.readFileSync(path.join(dist,'strategy-polish.js'),'utf8');
-const gamePolishCss=fs.readFileSync(path.join(dist,'game-polish.css'),'utf8');
-const abyssEndgameCss=fs.readFileSync(path.join(dist,'abyss-endgame.css'),'utf8');
+const gamePolishCss=fs.readFileSync(path.join(dist,'game-polish.css'),'utf8').replace(/\r\n/g,'\n');
+const abyssEndgameCss=fs.readFileSync(path.join(dist,'abyss-endgame.css'),'utf8').replace(/\r\n/g,'\n');
 const addToHomeJs=fs.readFileSync(path.join(dist,'add-to-home.js'),'utf8');
 assert(addToHomeJs.includes("seenKey='abyssA2hsSeenV2'")&&addToHomeJs.includes('catch(e){return false}'),
  'the first-launch home-screen notice can be suppressed by stale or unavailable storage');
@@ -141,7 +141,7 @@ assert(landscapeCss.includes('width:var(--abyss-vv-width,100%)!important'),
  'landscape root does not use the measured visual viewport width');
 assert(landscapeCss.includes('height:var(--abyss-vv-height,100%)!important'),
  'landscape root does not use the measured visual viewport height');
-assert(index.includes('responsive-desktop.css?v=47'),
+assert(index.includes('responsive-desktop.css?v=48'),
  'PC layout stylesheet is not loaded after the landscape layout');
 assert(desktopCss.trim().startsWith('/* PC landscape layout.')&&desktopCss.includes('@media (orientation:landscape) and (min-width:1000px) and (min-height:600px)'),
  'PC layout is not isolated from touch and portrait layouts');
@@ -152,7 +152,7 @@ assert(desktopCss.includes("grid-template-areas:'icon name power' 'icon name cos
  'PC boss relic choices do not use the available horizontal space');
 assert(desktopCss.includes('#outcomeModal #outcomeText ruby{display:ruby!important'),
  'PC result furigana can still split the outcome sentence');
-assert(shellJs.includes("desktop.href='responsive-desktop.css?v=47'")&&shellJs.includes("link.href='responsive-landscape.css?v=49'"),
+assert(shellJs.includes("desktop.href='responsive-desktop.css?v=48'")&&shellJs.includes("link.href='responsive-landscape.css?v=51'"),
  'dynamically loaded game shells do not receive the PC layout');
 assert(desktopCss.includes('min-width:var(--pc-card-width)!important;max-width:var(--pc-card-width)!important')&&desktopCss.includes('.shop-upgrade-card-pair .unified-card>.cardInner'),
  'TV cards can still render with a frame wider than their contents');
@@ -202,9 +202,9 @@ assert(shellJs.includes("track.querySelectorAll('svg .route')"),
  'PC map routes are not kept aligned with padded map nodes');
 assert(shellJs.includes("const fixedPcForecast=d.documentElement.classList.contains('tv-fixed-canvas')||matchMedia?.('(hover:hover) and (pointer:fine) and (min-width:1000px) and (min-height:600px)')?.matches"),
  'PC enemy forecast still follows animated enemy geometry');
-assert(desktopCss.includes('.enemy-unit>#intent{position:fixed!important;left:67vw!important')&&desktopCss.includes('.enemy-unit.elite-unit>#intent{left:65vw!important}')&&desktopCss.includes('.enemy-unit.boss-unit>#intent{left:61vw!important}')&&desktopCss.includes('top:29vh!important')&&desktopCss.includes('transform:translate(-100%,-100%)!important'),
+assert(desktopCss.includes('.enemy-unit>#intent{position:fixed!important;left:calc(var(--pc-enemy-left) - 20px)!important')&&desktopCss.includes('.enemy-unit.elite-unit>#intent{left:calc(var(--pc-enemy-left) - 20px)!important}')&&desktopCss.includes('.enemy-unit.boss-unit>#intent{left:calc(var(--pc-boss-left) - 20px)!important}')&&desktopCss.includes('top:64px!important')&&desktopCss.includes('transform:translate(-100%,-100%)!important'),
  'PC enemy forecast is not fixed in the marked space immediately left of the enemy');
-assert(desktopCss.includes('tv-fixed-canvas #battle .enemy-unit>#intent{left:992px!important;top:243px!important}')&&desktopCss.includes('tv-fixed-canvas #battle .enemy-unit.elite-unit>#intent{left:992px!important}')&&desktopCss.includes('tv-fixed-canvas #battle .enemy-unit.boss-unit>#intent{left:896px!important}'),
+assert(desktopCss.includes('tv-fixed-canvas #battle .enemy-unit>#intent{left:940px!important;top:72px!important}')&&desktopCss.includes('tv-fixed-canvas #battle .enemy-unit.elite-unit>#intent{left:940px!important}')&&desktopCss.includes('tv-fixed-canvas #battle .enemy-unit.boss-unit>#intent{left:857px!important}'),
  'TV fixed display enemy forecast offsets are stale');
 assert(desktopCss.includes('tv-fixed-canvas #map>.mapHead{box-sizing:border-box!important;position:absolute!important;inset:20px auto auto 20px!important;width:220px!important')&&desktopCss.includes('tv-fixed-canvas #map>.mapHead h2{position:relative!important;inset:auto!important')&&desktopCss.includes('tv-fixed-canvas #map>.mapHead #abyssShardHud{box-sizing:border-box!important;position:relative!important;inset:auto!important;width:100%!important;max-width:100%!important'),
  'TV map layer title can still overlap the shard HUD');
@@ -420,8 +420,8 @@ assert(shellJs.includes('visibleEnemyLeft(enemyRect.left,r.left,innerWidth)'),
  'enemy forecast does not compensate for artwork whose visible body is inset');
 assert(shellJs.includes("intentEl.style.setProperty('left',(centerX-containerLeft)+'px','important')"),
  'enemy forecast is not positioned from the measured enemy edge');
-assert(shellJs.includes('intentPlacementBetweenFighters(playerRect.right,enemyRect.left,preferredWidth,innerWidth)'),
- 'touch layout does not place the forecast between both fighters');
+assert(shellJs.includes('intentPlacementAboveEnemy(enemyRect.left,preferredWidth,innerWidth)'),
+ 'touch layout does not place the forecast above-left of the enemy');
 assert(shellJs.includes('intentPlacementBeforeEnemy(playerRect.right,visibleLeft,preferredWidth,innerWidth)'),
  'PC layout does not place the forecast beside the enemy');
 assert(landscapeCss.includes('align-self:center!important;aspect-ratio:1/1!important;height:auto!important'),
@@ -448,12 +448,12 @@ assert(refinementJs.includes('assets/events/${art}.webp?v=3'),
 const intentPositionSource=shellJs.split('\n').find(line=>line.startsWith('function intentCenterBeforeEnemy('));
 const visibleEnemySource=shellJs.split('\n').find(line=>line.startsWith('function visibleEnemyLeft('));
 const visiblePcEnemySource=shellJs.split('\n').find(line=>line.startsWith('function visiblePcEnemyLeft('));
-const fighterGapSource=shellJs.match(/function intentPlacementBetweenFighters\([\s\S]*?\n\}/)?.[0];
+const fighterGapSource=shellJs.match(/function intentPlacementAboveEnemy\([\s\S]*?\n\}/)?.[0];
 const enemySideSource=shellJs.match(/function intentPlacementBeforeEnemy\([\s\S]*?\n\}/)?.[0];
 assert(intentPositionSource,'enemy forecast gap calculator is missing');
 assert(visibleEnemySource,'enemy visible-edge calculator is missing');
 assert(visiblePcEnemySource,'PC enemy visible-edge calculator is missing');
-assert(fighterGapSource,'touch fighter-gap calculator is missing');
+assert(fighterGapSource,'touch upper forecast calculator is missing');
 assert(enemySideSource,'PC enemy-side forecast calculator is missing');
 const intentPositionContext={};
 vm.runInNewContext(`${visibleEnemySource};${intentPositionSource};this.visibleEnemyLeft=visibleEnemyLeft;this.intentCenterBeforeEnemy=intentCenterBeforeEnemy`,intentPositionContext);
@@ -468,11 +468,14 @@ for(const [enemyLeft,intentWidth,viewportWidth]of [[992,238,1536],[620,136,844],
   `enemy forecast right edge is not aligned at ${viewportWidth}px (difference ${edgeDifference})`);
 }
 const fighterGapContext={};
-vm.runInNewContext(`${fighterGapSource};this.place=intentPlacementBetweenFighters`,fighterGapContext);
-for(const [playerRight,enemyLeft,preferredWidth,viewportWidth]of [[370,540,136,844],[405,532,136,844],[720,1010,136,1536]]){
- const placed=fighterGapContext.place(playerRight,enemyLeft,preferredWidth,viewportWidth),margin=Math.max(6,Math.min(10,viewportWidth*.01));
- assert(placed.center-placed.width/2>=playerRight+margin-.01,'touch forecast overlaps the player');
- assert(placed.center+placed.width/2<=enemyLeft-margin+.01,'touch forecast overlaps the enemy');
+vm.runInNewContext(`${fighterGapSource};this.place=intentPlacementAboveEnemy`,fighterGapContext);
+// These include the measured narrow-phone and boss edges that previously collapsed
+// the panel to 16px/55px. Vertical clearance is checked by browser regression.
+for(const [enemyLeft,preferredWidth,viewportWidth]of [[420,136,667],[497,136,844],[532,136,844],[1010,136,1536]]){
+ const placed=fighterGapContext.place(enemyLeft,preferredWidth,viewportWidth);
+ assert(placed.width>=120,'touch forecast is too narrow to read');
+ assert(placed.center-placed.width/2>=8,'touch forecast escapes the left viewport edge');
+ assert(placed.center+placed.width/2<=enemyLeft-8,'touch forecast overlaps the enemy');
 }
 const enemySideContext={};
 vm.runInNewContext(`${visiblePcEnemySource};${enemySideSource};this.visible=visiblePcEnemyLeft;this.place=intentPlacementBeforeEnemy`,enemySideContext);
@@ -575,10 +578,10 @@ async function verifyServer(){
   assert(response?.ok,`local server did not return index.html (${response?.status||'no response'})`);
   const html=await response.text();
   assert(html.includes('id="tapStartGate"'),'served page has no TAP START gate');
-  assert(html.includes('responsive-shell.js?v=60'),'served page has a stale responsive script version');
+  assert(html.includes('responsive-shell.js?v=61'),'served page has a stale responsive script version');
   assert(html.includes('combat-motion.js?v=1'),'served page has no lightweight combat motion script');
-  assert(html.includes('responsive-landscape.css?v=49'),'served page has a stale responsive stylesheet version');
-  assert(html.includes('responsive-desktop.css?v=47'),'served page has no PC layout stylesheet');
+  assert(html.includes('responsive-landscape.css?v=51'),'served page has a stale responsive stylesheet version');
+  assert(html.includes('responsive-desktop.css?v=48'),'served page has no PC layout stylesheet');
   assert(html.includes('relics-events.js?v=156'),'served page has a stale relic event script version');
   assert(html.includes('strategy-polish.js?v=194'),'served page has a stale strategy event script version');
   assert(html.includes('economy.js?v=158'),'served page has a stale economy script version');

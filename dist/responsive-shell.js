@@ -120,7 +120,7 @@ function injectLandscapeCss(){
  if(!cssInjected){
   try{
    const link=d.createElement('link');
-   link.rel='stylesheet';link.href='responsive-landscape.css?v=49';
+   link.rel='stylesheet';link.href='responsive-landscape.css?v=51';
    d.head.appendChild(link);cssInjected=true;
   }catch(e){}
  }
@@ -131,7 +131,7 @@ function injectLandscapeCss(){
  }
  if(!d.querySelector('link[data-abyss-desktop-layout],link[href*="responsive-desktop.css"]')){
   const desktop=d.createElement('link');
-   desktop.rel='stylesheet';desktop.href='responsive-desktop.css?v=47';
+   desktop.rel='stylesheet';desktop.href='responsive-desktop.css?v=48';
   desktop.dataset.abyssDesktopLayout='1';d.head.appendChild(desktop);
  }
 }
@@ -149,9 +149,19 @@ function injectLandscapeCss(){
 function visibleEnemyLeft(enemyLeft,nameLeft,viewportWidth){const nameInset=Math.max(34,Math.min(44,viewportWidth*.045));return Math.max(enemyLeft,nameLeft-nameInset)}
 function visiblePcEnemyLeft(enemyLeft,nameLeft,viewportWidth){const nameInset=Math.max(76,Math.min(112,viewportWidth*.055));return Math.max(enemyLeft,nameLeft-nameInset)}
 function intentCenterBeforeEnemy(enemyLeft,intentWidth){return Math.max(intentWidth/2+8,enemyLeft-intentWidth/2)}
-function intentPlacementBetweenFighters(playerRight,enemyLeft,preferredWidth,viewportWidth){
- const margin=Math.max(6,Math.min(10,viewportWidth*.01)),left=Math.max(margin,playerRight+margin),right=Math.min(viewportWidth-margin,enemyLeft-margin),available=Math.max(1,right-left),width=Math.min(preferredWidth,available);
- return{center:left+available/2,width};
+/* On short/narrow touch landscape phones the raw gap between the two sprites
+   can be only a few px wide, so fitting the intent panel *between* them
+   collapses it below readability. Placing it above both sprites instead has
+   no such ceiling: its right edge still never
+   passes the enemy sprite's own left edge (so it can't cover the enemy's
+   name/art), and because it lives in the empty band above the creatures it
+   can't cover the player's art either, regardless of how far left it needs
+   to extend to stay a readable width. */
+function intentPlacementAboveEnemy(enemyLeft,preferredWidth,viewportWidth){
+ const margin=Math.max(8,Math.min(14,viewportWidth*.012));
+ const right=Math.max(preferredWidth+margin,Math.min(viewportWidth-margin,enemyLeft-margin));
+ const width=Math.min(preferredWidth,right-margin);
+ return{center:right-width/2,width};
 }
 function intentPlacementBeforeEnemy(playerRight,enemyLeft,preferredWidth,viewportWidth){
  const margin=Math.max(10,Math.min(16,viewportWidth*.01)),left=Math.max(margin,playerRight+margin),right=Math.min(viewportWidth-margin,enemyLeft-margin),available=Math.max(1,right-left),width=Math.min(preferredWidth,available);
@@ -176,14 +186,15 @@ function syncIntentPosition(){
  const intentHeight=Math.max(1,intentEl.getBoundingClientRect().height||intentEl.offsetHeight||1);
  const minCenter=Math.max(battleRect.top,hudBottom)+8+intentHeight/2;
  const maxCenter=Math.max(minCenter,Math.min(battleRect.bottom,handTop)-8-intentHeight/2);
- const center=Math.max(minCenter,Math.min(maxCenter,r.top+r.height/2));
+ let center=Math.max(minCenter,Math.min(maxCenter,r.top+r.height/2));
  const enemyRect=enemyEl?.getBoundingClientRect(),playerRect=playerEl?.getBoundingClientRect(),intentWidth=Math.max(1,intentEl.getBoundingClientRect().width||intentEl.offsetWidth||1);
  if(enemyRect?.width){
   const containerLeft=transformed?battleRect.left:0,coarse=matchMedia?.('(pointer:coarse)')?.matches||navigator.maxTouchPoints>0;
   let centerX;
   if(coarse&&playerRect?.width){
-   const preferredWidth=Math.min(136,innerWidth*.25),placement=intentPlacementBetweenFighters(playerRect.right,enemyRect.left,preferredWidth,innerWidth);
+   const preferredWidth=Math.min(136,innerWidth*.34),placement=intentPlacementAboveEnemy(enemyRect.left,preferredWidth,innerWidth);
    centerX=placement.center;intentEl.style.setProperty('width',placement.width+'px','important');
+   center=minCenter;
   }else if(playerRect?.width){
    const visibleLeft=visiblePcEnemyLeft(enemyRect.left,r.left,innerWidth),preferredWidth=Math.max(210,Math.min(260,innerWidth*.14)),placement=intentPlacementBeforeEnemy(playerRect.right,visibleLeft,preferredWidth,innerWidth);
    centerX=placement.center;intentEl.style.setProperty('width',placement.width+'px','important');

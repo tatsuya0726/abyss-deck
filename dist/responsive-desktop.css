@@ -1,6 +1,16 @@
 /* PC landscape layout. Kept separate so phone portrait/landscape remains unchanged. */
 @media (orientation:landscape) and (min-width:1000px) and (min-height:600px){
-  html.tv-mode{--pc-rail:216px;--pc-actions:180px;--pc-gap:clamp(16px,1.7vw,30px);--pc-ui:clamp(14px,.86vw,18px);--pc-small:clamp(12px,.72vw,15px);--pc-card-width:clamp(168px,11.5vw,206px);--pc-card-height:clamp(210px,38vh,300px)}
+  html.tv-mode{--pc-rail:216px;--pc-actions:180px;--pc-gap:clamp(16px,1.7vw,30px);--pc-ui:clamp(14px,.86vw,18px);--pc-small:clamp(12px,.72vw,15px);--pc-card-width:clamp(168px,11.5vw,206px);--pc-card-height:clamp(210px,38vh,300px);
+    /* Enemy-unit left edge, mirrored from the .arena/.unit rules below
+       (100% - rail - 24px gutter - actions, times the 39%/46% unit split,
+       clamped the same way .unit itself is) so the intent panel's right
+       edge can be pinned just left of the real sprite instead of a flat vw
+       guess that drifts off the actual edge as the viewport width changes. */
+    --pc-content:calc(100vw - var(--pc-rail) - 24px - var(--pc-actions));
+    --pc-unit-w:clamp(250px,calc(var(--pc-content) * .39),470px);
+    --pc-boss-unit-w:clamp(250px,calc(var(--pc-content) * .46),560px);
+    --pc-enemy-left:calc(100vw - var(--pc-actions) - var(--pc-unit-w));
+    --pc-boss-left:calc(100vw - var(--pc-actions) - var(--pc-boss-unit-w))}
   html.tv-mode body{font-size:var(--pc-ui)!important}
 
   /* PC-only audio mixer in the title settings menu. */
@@ -60,9 +70,9 @@
   html.tv-mode #battle .arena>.enemy-unit>.enemyName{position:relative!important;top:auto!important;left:auto!important;right:auto!important;box-sizing:border-box!important;display:flex!important;align-items:flex-end!important;justify-content:center!important;width:100%!important;min-height:clamp(30px,3.8vh,44px)!important;margin:0 0 10px!important;text-align:center!important;transform:none!important;z-index:30!important;pointer-events:none!important}
   html.tv-mode #battle .unit>.creature{margin-top:0!important}
   html.tv-mode #battle .enemy-unit>.intent,
-  html.tv-mode #battle .enemy-unit>#intent{position:fixed!important;left:67vw!important;right:auto!important;top:29vh!important;bottom:auto!important;height:auto!important;max-height:none!important;overflow:visible!important;transform:translate(-100%,-100%)!important;transform-origin:right bottom!important;justify-content:flex-end!important}
-  html.tv-mode #battle .enemy-unit.elite-unit>#intent{left:65vw!important}
-  html.tv-mode #battle .enemy-unit.boss-unit>#intent{left:61vw!important}
+  html.tv-mode #battle .enemy-unit>#intent{position:fixed!important;left:calc(var(--pc-enemy-left) - 20px)!important;right:auto!important;top:64px!important;bottom:auto!important;height:auto!important;max-height:none!important;overflow:visible!important;transform:translate(-100%,-100%)!important;transform-origin:right bottom!important;justify-content:flex-end!important}
+  html.tv-mode #battle .enemy-unit.elite-unit>#intent{left:calc(var(--pc-enemy-left) - 20px)!important}
+  html.tv-mode #battle .enemy-unit.boss-unit>#intent{left:calc(var(--pc-boss-left) - 20px)!important}
   html.tv-mode #battle .handArea{height:42%!important;min-height:0!important;padding:14px calc(var(--pc-actions) + 12px) 14px 22px!important;align-items:stretch!important;overflow:visible!important}
   html.tv-mode #battle .hand{width:100%!important;height:100%!important;display:flex!important;justify-content:center!important;align-items:flex-end!important;gap:14px!important;overflow-x:auto!important;overflow-y:hidden!important;padding:0 8px!important;scrollbar-width:thin}
   html.tv-mode #battle .hand .card{box-sizing:border-box!important;flex:0 0 var(--pc-card-width)!important;width:var(--pc-card-width)!important;min-width:var(--pc-card-width)!important;max-width:var(--pc-card-width)!important;height:var(--pc-card-height)!important;min-height:210px!important;margin:0!important;transform:none!important}
@@ -326,9 +336,14 @@ html.tv-mode.tv-fixed-canvas #battle .boss-unit>#enemySprite.boss-enemy{height:2
 html.tv-mode.tv-fixed-canvas #battle .boss-unit>#enemySprite.boss-enemy.secret-guardian.guardian-phase2{--enemy-scale:1.22!important}
 html.tv-mode.tv-fixed-canvas #battle :is(#playerStatus,#enemyStatus){height:81px!important}
 html.tv-mode.tv-fixed-canvas #battle .intent{width:224px!important}
-html.tv-mode.tv-fixed-canvas #battle .enemy-unit>#intent{left:992px!important;top:243px!important}
-html.tv-mode.tv-fixed-canvas #battle .enemy-unit.elite-unit>#intent{left:992px!important}
-html.tv-mode.tv-fixed-canvas #battle .enemy-unit.boss-unit>#intent{left:896px!important}
+/* Logical canvas is a fixed 1600x900 here, so these are exact: content
+   width 1180 (1600 - 216 rail - 24 gutter - 180 actions); regular/elite unit
+   width clamp(250,1180*.39,470)=460 -> enemy-left 1600-180-460=960; boss unit
+   width clamp(250,1180*.46,560)=543 -> boss-left 1600-180-543=877. A 20px
+   margin keeps the panel's right edge left of those sprite edges. */
+html.tv-mode.tv-fixed-canvas #battle .enemy-unit>#intent{left:940px!important;top:72px!important}
+html.tv-mode.tv-fixed-canvas #battle .enemy-unit.elite-unit>#intent{left:940px!important}
+html.tv-mode.tv-fixed-canvas #battle .enemy-unit.boss-unit>#intent{left:857px!important}
 /* Keep the map header tied to the 1600x900 TV canvas. Browser chrome changes
    the physical viewport when fullscreen closes; without a complete inset and
    size override the landscape fallback stretches this header across the map. */
