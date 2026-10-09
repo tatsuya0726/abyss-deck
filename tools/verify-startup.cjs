@@ -582,7 +582,7 @@ async function verifyServer(){
   assert(html.includes('combat-motion.js?v=1'),'served page has no lightweight combat motion script');
   assert(html.includes('responsive-landscape.css?v=51'),'served page has a stale responsive stylesheet version');
   assert(html.includes('responsive-desktop.css?v=49'),'served page has no PC layout stylesheet');
-  assert(html.includes('relics-events.js?v=156'),'served page has a stale relic event script version');
+  assert(html.includes('relics-events.js?v=157'),'served page has a stale relic event script version');
   assert(html.includes('strategy-polish.js?v=194'),'served page has a stale strategy event script version');
   assert(html.includes('economy.js?v=158'),'served page has a stale economy script version');
   assert(html.includes('refinement.css?v=70'),'served page has a stale event stylesheet version');
