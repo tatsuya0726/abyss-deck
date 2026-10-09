@@ -584,7 +584,7 @@ async function verifyServer(){
   assert(html.includes('responsive-desktop.css?v=49'),'served page has no PC layout stylesheet');
   assert(html.includes('relics-events.js?v=158'),'served page has a stale relic event script version');
   assert(html.includes('strategy-polish.js?v=195'),'served page has a stale strategy event script version');
-  assert(html.includes('economy.js?v=158'),'served page has a stale economy script version');
+  assert(html.includes('economy.js?v=159'),'served page has a stale economy script version');
   assert(html.includes('refinement.css?v=70'),'served page has a stale event stylesheet version');
   assert(html.includes('refinement.js?v=73'),'served page has a stale event script version');
   assert(html.includes('enhance.js?v=271'),'served page has a stale audio script version');

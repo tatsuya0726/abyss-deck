@@ -101,3 +101,11 @@
   .hpbar{height:13px}
   .statusRow{min-height:14px!important;padding:1px 2px 2px!important}
 }
+
+/* Reserve space for combat health on short portrait screens. */
+@media (max-width:700px) and (max-height:680px) and (orientation:portrait){
+  body.scene-battle .quick-nav{display:grid!important;grid-template-columns:repeat(3,minmax(0,1fr))!important;width:calc(100% - 16px)!important;max-width:none!important;gap:4px!important}
+  body.scene-battle .quick-nav button{min-height:30px!important;height:30px!important;padding:3px 5px!important;font-size:11px!important}
+  #battle>.arena{padding-top:36px}
+  #battle .enemy-unit>.intent{top:-10px;bottom:auto}
+}
