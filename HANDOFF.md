@@ -166,7 +166,7 @@
   - 毎ターン、エナジー＋1
   - ターン終了時に2ダメージ（ブロック可能）
 - 旧名称を含む既存セーブは新名称と新絵文字へ自動移行
-- 現在のキャッシュ番号: `tactical-cards.js?v=143`、`enhance.js?v=253`、`economy.js?v=157`、`relics-events.js?v=157`、`strategy-polish.js?v=185`
+- 現在のキャッシュ番号: `tactical-cards.js?v=143`、`enhance.js?v=253`、`economy.js?v=157`、`relics-events.js?v=158`、`strategy-polish.js?v=185`
 
 ### 第1層の名称変更
 
