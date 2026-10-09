@@ -1,9 +1,9 @@
 {
-  "root": "/workspace/scratch/813fcd9e8112/abyss-deck/dist",
-  "files": 347,
+  "root": "/home/user/abyss-deck/dist",
+  "files": 348,
   "images": 249,
   "audio": 43,
-  "uniqueReferences": 190,
+  "uniqueReferences": 191,
   "missing": [],
   "empty": [],
   "syntaxErrors": []

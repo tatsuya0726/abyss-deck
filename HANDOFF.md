@@ -275,3 +275,9 @@
 >
 > ローカル起動は node tools/local-server.cjs、検証は node tools/verify-project.cjs です。検証後のverify-report.jsonは破棄してください。JS/CSS変更時はdist/index.htmlの?v=番号を更新し、日本語UI変更時はdist/enhance.jsのふりがな辞書も確認してください。
 > 変更後は作業ブランチへコミット・プッシュし、mainをfast-forwardで同期してください。
+
+### エンディング分岐・称号追加・レリックイベント除外
+- 3層ボスクリア: NORMAL END／深淵ボスクリア: GOOD END／深淵ボスクリア時にデッキの呪いが5枚以上: ABYSS END（次の深淵の主・精霊が感謝しつつ惜しむ演出）。`clear()` 内で分岐
+- 称号を追加（ブロック100以上、一撃100以上、累計ダメージ5000以上、累計ブロック2000以上、累計回復500以上、呪い5枚以上、ボス3体撃破）。最大ブロックは `runStats.maxBlock` を `hud()` で記録
+- すでに所持しているレリックを「遺物「X」を得る」選択肢で配るイベントは、候補から除外（候補が尽きる場合のみ従来どおり）
+- キャッシュ番号: `strategy-polish.js?v=195`、`relics-events.css?v=9`

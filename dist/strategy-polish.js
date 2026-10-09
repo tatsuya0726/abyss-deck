@@ -16,6 +16,13 @@ const RUN_TITLES=[
  {icon:'🛡️',name:'不死身の航海者',desc:'被ダメージを50以下に抑えてクリア',cond:(s,g)=>s.damageTaken<=50},
  {icon:'☠️',name:'毒の支配者',desc:'毒を累計500以上与えてクリア',cond:(s,g)=>s.poisonApplied>=500},
  {icon:'🌊',name:'深淵の覇者',desc:'死海の深さでクリア',cond:(s,g)=>(g.ascension||0)===(window.ABYSS_DEAD_SEA_ASCENSION||11)},
+ {icon:'🏰',name:'鉄壁の要塞',desc:'ブロックを100以上積み上げてクリア',cond:(s,g)=>(s.maxBlock||0)>=100},
+ {icon:'🌋',name:'海を割る者',desc:'一度に100以上のダメージを与えてクリア',cond:(s,g)=>s.maxHit>=100},
+ {icon:'🌀',name:'嵐の化身',desc:'累計5000以上のダメージを与えてクリア',cond:(s,g)=>s.damageDealt>=5000},
+ {icon:'🧱',name:'不落の城壁',desc:'累計ブロック2000以上でクリア',cond:(s,g)=>s.blockGained>=2000},
+ {icon:'💚',name:'癒しの潮流',desc:'累計500以上回復してクリア',cond:(s,g)=>s.healing>=500},
+ {icon:'🩸',name:'呪われし航海者',desc:'呪いを5枚以上デッキに入れてクリア',cond:(s,g)=>(g.deck||[]).filter(k=>window.getAbyssCardData?.(k)?.g==='呪い').length>=5},
+ {icon:'👑',name:'ボスハンター',desc:'ボスを3体以上撃破してクリア',cond:(s,g)=>s.bosses>=3},
  {icon:'🔮',name:'遺物収集家',desc:'遺物を10個以上所持してクリア',cond:(s,g)=>(g.relic||[]).length>=10}
 ];
 window.getAbyssRunRecap=(s,cleared)=>{
