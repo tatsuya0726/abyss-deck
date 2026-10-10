@@ -591,7 +591,7 @@ async function verifyServer(){
   assert(html.includes('title-tools.js?v=114'),'served page has a stale settings script version');
   assert(html.includes('add-to-home.js?v=5'),'served page has a stale home-screen notice script version');
   assert(html.includes('game-polish.css?v=154'),'served page has a stale game polish stylesheet version');
-  assert(html.includes('game-polish.js?v=196'),'served page has a stale game polish script version');
+  assert(html.includes('game-polish.js?v=197'),'served page has a stale game polish script version');
  }finally{
   server.kill('SIGTERM');
  }
