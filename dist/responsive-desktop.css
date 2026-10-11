@@ -355,3 +355,8 @@ html.tv-mode.tv-fixed-canvas #titleSettingsModal .modal-shell-foot .btn{display:
   html.tv-mode #battle .arena{height:calc(100% - var(--pc-hand-height))!important}
   html.tv-mode #battle .handArea{height:var(--pc-hand-height)!important}
 }
+
+/* TV: card-picking modals that show event artwork (e.g. the memory-eating
+   clam) must keep the artwork short so the card list keeps its room. */
+html.tv-mode :is(#deckChoiceModal,#multiDeckChoiceModal,#markSelectModal,#pathCardChoiceModal) .bigicon:has(.event-illustration){box-sizing:border-box!important;flex:0 0 auto!important;width:min(100%,560px)!important;height:clamp(84px,15vh,150px)!important;min-height:0!important;aspect-ratio:auto!important;margin:0 auto 6px!important;padding:0!important;overflow:hidden!important;border-radius:12px!important}
+html.tv-mode :is(#deckChoiceModal,#multiDeckChoiceModal,#markSelectModal,#pathCardChoiceModal) .bigicon .event-illustration{display:block!important;width:100%!important;height:100%!important;object-fit:cover!important;object-position:center 48%!important}
