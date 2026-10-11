@@ -360,3 +360,8 @@ html.tv-mode.tv-fixed-canvas #titleSettingsModal .modal-shell-foot .btn{display:
    clam) must keep the artwork short so the card list keeps its room. */
 html.tv-mode :is(#deckChoiceModal,#multiDeckChoiceModal,#markSelectModal,#pathCardChoiceModal) .bigicon:has(.event-illustration){box-sizing:border-box!important;flex:0 0 auto!important;width:min(100%,560px)!important;height:clamp(84px,15vh,150px)!important;min-height:0!important;aspect-ratio:auto!important;margin:0 auto 6px!important;padding:0!important;overflow:hidden!important;border-radius:12px!important}
 html.tv-mode :is(#deckChoiceModal,#multiDeckChoiceModal,#markSelectModal,#pathCardChoiceModal) .bigicon .event-illustration{display:block!important;width:100%!important;height:100%!important;object-fit:cover!important;object-position:center 48%!important}
+
+/* TV fixed canvas: size multi-pick modals by the canvas, not the real
+   viewport, otherwise the panel overflows once the canvas is scaled. */
+html.tv-mode.tv-fixed-canvas :is(#multiDeckChoiceModal,#markSelectModal).on{box-sizing:border-box!important;inset:0!important;width:100%!important;height:100%!important;max-height:none!important;padding:8px!important}
+html.tv-mode.tv-fixed-canvas :is(#multiDeckChoiceModal,#markSelectModal).on>.panel{box-sizing:border-box!important;width:100%!important;max-width:none!important;height:100%!important;max-height:none!important;margin:0 auto!important}
