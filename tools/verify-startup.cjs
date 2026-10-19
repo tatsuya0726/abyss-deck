@@ -34,11 +34,11 @@ assert(index.includes('e.poisonNeedleStored>0?{p:e.poisonNeedleStored,needleRele
  'poison-to-needle conversion is not wired in both game entry pages');
 assert(strategyPolish.includes("GUARDIAN.m2=[{a:18},{b:34,poisonConvert:1}"),
  'the abyss guardian phase 2 does not attack immediately or alternate into poison needles');
-assert(index.includes('G.turn>=3&&(G.turn-3)%e.powerDownInterval===0')&&gameHtml.includes('G.turn>=3&&(G.turn-3)%e.powerDownInterval===0'),
+assert(index.includes('G.turn>=(e.powerDownStart||3)&&(G.turn-(e.powerDownStart||3))%e.powerDownInterval===0')&&gameHtml.includes('G.turn>=(e.powerDownStart||3)&&(G.turn-(e.powerDownStart||3))%e.powerDownInterval===0'),
  'attack-power reduction is not delayed until turn 3 in both game entry pages');
-assert(index.includes('e.powerDownInterval=e.boss?7:8')&&gameHtml.includes('e.powerDownInterval=e.boss?7:8'),
+assert(index.includes('e.powerDownInterval=e.boss?7:8;e.powerDownStart=e.boss?6:3')&&gameHtml.includes('e.powerDownInterval=e.boss?7:8;e.powerDownStart=e.boss?6:3'),
  'attack-power reduction cooldowns are missing in both game entry pages');
-assert(upgrade.includes('3ターン目から${entry.powerDownInterval}ターンごと')&&upgrade.includes('このターンは攻撃など他の行動なし'),
+assert(upgrade.includes('${entry.powerDownStart||3}ターン目から${entry.powerDownInterval}ターンごと')&&upgrade.includes('このターンは攻撃など他の行動なし'),
  'the bestiary does not explain the scheduled standalone attack-power reduction');
 
 const inlineScripts=[...index.matchAll(/<script(?:\s[^>]*)?>([\s\S]*?)<\/script>/gi)]
