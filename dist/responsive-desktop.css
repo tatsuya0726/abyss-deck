@@ -365,3 +365,14 @@ html.tv-mode :is(#deckChoiceModal,#multiDeckChoiceModal,#markSelectModal,#pathCa
    viewport, otherwise the panel overflows once the canvas is scaled. */
 html.tv-mode.tv-fixed-canvas :is(#multiDeckChoiceModal,#markSelectModal).on{box-sizing:border-box!important;inset:0!important;width:100%!important;height:100%!important;max-height:none!important;padding:8px!important}
 html.tv-mode.tv-fixed-canvas :is(#multiDeckChoiceModal,#markSelectModal).on>.panel{box-sizing:border-box!important;width:100%!important;max-width:none!important;height:100%!important;max-height:none!important;margin:0 auto!important}
+
+/* TV: hand/discard card pickers (curseCardChoice) need a bounded panel with a
+   scrolling card list and an always-visible confirm button. */
+html.tv-mode #curseCardChoice{box-sizing:border-box!important;padding:6px 8px!important;align-items:center!important;justify-content:center!important}
+html.tv-mode #curseCardChoice>.panel{display:flex!important;flex-direction:column!important;box-sizing:border-box!important;width:min(1180px,96vw)!important;max-width:none!important;height:calc(var(--abyss-vv-height,100dvh) - 12px)!important;max-height:none!important;overflow:hidden!important;padding:10px 16px!important}
+html.tv-mode #curseCardChoice .modal-shell-head,html.tv-mode #curseCardChoice .modal-shell-foot{flex:0 0 auto!important}
+html.tv-mode #curseCardChoice .curse-choice-list{flex:1 1 auto!important;min-height:0!important;max-height:none!important;display:grid!important;grid-template-columns:repeat(auto-fill,minmax(224px,1fr))!important;grid-auto-rows:max-content!important;justify-items:center!important;align-content:start!important;gap:16px 12px!important;padding:8px 4px 12px!important;overflow-x:hidden!important;overflow-y:auto!important}
+html.tv-mode #curseCardChoice .curse-choice-list>.choice{box-sizing:border-box!important;width:auto!important;min-height:var(--card-h,306px)!important;height:auto!important;padding:3px!important;align-self:start!important}
+html.tv-mode #curseCardChoice .modal-shell-foot .btn,html.tv-mode #curseCardChoice .modal-shell-foot button{width:min(420px,70%)!important;min-height:46px!important;margin:6px auto 0!important;display:block!important}
+html.tv-mode.tv-fixed-canvas #curseCardChoice.on{display:block!important;box-sizing:border-box!important;inset:0!important;width:100%!important;height:100%!important;max-height:none!important;padding:8px!important}
+html.tv-mode.tv-fixed-canvas #curseCardChoice.on>.panel{width:min(1180px,100%)!important;height:100%!important;max-height:none!important;margin:0 auto!important}
