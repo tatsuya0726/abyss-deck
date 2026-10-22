@@ -52,7 +52,7 @@ function syncStageViewport(){
  stage.style.setProperty('height','100%');
  syncTvCanvas();
 }
-const SELECTOR="#newGame,#continueGame,#titleSettingsMenu,.title-hub-grid button:not(:disabled),[data-hub-close],#titleBestiary,#titleCardCodex,#titleRelicCodex,#titleBgmGallery:not(:disabled),#titleCodex,#resetAllData,#resetCancel,#resetConfirm,#modifierClose,#strategyClose,#runModifierBadge,#mapHelpView,#mapHelpClose,#rewardGoldOption,#rewardCardOption,#rewardRelicOption,#rewardContinue,#rewardBack,#skipReward,.boss-relic-choice,.achievement-card:not(:disabled),.market-item:not(:disabled),.node.available,.choice,.card[data-i],.pileBtn,#collectionClose,.relic-grid .relic-card,.beast-legacy-grid .beast-card,input[type=range]:not([disabled]),button:not([disabled]),.codex-card-wrap,[data-setting],[data-filter],[data-tab],a[href]";
+const SELECTOR="#newGame,#continueGame,#titleSettingsMenu,.title-hub-grid button:not(:disabled),[data-hub-close],#titleBestiary,#titleCardCodex,#titleRelicCodex,#titleBgmGallery:not(:disabled),#titleCodex,#resetAllData,#resetCancel,#resetConfirm,#modifierClose,#strategyClose,#runModifierBadge,#mapHelpView,#mapHelpClose,#rewardGoldOption,#rewardCardOption,#rewardRelicOption,#rewardContinue,#rewardBack,#skipReward,.boss-relic-choice,.achievement-card:not(:disabled),.market-item:not(:disabled),.node.available,.choice,.card[data-i],.pileBtn,#collectionClose,.relic-grid .relic-card,.beast-legacy-grid .beast-card,input[type=range]:not([disabled]),button:not([disabled]):not(.node),.codex-card-wrap,[data-setting],[data-filter],[data-tab],a[href]";
 
 function closeSettingsForDisplayChange(){doc()?.getElementById('titleSettingsModal')?.classList.remove('on')}
 function settleDisplayViewport(){
