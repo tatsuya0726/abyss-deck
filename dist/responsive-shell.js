@@ -263,9 +263,10 @@ function installLandscapeTapGuard(){
  },{capture:true});
 }
 
+function activeModals(d){return[...d.querySelectorAll('.modal.on')].map((m,i)=>[m,parseInt(getComputedStyle(m).zIndex,10)||0,i]).sort((a,b)=>a[1]-b[1]||a[2]-b[2]).map(x=>x[0])}
 function candidates(){
  const d=doc();if(!d)return[];
- const modals=[...d.querySelectorAll('.modal.on')];
+ const modals=activeModals(d);
  const scope=modals.length?modals[modals.length-1]:d;
  return[...scope.querySelectorAll(SELECTOR)].filter(visible);
 }
@@ -333,7 +334,7 @@ function toggleFocusBand(){
 function scrollParent(el){
  const d=doc();
  for(let p=el?.parentElement;p&&p!==d?.body;p=p.parentElement){const s=getComputedStyle(p);if(/auto|scroll/.test(s.overflowY+s.overflowX)&&(p.scrollHeight>p.clientHeight+2||p.scrollWidth>p.clientWidth+2))return p}
- const modals=[...(d?.querySelectorAll('.modal.on')||[])],activeModal=modals[modals.length-1];
+ const modals=d?activeModals(d):[],activeModal=modals[modals.length-1];
  return activeModal?.querySelector('.modal-shell-body,.panel')||d?.querySelector('#map.on .path,#battle.on .hand');
 }
 function revealFocus(el){
@@ -362,12 +363,12 @@ function scrollActive(amount){
   target=eventTargets.find(el=>el.scrollHeight>el.clientHeight+2||el.scrollWidth>el.clientWidth+2)||null;
  }
  if(!target){
-  const modals=[...d.querySelectorAll('.modal.on')],activeModal=modals[modals.length-1];
+  const modals=activeModals(d),activeModal=modals[modals.length-1];
   const modalTargets=[focusEl?.closest?.('.dimensional-compression-grid,.modal-shell-body'),activeModal?.querySelector('.dimensional-compression-grid'),activeModal?.querySelector('.modal-shell-body'),activeModal?.querySelector('.panel')].filter(Boolean);
   target=modalTargets.find(el=>el.scrollHeight>el.clientHeight+2||el.scrollWidth>el.clientWidth+2)||null;
  }
  if(!target)target=scrollParent(focusEl);
- if(!target){const modal=[...d.querySelectorAll('.modal.on')].pop();target=modal?.querySelector('.modal-shell-body,.panel')||d.querySelector('#map.on .path,#battle.on .hand,.screen.on')}
+ if(!target){const modal=activeModals(d).pop();target=modal?.querySelector('.modal-shell-body,.panel')||d.querySelector('#map.on .path,#battle.on .hand,.screen.on')}
  if(!target)return false;
  const vertical=target.scrollHeight>target.clientHeight+2;
  if(vertical)target.scrollBy({top:amount,behavior:'auto'});else if(target.scrollWidth>target.clientWidth+2)target.scrollBy({left:amount,behavior:'auto'});else return false;
@@ -469,7 +470,7 @@ function doConfirm(){
 function doBack(){
  if(!enabled)return;
  const d=doc();if(!d)return;
- const modals=[...d.querySelectorAll('.modal.on')];
+ const modals=activeModals(d);
  const topModal=modals[modals.length-1];
  const shopBack=topModal?.matches?.('#shopModal')?topModal.querySelector('.shop-choose #shopBack'):null;
  if(shopBack&&visible(shopBack)){focusEl=shopBack;shopBack.click();requestAnimationFrame(()=>{ensureFocus();updateRing()});return}
