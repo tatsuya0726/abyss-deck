@@ -425,6 +425,11 @@ function adjustFocusedRange(dir){
  focusEl.dispatchEvent(new Event('input',{bubbles:true}));
  revealFocus(focusEl);updateRing();return true;
 }
+function scrollBox(el){
+ const d=doc();
+ for(let p=el?.parentElement;p&&p!==d?.body&&!p.classList?.contains('modal');p=p.parentElement){const st=getComputedStyle(p);if(/auto|scroll/.test(st.overflowY)&&p.scrollHeight>p.clientHeight+2)return p}
+ return null;
+}
 function moveFocus(dir){
  if(adjustFocusedRange(dir))return;
  if(!enabled)return;
@@ -432,19 +437,26 @@ function moveFocus(dir){
  if(!list.length){focusEl=null;return}
  if(!focusEl||!list.includes(focusEl)){focusEl=pickDefault(list);updateRing();return}
  const cur=rectOf(focusEl);
- let best=null,bestScore=Infinity;
- for(const el of list){
-  if(el===focusEl)continue;
-  const r=rectOf(el),dx=r.cx-cur.cx,dy=r.cy-cur.cy;
-  let ok,primary,ortho;
-  if(dir==='down'){ok=dy>4;primary=dy;ortho=Math.abs(dx)}
-  else if(dir==='up'){ok=dy<-4;primary=-dy;ortho=Math.abs(dx)}
-  else if(dir==='right'){ok=dx>4;primary=dx;ortho=Math.abs(dy)}
-  else{ok=dx<-4;primary=-dx;ortho=Math.abs(dy)}
-  if(!ok)continue;
-  const score=primary+ortho*2.2;
-  if(score<bestScore){bestScore=score;best=el}
- }
+ const pickBest=pool=>{
+  let best=null,bestScore=Infinity;
+  for(const el of pool){
+   if(el===focusEl)continue;
+   const r=rectOf(el),dx=r.cx-cur.cx,dy=r.cy-cur.cy;
+   let ok,primary,ortho;
+   if(dir==='down'){ok=dy>4;primary=dy;ortho=Math.abs(dx)}
+   else if(dir==='up'){ok=dy<-4;primary=-dy;ortho=Math.abs(dx)}
+   else if(dir==='right'){ok=dx>4;primary=dx;ortho=Math.abs(dy)}
+   else{ok=dx<-4;primary=-dx;ortho=Math.abs(dy)}
+   if(!ok)continue;
+   const score=primary+ortho*2.2;
+   if(score<bestScore){bestScore=score;best=el}
+  }
+  return best;
+ };
+ // Inside a scrolling list, step through the list's own items first so a
+ // header/footer button below the fold does not steal every Down press.
+ const box=scrollBox(focusEl);
+ const best=(box&&pickBest(list.filter(el=>box.contains(el))))||pickBest(list);
  if(best){focusEl=best;revealFocus(best);updateRing()}
  else if(dir==='up'||dir==='down')scrollActive(dir==='up'?-110:110);
 }
