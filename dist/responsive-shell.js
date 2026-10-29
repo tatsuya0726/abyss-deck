@@ -289,6 +289,7 @@ function updateRing(){
  if(!visualTarget||!visible(visualTarget)){ring.style.display='none';return}
  let r=rectOf(visualTarget);const d=doc();
  if(d?.documentElement.classList.contains('tv-fixed-canvas')&&directMode){const bodyRect=d.body.getBoundingClientRect(),scale=Number(getComputedStyle(d.documentElement).getPropertyValue('--tv-canvas-scale'))||1;r={left:(r.left-bodyRect.left)/scale,top:(r.top-bodyRect.top)/scale,width:r.width/scale,height:r.height/scale}}
+ rememberFocus();
  ring.style.display='block';
  ring.style.left=(r.left-4)+'px';ring.style.top=(r.top-4)+'px';ring.style.width=(r.width+8)+'px';ring.style.height=(r.height+8)+'px';
 }
@@ -303,12 +304,44 @@ function pickDefault(list){
  for(const sel of PRIORITY_GROUPS){const hit=list.find(el=>el.matches?.(sel));if(hit)return hit}
  return list[0];
 }
+const scopeFocusMemo=new Map();
+function focusStableClass(el){return[...(el.classList||[])].filter(c=>!/^(selected|on|available|locked|done|current|sold|disabled|active|ready|focus)$/.test(c)).join(' ')}
+function focusSignature(el){return{tag:el.tagName,id:el.id||'',data:[...el.attributes].filter(a=>a.name.startsWith('data-')).map(a=>a.name+'='+a.value).join('|'),cls:focusStableClass(el)}}
+function currentFocusScope(d){const m=activeModals(d);return m.length?m[m.length-1]:d}
+function rememberFocus(){
+ const d=doc();if(!d||!focusEl||!visible(focusEl))return;
+ const scope=currentFocusScope(d);
+ if(scope!==d&&!scope.contains(focusEl))return;
+ const r=rectOf(focusEl);
+ scopeFocusMemo.set(scope,{el:focusEl,sig:focusSignature(focusEl),cx:r.cx,cy:r.cy});
+}
+// Remember the focus per screen/modal so closing a dialog (or re-rendering a
+// list, e.g. after a shop purchase) puts the cursor back where it was instead
+// of jumping to the first item.
+function restoreFocus(list){
+ const d=doc();if(!d)return null;
+ for(const sc of [...scopeFocusMemo.keys()])if(sc!==d&&!sc.classList?.contains('on'))scopeFocusMemo.delete(sc);
+ const memo=scopeFocusMemo.get(currentFocusScope(d));if(!memo)return null;
+ if(list.includes(memo.el))return memo.el;
+ if(memo.el.isConnected)return null;
+ const sig=memo.sig;
+ let pool=sig.id?list.filter(e=>e.id===sig.id):[];
+ if(pool.length)return pool[0];
+ pool=sig.data?list.filter(e=>e.tagName===sig.tag&&focusSignature(e).data===sig.data):[];
+ if(pool.length)return pool[0];
+ pool=list.filter(e=>e.tagName===sig.tag&&focusStableClass(e)===sig.cls);
+ if(!pool.length)return null;
+ const dist=e=>{const r=rectOf(e);return Math.hypot(r.cx-memo.cx,r.cy-memo.cy)};
+ return pool.sort((x,y)=>dist(x)-dist(y))[0];
+}
 function ensureFocus(){
  if(!landscapeLayout||!enabled){focusEl=null;updateRing();return}
  if(activeAdvanceOverlay()){focusEl=null;updateRing();return}
  const list=candidates();
  if(!list.length){focusEl=null;updateRing();return}
  if(focusEl&&list.includes(focusEl))return;
+ const back=restoreFocus(list);
+ if(back){focusEl=back;updateRing();return}
  focusEl=pickDefault(list);updateRing();
 }
 
