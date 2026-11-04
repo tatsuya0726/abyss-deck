@@ -1,9 +1,9 @@
 {
   "root": "/home/user/abyss-deck/dist",
-  "files": 348,
+  "files": 350,
   "images": 249,
   "audio": 43,
-  "uniqueReferences": 191,
+  "uniqueReferences": 193,
   "missing": [],
   "empty": [],
   "syntaxErrors": []

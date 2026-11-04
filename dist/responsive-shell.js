@@ -1,4 +1,5 @@
 (()=>{'use strict';
+const T=t=>window.abyssTr?window.abyssTr(t):t;
 const stage=document.getElementById('stage'),directMode=!stage,ring=document.getElementById('gp-focus-ring'),fsBtn=document.getElementById('fullscreen-btn'),ctrlBtn=document.getElementById('controller-toggle');
 let landscapeLayout=matchMedia('(orientation:landscape)').matches||innerWidth>innerHeight;
 const stageWrap=document.getElementById('stage-wrap');
@@ -9,8 +10,8 @@ if(!TV_CANVAS_SIZES.includes(tvCanvasPercent))tvCanvasPercent=92;
 function syncTvCanvasUi(){
  const d=doc(),display=d?.getElementById('titleTvDisplay'),size=d?.getElementById('titleTvScale');
  const displayText=`TV固定表示 ${tvCanvasEnabled?'ON':'OFF'}`;
- if(display){display.classList.toggle('active',tvCanvasEnabled);const label=display.querySelector('small');if(label&&label.textContent!==displayText)label.textContent=displayText}
- if(size){size.classList.toggle('active',tvCanvasEnabled);const label=size.querySelector('small'),sizeText=`表示範囲 ${tvCanvasPercent}%`;if(label&&label.textContent!==sizeText)label.textContent=sizeText}
+ if(display){display.classList.toggle('active',tvCanvasEnabled);const label=display.querySelector('small');if(label&&label.textContent!==T(displayText))label.textContent=displayText}
+ if(size){size.classList.toggle('active',tvCanvasEnabled);const label=size.querySelector('small'),sizeText=`表示範囲 ${tvCanvasPercent}%`;if(label&&label.textContent!==T(sizeText))label.textContent=sizeText}
 }
 function syncTvCanvas(){
  const d=doc();if(!d)return;
@@ -65,7 +66,7 @@ fsBtn.onclick=()=>{
 };
 
 const soundBtn=document.getElementById('sound-toggle');
-function syncSoundBtn(){try{let b=doc()?.getElementById('soundBtn');if(!b)return;let on=!b.classList.contains('muted'),buttonText=`♫ 音楽：${on?'ON':'OFF'}`;if(soundBtn.textContent!==buttonText)soundBtn.textContent=buttonText;let label=doc()?.querySelector('#titleTvSound small'),text=`音楽 ${on?'ON':'OFF'}`;if(label&&label.textContent!==text)label.textContent=text}catch(e){}}
+function syncSoundBtn(){try{let b=doc()?.getElementById('soundBtn');if(!b)return;let on=!b.classList.contains('muted'),buttonText=`♫ 音楽：${on?'ON':'OFF'}`;if(soundBtn.textContent!==T(buttonText))soundBtn.textContent=buttonText;let label=doc()?.querySelector('#titleTvSound small'),text=`音楽 ${on?'ON':'OFF'}`;if(label&&label.textContent!==T(text))label.textContent=text}catch(e){}}
 soundBtn.onclick=()=>{try{doc()?.getElementById('soundBtn')?.click()}catch(e){}syncSoundBtn()};
 
 const CTRL_KEY='abyssTvControllerEnabled';
@@ -81,7 +82,7 @@ function syncControllerUi(){
   const hint=d.createElement('span');hint.className='controller-end-hint';hint.setAttribute('aria-hidden','true');hint.textContent='X';end.prepend(hint);
  }
 }
-function syncCtrlBtn(){let buttonText=`🎮 コントローラー操作：${enabled?'ON':'OFF'}`;if(ctrlBtn.textContent!==buttonText)ctrlBtn.textContent=buttonText;ctrlBtn.classList.toggle('off',!enabled);let label=doc()?.querySelector('#titleTvController small'),text=`コントローラー ${enabled?'ON':'OFF'}`;if(label&&label.textContent!==text)label.textContent=text;if(!enabled)ring.style.display='none';syncControllerUi()}
+function syncCtrlBtn(){let buttonText=`🎮 コントローラー操作：${enabled?'ON':'OFF'}`;if(ctrlBtn.textContent!==T(buttonText))ctrlBtn.textContent=buttonText;ctrlBtn.classList.toggle('off',!enabled);let label=doc()?.querySelector('#titleTvController small'),text=`コントローラー ${enabled?'ON':'OFF'}`;if(label&&label.textContent!==T(text))label.textContent=text;if(!enabled)ring.style.display='none';syncControllerUi()}
 syncCtrlBtn();
 ctrlBtn.onclick=()=>{enabled=!enabled;try{localStorage.setItem(CTRL_KEY,enabled?'1':'0')}catch(e){}syncCtrlBtn();if(enabled)ensureFocus()};
 
