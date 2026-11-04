@@ -29,7 +29,7 @@
     if (jp.includes('{}') || jp.includes('{#}')) {
       // {} = any text, {#} = a run of digits
       const toks = jp.split(/(\{\}|\{#\})/);
-      const src = toks.map(t => t === '{}' ? '(.+?)' : t === '{#}' ? '([0-9０-９]+(?:[.,][0-9]+)?)' : t.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')).join('');
+      const src = toks.map(t => t === '{}' ? '([^。\\n]+?)' : t === '{#}' ? '([0-9０-９]+(?:[.,][0-9]+)?)' : t.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')).join('');
       patterns.push({ re: new RegExp('^' + src + '$'), en, weight: jp.replace(/\{#?\}/g, '').length });
     } else exact.set(jp, en);
   }

@@ -1937,3 +1937,34 @@ TV固定表示 {}	TV Fixed Display {0}
 🎮 コントローラー操作：{}	🎮 Controller: {0}
 💚 回復	💚 Healing
 🛡️ 防御	🛡️ Defense
+{#}×{#}（計{#}）	{0}×{1} (total {2})
+A{#}・第{#}層・{}・{#}m	A{0} · Layer {1} · {2} · {3}m
+すべて	All
+たおすと特徴がわかります。	Defeat it to learn its traits.
+はじめる	Start
+やめる	Cancel
+ぺしゃんこ	Flatten
+カードの並べ替え	Sort cards
+カード解放	Card Unlock
+カード解放：{} （クリアで解放）	Card Unlock: {0} (unlocked on clear)
+{} （クリアで解放）	{0} (unlocked on clear)
+再生	Regeneration
+覚醒	Awakening
+血戦	Blood Battle
+獄炎王	Hellflame King
+写真のフグを参考にしたフグ店長	Puffer Shopkeeper, modeled on a photo of a pufferfish
+前の深海階級	Previous Abyss Rank
+次の深海階級	Next Abyss Rank
+前の深海階級をクリアすると解放。	Unlocked by clearing the previous Abyss Rank.
+封印された記憶	Sealed Memory
+挑戦可能	Available
+未解放	Locked
+未解放の称号	Locked Titles
+条件を達成すると解放	Unlocked when the condition is met
+攻撃予定	Attack Plan
+深海の商店	Deep Sea Shop
+― 第{#}層 ―	― Layer {0} ―
+第{#}層 ―	Layer {0} ―
+設定から深海異変をONにすると、新しい潜航に反映されます。	Turn on Deep Sea Anomaly in Settings to apply it to new dives.
+現在はOFFです。	Currently OFF.
+現在はONです。	Currently ON.
