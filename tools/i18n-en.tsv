@@ -286,7 +286,7 @@ UMA・海坊主	UMA · Umibozu
 封鎖された研究区画	Sealed-Off Research Wing
 小さな流れ	A Small Current
 山札	Draw Pile
-山札 {}	Draw Pile {0}
+山札 {}	Draw {0}
 山札からカード{#}枚を選び、手札に加える。	Choose {0} card(s) from your draw pile and add to your hand.
 山札が掻き乱された！ 次に引くカードのコストが{}増える	The draw pile was stirred up! Next drawn card costs +{0}
 山札の上から{#}枚をコストなしで使用する。	Play the top {0} card(s) of your draw pile for free.
@@ -667,10 +667,10 @@ HP回復またはカード強化。	Heal HP or upgrade a card.
 また君か……懲りないね。	You again... never learn, do you.
 また来たのかい。	Back again, are you?
 飽きない子だ、気に入ったよ。	Never get tired, do you? I like that.
-むずかしい漢字にふりがなをつけたいときは、タイトル画面の「⚙️ 設定」からいつでもオン・オフを切り替えられます。	If you want furigana on difficult kanji, you can toggle it any time from "⚙️ Settings" on the title screen.
+むずかしい漢字にふりがなをつけたいときは、タイトル画面の「⚙️ 設定」からいつでもオン・オフを切り替えられます。	You can switch the language any time from "⚙️ Settings" on the title screen.
 やさしい光の中で、次の戦いに備えよう。	Prepare for the next fight in the gentle light.
 やつを倒してくれたら、深海も少しは静かになるんだけどね……	If you'd defeat that one, the deep might quiet down a little...
-を最初から持っています。	You start with
+を最初から持っています。	is yours from the start.
 戦闘に勝利するたびHPを{#}回復し、長い潜航を支えてくれます。	Heals {0} HP after every battle you win, supporting a long dive.
 アドレスバーがあると、戦闘の際にHPバーとカードウィンドウが重なることがあります。	With an address bar, the HP bar and card window may overlap during battle.
 イベント	Event
@@ -1968,3 +1968,57 @@ A{#}・第{#}層・{}・{#}m	A{0} · Layer {1} · {2} · {3}m
 設定から深海異変をONにすると、新しい潜航に反映されます。	Turn on Deep Sea Anomaly in Settings to apply it to new dives.
 現在はOFFです。	Currently OFF.
 現在はONです。	Currently ON.
+デッキ相性	Deck synergy
+切り替え	Switch
+BGM図鑑 解放	Music Gallery unlocked
+{}×{}（計{}）	{0}×{1} (total {2})
+{}＋{}×{}（計{}）	{0}+{1}×{2} (total {3})
+この店では削除済み	Already removed at this shop
+カード解放：{} {}	Card Unlock: {0} {1}
+クラーケン	Kraken
+ゾウギンザメ	Elephant Shark
+ミノカサゴ	Lionfish
+古代魚	Ancient Fish
+守護者	Guardian
+沈没船	Shipwreck
+海坊主	Umibozu
+漂流者	Drifter
+潮騎士	Tide Knight
+白骨鮫	Bone Shark
+監視者	Watcher
+戦利品	Spoils
+コストなしで使用！	Played for free!
+スキップ	Skip
+タイトル画面の「BGM図鑑」から、これまでの旅で流れた楽曲をいつでも聴けるようになった。	From "Music Gallery" on the title screen, you can now listen any time to the tracks that played throughout your journey.
+デッキからこの{#}枚がなくなりました。	Removed from your deck: {0} card(s).
+デッキから削除	Removed from deck
+・{}{}	· {0}{1}
+・赤い欠片	· Red Fragment
+今回 🪙 {}・次回 🪙 {}	This time 🪙 {0} · Next time 🪙 {1}
+使うたび基本価格が🪙 {#}上昇	Base price rises by 🪙 {0} each use
+使用できないカード	Unplayable card
+全回復	Full heal
+削除するカード	Card to remove
+削除後	After removal
+呪い {}枚を背負い、あなたは深淵の主となった	Carrying {0} Curse(s), you became the Lord of the Abyss
+変更後	After change
+山札からめくれた！	Flipped from your draw pile!
+強化するカード	Card to upgrade
+強化前：{}	Before upgrade: {0}
+強化後：{}	After upgrade: {0}
+新しい潜航のたび、この中から{#}つがランダムに選ばれます。	At the start of each new dive, {0} of these are chosen at random.
+新たな深海階級 A{} 解放	New Abyss Rank A{0} unlocked
+最新の称号	Latest Title
+死海を解放	Dead Sea unlocked
+気絶まで{}	Stun in {0}
+海の奇跡：被ダメージ上限{#}	Miracle of the Sea: damage taken capped at {0}
+深海の記憶が目を覚ました	A memory of the deep has awakened
+発動せず捨て札へ	Not triggered; sent to the discard pile
+脱力{#}%減	Weak −{0}%
+行動パターンを見る ›	View move pattern ›
+購入できる未所持のレリックはありません。	There are no unowned relics available to buy.
+選択中	Selected
+（クリアで解放）	(unlocked on clear)
+（ブロックで{}軽減）	(reduced by {0} from Block)
+（解放済み）	(unlocked)
+🏮 VIP割引：価格−{#}%	🏮 VIP Discount: prices −{0}%

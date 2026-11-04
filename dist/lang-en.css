@@ -1,0 +1,5 @@
+/* English-only layout adjustments (loaded by i18n.js when the language is English).
+ * English strings are usually longer than the Japanese ones. */
+html.lang-en.tv-mode #shopModal .shop-keeper{left:420px!important}
+/* portrait phones: the pile buttons must still fit between the energy orb and End Turn */
+@media (orientation:portrait) and (max-width:700px){html.lang-en .deckInfo .pileBtn{font-size:11px;padding:2px 6px}}

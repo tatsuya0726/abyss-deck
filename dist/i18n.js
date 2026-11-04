@@ -21,6 +21,12 @@
   const root = document.documentElement;
   root.lang = 'en';
   root.classList.add('lang-en');
+  {
+    const link = document.createElement('link');
+    link.rel = 'stylesheet';
+    link.href = 'lang-en.css?v=2';
+    (document.head || root).appendChild(link);
+  }
 
   const CJK = /[぀-ヿ㐀-鿿＀-￯]/;
   const dict = window.ABYSS_EN_DICT || {};
@@ -40,7 +46,10 @@
   const normalize = s => s
     .replace(/[０-９]/g, c => String.fromCharCode(c.charCodeAt(0) - 0xfee0))
     .replace(/[、。（）：・「」『』！？％＋－−～〜　／]/g, c => FULL[c])
-    .replace(/ {2,}/g, ' ').replace(/\( /g, '(').replace(/ ([.,!?])/g, '$1');
+    .replace(/ {2,}/g, ' ').replace(/\( /g, '(').replace(/ ([.,!?])/g, '$1')
+    // "3 card(s)" -> "3 cards" / "1 card"; "every 1 turn(s)" -> "every turn"
+    .replace(/\b(\d+)((?: [A-Za-z'’-]+)*?) ([A-Za-z]+)\(s\)/g, (m, n, mid, w) => `${n}${mid} ${w}${n === '1' ? '' : 's'}`)
+    .replace(/\b(every|per|each) 1 (time|turn|hit|card)\b/gi, '$1 $2');
 
   const cache = new Map();
   const misses = (window.ABYSS_I18N_MISS = new Set());
@@ -70,6 +79,24 @@
         out = normalize(m[1]).replace(/\s+$/, ' ') + rest;
         cache.set(core, out);
         return out;
+      }
+    }
+    if (out === undefined) {
+      // 「quoted text」
+      const q = /^[「『]([^「『」』]+)[」』]$/.exec(core);
+      if (q) {
+        const inner = translateCore(q[1]);
+        if (!CJK.test(inner)) { out = '"' + inner + '"'; cache.set(core, out); return out; }
+      }
+    }
+    if (out === undefined) {
+      // "Label：text" (e.g. card name：effect)
+      const m = /^([^：。\n]{1,30})：(.+)$/s.exec(core);
+      if (m) {
+        const left = translateCore(m[1]), right = translateCore(m[2]);
+        out = left + ': ' + right;
+        if (!CJK.test(out)) { cache.set(core, out); return out; }
+        out = undefined;
       }
     }
     if (out === undefined && /[。\n]./.test(core)) {
@@ -111,8 +138,14 @@
   function visit(node) {
     if (node.nodeType === 3) {
       if (CJK.test(node.nodeValue) && !skipped(node)) {
-        const next = translate(node.nodeValue);
-        if (next !== node.nodeValue) node.nodeValue = next;
+        let next = translate(node.nodeValue);
+        if (next !== node.nodeValue) {
+          // Japanese needs no spaces between neighbouring nodes; English does
+          const prev = node.previousSibling, after = node.nextSibling;
+          if (after && /[.!?:]$/.test(next) && !/^\s/.test(after.textContent || '')) next += ' ';
+          if (prev && /^[A-Za-z0-9]/.test(next) && !/[\s(“‘\[]$/.test(prev.textContent || '')) next = ' ' + next;
+          node.nodeValue = next;
+        }
       }
       return;
     }
