@@ -24,7 +24,7 @@
   {
     const link = document.createElement('link');
     link.rel = 'stylesheet';
-    link.href = 'lang-en.css?v=2';
+    link.href = 'lang-en.css?v=3';
     (document.head || root).appendChild(link);
   }
 

@@ -300,11 +300,12 @@ function activeAdvanceOverlay(){
  return d.querySelector('#tapStartGate,.story-reveal.on,.abyss-gate-reveal.on');
 }
 
-const PRIORITY_GROUPS=['.node.available','.card[data-i]','.choice,.boss-relic-choice','#newGame,#continueGame','.achievement-card:not(:disabled),.market-item:not(:disabled)'];
+const PRIORITY_GROUPS=['.node.available','.card[data-i]','#endTurn','.choice,.boss-relic-choice','#newGame,#continueGame','.achievement-card:not(:disabled),.market-item:not(:disabled)'];
 function pickDefault(list){
  for(const sel of PRIORITY_GROUPS){const hit=list.find(el=>el.matches?.(sel));if(hit)return hit}
  return list[0];
 }
+let autoPickedWithoutCards=false;
 const scopeFocusMemo=new Map();
 function focusStableClass(el){return[...(el.classList||[])].filter(c=>!/^(selected|on|available|locked|done|current|sold|disabled|active|ready|focus)$/.test(c)).join(' ')}
 function focusSignature(el){return{tag:el.tagName,id:el.id||'',data:[...el.attributes].filter(a=>a.name.startsWith('data-')).map(a=>a.name+'='+a.value).join('|'),cls:focusStableClass(el)}}
@@ -340,10 +341,17 @@ function ensureFocus(){
  if(activeAdvanceOverlay()){focusEl=null;updateRing();return}
  const list=candidates();
  if(!list.length){focusEl=null;updateRing();return}
+ if(autoPickedWithoutCards&&!(focusEl&&focusEl.matches?.('.card[data-i]'))){
+  const first=list.find(el=>el.matches?.('#hand .card[data-i]'));
+  if(first){autoPickedWithoutCards=false;focusEl=first;updateRing();return}
+ }
  if(focusEl&&list.includes(focusEl))return;
  const back=restoreFocus(list);
  if(back){focusEl=back;updateRing();return}
- focusEl=pickDefault(list);updateRing();
+ focusEl=pickDefault(list);
+ // in battle with no hand yet (between turns): remember it, so the first card gets the focus once it is dealt
+ autoPickedWithoutCards=!!doc()?.querySelector('#battle.on')&&!doc()?.querySelector('.modal.on')&&!focusEl?.matches?.('.card[data-i]');
+ updateRing();
 }
 
 let bandMemory={top:null,bottom:null};
@@ -465,6 +473,7 @@ function scrollBox(el){
  return null;
 }
 function moveFocus(dir){
+ autoPickedWithoutCards=false;
  if(adjustFocusedRange(dir))return;
  if(!enabled)return;
  const list=candidates();
@@ -509,6 +518,7 @@ function settleCardPlayFocus(){
 }
 function doConfirm(){
  if(!enabled)return;
+ autoPickedWithoutCards=false;
  const overlay=activeAdvanceOverlay();if(overlay){ring.style.display='none';overlay.click();return}
  if(focusEl?.matches?.('#hand .card[data-i]'))pendingHandFocusIndex=Math.max(0,(Number(focusEl.dataset.i)||0)-1);
  if(focusEl)focusEl.click();
@@ -522,12 +532,14 @@ function doBack(){
  if(shopBack&&visible(shopBack)){focusEl=shopBack;shopBack.click();requestAnimationFrame(()=>{ensureFocus();updateRing()});return}
  if(modals.length)modals[modals.length-1].dispatchEvent(new MouseEvent('click',{bubbles:true,cancelable:true,view:win()}));
 }
-let returnToFirstCardAfterTurn=false;
+let returnToFirstCardAfterTurn=false,turnEndSeen=false,turnEndAt=0;
 function settleTurnFocus(){
  if(!returnToFirstCardAfterTurn)return false;
  const d=doc(),battle=d?.getElementById('battle'),end=d?.getElementById('endTurn');
  if(!battle?.classList.contains('on')){returnToFirstCardAfterTurn=false;return false}
- if(end?.disabled){focusEl=null;ring.style.display='none';return true}
+ if(end?.disabled){turnEndSeen=true;focusEl=null;scopeFocusMemo.delete(d);ring.style.display='none';return true}
+ // the End Turn click is queued: do not hand the focus back before the enemy turn has begun
+ if(!turnEndSeen){if(performance.now()-turnEndAt>2000){returnToFirstCardAfterTurn=false;return false}return true}
  const first=d.querySelector('#battle.on #hand .card[data-i]');
  if(!first)return true;
  returnToFirstCardAfterTurn=false;focusEl=first;bandMemory.bottom=first;revealFocus(first);updateRing();return true;
@@ -536,7 +548,7 @@ function doEndTurn(){
  if(!enabled)return;
  const d=doc(),battle=d?.getElementById('battle'),end=d?.getElementById('endTurn');
  if(!battle?.classList.contains('on')||!end||end.disabled||d.querySelector('.modal.on'))return;
- focusEl=end;bandMemory.bottom=end;revealFocus(end);updateRing();returnToFirstCardAfterTurn=true;
+ focusEl=end;bandMemory.bottom=end;revealFocus(end);updateRing();returnToFirstCardAfterTurn=true;turnEndSeen=false;turnEndAt=performance.now();
  requestAnimationFrame(()=>{if(!end.disabled)end.click()});
 }
 
