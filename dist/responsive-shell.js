@@ -387,7 +387,10 @@ function revealFocus(el){
   const target=choiceList&&choiceList.scrollHeight>choiceList.clientHeight+2?choiceList:shop?.querySelector('#shopGrid');
   if(target&&target.scrollHeight>target.clientHeight+2){
    const itemRect=shopItem.getBoundingClientRect(),targetRect=target.getBoundingClientRect();
-   const desired=target.scrollTop+(itemRect.top+itemRect.height/2)-(targetRect.top+targetRect.height/2);
+   // DOM rectangles include TV scaling, while scrollTop uses layout pixels.
+   const scale=targetRect.height/target.offsetHeight||1;
+   const itemCenter=(itemRect.top+itemRect.height/2-targetRect.top)/scale;
+   const desired=target.scrollTop+itemCenter-target.clientTop-target.clientHeight/2;
    const max=Math.max(0,target.scrollHeight-target.clientHeight);
    target.scrollTo({top:Math.max(0,Math.min(max,desired)),behavior:'smooth'});
    requestAnimationFrame(updateRing);setTimeout(updateRing,180);return;
